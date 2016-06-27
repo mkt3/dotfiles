@@ -18,6 +18,7 @@ else
 
     # PATH
     export PATH=/usr/local/bin:$PATH
+    export XDG_CONFIG_HOME=~/.config
 
     setopt no_global_rcs
   
