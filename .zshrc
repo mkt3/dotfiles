@@ -43,6 +43,7 @@ bindkey "^N" history-beginning-search-forward-end
 
 # Completion
 autoload -U compinit
+compinit -u
 setopt auto_list
 setopt list_packed
 setopt auto_param_keys
@@ -62,9 +63,20 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # Alias
 setopt complete_aliases
 
-alias ls="ls -FGh"
-alias ll="ls -l"
-alias la="ls -aF"
+case "${OSTYPE}" in
+    freebsd*|darwin*)
+        alias ls="ls -FGh"
+        alias ll="ls -l"
+        alias la="ls -aF"
+        ;;
+    linux*)
+        alias ls="ls --color"
+        alias ll="ls -l"
+        alias la="ls -aF"
+        alias open="gnome-open"
+        ;;
+esac
+
 alias rm="rm -i"
 alias cp="cp -i"
 alias mv="mv -i"
