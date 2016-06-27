@@ -2,6 +2,7 @@
 autoload -U colors
 colors
 
+## Left prompt
 if [ -n "${SSH_CONNECTION}" ]; then
     local host_color="cyan"
 
@@ -12,14 +13,40 @@ fi
 PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u(%j) %~
 %# "
 
-RPROMPT="%1(v|%F{green}%1v%f|)"
+## Right prompt
+autoload -Uz vcs_info
+autoload -Uz add-zsh-hook
+
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' max-exports 6 # formatに入る変数の最大数
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' formats '%b@%r' '%c' '%u'
+zstyle ':vcs_info:git:*' actionformats '%b@%r|%a' '%c' '%u'
+setopt prompt_subst
+function _vcs_precmd {
+    local st branch color
+    STY= LANG=en_US.UTF-8 vcs_info
+    st=`git status 2> /dev/null`
+    if [[ -z "$st" ]]; then
+        RPROMPT=""
+        return
+    fi
+    branch="$vcs_info_msg_0_"
+    if   [[ -n "$vcs_info_msg_1_" ]]; then color=${fg[green]} #staged
+    elif [[ -n "$vcs_info_msg_2_" ]]; then color=${fg[red]} #unstaged
+    elif [[ -n `echo "$st" | grep "^Untracked"` ]]; then color=${fg[blue]} # untracked
+    else color=${fg[cyan]}
+    fi
+    RPROMPT=`echo "%{$color%}($branch)%{$reset_color%}" | sed -e s/@/"%F{yellow}@%f%{$color%}"/`
+}
+add-zsh-hook precmd _vcs_precmd
 
 # Setopt
 setopt auto_cd
 setopt auto_pushd
 setopt no_beep
 setopt no_list_beep
-setopt sh_word_split
+#setopt sh_word_split
 
 # Command history
 HISTFILE=$HOME/.zsh_history
