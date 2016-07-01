@@ -42,7 +42,9 @@ set noswapfile
 set autoread
 set hidden
 set showcmd
-backspace=indent,eol,start
+set backspace=indent,eol,start
+set display=lastline
+set pumheight=10
 
 syntax enable
 set background=dark
