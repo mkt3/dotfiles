@@ -1,2 +1,4 @@
 .DS_Store
 *~
+.emacs.d/ddskk.d/*
+!.gitkeep
