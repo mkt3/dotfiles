@@ -1,6 +1,13 @@
 ;;====================================================================
 ;; basic info 
 ;;====================================================================
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (when load-file-name
     (setq user-emacs-directory (file-name-directory load-file-name)))
 
@@ -30,8 +37,10 @@
 (el-get-bundle elpa:shell-pop)
 (el-get-bundle elpa:auto-save-buffers-enhanced)
 (el-get-bundle hiwin)
+(el-get-bundle maxframe)
 (el-get-bundle python-mode)
 (el-get-bundle elpa:markdown-mode)
+(el-get-bundle exec-path-from-shell)
 
 ;;====================================================================
 ;; reload .emacs
