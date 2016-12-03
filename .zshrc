@@ -95,6 +95,7 @@ case "${OSTYPE}" in
         alias ls="ls -FGh"
         alias ll="ls -l"
         alias la="ls -aF"
+        alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
         ;;
     linux*)
         alias ls="ls --color"
