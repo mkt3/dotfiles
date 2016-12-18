@@ -64,6 +64,9 @@
 (setq inhibit-startup-message t)
 (setq inhibit-startup-screen t)
 
+;; frameの最大化
+(global-set-key "\C-c\C-j" 'toggle-frame-fullscreen)
+
 ;;====================================================================
 ;; linum-mode
 ;;====================================================================
@@ -164,3 +167,4 @@ t;;====================================================================
 
 (global-set-key "\M-p" 'scroll-up-in-place)
 (global-set-key "\M-n" 'scroll-down-in-place) 
+
