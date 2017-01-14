@@ -41,6 +41,7 @@
 (el-get-bundle python-mode)
 (el-get-bundle elpa:markdown-mode)
 (el-get-bundle exec-path-from-shell)
+(el-get-bundle jedi)
 
 ;;====================================================================
 ;; reload .emacs
