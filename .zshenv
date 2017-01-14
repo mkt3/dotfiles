@@ -1,3 +1,5 @@
+setopt no_global_rcs
+
 if ! [ -z $DOTENV_LOADED ]; then
     print 'skip load .zshenv\n'
 else
@@ -17,13 +19,13 @@ else
     export PAGER=less
 
     # PATH
-    export PATH=/usr/local/bin:$PATH
+    
+    export PATH="/usr/local/bin:$PATH"
     export XDG_CONFIG_HOME=~/.config
 
     export PATH="$HOME/.pyenv/bin:$PATH"
     if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
-    setopt no_global_rcs
     export DOTENV_LOADED=1
 fi
 
