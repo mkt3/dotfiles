@@ -6,6 +6,14 @@
   (add-to-list 'ac-sources 'ac-source-filename)
   (add-to-list 'ac-sources 'ac-source-jedi-direct))
 
+(defun my-python-mode-setup ()
+  (require 'py-autopep8)
+  (setq py-autopep8-options '("--max-line-length=200"))
+  (py-autopep8-enable-on-save)
+  (yas-global-mode 1)
+  (auto-complete-mode t)
+  )
+
 (defun set-python-keybinds ()
   (define-key jedi-mode-map (kbd "<C-tab>") nil) ;;C-tabはウィンドウの移動に用いる
   (global-set-key (kbd "C-c C-c") 'quickrun)
@@ -21,6 +29,7 @@
 (add-hook 'python-mode-hook
        (lambda ()
          (my-jedi-mode-setup)
+         (my-python-mode-setup)
          (set-python-keybinds)
          ))
 
