@@ -9,7 +9,7 @@
 (defun my-python-mode-setup ()
   (require 'py-autopep8)
   (setq py-autopep8-options '("--max-line-length=200"))
-  (py-autopep8-enable-on-save)
+;  (py-autopep8-enable-on-save)
   (yas-global-mode 1)
   (auto-complete-mode t)
   )
@@ -20,7 +20,7 @@
   (define-key python-mode-map "\C-ct" 'jedi:goto-definition)
   (define-key python-mode-map "\C-cb" 'jedi:goto-definition-pop-marker)
   (define-key python-mode-map "\C-cr" 'helm-jedi-related-names)
-  (local-set-key "\C-c\ p" 'python-pep8)
+  (define-key python-mode-map (kbd "C-c f") 'py-autopep8)
   )
 
 ;; python-mode をロードする
