@@ -12,8 +12,8 @@
 (require 'helm-command)
 ;(require 'helm-descbinds)
 
-(setq helm-idle-delay             0.3
-      helm-input-idle-delay       0.3
+(setq helm-idle-delay             0.01
+      helm-input-idle-delay       0.01
       helm-candidate-number-limit 200)
 
 (let ((key-and-func
@@ -33,11 +33,10 @@
 
 ;; 自動補完を無効
 (custom-set-variables '(helm-ff-auto-update-initial-value nil))
-;; For find-file etc.
-(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-;; For helm-find-files etc.
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-
