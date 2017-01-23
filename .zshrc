@@ -119,7 +119,7 @@ fi
 # Tmux config
 export PERCOL=peco
 
-if [ -n "${SSH_CONNECTION}" ] && [ ! -n $TMUX && $- == *l* ]; then
+if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]]; then
     ID="`tmux list-sessions`"
     if [[ -z "$ID" ]]; then
       tmux new-session
