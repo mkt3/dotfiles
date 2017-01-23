@@ -5,8 +5,9 @@
 (add-to-list 'ac-modes 'org-mode)
 (add-to-list 'ac-modes 'python-mode)
 
-(setq ac-auto-start 2)  ;; n文字以上の単語の時に補完を開始
+(setq ac-auto-start 1)  ;; n文字以上の単語の時に補完を開始
 (ac-set-trigger-key "TAB")
+(setq ac-auto-show-menu 0.2) ; 補完リストが表示されるまでの時間
 (setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選
 (setq ac-dwim t)
 
