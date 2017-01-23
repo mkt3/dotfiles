@@ -4,7 +4,9 @@
   (setq ac-sources
 	(delete 'ac-source-words-in-same-mode-buffers ac-sources))
   (add-to-list 'ac-sources 'ac-source-filename)
-  (add-to-list 'ac-sources 'ac-source-jedi-direct))
+  (add-to-list 'ac-sources 'ac-source-yasnippet)
+  (add-to-list 'ac-sources 'ac-source-jedi-direct)
+  )
 
 (defun my-python-mode-setup ()
   (require 'py-autopep8)
