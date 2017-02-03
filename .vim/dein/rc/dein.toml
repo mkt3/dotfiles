@@ -13,6 +13,5 @@ hook_post_update = '''
   else
     let cmd = 'make'
   endif
-    let g:dein
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
+  let g:dein#blugin.build = cmd
+'''
