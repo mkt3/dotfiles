@@ -18,6 +18,8 @@ list:
 
 deploy:
 	@echo "deploy dotfiles"
+	@mkdir -p  $(HOME)/.config
+	@ln -sfnv $(DOTPATH)/.vim  $(HOME)/.config/nvim
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 
 init:
