@@ -6,6 +6,9 @@
 (when load-file-name
     (setq user-emacs-directory (file-name-directory load-file-name)))
 
+(setq load-path (append '("~/.emacsd/private-conf") load-path))
+(load "proxy" t)
+
 ;;====================================================================
 ;; path 
 ;;====================================================================
