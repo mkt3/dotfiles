@@ -80,14 +80,7 @@
 (define-key skk-j-mode-map (kbd "<down>") 'skk-completion-wrapper)
 
 ;; isearch
-(add-hook 'isearch-mode-hook 'skk-isearch-mode-setup)
-(add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup)
-(setq skk-isearch-start-mode 'latin)
-
-;; (add-hook 'find-file-hooks
-;;           '(lambda ()
-;;              (skk-mode t)
-;;              (skk-latin-mode t)))
+(setq skk-isearch-mode-enable nil)
 
 (defun skk-mode-invoke-if-not-invoked ()
   (interactive)
