@@ -9,11 +9,11 @@
 (transient-mark-mode t)                           ;; リージョンの色付け
 (delete-selection-mode t)                         ;; リージョンを削除 
 (show-paren-mode t)                               ;; 対応する括弧に色付け
-(global-set-key "\C-m" 'newline-and-indent)       ;; 改行時にオートインデント
-(global-set-key "\C-h" 'delete-backward-char)     ;; ctrl-hで削除
-(global-set-key "\C-ch" 'help-for-help)           ;; ctrl-c hで help
-(global-set-key "\M-g" 'goto-lin1e)               ;; 指定行にジャンプ
-(global-set-key "\C-\\" 'undo)                    ;; undo
+(bind-key "\C-m" 'newline-and-indent)             ;; 改行時にオートインデント
+(bind-key* "\C-h" 'delete-backward-char)          ;; ctrl-hで削除
+(bind-key*  "\C-ch" 'help-for-help)               ;; ctrl-c hで help
+(bind-key*  "\C-\\" 'undo)                        ;; undo
+(bind-key* "\C-cf" 'revert-buffer)                ;; ファイルを保存せずに再度開く
 (setq ring-bell-function 'ignore)                 ;; ビープ音を消音
 (line-number-mode t)                              ;; カーソルのある行番号を表示
 (column-number-mode t)                            ;; カーソルのある列番号を表示
@@ -65,7 +65,7 @@
 (setq inhibit-startup-screen t)
 
 ;; frameの最大化
-(global-set-key "\C-c\C-j" 'toggle-frame-fullscreen)
+(bind-key* "\C-c\C-f" 'toggle-frame-fullscreen)
 
 ;;====================================================================
 ;; linum-mode
@@ -116,11 +116,14 @@
 (windmove-default-keybindings)
 (setq windmove-wrap-around t)
 
-;; カーソル以外で移動できるようにkeyjack-modeに設定
+(bind-key* "\C-\M-h" 'windmove-left)
+(bind-key* "\C-\M-k" 'windmove-up)
+(bind-key* "\C-\M-j" 'windmove-down)
+(bind-key* "\C-\M-l" 'windmove-right)
 
 ;;====================================================================
 ;; toggle truncate lines
-t;;====================================================================
+;;====================================================================
 (defun toggle-truncate-lines ()
   "折り返し表示をトグル"
   (interactive)
@@ -129,28 +132,7 @@ t;;====================================================================
     (setq truncate-lines t))
   (recenter))
 
-(global-set-key "\C-c\C-l" 'toggle-truncate-lines)
-
-
-;;====================================================================
-;; 優先度の高いminor-mode の作成
-;;====================================================================
-(setq my-keyjack-mode-map (make-sparse-keymap))
-
-(mapc (lambda (x)
-          (define-key my-keyjack-mode-map (car x) (cdr x))
-          (global-set-key (car x) (cdr x)))
-        '(
-          ("\C-\M-h" . windmove-left)
-          ("\C-\M-k" . windmove-up)
-          ("\C-\M-j" . windmove-down)
-          ("\C-\M-l" . windmove-right)
-          ("\C-c\C-f" . revert-buffer)
-          ("\C-c\C-a" . helm-mini)
-          ))
-
-(easy-mmode-define-minor-mode my-keyjack-mode "Grab keys"
-                              t " Keyjack" my-keyjack-mode-map)
+(bind-key "\C-cl" 'toggle-truncate-lines)
 
 ;;====================================================================
 ;; scroll
