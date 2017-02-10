@@ -32,6 +32,7 @@
 (el-get-bundle elpa:color-theme)
 (el-get-bundle elpa:color-theme-solarized)
 (el-get-bundle ddskk)
+(el-get-bundle use-package)
 (el-get-bundle avy)
 (el-get-bundle ace-isearch)
 (el-get-bundle migemo)
