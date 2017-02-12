@@ -1,3 +1,4 @@
+
 ;;====================================================================
 ;; ddskk 
 ;;====================================================================
@@ -96,3 +97,10 @@
 
 (add-hook 'find-file-hooks (lambda () (skk-mode-invoke-if-not-invoked)))
 (add-hook 'org-mode-hook (lambda () (skk-mode-invoke-if-not-invoked)))
+
+(require 'sticky)
+(use-sticky-key ?; sticky-alist:ja)
+
+(defun skk-mode-hook--unset-key ()
+  (define-key skk-j-mode-map ";" nil))
+(add-hook 'skk-mode-hook 'skk-mode-hook--unset-key)
