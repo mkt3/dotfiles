@@ -51,6 +51,7 @@
 (el-get-bundle py-autopep8)
 (el-get-bundle elpa:markdown-mode)
 (el-get-bundle jedi)
+(el-get-bundle coffee-mode)
 
 ;;====================================================================
 ;; reload .emacs

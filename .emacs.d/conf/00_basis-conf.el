@@ -35,6 +35,7 @@
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "*[^*]+*")
+(setq custom-file (locate-user-emacs-file "custom.el"))
 
 ;;====================================================================
 ;; frame
