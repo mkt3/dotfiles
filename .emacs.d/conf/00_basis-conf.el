@@ -31,6 +31,7 @@
 (setq system-time-locale "C")                     ;; org-mode の timestamp を英語表記にするために locale を変更
 (setq make-pointer-invisible t)                   ;; キータイプ中はマウスカーソル非表示
 (setq mouse-highlight nil)                        ;; マウスのハイライトを OFF
+(electric-pair-mode 1)                            ;; 閉じ括弧の自動挿入
 (require 'uniquify)                               ;; 同一バッファ名にディレクトリ付与
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
