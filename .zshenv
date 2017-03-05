@@ -25,8 +25,10 @@ else
     export PATH="$HOME/.pyenv/bin:$PATH"
     if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
-    export NODE_PATH=`npm root -g`    
-    
+    if type npm >/dev/null 2>&1; then
+        export NODE_PATH=`npm root -g`    
+    fi
+
     export DOTENV_LOADED=1
 fi
 
