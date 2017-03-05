@@ -13,7 +13,6 @@
 (bind-key* "\C-h" 'delete-backward-char)          ;; ctrl-hで削除
 (bind-key*  "\C-ch" 'help-for-help)               ;; ctrl-c hで help
 (bind-key*  "\C-\\" 'undo)                        ;; undo
-(bind-key* "\C-cf" 'revert-buffer)                ;; ファイルを保存せずに再度開く
 (setq ring-bell-function 'ignore)                 ;; ビープ音を消音
 (line-number-mode t)                              ;; カーソルのある行番号を表示
 (column-number-mode t)                            ;; カーソルのある列番号を表示
@@ -150,5 +149,4 @@
   (scroll-up n))
 
 (global-set-key "\M-p" 'scroll-up-in-place)
-(global-set-key "\M-n" 'scroll-down-in-place) 
-
+(global-set-key "\M-n" 'scroll-down-in-place)
