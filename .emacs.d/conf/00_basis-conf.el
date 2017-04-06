@@ -68,6 +68,25 @@
 ;; frameの最大化
 (bind-key* "\C-c\C-f" 'toggle-frame-fullscreen)
 
+
+;;====================================================================
+;; font
+;;====================================================================
+(create-fontset-from-ascii-font
+ "Ricty Diminished-12:weight=normal"
+ nil
+ "Ricty_Diminished")
+
+(set-fontset-font
+ "fontset-Ricty_Diminished"
+ 'unicode
+ "Ricty Diminished-12:weight=normal"
+ nil
+ 'append)
+
+(add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))
+
+
 ;;====================================================================
 ;; linum-mode
 ;;====================================================================
@@ -89,7 +108,7 @@
 ;; color theme
 ;;====================================================================
 (customize-set-variable 'frame-background-mode 'dark)
-(add-to-list 'custom-theme-load-path (locate-user-emacs-file "el-get/color-theme-solarized")) 
+(add-to-list 'custom-theme-load-path (locate-user-emacs-file "el-get/color-theme-solarized"))
 (load-theme 'solarized t)
 
 (setq my-alpha 95)
@@ -111,7 +130,7 @@
 (global-set-key [?\C-\;] 'my-alpha-down)
 
 ;;====================================================================
-;; move window 
+;; move window
 ;;====================================================================
 ;; shift+カーソルでwindow間の移動
 (windmove-default-keybindings)
