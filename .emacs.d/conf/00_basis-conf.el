@@ -75,13 +75,13 @@
 (if window-system
     (progn
       (create-fontset-from-ascii-font
-       "Ricty Diminished-12:weight=normal"
+       "Ricty Diminished-12:weight=normal:slant=normal"
        nil
        "Ricty_Diminished")
       (set-fontset-font
        "fontset-Ricty_Diminished"
        'unicode
-       "Ricty Diminished-12:weight=normal"
+       "Ricty Diminished-12:weight=normal:slant=normal"
        nil
        'append)
       (add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))
