@@ -78,7 +78,7 @@
        "Ricty Diminished-12:weight=normal"
        nil
        "Ricty_Diminished")
-      ((setq )et-fontset-font
+      (set-fontset-font
        "fontset-Ricty_Diminished"
        'unicode
        "Ricty Diminished-12:weight=normal"
