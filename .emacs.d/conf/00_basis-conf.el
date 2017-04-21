@@ -72,20 +72,20 @@
 ;;====================================================================
 ;; font
 ;;====================================================================
-(create-fontset-from-ascii-font
- "Ricty Diminished-12:weight=normal"
- nil
- "Ricty_Diminished")
-
-(set-fontset-font
- "fontset-Ricty_Diminished"
- 'unicode
- "Ricty Diminished-12:weight=normal"
- nil
- 'append)
-
-(add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))
-
+(if window-system
+    (progn
+      (create-fontset-from-ascii-font
+       "Ricty Diminished-12:weight=normal"
+       nil
+       "Ricty_Diminished")
+      ((setq )et-fontset-font
+       "fontset-Ricty_Diminished"
+       'unicode
+       "Ricty Diminished-12:weight=normal"
+       nil
+       'append)
+      (add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))
+      ))
 
 ;;====================================================================
 ;; linum-mode
