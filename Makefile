@@ -22,6 +22,7 @@ deploy:
 	@ln -sfnv $(DOTPATH)/.vim  $(HOME)/.config/nvim
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 	@[ -e $(DOTPATH)/.emacs.d/ddskk.d/skk-record ] || touch $(DOTPATH)/.emacs.d/ddskk.d/skk-record
+	@[ -e $(DOTPATH)/.emacs.d/snippets ] || mkdir $(DOTPATH)/.emacs.d/snippets
 
 init:
 
