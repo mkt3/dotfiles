@@ -112,8 +112,8 @@ alias grep='grep --color=auto'
 alias x="exit"
 
 # Config for each environment
-if [ -e $HOME/.zshworkrc ]; then
-    source $HOME/.zshworkrc
+if [ -e $HOME/.zshwrc_local ]; then
+    source $HOME/.zshrc_local
 fi
 
 # Tmux config
