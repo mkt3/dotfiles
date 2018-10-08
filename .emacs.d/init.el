@@ -1,5 +1,5 @@
 ;;====================================================================
-;; basic info 
+;; basic info
 ;;====================================================================
 ;(package-initialize)
 
@@ -10,7 +10,7 @@
 (load "proxy" t)
 
 ;;====================================================================
-;; path 
+;; path
 ;;====================================================================
 (let ((path-str
            (replace-regexp-in-string
@@ -40,6 +40,7 @@
 (el-get-bundle helm)
 (el-get-bundle helm-swoop)
 (el-get-bundle yasnippet)
+(el-get-bundle yasnippet-snippets)
 (el-get-bundle popup)
 (el-get-bundle auto-complete)
 (el-get-bundle sequential-command)
@@ -51,7 +52,6 @@
 (el-get-bundle py-autopep8)
 (el-get-bundle elpa:markdown-mode)
 (el-get-bundle jedi)
-(el-get-bundle coffee-mode)
 
 ;;====================================================================
 ;; reload .emacs
@@ -65,6 +65,6 @@
 (global-set-key "\C-x," 'reload-dotemacs)
 
 ;;====================================================================
-;; init-load 
+;; init-load
 ;;====================================================================
 (init-loader-load (locate-user-emacs-file "conf"))

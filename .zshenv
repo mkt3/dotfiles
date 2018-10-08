@@ -1,8 +1,6 @@
 setopt no_global_rcs
 
-if ! [ -z $DOTENV_LOADED ]; then
-    print 'skip load .zshenv\n'
-else
+if [ -z $DOTENV_LOADED ]; then
     # Language
     export LANGUAGE="en_US.UTF-8"
     export LANG="${LANGUAGE}"
