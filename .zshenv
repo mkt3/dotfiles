@@ -19,14 +19,7 @@ if [ -z $DOTENV_LOADED ]; then
     # PATH
     export PATH="/usr/local/bin:$PATH"
     export XDG_CONFIG_HOME=~/.config
-
-    export PATH="$HOME/.pyenv/bin:$PATH"
-    if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
-    if type npm >/dev/null 2>&1; then
-        export NODE_PATH=`npm root -g`    
-    fi
-
+    
     export DOTENV_LOADED=1
 fi
 
