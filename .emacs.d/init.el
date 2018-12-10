@@ -23,6 +23,8 @@
 ;;====================================================================
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
 
+(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
+
 (unless (require 'el-get nil 'noerror)
    (shell-command-to-string (concat "git clone https://github.com/dimitri/el-get.git " (locate-user-emacs-file "el-get/el-get" )))
   (require 'el-get))
@@ -42,16 +44,17 @@
 (el-get-bundle yasnippet)
 (el-get-bundle yasnippet-snippets)
 (el-get-bundle popup)
-(el-get-bundle auto-complete)
+(el-get-bundle elpa:jedi-core)
+(el-get-bundle company)
+(el-get-bundle company-jedi :depends (company-mode))
 (el-get-bundle sequential-command)
 (el-get-bundle elpa:shell-pop)
 (el-get-bundle elpa:auto-save-buffers-enhanced)
-(el-get-bundle hiwin)
 (el-get-bundle maxframe)
 (el-get-bundle python-mode)
 (el-get-bundle py-autopep8)
-(el-get-bundle elpa:markdown-mode)
-(el-get-bundle jedi)
+(el-get-bundle virtualenvwrapper)
+(el-get-bundle auto-virtualenvwrapper)
 
 ;;====================================================================
 ;; reload .emacs
@@ -68,3 +71,4 @@
 ;; init-load
 ;;====================================================================
 (init-loader-load (locate-user-emacs-file "conf"))
+

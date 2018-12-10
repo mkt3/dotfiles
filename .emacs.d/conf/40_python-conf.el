@@ -1,27 +1,25 @@
-(defun my-jedi-mode-setup ()
-  (jedi:setup)
-  (setq jedi:complete-on-dot t)
-  (setq ac-sources
-        (delete 'ac-source-words-in-same-mode-buffers ac-sources))
-  (add-to-list 'ac-sources 'ac-source-filename)
-  (add-to-list 'ac-sources 'ac-source-yasnippet)
-  (add-to-list 'ac-sources 'ac-source-jedi-direct)
-  )
+(require 'python-environment)
+(custom-set-variables
+ '(python-environment-virtualenv (list "python" "-m" "venv")))
+
+(require 'virtualenvwrapper)
+(require 'auto-virtualenvwrapper)
+(add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate)
+
+;; Activate on changing buffers
+(add-hook 'window-configuration-change-hook #'auto-virtualenvwrapper-activate)
+;; Activate on focus in
+(add-hook 'focus-in-hook #'auto-virtualenvwrapper-activate)
 
 (defun my-python-mode-setup ()
   (require 'py-autopep8)
   (setq py-autopep8-options '("--max-line-length=200"))
 ;  (py-autopep8-enable-on-save)
   (yas-global-mode 1)
-  (auto-complete-mode t)
   )
 
 (defun set-python-keybinds ()
-  (define-key jedi-mode-map (kbd "<C-tab>") nil) ;;C-tabはウィンドウの移動に用いる
   (global-set-key (kbd "C-c C-c") 'quickrun)
-  (define-key python-mode-map "\C-ct" 'jedi:goto-definition)
-  (define-key python-mode-map "\C-cb" 'jedi:goto-definition-pop-marker)
-  (define-key python-mode-map "\C-cr" 'helm-jedi-related-names)
   (define-key python-mode-map (kbd "C-c f") 'py-autopep8)
   )
 
@@ -30,11 +28,27 @@
 ;; python-mode のときのみ python-pep8 のキーバインドを有効にする
 (add-hook 'python-mode-hook
        (lambda ()
-         (my-jedi-mode-setup)
          (my-python-mode-setup)
          (set-python-keybinds)
-         ))
+       ))
 
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (setq interpreter-mode-alist (cons '("python" . python-mode)
                                    interpreter-mode-alist)))
+
+;; 補完設定
+(require 'jedi-core)
+(setq jedi:complete-on-dot t)
+(setq jedi:use-shortcuts t)
+(add-to-list 'company-backends 'company-jedi)
+
+;; company-modelとyasnippetとの連携
+(defvar company-mode/enable-yas t
+  "Enable yasnippet for all backends.")
+(defun company-mode/backend-with-yas (backend)
+  (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+      backend
+    (append (if (consp backend) backend (list backend))
+            '(:with company-yasnippet))))
+(setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+
