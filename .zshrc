@@ -24,6 +24,9 @@ zstyle ':vcs_info:git:*' formats '%b@%r' '%c' '%u'
 zstyle ':vcs_info:git:*' actionformats '%b@%r|%a' '%c' '%u'
 setopt prompt_subst
 function _vcs_precmd {
+    local tname=`hostname`
+    echo -ne "\033]1;$tname\007"
+
     local st branch color
     STY= LANG=en_US.UTF-8 vcs_info
     st=`git status 2> /dev/null`
