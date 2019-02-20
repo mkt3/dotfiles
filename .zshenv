@@ -16,9 +16,24 @@ if [ -z $DOTENV_LOADED ]; then
     # Pager
     export PAGER=less
 
+    # Paltform Arch
+    export OS=`uname -s`
+    export ARCH=`uname -m`
+
+    if [[ "$OS" == 'Darwin' ]];then
+        PLATFORM='osx'
+    elif [[ "$OS" == 'Linux' ]];then
+        PLATFORM='linux'
+    fi
+
+    export PLATFORM
+
     # PATH
-    export PATH="/usr/local/bin:$PATH"
     export XDG_CONFIG_HOME=~/.config
+
+    if [[ "$PLATFORM" == 'osx' ]];then
+        export PATH="/usr/local/bin:$PATH"
+    fi
     
     export DOTENV_LOADED=1
 fi
