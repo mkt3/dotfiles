@@ -90,14 +90,15 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # Alias
 setopt complete_aliases
 
-case "${OSTYPE}" in
-    freebsd*|darwin*)
+case "${PLATFORM}" in
+    osx)
         alias ls="ls -FGh"
         alias ll="ls -l"
         alias la="ls -aF"
         alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
+        alias ssh="~/.ssh/ssh-change.sh"
         ;;
-    linux*)
+    linux)
         alias ls="ls --color"
         alias ll="ls -l"
         alias la="ls -aF"
