@@ -34,7 +34,11 @@ if [ -z $DOTENV_LOADED ]; then
     if [[ "$PLATFORM" == 'osx' ]];then
         export PATH="/usr/local/bin:$PATH"
     fi
-    
+
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
     export DOTENV_LOADED=1
 fi
+
 
