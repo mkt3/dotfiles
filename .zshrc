@@ -136,3 +136,7 @@ if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]]; then
        :  # Start terminal normally
     fi
  fi
+
+# pipenv config
+export PIPENV_VENV_IN_PROJECT=true
+
