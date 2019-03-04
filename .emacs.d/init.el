@@ -7,7 +7,6 @@
     (setq user-emacs-directory (file-name-directory load-file-name)))
 
 (setq load-path (append '("~/.emacs.d/private-conf") load-path))
-(load "proxy" t)
 
 ;;====================================================================
 ;; path
@@ -19,42 +18,28 @@
           (setq exec-path (nconc (split-string path-str ":") exec-path)))
 
 ;;====================================================================
-;; package管理(el-get)
+;; package管理(straight.el)
 ;;====================================================================
-(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
-
-(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
-
-(unless (require 'el-get nil 'noerror)
-   (shell-command-to-string (concat "git clone https://github.com/dimitri/el-get.git " (locate-user-emacs-file "el-get/el-get" )))
-  (require 'el-get))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; packeges
-(el-get-bundle init-loader)
-(el-get-bundle elpa:color-theme)
-(el-get-bundle elpa:color-theme-solarized)
-(el-get-bundle ddskk)
-(el-get-bundle sticky)
-(el-get-bundle use-package)
-(el-get-bundle avy)
-(el-get-bundle ace-isearch)
-(el-get-bundle migemo)
-(el-get-bundle helm)
-(el-get-bundle helm-swoop)
-(el-get-bundle yasnippet)
-(el-get-bundle yasnippet-snippets)
-(el-get-bundle popup)
-(el-get-bundle elpa:jedi-core)
-(el-get-bundle company)
-(el-get-bundle company-jedi :depends (company-mode))
-(el-get-bundle sequential-command)
-(el-get-bundle elpa:shell-pop)
-(el-get-bundle elpa:auto-save-buffers-enhanced)
-(el-get-bundle maxframe)
-(el-get-bundle python-mode)
-(el-get-bundle py-autopep8)
-(el-get-bundle virtualenvwrapper)
-(el-get-bundle auto-virtualenvwrapper)
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+(use-package init-loader
+  :config
+  (init-loader-load (locate-user-emacs-file "conf")))
 
 ;;====================================================================
 ;; reload .emacs
@@ -66,9 +51,4 @@
   )
 
 (global-set-key "\C-x," 'reload-dotemacs)
-
-;;====================================================================
-;; init-load
-;;====================================================================
-(init-loader-load (locate-user-emacs-file "conf"))
 

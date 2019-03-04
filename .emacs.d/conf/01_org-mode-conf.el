@@ -3,8 +3,8 @@
 ;;====================================================================
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|txt\\)$" . org-mode))
 
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
+(bind-key* "\C-cl" 'org-store-link)
+(bind-key* "\C-ca" 'org-agenda)
 
 (setq org-directory "~/workspace/schedule/")
 (setq org-default-notes-file  "gtd.org")
@@ -74,9 +74,9 @@
     (find-file "~/workspace/schedule/gtd.org")
 )
 
-(global-set-key "\C-cg" 'gtd)
+(bind-key* "\C-cg" 'gtd)
 
-(global-set-key "\C-cj" 'org-archive-to-archive-sibling)
+(bind-key "\C-cj" 'org-archive-to-archive-sibling)
 
 
 (setq org-agenda-custom-commands
@@ -92,7 +92,7 @@
 
 
 ;; Org-captureをC-c rで呼び出す。
-(define-key global-map "\C-cr" 'org-capture)
+(bind-key* "\C-cr" 'org-capture)
 
 ;; Org-caputure
 (when (require 'org-capture nil t)
