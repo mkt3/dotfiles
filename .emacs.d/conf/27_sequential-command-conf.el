@@ -1,9 +1,15 @@
-(require 'sequential-command-config)
-(global-set-key "\C-a" 'seq-home)
-(global-set-key "\C-e" 'seq-end)
-(when (require 'org nil t)
-  (define-key org-mode-map "\C-a" 'org-seq-home)
-  (define-key org-mode-map "\C-e" 'org-seq-end))
-(define-key esc-map "u" 'seq-upcase-backward-word)
-(define-key esc-map "c" 'seq-capitalize-backward-word)
-(define-key esc-map "l" 'seq-downcase-backward-word)
+(use-package sequential-command-config
+  :straight sequential-command
+  :bind  (("C-a" . seq-home)
+          ("C-e" . seq-end)
+          :map org-mode-map
+          ("C-a" . org-seq-home)
+          ("C-e" . org-seq-end)
+          :map esc-map
+          ("u" . seq-upcase-backward-word)
+          ("c" . seq-capitalize-backward-word)
+          ("l" . seq-downcase-backward-word)
+          )
+  :config
+  (sequential-command-setup-keys))
+
