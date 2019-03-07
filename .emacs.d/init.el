@@ -1,23 +1,4 @@
 ;;====================================================================
-;; basic info
-;;====================================================================
-;(package-initialize)
-
-(when load-file-name
-    (setq user-emacs-directory (file-name-directory load-file-name)))
-
-(setq load-path (append '("~/.emacs.d/private-conf") load-path))
-
-;;====================================================================
-;; path
-;;====================================================================
-(let ((path-str
-           (replace-regexp-in-string
-                       "\n+$" "" (shell-command-to-string "echo $PATH"))))
-     (setenv "PATH" path-str)
-          (setq exec-path (nconc (split-string path-str ":") exec-path)))
-
-;;====================================================================
 ;; package管理(straight.el)
 ;;====================================================================
 (defvar bootstrap-version)
@@ -37,6 +18,19 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
+;;====================================================================
+;; path
+;;====================================================================
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
+(setq load-path (append '("~/.emacs.d/private-conf") load-path))
+
+
+;;====================================================================
+;; init-loader
+;;====================================================================
 (use-package init-loader
   :config
   (init-loader-load (locate-user-emacs-file "conf")))
@@ -50,5 +44,5 @@
   (load-file (locate-user-emacs-file "init.el"))
   )
 
-(global-set-key "\C-x," 'reload-dotemacs)
+(bind-key* "C-x ," 'reload-dotemacs)
 
