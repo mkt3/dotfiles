@@ -9,10 +9,9 @@
 (transient-mark-mode t)                           ;; リージョンの色付け
 (delete-selection-mode t)                         ;; リージョンを削除 
 (show-paren-mode t)                               ;; 対応する括弧に色付け
-(bind-key "\C-m" 'newline-and-indent)             ;; 改行時にオートインデント
-(bind-key* "\C-h" 'delete-backward-char)          ;; ctrl-hで削除
-(bind-key*  "\C-ch" 'help-for-help)               ;; ctrl-c hで help
-(bind-key*  "\C-\\" 'undo)                        ;; undo
+(bind-key "C-m" 'newline-and-indent)              ;; 改行時にオートインデント
+(bind-key* "C-h" 'delete-backward-char)           ;; ctrl-hで削除
+(bind-key*  "C-c h" 'help-for-help)               ;; ctrl-c hで help
 (setq ring-bell-function 'ignore)                 ;; ビープ音を消音
 (line-number-mode t)                              ;; カーソルのある行番号を表示
 (column-number-mode t)                            ;; カーソルのある列番号を表示
@@ -66,7 +65,7 @@
 (setq inhibit-startup-screen t)
 
 ;; frameの最大化
-(bind-key* "\C-c\C-f" 'toggle-frame-fullscreen)
+(bind-key* "C-c C-f" 'toggle-frame-fullscreen)
 
 
 ;;====================================================================
@@ -75,13 +74,13 @@
 (if window-system
     (progn
       (create-fontset-from-ascii-font
-       "Ricty Diminished-12:weight=normal:slant=normal"
+       "Ricty Diminished-16:weight=normal:slant=normal"
        nil
        "Ricty_Diminished")
       (set-fontset-font
        "fontset-Ricty_Diminished"
        'unicode
-       "Ricty Diminished-12:weight=normal:slant=normal"
+       "Ricty Diminished-16:weight=normal:slant=normal"
        nil
        'append)
       (add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))
@@ -108,15 +107,32 @@
 ;; color theme
 ;;====================================================================
 (use-package doom-themes
-    :custom
-    (doom-themes-enable-italic t)
-    (doom-themes-enable-bold t)
-    :custom-face
-    (doom-modeline-bar ((t (:background "#6272a4"))))
-    :config
-    (load-theme 'doom-dracula t)
-    (doom-themes-neotree-config)
-    (doom-themes-org-config))
+  :custom
+  (doom-themes-enable-italic t)
+  (doom-themes-enable-bold t)
+  :custom-face
+  (doom-modeline-bar ((t (:background "#6272a4"))))
+  :config
+  (load-theme 'doom-dracula t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config))
+
+(use-package all-the-icons)
+
+(use-package doom-modeline
+  :custom
+;  (doom-modeline-buffer-file-name-style 'truncate-with-project)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon nil)
+  (doom-modeline-minor-modes nil)
+  :hook
+  (after-init . doom-modeline-mode)
+  :config
+  (line-number-mode 0)
+  (column-number-mode 0)
+  (doom-modeline-def-modeline 'main
+    '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
+    '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker)))
 
 (setq my-alpha 95)
 (set-frame-parameter nil 'alpha my-alpha)
@@ -133,8 +149,13 @@
       (setq my-alpha (- my-alpha 1)))
   (set-frame-parameter nil 'alpha my-alpha))
 
-(global-set-key [?\C-\:] 'my-alpha-up)
-(global-set-key [?\C-\;] 'my-alpha-down)
+(bind-key "C-:" 'my-alpha-up)
+(bind-key "C-;" 'my-alpha-down)
+
+
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
 
 ;;====================================================================
 ;; move window
@@ -143,10 +164,10 @@
 (windmove-default-keybindings)
 (setq windmove-wrap-around t)
 
-(bind-key* "\C-\M-h" 'windmove-left)
-(bind-key* "\C-\M-k" 'windmove-up)
-(bind-key* "\C-\M-j" 'windmove-down)
-(bind-key* "\C-\M-l" 'windmove-right)
+(bind-key* "C-M-h" 'windmove-left)
+(bind-key* "C-M-k" 'windmove-up)
+(bind-key* "C-M-j" 'windmove-down)
+(bind-key* "C-M-l" 'windmove-right)
 
 ;;====================================================================
 ;; toggle truncate lines
@@ -159,7 +180,7 @@
     (setq truncate-lines t))
   (recenter))
 
-(bind-key "\C-cl" 'toggle-truncate-lines)
+(bind-key "C-c l" 'toggle-truncate-lines)
 
 ;;====================================================================
 ;; scroll
@@ -174,5 +195,21 @@
   (forward-line n)
   (scroll-up n))
 
-(global-set-key "\M-p" 'scroll-up-in-place)
-(global-set-key "\M-n" 'scroll-down-in-place)
+(bind-key "M-p" 'scroll-up-in-place)
+(bind-key "M-n" 'scroll-down-in-place)
+
+;;====================================================================
+;; authentication
+;;====================================================================
+(use-package auth-source
+  :straight nil
+  :config 
+  (add-to-list 'auth-sources (concat user-emacs-directory ".authinfo.plist"))
+  
+  (defun my:auth-source-get-property (prop-name &rest spec &allow-other-keys)
+    (let* ((founds (apply 'auth-source-search spec))
+           (pkey (intern (concat ":" (format "%s" prop-name))))
+           (ret (when founds (plist-get (nth 0 founds) pkey))))
+      (if (functionp ret)
+        (funcall ret)
+        ret))))

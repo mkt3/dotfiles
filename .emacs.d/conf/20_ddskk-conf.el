@@ -6,7 +6,7 @@
   :config
   ;; 入力システムをSKKに設定
   (set-input-method "japanese-skk")
-  (bind-key* "\C-xj" 'skk-mode)
+  (bind-key* "C-x j" 'skk-mode)
   (setq skk-jisyo (locate-user-emacs-file "ddskk.d/skk-jisyo"))
   (setq skk-backup-jisyo (locate-user-emacs-file "ddskk.d/skk-jisyo.BAK"))
   (setq skk-record-file (locate-user-emacs-file "ddskk.d/skk-record"))

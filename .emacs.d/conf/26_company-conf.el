@@ -31,3 +31,7 @@
          ("C-p" . company-select-previous)
          )
   )
+
+(use-package company-quickhelp
+  :if window-system
+  :init (company-quickhelp-mode 1))
