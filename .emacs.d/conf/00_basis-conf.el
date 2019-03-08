@@ -190,17 +190,11 @@
 (bind-key "M-n" 'scroll-down-in-place)
 
 ;;====================================================================
-;; authentication
+;; password-store
 ;;====================================================================
-(use-package auth-source
-  :straight nil
-  :config 
-  (add-to-list 'auth-sources (concat user-emacs-directory ".authinfo.plist"))
-  
-  (defun my:auth-source-get-property (prop-name &rest spec &allow-other-keys)
-    (let* ((founds (apply 'auth-source-search spec))
-           (pkey (intern (concat ":" (format "%s" prop-name))))
-           (ret (when founds (plist-get (nth 0 founds) pkey))))
-      (if (functionp ret)
-        (funcall ret)
-        ret))))
+(use-package password-store
+  :if (file-directory-p "~/.password-store/emacs/")
+  :config
+  (setq my:d:password-store "~/.password-store/emacs/")
+
+  )
