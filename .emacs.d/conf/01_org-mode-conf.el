@@ -37,13 +37,8 @@
   :straight nil
   :bind (("C-c a" . org-agenda))
   :config
-  (dolist (file
-           '("gtd.org"
-             "journal.org"
-             "calendar.org"
-             ))
-    (add-to-list 'org-agenda-files (concat org-directory file)))
-  (setq org-agenda-start-with-follow-mode t     ; agenda mode で記述元と同期して表示
+  (setq org-agenda-files (list org-directory)
+        org-agenda-start-with-follow-mode t     ; agenda mode で記述元と同期して表示
         org-agenda-span 'week                   ;; day or week
         org-agenda-format-date "%Y/%m/%d (%a)" ;; YY/MM/DD (曜)
         org-agenda-start-on-weekday 0   ; agenda mode で 日曜始まり
