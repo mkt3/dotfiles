@@ -128,4 +128,15 @@
             (format "%s/%s" work-done-str effort-str))
             (format "%s" work-done-str))))
 
-(load "gcal-conf" t)
+(use-package org-gcal
+  :if (file-directory-p my:d:password-store)
+  :config
+  (setq alert-log-messages t
+        alert-default-style 'log
+        org-gcal-down-days   90
+        org-gcal-up-days    180
+        org-gcal-auto-archive nil)
+  (with-eval-after-load "org-gcal"
+    (if (file-directory-p my:d:password-store)
+        (load (concat my:d:password-store "org-gcal.gpg"))))
+  )
