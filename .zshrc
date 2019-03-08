@@ -117,10 +117,20 @@ if [ -e $HOME/.zshrc_local ]; then
     source $HOME/.zshrc_local
 fi
 
+# Emacs tramp config for zsh
+if [[ "$TERM" == "dumb" ]]; then
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    unfunction precmd
+    unfunction preexec
+    PS1='$ '
+fi
+
 # Tmux config
 export PERCOL=peco
 
-if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]]; then
+if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" == "dumb" ]]; then
     ID="`tmux list-sessions`"
     if [[ -z "$ID" ]]; then
       tmux new-session
