@@ -83,6 +83,12 @@
         org-journal-time-prefix "** MEMO "
         org-journal-find-file 'find-file
         )
+  (defun journal ()
+    (interactive)
+    (find-file (concat org-directory org-journal-file-format))
+    )
+  
+  (bind-key* "C-c j" 'journal)
   )
 
 (use-package org-capture
