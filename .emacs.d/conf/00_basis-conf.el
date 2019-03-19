@@ -196,5 +196,4 @@
   :if (file-directory-p "~/.password-store/emacs/")
   :config
   (setq my:d:password-store "~/.password-store/emacs/")
-
   )
