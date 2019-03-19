@@ -5,7 +5,6 @@
   :straight helm
   :straight helm-swoop
   :bind (("C-r" . helm-for-files)
-         ("C-c C-a" . helm-mini)
          ("C-^" . helm-c-apropos)
          ("C-c C-s" . helm-resume)
          ("M-s" . helm-occur)
@@ -21,6 +20,7 @@
          :map helm-find-files-map
          ("C-h" . delete-backward-char)
          )
+  :bind* (("C-c C-a" . helm-mini))
   :init
   (eval-when-compile (require 'cl))
 
@@ -53,6 +53,5 @@
                              (helm-candidates-in-buffer (helm-get-current-source)))))
                    (volatile) (match identity)))
               source)))
-
   )
 
