@@ -4,7 +4,6 @@
       '(lambda ()
          (venv-projectile-auto-workon)
          (helm-projectile-find-file)))
-  (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
   )
 
 (use-package python-mode
