@@ -96,7 +96,7 @@ case "${PLATFORM}" in
         alias ll="ls -l"
         alias la="ls -aF"
         alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
-        alias ssh="~/.ssh/ssh-change.sh"
+        alias sshc="~/.ssh/ssh-change.sh"
         ;;
     linux)
         alias ls="ls --color"
