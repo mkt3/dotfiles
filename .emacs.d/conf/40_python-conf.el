@@ -1,21 +1,21 @@
+(use-package virtualenvwrapper
+  :config
+  (setq projectile-switch-project-action
+      '(lambda ()
+         (venv-projectile-auto-workon)
+         (helm-projectile-find-file)))
+  (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
+  )
+
 (use-package python-mode
   :straight python-mode
   :straight py-autopep8
-  :straight virtualenvwrapper
-  :straight auto-virtualenvwrapper
   :straight jedi-core
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :bind (;("C-c C-c" . quickrun)
          ("C-c f" . py-autopep8))
   :config
-  (custom-set-variables
-   '(python-environment-virtualenv (list "python" "-m" "venv")))
-  (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate)
-  ;; Activate on changing buffers
-  (add-hook 'window-configuration-change-hook #'auto-virtualenvwrapper-activate)
-  ;; Activate on focus in
-  (add-hook 'focus-in-hook #'auto-virtualenvwrapper-activate)
   (setq py-autopep8-options '("--max-line-length=200"))
   ;; 補完設定
   (setq jedi:complete-on-dot t)
