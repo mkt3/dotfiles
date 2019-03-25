@@ -33,6 +33,9 @@ export XDG_CONFIG_HOME=~/.config
 if [[ "$PLATFORM" == 'osx' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
     export PATH="/usr/local/bin:$MAC_DEFAULT_PATH"
+elif [[ "$PLATFORM" == 'linux' ]];then
+    LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
+    export PATH="$LINUX_DEFAULT_PATH"
 fi
 
 export PATH="$HOME/.pyenv/bin:$PATH"
