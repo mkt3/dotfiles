@@ -2,6 +2,7 @@
 ;; org-mode
 ;;====================================================================
 (use-package org
+  :demand t
   :mode ("\\.org\\'" . org-mode)
   :mode ("\\.txt\\'" . org-mode)
   :bind (("C-c l" . org-store-link)
@@ -70,6 +71,7 @@
 
 (use-package org-journal
   :after org
+  :defer
   :init
   (add-hook 'org-journal-mode-hook
             (setq truncate-lines t))
