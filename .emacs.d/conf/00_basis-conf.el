@@ -190,9 +190,17 @@
 (bind-key "M-n" 'scroll-down-in-place)
 
 ;;====================================================================
+;; text scale
+;;====================================================================
+(bind-key "M-+" 'text-scale-increase)
+(bind-key "M-=" 'text-scale-increase)
+(bind-key "M--" 'text-scale-decrease)
+
+;;====================================================================
 ;; password-store
 ;;====================================================================
 (use-package password-store
   :config
   (setq my:d:password-store "~/.password-store/emacs/")
   )
+
