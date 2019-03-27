@@ -2,7 +2,6 @@
 ;; org-mode
 ;;====================================================================
 (use-package org
-;  :straight nil
   :mode ("\\.org\\'" . org-mode)
   :mode ("\\.txt\\'" . org-mode)
   :bind (("C-c l" . org-store-link)
@@ -35,6 +34,7 @@
 
 (use-package org-agenda
   :straight nil
+  :after org
   :bind (("C-c a" . org-agenda))
   :config
   (setq org-agenda-files (list org-directory)
@@ -69,6 +69,7 @@
   )
 
 (use-package org-journal
+  :after org
   :init
   (add-hook 'org-journal-mode-hook
             (setq truncate-lines t))
@@ -93,6 +94,7 @@
 
 (use-package org-capture
   :straight nil
+  :after org
   :bind (("C-c r" . org-capture))
   :config
   (setq journalfile (concat org-directory org-journal-file-format)
@@ -110,6 +112,7 @@
   )
 
 (use-package org-bullets
+  :after org
   :config
   :hook (org-mode . org-bullets-mode))
 
@@ -130,6 +133,7 @@
             (format "%s" work-done-str))))
 
 (use-package org-gcal
+  :after org
   :if (file-directory-p my:d:password-store)
   :config
   (setq alert-log-messages t
