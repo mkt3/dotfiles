@@ -6,8 +6,7 @@
          (helm-projectile-find-file)))
   )
 
-(use-package python-mode
-  :straight python-mode
+(use-package python
   :straight py-autopep8
   :straight jedi-core
   :mode ("\\.py\\'" . python-mode)
