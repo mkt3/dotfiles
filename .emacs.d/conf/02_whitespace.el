@@ -1,5 +1,6 @@
 (use-package whitespace
   :commands whitespace-mode
+  :demand
   :bind ("C-c W" . whitespace-cleanup)
   :config
   (setq whitespace-style '(face           ; faceで可視化
@@ -36,5 +37,7 @@
   (set-face-attribute 'whitespace-empty nil
                       :background my/bg-color)
   (setq whitespace-global-modes
-        '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode))
+        '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode)
+        )
+  (global-whitespace-mode 1)
   )
