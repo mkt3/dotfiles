@@ -90,18 +90,19 @@
 ;; linum-mode
 ;;====================================================================
 ;;(global-linum-mode t)                             ;; 行番号を常に表示
-(setq linum-format "%4d ")
-(dolist (hook (list
-              'c-mode-hook
-              'c++-mode-hook
-              'emacs-lisp-mode-hook
-              'lisp-interaction-mode-hook
-              'lisp-mode-hook
-              'java-mode-hook
-              'sh-mode-hook
-              'python-mode-hook
-              ))
-  (add-hook hook (lambda () (linum-mode t))))
+(global-display-line-numbers-mode)
+;; (setq linum-format "%4d ")
+;; (dolist (hook (list
+;;               'c-mode-hook
+;;               'c++-mode-hook
+;;               'emacs-lisp-mode-hook
+;;               'lisp-interaction-mode-hook
+;;               'lisp-mode-hook
+;;               'java-mode-hook
+;;               'sh-mode-hook
+;;               'python-mode-hook
+;;               ))
+;;   (add-hook hook (lambda () (linum-mode t))))
 
 ;;====================================================================
 ;; color theme
