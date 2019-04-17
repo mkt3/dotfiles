@@ -3,6 +3,9 @@
   :straight company-jedi
   :init
   (global-company-mode) ; 全バッファで有効にする
+  (use-package pos-tip)
+  (use-package company-quickhelp
+    :config (company-quickhelp-mode))
   (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
   (setq company-idle-delay 0) ; デフォルトは0.5
   (setq company-minimum-prefix-length 1) ; デフォルトは4
@@ -25,13 +28,9 @@
          ("C-s" . company-filter-candidates) ;; C-sで絞り込む
          ("C-i" . company-complete-selection) ;; C-iで候補を設定
          ("C-f" . company-complete-selection) ;; C-fで候補を設定
-         ("C-M-h" . company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
+         ("C-S-h" . company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
          :map company-search-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
          )
   )
-
-(use-package company-quickhelp
-  :if window-system
-  :init (company-quickhelp-mode 1))
