@@ -112,6 +112,11 @@ alias mv="mv -i"
 alias grep='grep --color=auto'
 alias x="exit"
 
+cd ()
+{
+    builtin cd "$@" && ls
+}
+
 # Config for each environment
 if [ -e $HOME/.zshrc_local ]; then
     source $HOME/.zshrc_local
