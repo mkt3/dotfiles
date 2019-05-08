@@ -7,7 +7,7 @@
 (set-keyboard-coding-system 'utf-8-unix)          ;; キーボード入力の文字コード
 (global-font-lock-mode t)                         ;; 文字の色つけ
 (transient-mark-mode t)                           ;; リージョンの色付け
-(delete-selection-mode t)                         ;; リージョンを削除 
+(delete-selection-mode t)                         ;; リージョンを削除
 (show-paren-mode t)                               ;; 対応する括弧に色付け
 (bind-key "C-m" 'newline-and-indent)              ;; 改行時にオートインデント
 (bind-key* "C-h" 'delete-backward-char)           ;; ctrl-hで削除
@@ -172,3 +172,9 @@
   (setq my:d:password-store "~/.password-store/emacs/")
   )
 
+(use-package dimmer
+  :config
+  (dimmer-mode)
+  (setq dimmer-fraction 0.6)
+  (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
+  )
