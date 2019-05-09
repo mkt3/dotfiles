@@ -30,8 +30,8 @@
     (interactive)
     (find-file (concat org-directory org-default-notes-file))
     )
-  
-  (bind-key* "C-c g" 'gtd))
+
+  (bind-key* "C-c C-g" 'gtd))
 
 (use-package org-agenda
   :straight nil
@@ -54,10 +54,10 @@
           ("d" "Daily Action List"
            (
             (agenda "" ((org-agenda-ndays 1)
-		                (org-agenda-sorting-strategy
-		                 (quote ((agenda time-up priority-down tag-up) )))
-		                (org-deadline-warning-days 0)
-		                ))
+                        (org-agenda-sorting-strategy
+                         (quote ((agenda time-up priority-down tag-up) )))
+                        (org-deadline-warning-days 0)
+                   ))
             ))))
   (add-hook 'org-agenda-mode-hook 'hl-line-mode)
   (setq hl-line-face 'underline)
@@ -90,7 +90,7 @@
     (interactive)
     (find-file (concat org-directory org-journal-file-format))
     )
-  
+
   (bind-key* "C-c j" 'journal)
   )
 
