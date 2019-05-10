@@ -155,4 +155,6 @@ if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "
 export PIPENV_VENV_IN_PROJECT=true
 
 # direnv config
-eval "$(direnv hook zsh)"
+if type "direnv" > /dev/null 2>&1; then
+    eval "$(direnv hook zsh)"
+fi
