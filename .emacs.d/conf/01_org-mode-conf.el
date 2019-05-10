@@ -113,10 +113,10 @@
         )
   )
 
-(use-package org-bullets
-  :after org
-  :config
-  :hook (org-mode . org-bullets-mode))
+;; (use-package org-bullets
+;;   :after org
+;;   :config
+;;   :hook (org-mode . org-bullets-mode))
 
 (defun ladicle/task-clocked-time ()
         "Return a string with the clocked time and effort, if any"
