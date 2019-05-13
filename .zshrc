@@ -1,3 +1,15 @@
+### Added by Zplugin's installer
+. "${HOME}/.zplugin/bin/zplugin.zsh"
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
+### End of Zplugin's installer chunk
+
+zplugin load zsh-users/zsh-completions
+zplugin load zsh-users/zsh-autosuggestions
+zplugin load zsh-users/zsh-syntax-highlighting
+zplugin load "b4b4r07/enhancd"
+
+
 # Prompt
 autoload -U colors
 colors
@@ -111,7 +123,7 @@ alias mv="mv -i"
 alias grep='grep --color=auto'
 alias x="exit"
 
-cd ()
+cdl ()
 {
     builtin cd "$@" && ls
 }
@@ -171,7 +183,9 @@ autoload -Uz _zplugin
 #export FZF_CTRL_T_COMMAND=rg --files --hidden --follow --glob "!.git/*"
 #export FZF_CTRL_T_OPTS=--preview "bat  --color=always --style=header,grid --line-range :100 {}"
 
-export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border --inline-info --preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
-export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+
 export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
 export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
+
