@@ -132,7 +132,7 @@ if [[ "$TERM" == "dumb" ]]; then
 fi
 
 # Tmux config
-export PERCOL=peco
+export PERCOL=fzf
 
 if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
     ID="`tmux list-sessions`"
@@ -158,3 +158,20 @@ export PIPENV_VENV_IN_PROJECT=true
 if type "direnv" > /dev/null 2>&1; then
     eval "$(direnv hook zsh)"
 fi
+
+### Added by Zplugin's installer
+. "${HOME}/.zplugin/bin/zplugin.zsh"
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
+### End of Zplugin's installer chunk
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+#export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+#export FZF_CTRL_T_COMMAND=rg --files --hidden --follow --glob "!.git/*"
+#export FZF_CTRL_T_OPTS=--preview "bat  --color=always --style=header,grid --line-range :100 {}"
+
+export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border --inline-info --preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
+export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
+export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
+export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
