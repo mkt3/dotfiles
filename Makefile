@@ -23,11 +23,17 @@ deploy:
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 	@[ -e $(DOTPATH)/.emacs.d/ddskk.d/skk-record ] || touch $(DOTPATH)/.emacs.d/ddskk.d/skk-record
 	@[ -e $(DOTPATH)/.emacs.d/snippets ] || mkdir $(DOTPATH)/.emacs.d/snippets
+	@[ -e $(HOME)/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git $(HOME)/.fzf
+	@[ -e $(HOME)/.zplugin ] || mkdir $(HOME)/.zplugin
+	@[ -e $(HOME)/.zplugin ] || git clone https://github.com/zdharma/zplugin.git $(HOME)/.zplugin/bin
 
 init:
+	@$(HOME)/.fzf/install --completion --key-bindings  --no-update-rc --no-bash
 
 update:
 	git pull origin master
+	@[ -e $(HOME)/.fzf ] && cd $(HOME)/.fzf && git pull origin master
+	@[ -e $(HOME)/.zplugin ] && cd $(HOME)/.zplugin/bin && git pull origin master
 
 install: update deploy init
 
