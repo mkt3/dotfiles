@@ -25,15 +25,15 @@ deploy:
 	@[ -e $(DOTPATH)/.emacs.d/snippets ] || mkdir $(DOTPATH)/.emacs.d/snippets
 	@[ -e $(HOME)/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git $(HOME)/.fzf
 	@[ -e $(HOME)/.zplugin ] || mkdir $(HOME)/.zplugin
-	@[ -e $(HOME)/.zplugin ] || git clone https://github.com/zdharma/zplugin.git $(HOME)/.zplugin/bin
+	@[ -e $(HOME)/.zplugin/bin ] || git clone https://github.com/zdharma/zplugin.git $(HOME)/.zplugin/bin
 
 init:
 	@$(HOME)/.fzf/install --completion --key-bindings  --no-update-rc --no-bash
 
 update:
 	git pull origin master
-	@[ -e $(HOME)/.fzf ] && cd $(HOME)/.fzf && git pull origin master
-	@[ -e $(HOME)/.zplugin ] && cd $(HOME)/.zplugin/bin && git pull origin master
+	if [ -e $(HOME)/.fzf ]; then cd $(HOME)/.fzf && git pull origin master;fi
+	if [ -e $(HOME)/.zplugin/bin ]; then cd $(HOME)/.zplugin/bin && git pull origin master;fi
 
 install: update deploy init
 
