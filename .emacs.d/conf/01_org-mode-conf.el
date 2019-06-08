@@ -31,7 +31,7 @@
     (find-file (concat org-directory org-default-notes-file))
     )
 
-  (bind-key* "C-c C-g" 'gtd))
+  (bind-key* "C-c g" 'gtd))
 
 (use-package org-agenda
   :straight nil
