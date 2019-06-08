@@ -22,6 +22,7 @@ brew "zsh"
 cask "google-chrome"
 cask "vlc"
 cask "font-ricty-diminished"
+cask "robo-3t"
 mas "com.amazon.Kindle", id: 405399194
 mas "com.readdle.smartemail-Mac", id: 1176895641
 mas "com.tinyspeck.slackmacgap", id: 803453959
