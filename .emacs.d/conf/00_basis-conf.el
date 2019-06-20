@@ -126,7 +126,7 @@
   (prog-mode . rainbow-delimiters-mode))
 
 ;;====================================================================
-;; move window
+;; window control
 ;;====================================================================
 ;; shift+カーソルでwindow間の移動
 (windmove-default-keybindings)
@@ -136,6 +136,10 @@
 (bind-key* "C-M-k" 'windmove-up)
 (bind-key* "C-M-j" 'windmove-down)
 (bind-key* "C-M-l" 'windmove-right)
+
+(bind-key "C-x |" 'split-window-right)
+(bind-key "C-x -" 'split-window-below)
+(bind-key "C-x x" 'delete-window)
 
 ;;====================================================================
 ;; toggle truncate lines
