@@ -1,10 +1,10 @@
-(use-package virtualenvwrapper
-  :config
-  (setq projectile-switch-project-action
-      '(lambda ()
-         (venv-projectile-auto-workon)
-         (helm-projectile-find-file)))
-  )
+;; (use-package virtualenvwrapper
+;;   :config
+;;   (setq projectile-switch-project-action
+;;       '(lambda ()
+;;          (venv-projectile-auto-workon)
+;;          (helm-projectile-find-file)))
+;;   )
 
 (use-package python
   :straight py-autopep8
@@ -30,3 +30,7 @@
               '(:with company-yasnippet))))
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
   )
+
+(use-package elpy
+  :init
+  (elpy-enable))
