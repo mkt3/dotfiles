@@ -183,10 +183,3 @@ eval "$(pipenv --completion)"
 if type "direnv" > /dev/null 2>&1; then
     eval "$(direnv hook zsh)"
 fi
-
-### Added by Zplugin's installer
-. "${HOME}/.zplugin/bin/zplugin.zsh"
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
-### End of Zplugin's installer chunk
-
