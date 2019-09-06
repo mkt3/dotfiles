@@ -175,7 +175,7 @@ if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "
  fi
 
 # pipenv config
-if type "direnv" > /dev/null 2>&1; then
+if type "pipenv" > /dev/null 2>&1; then
     export PIPENV_VENV_IN_PROJECT=true
     eval "$(pipenv --completion)"
 fi
