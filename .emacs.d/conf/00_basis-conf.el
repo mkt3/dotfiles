@@ -101,8 +101,9 @@
     :custom-face
     (doom-modeline-bar ((t (:background "#6272a4"))))
     :config
+    (load-theme 'doom-nova t)
     ;; (load-theme 'doom-dracula t)
-    (load-theme 'doom-nord t)
+    ;; (load-theme 'doom-nord t)
     (doom-themes-neotree-config)
     (doom-themes-org-config)
     (use-package doom-modeline
@@ -117,9 +118,6 @@
       (set-cursor-color "cyan")
       ;; (line-number-mode 0)
       ;; (column-number-mode 0)
-      ;; (doom-modeline-def-modeline 'main
-      ;;   '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
-      ;;   '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker))
       )
     )
 
@@ -128,10 +126,9 @@
   (prog-mode . rainbow-delimiters-mode))
 
 
-
-;; (use-package hide-mode-line
-;;     :hook
-;;     ((neotree-mode imenu-list-minor-mode minimap-mode) . hide-mode-line-mode))
+(use-package hide-mode-line
+    :hook
+    ((neotree-mode imenu-list-minor-mode minimap-mode) . hide-mode-line-mode))
 
 (use-package all-the-icons)
 
@@ -157,19 +154,6 @@
 (bind-key "C-x |" 'split-window-right)
 (bind-key "C-x -" 'split-window-below)
 (bind-key "C-x x" 'delete-window)
-
-;;====================================================================
-;; toggle truncate lines
-;;====================================================================
-;; (defun toggle-truncate-lines ()
-;;   "折り返し表示をトグル"
-;;   (interactive)
-;;   (if truncate-lines
-;;       (setq truncate-lines nil)
-;;     (setq truncate-lines t))
-;;   (recenter))
-
-;; (bind-key "C-c l" 'toggle-truncate-lines)
 
 ;;====================================================================
 ;; scroll
@@ -233,3 +217,13 @@
 
 
 (use-package popwin)
+
+(use-package ace-window
+  :bind
+  ("C-x o" . ace-window)
+  :custom
+  (aw-keys '(?j ?k ?l ?i ?o ?h ?y ?u ?p))
+  :custom-face
+  (aw-leading-char-face ((t (:height 4.0 :foreground "#f1fa8c")))))
+
+  
