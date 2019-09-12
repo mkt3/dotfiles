@@ -22,8 +22,12 @@
 ;; path
 ;;====================================================================
 (use-package exec-path-from-shell
+  :custom
+  (exec-path-from-shell-check-startup-files nil)
   :config
-  (exec-path-from-shell-initialize))
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+
 
 (setq load-path (append '("~/.emacs.d/private-conf") load-path))
 
