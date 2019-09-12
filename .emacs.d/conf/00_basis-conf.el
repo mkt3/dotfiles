@@ -89,20 +89,7 @@
 ;;====================================================================
 ;; linum-mode
 ;;====================================================================
-;;(global-linum-mode t)                             ;; 行番号を常に表示
-(global-display-line-numbers-mode)
-;; (setq linum-format "%4d ")
-;; (dolist (hook (list
-;;               'c-mode-hook
-;;               'c++-mode-hook
-;;               'emacs-lisp-mode-hook
-;;               'lisp-interaction-mode-hook
-;;               'lisp-mode-hook
-;;               'java-mode-hook
-;;               'sh-mode-hook
-;;               'python-mode-hook
-;;               ))
-;;   (add-hook hook (lambda () (linum-mode t))))
+(global-display-line-numbers-mode) ;; 行番号を常に表示
 
 ;;====================================================================
 ;; color theme
@@ -111,19 +98,48 @@
     :custom
     (doom-themes-enable-italic t)
     (doom-themes-enable-bold t)
+    :custom-face
+    (doom-modeline-bar ((t (:background "#6272a4"))))
     :config
-    (load-theme 'doom-spacegrey t)
-    ;; (doom-themes-neotree-config)
+    (load-theme 'doom-dracula t)
+    (doom-themes-neotree-config)
     (doom-themes-org-config)
+    (use-package doom-modeline
+      :custom
+      (doom-modeline-buffer-file-name-style 'truncate-with-project)
+      (doom-modeline-icon t)
+      (doom-modeline-major-mode-icon nil)
+      (doom-modeline-minor-modes nil)
+      :hook
+      (after-init . doom-modeline-mode)
+      :config
+      (set-cursor-color "cyan")
+      ;; (line-number-mode 0)
+      ;; (column-number-mode 0)
+      ;; (doom-modeline-def-modeline 'main
+      ;;   '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
+      ;;   '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker))
+      )
     )
-;; (use-package zenburn-theme
-;;   :config
-;;   (load-theme 'zenburn t)
-;;   )
 
 (use-package rainbow-delimiters
   :hook
   (prog-mode . rainbow-delimiters-mode))
+
+
+
+;; (use-package hide-mode-line
+;;     :hook
+;;     ((neotree-mode imenu-list-minor-mode minimap-mode) . hide-mode-line-mode))
+
+(use-package all-the-icons)
+
+(use-package nyan-mode
+   :custom
+   (nyan-cat-face-number 4)
+   (nyan-animate-nyancat t)
+   :hook
+   (doom-modeline-mode . nyan-mode))
 
 ;;====================================================================
 ;; window control
@@ -144,15 +160,15 @@
 ;;====================================================================
 ;; toggle truncate lines
 ;;====================================================================
-(defun toggle-truncate-lines ()
-  "折り返し表示をトグル"
-  (interactive)
-  (if truncate-lines
-      (setq truncate-lines nil)
-    (setq truncate-lines t))
-  (recenter))
+;; (defun toggle-truncate-lines ()
+;;   "折り返し表示をトグル"
+;;   (interactive)
+;;   (if truncate-lines
+;;       (setq truncate-lines nil)
+;;     (setq truncate-lines t))
+;;   (recenter))
 
-(bind-key "C-c l" 'toggle-truncate-lines)
+;; (bind-key "C-c l" 'toggle-truncate-lines)
 
 ;;====================================================================
 ;; scroll
@@ -180,14 +196,39 @@
 ;;====================================================================
 ;; password-store
 ;;====================================================================
-(use-package password-store
-  :config
-  (setq my:d:password-store "~/.password-store/emacs/")
-  )
+;; (use-package password-store
+;;   :config
+;;   (setq my:d:password-store "~/.password-store/emacs/")
+;;   )
 
 (use-package dimmer
+  :disabled
+  :custom
+  (dimmer-fraction 0.5)
+  (dimmer-exclusion-regexp-list
+       '(".*Minibuf.*"
+         ".*which-key.*"
+         ".*NeoTree.*"
+         ".*Messages.*"
+         ".*Async.*"
+         ".*Warnings.*"
+         ".*LV.*"
+         ".*Ilist.*"))
   :config
-  (dimmer-mode)
-  (setq dimmer-fraction 0.6)
-  (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
-  )
+  (dimmer-mode t))
+
+(use-package which-key
+  :diminish which-key-mode
+  :hook (after-init . which-key-mode))
+
+(use-package amx)
+
+
+(use-package undo-tree
+  :bind
+  ("M-/" . undo-tree-redo)
+  :config
+  (global-undo-tree-mode))
+
+
+(use-package popwin)

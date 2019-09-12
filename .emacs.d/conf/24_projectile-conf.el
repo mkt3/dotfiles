@@ -1,3 +1,10 @@
+(use-package projectile
+  :diminish
+  :bind
+  ("M-o p" . counsel-projectile-switch-project)
+  :config
+  (projectile-mode +1))
+
 ;; (use-package helm-projectile
 ;;   :diminish projectile-mode
 ;;   :bind ("C-c p p" . helm-projectile-switch-project)
