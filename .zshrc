@@ -30,6 +30,7 @@ autoload -Uz add-zsh-hook
 
 zstyle ':vcs_info:*' enable git svn
 zstyle ':vcs_info:*' max-exports 6 # formatに入る変数の最大数
+zstyle ':vcs_info:*' disable-patterns "$HOME/server(|/*)"
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' formats '%b@%r' '%c' '%u'
 zstyle ':vcs_info:git:*' actionformats '%b@%r|%a' '%c' '%u'
