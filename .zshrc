@@ -9,7 +9,6 @@ zplugin load zsh-users/zsh-autosuggestions
 zplugin load zsh-users/zsh-syntax-highlighting
 zplugin load "b4b4r07/enhancd"
 
-
 # Prompt
 autoload -U colors
 colors
@@ -176,8 +175,10 @@ if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "
  fi
 
 # pipenv config
-export PIPENV_VENV_IN_PROJECT=true
-eval "$(pipenv --completion)"
+if type "pipenv" > /dev/null 2>&1; then
+    export PIPENV_VENV_IN_PROJECT=true
+    eval "$(pipenv --completion)"
+fi
 
 # direnv config
 if type "direnv" > /dev/null 2>&1; then
