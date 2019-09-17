@@ -1,4 +1,4 @@
-﻿;;====================================================================
+﻿;====================================================================
 ;; miscellaneous
 ;;====================================================================
 (set-default-coding-systems 'utf-8)               ;; default-coding
@@ -101,8 +101,8 @@
     :custom-face
     (doom-modeline-bar ((t (:background "#6272a4"))))
     :config
-    (load-theme 'doom-nova t)
-    ;; (load-theme 'doom-dracula t)
+    ;; (load-theme 'doom-nova t)
+    (load-theme 'doom-dracula t)
     ;; (load-theme 'doom-nord t)
     (doom-themes-neotree-config)
     (doom-themes-org-config)
