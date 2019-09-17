@@ -185,6 +185,3 @@ fi
 if type "direnv" > /dev/null 2>&1; then
     eval "$(direnv hook zsh)"
 fi
-
-# 24bit color 
-eval `tset -s xterm-24bits`
