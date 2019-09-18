@@ -1,10 +1,17 @@
-;; (use-package virtualenvwrapper
-;;   :config
-;;   (setq projectile-switch-project-action
-;;       '(lambda ()
-;;          (venv-projectile-auto-workon)
-;;          (helm-projectile-find-file)))
-;;   )
+(use-package auto-virtualenvwrapper
+  :init
+  (defun wrapper-auto-virtualenvwrapper-activate ()
+    (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
+      (when (and path (not (equal path auto-virtualenvwrapper--path)))
+        (setq auto-virtualenvwrapper--path path
+              venv-current-name (file-name-base (file-truename path)))
+        (venv--activate-dir auto-virtualenvwrapper--path)
+        (pyvenv-activate auto-virtualenvwrapper--path)
+        (auto-virtualenvwrapper-message "activated virtualenv: %s" path))))
+
+  (add-hook 'python-mode-hook #'wrapper-auto-virtualenvwrapper-activate)
+  (add-hook 'focus-in-hook #'wrapper-auto-virtualenvwrapper-activate)
+  )
 
 ;; (use-package python
 ;;   :straight py-autopep8
@@ -19,7 +26,7 @@
 ;;   (setq jedi:complete-on-dot t)
 ;;   (setq jedi:use-shortcuts t)
 ;;   (add-to-list 'company-backends 'company-jedi)
-  
+
 ;;   ;; company-modelとyasnippetとの連携
 ;;   (defvar company-mode/enable-yas t
 ;;     "Enable yasnippet for all backends.")
@@ -38,4 +45,6 @@
 
 (use-package py-isort
   :after python-mode
+  :init
+  (add-hook 'before-save-hook 'py-isort-before-save)
   )
