@@ -122,6 +122,7 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias grep='grep --color=auto'
 alias x="exit"
+alias sudo='TERM=xterm-256color sudo'
 
 cdl ()
 {
