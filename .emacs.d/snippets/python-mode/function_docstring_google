@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: function_docstring_restructuredtext
+# key: fdg
+# group: definitions
+# --
+def ${1:name}($2):
+    \"\"\"$4
+    ${2:$(python-args-to-docstring-google)}
+    \"\"\"
+    $0

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: function_docstring_restructuredtext
+# key: fdr
+# group: definitions
+# --
+def ${1:name}($2): $3
+    \"\"\"$4
+    ${2:$(python-args-to-docstring-restructuredtext-args)}
+    ${3:$(python-args-to-docstring-restructuredtext-ret)}
+    \"\"\"
+    $0
