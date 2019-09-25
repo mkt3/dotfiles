@@ -286,3 +286,12 @@
     :config
     (ivy-rich-mode 1))
 )
+
+
+(use-package ivy-yasnippet
+  :bind ("C-c y s" . ivy-yasnippet)
+  :config
+  (setq ivy-yasnippet-expand-keys "smart") ; nil "always" , "smart"
+                                        ; https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-ivy.el
+  (advice-add #'ivy-yasnippet--preview :override #'ignore)
+ )

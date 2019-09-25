@@ -48,3 +48,35 @@
   :init
   (add-hook 'before-save-hook 'py-isort-before-save)
   )
+
+
+(defun python-args-to-docstring-restructuredtext-args ()
+  "return docstring format for the python arguments in yas-text"
+  (let* ((args (python-split-args yas-text))
+         (format-arg (lambda(arg)
+                       (concat ":param "(nth 0 arg) ": " (if (nth 1 arg) ", optional") )))
+         (formatted-params (mapconcat format-arg args "\n")))
+    (unless (string= formatted-params "")
+      (mapconcat 'identity
+                 (list formatted-params)
+                 "\n"))))
+
+(defun python-args-to-docstring-restructuredtext-ret ()
+  "return docstring format for the python arguments in yas-text"
+  (let* ()
+    (unless (string= yas-text "")
+      (mapconcat 'identity
+                 (list ":return: ")
+                 "\n"))))
+
+(defun python-args-to-docstring-google ()
+  "return docstring format for the python arguments in yas-text"
+  (let* ((args (python-split-args yas-text))
+         (format-arg (lambda(arg)
+                       (concat "\s       " (nth 0 arg) " (): " (if (nth 1 arg) ", optional"))))
+         (formatted-params (mapconcat format-arg args "\n")))
+    (unless (string= formatted-params "")
+      (mapconcat 'identity
+                 (list "\nArgs:" formatted-params
+                       "\nReturns:\n        ")
+                 "\n"))))
