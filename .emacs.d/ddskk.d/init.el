@@ -14,6 +14,7 @@
 ;;モードラインの表示
 (setq skk-latin-mode-string "[_A]")
 (setq skk-hiragana-mode-string "[あ]")
+;; (setq skk-katakana-mode-string "[ア]")
 (setq skk-katakana-mode-string "[ア]")
 (setq skk-jisx0208-latin-mode-string "[Ａ]")
 (setq skk-jisx0201-mode-string "[_ｱ]")
@@ -30,7 +31,7 @@
 ;; 候補表示件数を2列に
 (setq skk-henkan-show-candidates-rows 2)
 (setq skk-henkan-strict-okuri-precedence t) ; 送り仮名が厳密に正しい候補を優先して表示
-;;(require 'skk-hint); ヒント 
+;;(require 'skk-hint); ヒントは有効化しない。stiky-shiftが上手く利用できなくなる。
 (add-hook 'skk-load-hook ; 自動的に入力モードを切り替え
           (lambda ()
             (require 'context-skk)))
