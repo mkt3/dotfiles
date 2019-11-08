@@ -65,7 +65,7 @@
 (setq inhibit-startup-screen t)
 
 ;; frameの最大化
-(bind-key* "C-c C-f" 'toggle-frame-fullscreen)
+(bind-key* "C-c C-f" 'toggle-frame-maximized)
 
 
 ;;====================================================================
