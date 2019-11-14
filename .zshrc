@@ -20,11 +20,6 @@ if [ -n "${SSH_CONNECTION}" ]; then
 else
     local host_color="green"
 fi
-
-PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u(%j) %~
-%# "
-
-## Right prompt
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
 
@@ -36,11 +31,15 @@ zstyle ':vcs_info:git:*' formats '%b@%r' '%c' '%u'
 zstyle ':vcs_info:git:*' actionformats '%b@%r|%a' '%c' '%u'
 setopt prompt_subst
 function _vcs_precmd {
+    V_ENV="($VIRTUAL_ENV:h:t)"
+    if [[ "$V_ENV" == "(.)" ]]; then
+        V_ENV=""
+    fi
     local st branch color
     STY= LANG=en_US.UTF-8 vcs_info
     st=`git status 2> /dev/null`
     if [[ -z "$st" ]]; then
-        RPROMPT=""
+        PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u %~"$'\n'"$V_ENV%# "
         return
     fi
     branch="$vcs_info_msg_0_"
@@ -49,8 +48,11 @@ function _vcs_precmd {
     elif [[ -n `echo "$st" | grep "^Untracked"` ]]; then color=${fg[blue]} # untracked
     else color=${fg[cyan]}
     fi
-    RPROMPT=`echo "%{$color%}($branch)%{$reset_color%}" | sed -e s/@/"%F{yellow}@%f%{$color%}"/`
+    GIT_STATUS=`echo "%{$color%}($branch)%{$reset_color%}" | sed -e s/@/"%F{yellow}@%f%{$color%}"/`
+    PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u${GIT_STATUS} %~"$'\n'"$V_ENV%# "
+# Setopt
 }
+
 add-zsh-hook precmd _vcs_precmd
 
 # Setopt
