@@ -115,7 +115,7 @@ case "${PLATFORM}" in
         alias ls="ls -FGh"
         alias ll="ls -l"
         alias la="ls -aF"
-        alias sshc="~/.ssh/ssh_change.sh"
+        alias ssh="~/.ssh/ssh_change.sh"
         ;;
     linux)
         alias ls="ls --color"
