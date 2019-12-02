@@ -42,6 +42,7 @@
   :init
   (elpy-enable))
 
+(use-package yaml-mode)
 
 (use-package py-isort
   :after python-mode
