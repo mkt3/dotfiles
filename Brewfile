@@ -28,6 +28,7 @@ cask "aquaskk"
 cask "vivaldi"
 cask "karabiner-elements"
 cask "tunnelblick"
+cask "visual-studio-code"
 mas "com.amazon.Kindle", id: 405399194
 mas "com.readdle.smartemail-Mac", id: 1176895641
 mas "com.tinyspeck.slackmacgap", id: 803453959
