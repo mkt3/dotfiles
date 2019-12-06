@@ -32,7 +32,7 @@ deploy:
 
 init:
 	@$(HOME)/.fzf/install --completion --key-bindings  --no-update-rc --no-bash
-	git config --global core.excludesfile ~/.gitignore_global
+	@git config --global core.excludesfile ~/.gitignore_global
 
 update:
 	git pull origin master
