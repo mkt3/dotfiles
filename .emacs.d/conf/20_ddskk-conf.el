@@ -15,12 +15,13 @@
             '(lambda()
                (progn
                  (eval-expression (skk-mode) nil)
+                 (skk-latin-mode (point))
                  )))
   ;; find-fileで skk-mode になる
   (add-hook 'find-file-hooks
             '(lambda()
                (progn
                  (eval-expression (skk-mode) nil)
+                 (skk-latin-mode (point))
                  )))
-  (define-key minibuffer-local-map (kbd "C-j") 'skk-kakutei)
   )
