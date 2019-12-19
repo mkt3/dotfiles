@@ -15,7 +15,7 @@
     :map ivy-minibuffer-map
     ("C-w" . ivy-backward-kill-word)
     ("C-k" . ivy-kill-line)
-    ("C-j" . ivy-immediate-done)
+    ;; ("C-j" . ivy-immediate-done)
     ("RET" . ivy-alt-done)
     ("C-h" . ivy-backward-delete-char))
     :preface
@@ -42,6 +42,7 @@
     (swiper-action-recenter t)
     (counsel-grep-base-command "ag -S --noheading --nocolor --nofilename --numbers '%s' %s")
     :config
+    (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) "")
     ;; using ivy-format-fuction-arrow with counsel-yank-pop
     (advice-add
     'counsel--yank-pop-format-function
@@ -295,3 +296,4 @@
                                         ; https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-ivy.el
   (advice-add #'ivy-yasnippet--preview :override #'ignore)
  )
+
