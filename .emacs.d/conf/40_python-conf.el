@@ -40,7 +40,14 @@
 
 (use-package elpy
   :init
-  (elpy-enable))
+  (elpy-enable)
+  :config
+  ;; '(elpy-modules
+  ;;   (quote
+  ;;    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
+  (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
+  )
+
 
 (use-package yaml-mode)
 
@@ -81,3 +88,23 @@
                  (list "\nArgs:" formatted-params
                        "\nReturns:\n        ")
                  "\n"))))
+
+(use-package highlight-indent-guides
+ :diminish
+ :hook
+ ((prog-mode yaml-mode) . highlight-indent-guides-mode)
+ :custom
+  (highlight-indent-guides-method 'character)  ;; fill,column,character
+  (highlight-indent-guides-auto-enabled t)  ;; automatically calculate faces.
+  (highlight-indent-guides-responsive t)
+  (highlight-indent-guides-character ?\|)
+)
+
+(use-package imenu-list
+  :bind
+  ("<f10>" . imenu-list-smart-toggle)
+  :custom-face
+  (imenu-list-entry-face-1 ((t (:foreground "white"))))
+  :custom
+  (imenu-list-focus-after-activation t)
+  (imenu-list-auto-resize t))
