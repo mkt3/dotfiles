@@ -102,7 +102,7 @@
 
 (use-package imenu-list
   :bind
-  ("C-'" . imenu-list-smart-toggle)
+  ("C-o" . imenu-list-smart-toggle)
   :custom-face
   (imenu-list-entry-face-1 ((t (:foreground "white"))))
   :custom
