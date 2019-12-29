@@ -8,6 +8,8 @@ zplugin load zsh-users/zsh-completions
 zplugin load zsh-users/zsh-autosuggestions
 zplugin load zsh-users/zsh-syntax-highlighting
 zplugin load "b4b4r07/enhancd"
+zplugin ice atload'!_zsh_git_prompt_precmd_hook' lucid
+zplugin load woefe/git-prompt.zsh
 
 # Prompt
 autoload -U colors
@@ -20,36 +22,28 @@ if [ -n "${SSH_CONNECTION}" ]; then
 else
     local host_color="green"
 fi
-autoload -Uz vcs_info
-autoload -Uz add-zsh-hook
 
-zstyle ':vcs_info:*' enable git svn
-zstyle ':vcs_info:*' max-exports 6 # formatに入る変数の最大数
-zstyle ':vcs_info:*' disable-patterns "$HOME/server(|/*)"
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' formats '%b@%r' '%c' '%u'
-zstyle ':vcs_info:git:*' actionformats '%b@%r|%a' '%c' '%u'
+ZSH_THEME_GIT_PROMPT_PREFIX="["
+ZSH_THEME_GIT_PROMPT_SUFFIX="] "
+ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="↓"
+ZSH_THEME_GIT_PROMPT_AHEAD="↑"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"
+ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
+ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
+
 setopt prompt_subst
 function _vcs_precmd {
     V_ENV="($VIRTUAL_ENV:h:t)"
     if [[ "$V_ENV" == "(.)" ]]; then
         V_ENV=""
     fi
-    local st branch color
-    STY= LANG=en_US.UTF-8 vcs_info
-    st=`git status 2> /dev/null`
-    if [[ -z "$st" ]]; then
-        PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u %~"$'\n'"$V_ENV%# "
-        return
-    fi
-    branch="$vcs_info_msg_0_"
-    if   [[ -n "$vcs_info_msg_1_" ]]; then color=${fg[green]} #staged
-    elif [[ -n "$vcs_info_msg_2_" ]]; then color=${fg[red]} #unstaged
-    elif [[ -n `echo "$st" | grep "^Untracked"` ]]; then color=${fg[blue]} # untracked
-    else color=${fg[cyan]}
-    fi
-    GIT_STATUS=`echo "%{$color%}($branch)%{$reset_color%}" | sed -e s/@/"%F{yellow}@%f%{$color%}"/`
-    PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u${GIT_STATUS} %~"$'\n'"$V_ENV%# "
+    PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u$(gitprompt) %~"$'\n'"$V_ENV%# "
 # Setopt
 }
 
