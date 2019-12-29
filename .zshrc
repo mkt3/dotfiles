@@ -43,8 +43,7 @@ function _vcs_precmd {
     if [[ "$V_ENV" == "(.)" ]]; then
         V_ENV=""
     fi
-    PROMPT='%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u$(gitprompt) %~'$'\n'"$V_ENV%# "
-# Setopt
+    PROMPT='%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u$(gitprompt)%~'$'\n''$V_ENV%# '
 }
 
 add-zsh-hook precmd _vcs_precmd
