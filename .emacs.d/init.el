@@ -677,34 +677,35 @@ bottom center.  The structure of INFO can be found in docstring of
       :disabled (eq window-system 'x)
       :ensure t
       :after skk
-      :custom ((ddskk-posframe-mode . t)))
+      :custom ((ddskk-posframe-mode . t))))
 
-    (leaf highlight-indent-guides
-      :ensure t
-      ;; :diminish
-      :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
-      :custom (
-               (highlight-indent-guides-method . 'character)  ;; fill,column,character
-               (highlight-indent-guides-auto-enabled . t)  ;; automatically calculate faces.
-               (highlight-indent-guides-responsive . t)
-               (highlight-indent-guides-character . ?\|)))
-
-    (leaf imenu-list
-      :ensure t
-      :bind (("C-o" . imenu-list-smart-toggle))
-      :custom-face
-      (imenu-list-entry-face-1 . '((t (:foreground "white"))))
-      :custom ((imenu-list-focus-after-activation . t)
-               (imenu-list-auto-resize . t))
-      )
-
-    (leaf projectile
-      :when (version<= "25.1" emacs-version)
-      :ensure t
-      :leaf-defer nil
-      :bind (("M-o p" . projectile-command-map))
-      :custom ((projectile-mode . t)))
+  (leaf highlight-indent-guides
+    :ensure t
+    :require t
+    ;; :diminish
+    :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
+    :custom (
+             (highlight-indent-guides-method . 'character)  ;; fill,column,character
+             (highlight-indent-guides-auto-enabled . t)  ;; automatically calculate faces.
+             (highlight-indent-guides-responsive . t)
+             (highlight-indent-guides-character . ?\|)))
+    ;; :config
+    ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+  (leaf imenu-list
+    :ensure t
+    :bind (("C-o" . imenu-list-smart-toggle))
+    :custom-face
+    (imenu-list-entry-face-1 . '((t (:foreground "white"))))
+    :custom ((imenu-list-focus-after-activation . t)
+             (imenu-list-auto-resize . t))
     )
+
+  (leaf projectile
+    :when (version<= "25.1" emacs-version)
+    :ensure t
+    :leaf-defer nil
+    :bind (("M-o p" . projectile-command-map))
+    :custom ((projectile-mode . t)))
   )
 
 (leaf *major-mode
@@ -743,7 +744,7 @@ bottom center.  The structure of INFO can be found in docstring of
     ;;   (add-hook 'focus-in-hook #'wrapper-auto-virtualenvwrapper-activate)
     ;;   )
     ;; )
-
+    )
   (leaf yaml-mode :ensure t)
   )
 
