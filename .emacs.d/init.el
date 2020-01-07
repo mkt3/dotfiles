@@ -682,7 +682,7 @@ bottom center.  The structure of INFO can be found in docstring of
     (leaf highlight-indent-guides
       :ensure t
       ;; :diminish
-      :hook (((prog-mode yaml-mode) . highlight-indent-guides-mode))
+      :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
       :custom (
                (highlight-indent-guides-method . 'character)  ;; fill,column,character
                (highlight-indent-guides-auto-enabled . t)  ;; automatically calculate faces.
@@ -716,29 +716,33 @@ bottom center.  The structure of INFO can be found in docstring of
       :init
       (elpy-enable)
       :config
-      (remove-hook 'elpy-modules 'elpy-module-highlight-indentation))
+      (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
+      :custom ((elpy-rpc-virtualenv-path . 'current))
+      )
 
     (leaf py-isort
       :ensure t
       :after python-mode
       :hook ((before-save-hook . py-isort-before-save)))
 
-    (leaf auto-virtualenvwrapper
-      :ensure t
-      :disabled
-      :init
-      (defun wrapper-auto-virtualenvwrapper-activate ()
-        (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
-          (when (and path (not (equal path auto-virtualenvwrapper--path)))
-            (setq auto-virtualenvwrapper--path path
-                  venv-current-name (file-name-base (file-truename path)))
-            (venv--activate-dir auto-virtualenvwrapper--path)
-            (pyvenv-activate auto-virtualenvwrapper--path)
-            (auto-virtualenvwrapper-message "activated virtualenv: %s" path))))
-      (add-hook 'python-mode-hook #'wrapper-auto-virtualenvwrapper-activate)
-      (add-hook 'focus-in-hook #'wrapper-auto-virtualenvwrapper-activate)
-      )
-    )
+    ;; (leaf auto-virtualenvwrapper
+    ;;   :ensure t
+    ;;   :require t
+    ;;   :config
+    ;;   (defun wrapper-auto-virtualenvwrapper-activate ()
+    ;;     (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
+    ;;       (when (and path (not (equal path auto-virtualenvwrapper--path)))
+    ;;         (setq auto-virtualenvwrapper--path path
+    ;;               venv-current-name (file-name-base (file-truename path)))
+    ;;         (venv--activate-dir auto-virtualenvwrapper--path)
+    ;;         (pyvenv-activate auto-virtualenvwrapper--path)
+    ;;         (auto-virtualenvwrapper-message "activated virtualenv: %s" auto-virtualenvwrapper--path))))
+    ;;   ;; :hook ((python-mode-hook forcus-in-hook . wrapper-auto-virtualenvwrapper-activate))
+    ;;   ;; :init
+    ;;   (add-hook 'python-mode-hook #'wrapper-auto-virtualenvwrapper-activate)
+    ;;   (add-hook 'focus-in-hook #'wrapper-auto-virtualenvwrapper-activate)
+    ;;   )
+    ;; )
 
   (leaf yaml-mode :ensure t)
   )
