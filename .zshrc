@@ -6,7 +6,7 @@ autoload -Uz _zplugin
 
 zplugin load zsh-users/zsh-completions
 zplugin load zsh-users/zsh-autosuggestions
-zplugin load zsh-users/zsh-syntax-highlighting
+zplugin light zdharma/fast-syntax-highlighting
 zplugin load "b4b4r07/enhancd"
 zplugin ice atload'!_zsh_git_prompt_precmd_hook' lucid
 zplugin load woefe/git-prompt.zsh
