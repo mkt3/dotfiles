@@ -205,7 +205,6 @@
   (leaf doom-themes
     :ensure t
     :require t
-    :defun (solarized-create-theme-file-with-palette solarized-color-blend)
     :custom ((doom-themes-enable-italic . t)
              (doom-themes-enable-bold . t))
     :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
@@ -213,6 +212,7 @@
     (load-theme 'doom-dracula t)
     (doom-themes-neotree-config)
     (doom-themes-org-config)
+
     (leaf doom-modeline
       :ensure t
       :custom ((doom-modeline-buffer-file-name-style 'truncate-with-project)
@@ -224,6 +224,7 @@
       :config
       (set-cursor-color "cyan")
       ))
+
   (leaf rainbow-delimiters
     :ensure t
     :hook
@@ -231,10 +232,6 @@
   ;; (leaf hide-mode-line
   ;;   :hook
   ;;   ((neotree-mode imenu-list-minor-mode minimap-mode) . hide-mode-line-mode))
-
-  (leaf all-the-icons
-    :ensure t
-    :when window-system)
 
   (leaf nyan-mode
     :ensure t
