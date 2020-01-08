@@ -18,6 +18,10 @@
 
     (leaf leaf-keywords
       :ensure t
+      :init
+      (leaf diminish
+        :ensure t)
+
       :config (leaf-keywords-init)))
 
   (prog1 "optional packages for leaf-keywords"
@@ -113,7 +117,8 @@
       ;; :hook ((before-save-hook . delete-trailing-whitespace))
       )
 
-    (leaf abbrev)
+    (leaf abbrev
+      :diminish abbrev-mode)
 
     (leaf display-line-numbers
       :config
@@ -299,8 +304,14 @@
 
   (leaf undo-tree
     :ensure t
+    :leaf-defer nil
     :custom ((global-undo-tree-mode . t))
     :bind (  ("M-/" . undo-tree-redo)))
+
+  (leaf undohist
+    :ensure t
+    :commands (undohist-initialize)
+    :config (undohist-initialize))
 
   (leaf whitespace
     :ensure t
@@ -462,7 +473,7 @@
   (leaf company
     :ensure t
     :leaf-defer nil
-    ;; :diminish company-mode
+    :diminish company-mode
     :bind ((company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
@@ -488,7 +499,7 @@
       :when (version<= "26.1" emacs-version)
       :disabled (eq window-system 'x)
       :ensure t
-      ;; :diminish company-box-mode
+      :diminish company-box-mode
       :defvar (company-box-icons-alist company-box-icons-all-the-icons)
       :init (leaf all-the-icons :ensure t :require t)
       :custom ((company-box-max-candidates . 50)
@@ -553,7 +564,7 @@
     (leaf yasnippet
       :ensure t
       :url "https://kiwanami.hatenadiary.org/entry/20110224/1298526678"
-      ;; :diminish yas-minor-mode
+      :diminish yas-minor-mode
       :custom ((yas-indent-line . 'fixed)
                (yas-global-mode . t)
                (yas-snippet-dirs . '("~/.dotfiles/.emacs.d/snippets"    ;; 自作スニペット
@@ -636,7 +647,7 @@ bottom center.  The structure of INFO can be found in docstring of
       :doc "Using posframe to show Ivy"
       :after ivy
       :ensure t
-      ;; :diminish ivy-posframe-mode
+      :diminish ivy-posframe-mode
       :defun (ivy-posframe--display posframe-poshandler-frame-bottom-center)
       :preface
       (defun ivy-posframe-display-at-frame-bottom-center (str)
@@ -654,7 +665,7 @@ bottom center.  The structure of INFO can be found in docstring of
       ;; Ref: https://github.com/tumashu/company-posframe/issues/2
       :disabled (eq window-system 'x)
       :after company
-      ;; :diminish company-posframe-mode
+      :diminish company-posframe-mode
       :custom ((company-posframe-mode . t)))
 
     (leaf flycheck-posframe
@@ -679,7 +690,7 @@ bottom center.  The structure of INFO can be found in docstring of
   (leaf highlight-indent-guides
     :ensure t
     :require t
-    ;; :diminish
+    :diminish
     :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
     :custom (
              (highlight-indent-guides-method . 'character)  ;; fill,column,character
@@ -703,6 +714,44 @@ bottom center.  The structure of INFO can be found in docstring of
     :leaf-defer nil
     :bind (("M-o p" . projectile-command-map))
     :custom ((projectile-mode . t)))
+
+  (leaf persp-mode
+    :ensure t
+    :leaf-defer nil
+    :custom `((persp-keymap-prefix                 . ,(kbd "C-c p"))
+              (persp-nil-name                      . "default")
+              (persp-set-last-persp-for-new-frames . nil)
+              (persp-init-frame-behaviour          . nil)
+              (persp-auto-resume-time              . 0.1)
+              (persp-mode . t))
+    :hook ((emacs-startup-hook . toggle-frame-maximized))
+    :config
+    ;; NOTE: Redefine `persp-add-new' to raddress.
+    ;; Issue: Unable to create/handle persp-mode
+    ;; https://github.com/Bad-ptr/persp-mode.el/issues/96
+    ;; https://github.com/Bad-ptr/persp-mode-projectile-bridge.el/issues/4
+    ;; https://emacs-china.org/t/topic/6416/7
+    ;; (defun* persp-add-new (name &optional (phash *persp-hash*))
+    ;;   "Create a new perspective with the given `NAME'. Add it to `PHASH'.
+    ;; Return the created perspective."
+    ;;   (interactive "sA name for the new perspective: ")
+    ;;   (if (and name (not (equal "" name)))
+    ;;       (destructuring-bind (e . p)
+    ;;           (persp-by-name-and-exists name phash)
+    ;;         (if e p
+    ;;           (setq p (if (equal persp-nil-name name)
+    ;;                  nil (make-persp :name name)))
+    ;;           (persp-add p phash)
+    ;;           (run-hook-with-args 'persp-created-functions p phash)
+    ;;           p))
+    ;;     (message "[persp-mode] Error: Can't create a perspective with empty name.")
+    ;;     nil))
+
+    ;; Ignore temporary buffers
+    ;; (add-hook 'persp-common-buffer-filter-functions
+    ;;           (lambda (b) (or (string-prefix-p "*" (buffer-name b))
+    ;;                 (string-prefix-p "magit" (buffer-name b)))))
+    )
   )
 
 (leaf *major-mode
@@ -743,7 +792,20 @@ bottom center.  The structure of INFO can be found in docstring of
     ;; )
     )
   (leaf yaml-mode :ensure t)
+
+  (leaf web-mode
+    :ensure t
+    :mode ("\\.css\\'"
+           "\\.js\\'" "\\.json\\'" "\\.p?html?\\'"
+           "\\.php\\'" "\\.tsx\\'" "\\.vue\\'" "\\.xml\\'"))
   )
+
+  (leaf *docker-modes
+    :config
+    (leaf docker              :ensure t)
+    (leaf dockerfile-mode     :ensure t)
+    (leaf docker-compose-mode :ensure t)
+    (leaf docker-tramp        :ensure t))
 
 (leaf *misc-tools
   :config
@@ -785,5 +847,30 @@ bottom center.  The structure of INFO can be found in docstring of
         (when (processp proc)
           (set-process-query-on-exit-flag proc nil))))
     (add-hook 'term-exec-hook 'set-no-process-query-on-exit)
+    )
+
+  ;; (leaf multi-term
+  ;;   :ensure t
+  ;;   :custom `((multi-term-program . ,(getenv "SHELL")))
+  ;;   :preface
+  ;;   (defun namn/open-shell-sub (new)
+  ;;     (split-window-below)
+  ;;     (enlarge-window 5)
+  ;;     (other-window 1)
+  ;;     (let ((term) (res))
+  ;;       (if (or new (null (setq term (dolist (buf (buffer-list) res)
+  ;;                                      (if (string-match "*terminal<[0-9]+>*" (buffer-name buf))
+  ;;                                          (setq res buf))))))
+  ;;           (multi-term)
+  ;;         (switch-to-buffer term))))
+  ;;   (defun namn/open-shell ()
+  ;;     (interactive)
+  ;;     (namn/open-shell-sub t))
+  ;;   (defun namn/to-shell ()
+  ;;     (interactive)
+  ;;     (namn/open-shell-sub nil))
+  ;;   :bind (("C-^"   . namn/to-shell)
+  ;;          ("C-M-^" . namn/open-shell)
+  ;;          (:term-raw-map
+  ;;           ("C-t" . other-window))))
   )
-)
