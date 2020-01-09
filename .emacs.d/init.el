@@ -82,29 +82,13 @@
     (keyboard-translate ?\C-h ?\C-?)
     )
 
-  (leaf *defalut-keybind
+  (leaf *default-keybind
     :bind (("M-+" . text-scale-increase)
            ("M-=" . text-scale-increase)
            ("M--" . text-scale-decrease)
            ("C-x |" . split-window-right)
            ("C-x -" . split-window-below)
            ("C-x x" . delete-window)))
-
-  (leaf frame
-    :custom ((default-frame-alist . (append '((width                . 85)  ; フレーム幅
-                                              (height               . 38 ) ; フレーム高
-                                              ;; (left                 . 70 ) ; 配置左位置
-                                              ;; (top                  . 28 ) ; 配置上位置
-                                              (line-spacing         . 0  ) ; 文字間隔
-                                              (left-fringe          . 10 ) ; 左フリンジ幅
-                                              (right-fringe         . 11 ) ; 右フリンジ幅
-                                              (scroll-bar-width     . 17 ) ; スクロールバー幅
-                                              (cursor-type          . box) ; カーソル種別
-                                              (alpha                . 95 ) ; 透明度
-                                              ) default-frame-alist))
-             (initial-frame-alist . default-frame-alist)
-             (frame-title-format .'("emacs " emacs-version (buffer-file-name " - %f"))))
-    :bind(("C-c C-f" . toggle-frame-maximized)))
 
   (leaf *lisp
     :config
@@ -168,43 +152,7 @@
     :config
     (leaf vc-hooks
       :custom ((vc-follow-symlinks . t))))
-
-  (leaf *ui
-    :config
-    (leaf mac
-      :doc "implementation of gui terminal on macos"
-      :doc "each symbol can be `control', `meta', `alt', `hyper', or `super'"
-      :doc "`left' meens same value setting its left key"
-      :when (eq 'mac window-system)
-      :custom ((mac-control-modifier       . 'control)
-               (mac-option-modifier        . 'super)
-               (mac-command-modifier       . 'meta)
-
-               (mac-right-control-modifier . 'control)
-               (mac-right-option-modifier  . 'hyper)
-               (mac-right-command-modifier . 'meta)
-
-               ;; use fn key as normal way.
-               ;; (mac-function-modifier      . 'super)
-               ))
-    (leaf ns
-      :doc "next/open/gnustep / macos communication module"
-      :when (eq 'ns window-system)
-      :custom ((ns-control-modifier       . 'control)
-               (ns-option-modifier        . 'super)
-               (ns-command-modifier       . 'meta)
-
-               (ns-right-control-modifier . 'control)
-               (ns-right-option-modifier  . 'hyper)
-               (ns-right-command-modifier . 'meta)
-
-               ;; use fn key as normal way.
-               ;; (ns-function-modifier      . 'super)
-               ;; https://www.reddit.com/r/emacs/comments/9jm1az/emacs_rendering_is_broken_in_macos_mojave/e6sg9ei/
-               (default-frame-alist . '((inhibit-double-buffering . t)
-                                        (ns-appearance            . dark)
-                                        (ns-transparent-titlebar  . t)))))))
-
+  )
 (leaf *color-theme
   :config
   (leaf doom-themes
@@ -229,40 +177,76 @@
       :config
       (set-cursor-color "cyan")
       ))
-
-  (leaf rainbow-delimiters
-    :ensure t
-    :hook
-    ((prog-mode-hook       . rainbow-delimiters-mode)))
-  ;; (leaf hide-mode-line
-  ;;   :hook
-  ;;   ((neotree-mode imenu-list-minor-mode minimap-mode) . hide-mode-line-mode))
-
-  (leaf nyan-mode
-    :ensure t
-    :require t
-    :custom ((nyan-cat-face-number . 4)
-             (nyan-animate-nyancat . t))
-    :hook
-    ((doom-modeline-mode-hook . nyan-mode)))
   )
 
-(leaf *font
-  :when window-system
+(leaf *ui
   :config
-  (progn
-    (create-fontset-from-ascii-font
-     "Ricty Diminished-16:weight=normal:slant=normal"
-     nil
-     "Ricty_Diminished")
-    (set-fontset-font
-     "fontset-Ricty_Diminished"
-     'unicode
-     "Ricty Diminished-16:weight=normal:slant=normal"
-     nil
-     'append)
-    (add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))))
+  (leaf mac
+    :doc "implementation of gui terminal on macos"
+    :doc "each symbol can be `control', `meta', `alt', `hyper', or `super'"
+    :doc "`left' meens same value setting its left key"
+    :when (eq 'mac window-system)
+    :custom ((mac-control-modifier       . 'control)
+             (mac-option-modifier        . 'super)
+             (mac-command-modifier       . 'meta)
 
+             (mac-right-control-modifier . 'control)
+             (mac-right-option-modifier  . 'hyper)
+             (mac-right-command-modifier . 'meta)
+
+             ;; use fn key as normal way.
+             ;; (mac-function-modifier      . 'super)
+             ))
+
+  (leaf ns
+    :doc "next/open/gnustep / macos communication module"
+    :when (eq 'ns window-system)
+    :custom ((ns-control-modifier       . 'control)
+         (ns-option-modifier        . 'super)
+         (ns-command-modifier       . 'meta)
+
+         (ns-right-control-modifier . 'control)
+         (ns-right-option-modifier  . 'hyper)
+         (ns-right-command-modifier . 'meta)
+         ;; use fn key as normal way.
+         (ns-function-modifier      . 'super))
+    :config
+    (setq default-frame-alist (append '((inhibit-double-buffering . t)
+                                        (ns-appearance            . dark)
+                                        (ns-transparent-titlebar  . t)
+                                        ) default-frame-alist))
+    )
+
+  (leaf *font
+    :when window-system
+    :config
+    (progn
+      (create-fontset-from-ascii-font
+       "Ricty Diminished-16:weight=normal:slant=normal"
+       nil
+       "Ricty_Diminished")
+      (set-fontset-font
+       "fontset-Ricty_Diminished"
+       'unicode
+       "Ricty Diminished-16:weight=normal:slant=normal"
+       nil
+       'append)
+      (add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))))
+
+  (leaf *frame
+    :init
+    (setq default-frame-alist (append '((line-spacing         . 0  ) ; 文字間隔
+                                        (left-fringe          . 10 ) ; 左フリンジ幅
+                                        (right-fringe         . 11 ) ; 右フリンジ幅
+                                        (scroll-bar-width     . 17 ) ; スクロールバー幅
+                                        (cursor-type          . box) ; カーソル種別
+                                        (alpha                . 95 ) ; 透明度
+                                        ) default-frame-alist))
+    :custom
+    (initial-frame-alist . default-frame-alist)
+    (frame-title-format . '("emacs " emacs-version (buffer-file-name " - %f")))
+    :bind(("C-c C-f" . toggle-frame-maximized)))
+  )
 
 (leaf *minor-mode
   :config
@@ -752,6 +736,21 @@ bottom center.  The structure of INFO can be found in docstring of
     ;;           (lambda (b) (or (string-prefix-p "*" (buffer-name b))
     ;;                 (string-prefix-p "magit" (buffer-name b)))))
     )
+  (leaf rainbow-delimiters
+    :ensure t
+    :hook
+    ((prog-mode-hook       . rainbow-delimiters-mode)))
+  ;; (leaf hide-mode-line
+  ;;   :hook
+  ;;   ((neotree-mode imenu-list-minor-mode minimap-mode) . hide-mode-line-mode))
+
+  (leaf nyan-mode
+    :ensure t
+    :require t
+    :custom ((nyan-cat-face-number . 4)
+             (nyan-animate-nyancat . t))
+    :hook
+    ((doom-modeline-mode-hook . nyan-mode)))
   )
 
 (leaf *major-mode
