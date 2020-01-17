@@ -38,5 +38,6 @@ elif [[ "$PLATFORM" == 'linux' ]];then
     export PATH="$LINUX_DEFAULT_PATH"
 fi
 
-export PATH="$HOME/.pyenv/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$HOME/.poetry/bin:$HOME/.pyenv/bin:$PATH"
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi

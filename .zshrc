@@ -76,6 +76,7 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
 # Completion
+fpath+=$HOME/.zfunc
 autoload -U compinit
 compinit -u
 setopt auto_list
