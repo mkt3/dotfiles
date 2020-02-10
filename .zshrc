@@ -184,6 +184,11 @@ if type "pipenv" > /dev/null 2>&1; then
     eval "$(pipenv --completion)"
 fi
 
+# poetry config
+if type "poetry" > /dev/null 2>&1; then
+    poetry config virtualenvs.in-project true
+fi
+
 # direnv config
 if type "direnv" > /dev/null 2>&1; then
     eval "$(direnv hook zsh)"
