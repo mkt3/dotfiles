@@ -193,3 +193,9 @@ fi
 if type "direnv" > /dev/null 2>&1; then
     eval "$(direnv hook zsh)"
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "${HOME}/gcp/google-cloud-sdk/path.zsh.inc" ]; then . "${HOME}/gcp/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc"; fi
