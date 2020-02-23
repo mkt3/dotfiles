@@ -222,18 +222,7 @@
   (leaf *font
     :when window-system
     :config
-    (progn
-      (create-fontset-from-ascii-font
-       "Ricty Diminished-16:weight=normal:slant=normal"
-       nil
-       "Ricty_Diminished")
-      (set-fontset-font
-       "fontset-Ricty_Diminished"
-       'unicode
-       "Ricty Diminished-16:weight=normal:slant=normal"
-       nil
-       'append)
-      (add-to-list 'default-frame-alist '(font . "fontset-Ricty_Diminished"))))
+    (add-to-list 'default-frame-alist '(font . "Hackgen-16")))
 
   (leaf *frame
     :init
