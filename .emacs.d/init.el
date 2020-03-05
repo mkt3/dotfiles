@@ -30,6 +30,7 @@
     (leaf el-get :ensure t
       :custom ((el-get-git-shallow-clone  . t)))))
 
+
 (leaf *initialize-emacs
   :config
   (leaf exec-path-from-shell
@@ -170,10 +171,10 @@
 
     (leaf doom-modeline
       :ensure t
-      :custom ((doom-modeline-buffer-file-name-style 'truncate-with-project)
-               (doom-modeline-icon t)
-               (doom-modeline-major-mode-icon nil)
-               (doom-modeline-minor-modes nil))
+      :custom ((doom-modeline-buffer-file-name-style . 'truncate-with-project)
+               (doom-modeline-icon . t)
+               (doom-modeline-major-mode-icon . nil)
+               (doom-modeline-minor-modes . nil))
       :hook
       ((after-init-hook . doom-modeline-mode))
       :config
@@ -408,10 +409,10 @@
         :ensure t
         :custom ((ivy-rich-mode . t)))
 
-      (leaf ivy-point-history
-        :el-get SuzumiyaAoba/ivy-point-history
-        :bind (("C-c b p" . ivy-point-history))
-        :require t)
+      ;; (leaf ivy-point-history
+      ;;   :el-get SuzumiyaAoba/ivy-point-history
+      ;;   :bind (("C-c b p" . ivy-point-history))
+      ;;   :require t)
 
       (leaf all-the-icons-ivy
         :after all-the-icons
