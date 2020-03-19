@@ -415,6 +415,7 @@
       ;;   :require t)
 
       (leaf all-the-icons-ivy
+        :when window-system
         :after all-the-icons
         :defun (all-the-icons-ivy-setup)
         :ensure t
