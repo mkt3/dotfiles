@@ -26,8 +26,8 @@ deploy:
 	@[ -e $(DOTPATH)/.emacs.d/ddskk.d/skk-record ] || touch $(DOTPATH)/.emacs.d/ddskk.d/skk-record
 	@[ -e $(DOTPATH)/.emacs.d/snippets ] || mkdir $(DOTPATH)/.emacs.d/snippets
 	@[ -e $(HOME)/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git $(HOME)/.fzf
-	@[ -e $(HOME)/.zplugin ] || mkdir $(HOME)/.zplugin
-	@[ -e $(HOME)/.zplugin/bin ] || git clone https://github.com/zdharma/zplugin.git $(HOME)/.zplugin/bin
+	@[ -e $(HOME)/.zinit ] || mkdir $(HOME)/.zinit
+	@[ -e $(HOME)/.zinit/bin ] || git clone https://github.com/zdharma/zinit.git $(HOME)/.zinit/bin
 	@[ -e $(HOME)/.pyenv ] || git clone git://github.com/yyuu/pyenv.git ~/.pyenv
 
 init:
@@ -37,7 +37,7 @@ init:
 update:
 	git pull origin master
 	if [ -e $(HOME)/.fzf ]; then cd $(HOME)/.fzf && git pull origin master;fi
-	if [ -e $(HOME)/.zplugin/bin ]; then cd $(HOME)/.zplugin/bin && git pull origin master;fi
+	if [ -e $(HOME)/.zinit/bin ]; then cd $(HOME)/.zinit/bin && git pull origin master;fi
 	if [ -e $(HOME)/.pyenv ]; then cd $(HOME)/.pyenv && git pull origin master;fi
 
 install: update deploy init

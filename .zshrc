@@ -1,15 +1,13 @@
-### Added by Zplugin's installer
-. "${HOME}/.zplugin/bin/zplugin.zsh"
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
-### End of Zplugin's installer chunk
+. "${HOME}/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-zplugin load zsh-users/zsh-completions
-zplugin load zsh-users/zsh-autosuggestions
-zplugin light zdharma/fast-syntax-highlighting
-zplugin load "b4b4r07/enhancd"
-zplugin ice atload'!_zsh_git_prompt_precmd_hook' lucid
-zplugin load woefe/git-prompt.zsh
+zinit load zsh-users/zsh-completions
+zinit load zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-syntax-highlighting
+zinit load "b4b4r07/enhancd"
+zinit ice atload'!_zsh_git_prompt_precmd_hook' lucid
+zinit load woefe/git-prompt.zsh
 
 # Prompt
 autoload -U colors
