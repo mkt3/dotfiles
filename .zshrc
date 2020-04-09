@@ -124,9 +124,8 @@ alias grep='grep --color=auto'
 alias x="exit"
 alias sudo='TERM=xterm-256color sudo'
 
-cdl ()
-{
-    builtin cd "$@" && ls
+chpwd() {
+    ls
 }
 
 # Config for each environment
