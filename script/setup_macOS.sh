@@ -3,12 +3,14 @@
 # keyboard
 ## リピート入力までの時間
 defaults write -g InitialKeyRepeat -int 15
-# キーのリピート
+## キーのリピート
 defaults write -g KeyRepeat -int 2
 
 # trackpad
-## スクロールの速さ
+## 軌跡の速さ
 defaults write -g com.apple.trackpad.scaling 3
+## スクロールの速さ
+defaults write -g com.apple.trackpad.scrolling 1
 
 # Finder
 ## フルパス表示
@@ -38,11 +40,10 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # 検索時にデフォルトでカレントディレクトリを検索
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
-## サイドバーから「最近の項目」を削除
+## サイドバーの表示
 defaults write com.apple.finder ShowRecentTags -bool false
 defaults write com.apple.finder SidebarShowingiCloudDesktop -bool false
 defaults write com.apple.finder SidebarShowingSignedIntoiCloud -bool false
-
 defaults write com.apple.finder SidebarDevicesSectionDisclosedState -bool true
 defaults write com.apple.finder SidebarPlacesSectionDisclosedState -bool true
 
@@ -56,7 +57,6 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 27 "<dic
 # Spotlight
 ## 「Spotlight検索を表示」を無効化
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1048576</integer></array><key>type</key><string>standard</string></dict></dict>"
-
 ## 「Finderの検索ウインドウを表示」を無効化
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1572864</integer></array><key>type</key><string>standard</string></dict></dict>"
 
@@ -70,8 +70,13 @@ defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write com.apple.menuextra.battery ShowPercent -string "YES"
 ## 日付、曜日、時間の表記
 defaults write com.apple.menuextra.clock DateFormat -string 'EEE d MMM HH:mm'
-## bluetoothの表示
-defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.bluetooth" -bool true
+## menu bar icon
+defaults write com.apple.systemuiserver menuExtras -array \
+         "/System/Library/CoreServices/Menu Extras/Clock.menu" \
+         "/System/Library/CoreServices/Menu Extras/Battery.menu" \
+         "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
+         "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
+         "/System/Library/CoreServices/Menu Extras/Displays.menu"
 
 # Dock
 ## Dockを自動的に隠す
@@ -97,3 +102,6 @@ defaults write com.apple.TextEdit RichText -int 0
 ## UTF-8で保存
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
+
+## Time MachineからTime Machine用のSMBフォルダを参照できるように
+defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
