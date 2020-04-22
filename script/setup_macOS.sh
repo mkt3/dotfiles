@@ -34,9 +34,9 @@ defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -boolean true
 ## 「ゴミ箱に入れる」のショートカットキーをctrl + dへ
 defaults write com.apple.Finder NSUserKeyEquivalents -dict-add "ゴミ箱に入れる" -string "^d"
 # 名前で並べ替えを選択時にディレクトリを前に置くようにする
-$ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # 検索時にデフォルトでカレントディレクトリを検索
-$ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
 killall Finder
 
@@ -47,21 +47,21 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 27 "<dic
 
 # Spotlight
 ## 「Spotlight検索を表示」を無効化
-$ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1048576</integer></array><key>type</key><string>standard</string></dict></dict>"
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1048576</integer></array><key>type</key><string>standard</string></dict></dict>"
 
 ## 「Finderの検索ウインドウを表示」を無効化
-$ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1572864</integer></array><key>type</key><string>standard</string></dict></dict>"
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1572864</integer></array><key>type</key><string>standard</string></dict></dict>"
 
 # スペルの訂正を無効にする
 defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
 # 自動大文字の無効化
-$ defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 
 # メニューバー
 ## バッテリー残量の％表記
-$ defaults write com.apple.menuextra.battery ShowPercent -string "YES"
+defaults write com.apple.menuextra.battery ShowPercent -string "YES"
 ## 日付、曜日、時間の表記
-$ defaults write com.apple.menuextra.clock DateFormat -string 'EEE d MMM HH:mm'
+defaults write com.apple.menuextra.clock DateFormat -string 'EEE d MMM HH:mm'
 ## bluetoothの表示
 defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.bluetooth" -bool true
 
