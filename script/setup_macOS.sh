@@ -42,7 +42,8 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 defaults write com.apple.finder ShowRecentTags -bool false
 defaults write com.apple.finder SidebarShowingiCloudDesktop -bool false
 defaults write com.apple.finder SidebarShowingSignedIntoiCloud -bool false
-# 
+
+defaults write com.apple.finder SidebarDevicesSectionDisclosedState -bool true
 defaults write com.apple.finder SidebarPlacesSectionDisclosedState -bool true
 
 killall Finder
