@@ -17,6 +17,9 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
 ## パスバー表示
 defaults write com.apple.finder ShowPathbar -bool true
+## 新規ウィンドウをホームディレクトリで開く
+defaults write com.apple.finder NewWindowTarget -string "PfLo"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}"
 ## ネットワークドライブやUSBメモリでの.DS_Storeの作成抑止
 defaults write com.apple.desktopservices DSDontWriteNetworkStores True
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
@@ -24,9 +27,6 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
 defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
 defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
-# 新しいウィンドウでデフォルトでホームフォルダを開く
-defaults write com.apple.finder NewWindowTarget -string "PfDe"
-defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 ## 拡張子を常に表示
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 ## 保存ダイアログを詳細設定で表示
@@ -37,6 +37,13 @@ defaults write com.apple.Finder NSUserKeyEquivalents -dict-add "ゴミ箱に入�
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # 検索時にデフォルトでカレントディレクトリを検索
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+## サイドバーから「最近の項目」を削除
+defaults write com.apple.finder ShowRecentTags -bool false
+defaults write com.apple.finder SidebarShowingiCloudDesktop -bool false
+defaults write com.apple.finder SidebarShowingSignedIntoiCloud -bool false
+# 
+defaults write com.apple.finder SidebarPlacesSectionDisclosedState -bool true
 
 killall Finder
 
