@@ -1,5 +1,9 @@
 #!/bin/bash
 
+##
+# macOSの設定
+##
+
 # keyboard
 ## リピート入力までの時間
 defaults write -g InitialKeyRepeat -int 15
@@ -11,6 +15,8 @@ defaults write -g KeyRepeat -int 2
 defaults write -g com.apple.trackpad.scaling 3
 ## スクロールの速さ
 defaults write -g com.apple.trackpad.scrolling 1
+## 3本指ドラッグの有効化
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 
 # Finder
 ## フルパス表示
@@ -35,10 +41,12 @@ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -boolean true
 ## 「ゴミ箱に入れる」のショートカットキーをctrl + dへ
 defaults write com.apple.Finder NSUserKeyEquivalents -dict-add "ゴミ箱に入れる" -string "^d"
-# 名前で並べ替えを選択時にディレクトリを前に置くようにする
+## 名前で並べ替えを選択時にディレクトリを前に置くようにする
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-# 検索時にデフォルトでカレントディレクトリを検索
+## 検索時にデフォルトでカレントディレクトリを検索
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+## デフォルトをカラム表示
+defaults write com.apple.finder FXPreferredViewStyle clmv
 
 ## サイドバーの表示
 defaults write com.apple.finder ShowRecentTags -bool false
@@ -96,6 +104,12 @@ killall Dock
 ## ファイアーウォールを有効
 sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 
+# キャプチャ
+## キャプチャの保存場所を変更
+defaults write com.apple.screencapture location ~/Downloads
+## キャプチャのプレフィックスを変更
+defaults write com.apple.screencapture name "ss_"
+
 # TextEdit
 ## RichTextの無効化
 defaults write com.apple.TextEdit RichText -int 0
@@ -105,3 +119,16 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 
 ## Time MachineからTime Machine用のSMBフォルダを参照できるように
 defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
+
+## terminfoに24bit color-modeを登録
+tic -x -o "${HOME}/.dotfiles/script/terminfo-24bit.src"
+
+##
+# Homebrew
+##
+
+# Honebrewのインストール
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+## ~/Brewfileに従ってアプリケーション等のインストール
+brew bundle --global
+
