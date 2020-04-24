@@ -123,7 +123,7 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
 
 ## terminfoに24bit color-modeを登録
-tic -x -o "${HOME}/.dotfiles/script/terminfo-24bit.src"
+tic -x -o "${HOME}/.terminfo"  "${HOME}/.dotfiles/script/terminfo-24bit.src"
 
 ##
 # Homebrew
