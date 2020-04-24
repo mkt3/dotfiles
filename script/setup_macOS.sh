@@ -97,6 +97,8 @@ defaults write com.apple.dock tilesize -int 43
 defaults write com.apple.dock largesize -int 96
 ## 最近つかったアプリケーションを非表示
 defaults write com.apple.dock show-recents -bool false
+## 起動中のアプリのみ表示
+defaults write com.apple.dock persistent-apps -array
 # Dockをすぐに表示
 defaults write com.apple.dock autohide-delay -float 0
 killall Dock
