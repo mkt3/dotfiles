@@ -1,6 +1,11 @@
 #!/bin/bash
 
 ##
+# xclode install
+##
+xcode-select --install
+
+##
 # macOSの設定
 ##
 

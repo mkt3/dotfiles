@@ -42,4 +42,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$HOME/.poetry/bin:$HOME/.pyenv/bin:$PATH"
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+
 export PYTHONDONTWRITEBYTECODE=1
