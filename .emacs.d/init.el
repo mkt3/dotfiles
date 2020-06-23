@@ -790,9 +790,13 @@ bottom center.  The structure of INFO can be found in docstring of
     :mode ("\\.css\\'"
            "\\.js\\'" "\\.json\\'" "\\.p?html?\\'"
            "\\.php\\'" "\\.tsx\\'" "\\.vue\\'" "\\.xml\\'"))
+
+  (leaf markdown-mode
+    :ensure t
+    :mode ("\\.md\\'")
   )
 
-  (leaf *docker-modes
+(leaf *docker-modes
     :config
     (leaf docker              :ensure t)
     (leaf dockerfile-mode     :ensure t)
