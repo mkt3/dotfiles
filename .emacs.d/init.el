@@ -544,9 +544,7 @@
       :diminish yas-minor-mode
       :custom ((yas-indent-line . 'fixed)
                (yas-global-mode . t)
-               (yas-snippet-dirs . '("~/.dotfiles/.emacs.d/snippets"    ;; 自作スニペット
-                                     "~/.dotfiles/.emacs.d/straight/build/yasnippet-snippets/snippets"         ;; package に含まれるスニペット
-                                     )))
+                                     )
       :bind ((yas-keymap
               ("<tab>" . nil))            ; conflict with company
              (yas-minor-mode-map
@@ -756,7 +754,7 @@ bottom center.  The structure of INFO can be found in docstring of
       (elpy-enable)
       :config
       (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
-      :custom ((elpy-rpc-virtualenv-path . 'current))
+      ;; :custom ((elpy-rpc-virtualenv-path . 'current))
       )
 
     (leaf py-isort
@@ -870,3 +868,4 @@ bottom center.  The structure of INFO can be found in docstring of
   ;;          (:term-raw-map
   ;;           ("C-t" . other-window))))
   )
+)
