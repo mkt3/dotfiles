@@ -754,7 +754,7 @@ bottom center.  The structure of INFO can be found in docstring of
       (elpy-enable)
       :config
       (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
-      ;; :custom ((elpy-rpc-virtualenv-path . 'current))
+      :custom ((elpy-rpc-virtualenv-path . 'current))
       )
 
     (leaf py-isort
