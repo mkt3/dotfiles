@@ -44,3 +44,4 @@ mas "RunCat", id: 1429033973
 mas "Things", id: 904280696
 mas "Bear", id: 1091189122
 mas "Magnet", id: 441258766
+mas "Sequel Ace", id: 1518036000
