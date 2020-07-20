@@ -573,94 +573,94 @@
       ((company-mode-hook . set-yas-as-company-backend))
       ))
 
-  (leaf posframe
-    :ensure t
-    :when (version<= "26.1" emacs-version)
-    :when window-system
-    :preface
-    (defun posframe-poshandler-frame-bottom-center (info)
-      "Posframe's position handler.
-Get a position which let posframe stay onto its parent-frame's
-bottom center.  The structure of INFO can be found in docstring of
-`posframe-show'."
-      (cons (/ (- (plist-get info :parent-frame-width)
-                  (plist-get info :posframe-width))
-               2)
-            (- 0
-               (plist-get info :mode-line-height)
-               (plist-get info :minibuffer-height))))
+;;   (leaf posframe
+;;     :ensure t
+;;     :when (version<= "26.1" emacs-version)
+;;     :when window-system
+;;     :preface
+;;     (defun posframe-poshandler-frame-bottom-center (info)
+;;       "Posframe's position handler.
+;; Get a position which let posframe stay onto its parent-frame's
+;; bottom center.  The structure of INFO can be found in docstring of
+;; `posframe-show'."
+;;       (cons (/ (- (plist-get info :parent-frame-width)
+;;                   (plist-get info :posframe-width))
+;;                2)
+;;             (- 0
+;;                (plist-get info :mode-line-height)
+;;                (plist-get info :minibuffer-height))))
 
-    (defun posframe-poshandler-window-top-center (info)
-      "Posframe's position handler.
-Get a position which let posframe stay onto current window's
-top center.  The structure of INFO can be found in docstring of
-`posframe-show'."
-      (let* ((window-left (plist-get info :parent-window-left))
-             (window-top (plist-get info :parent-window-top))
-             (window-width (plist-get info :parent-window-width))
-             (posframe-width (plist-get info :posframe-width)))
-        (cons (+ window-left (/ (- window-width posframe-width) 2))
-              window-top)))
+;;     (defun posframe-poshandler-window-top-center (info)
+;;       "Posframe's position handler.
+;; Get a position which let posframe stay onto current window's
+;; top center.  The structure of INFO can be found in docstring of
+;; `posframe-show'."
+;;       (let* ((window-left (plist-get info :parent-window-left))
+;;              (window-top (plist-get info :parent-window-top))
+;;              (window-width (plist-get info :parent-window-width))
+;;              (posframe-width (plist-get info :posframe-width)))
+;;         (cons (+ window-left (/ (- window-width posframe-width) 2))
+;;               window-top)))
 
-    (defun posframe-poshandler-window-bottom-center (info)
-      "Posframe's position handler.
-Get a position which let posframe stay onto current window's
-bottom center.  The structure of INFO can be found in docstring of
-`posframe-show'."
-      (let* ((window-left (plist-get info :parent-window-left))
-             (window-top (plist-get info :parent-window-top))
-             (window-width (plist-get info :parent-window-width))
-             (window-height (plist-get info :parent-window-height))
-             (posframe-width (plist-get info :posframe-width))
-             (posframe-height (plist-get info :posframe-height))
-             (mode-line-height (plist-get info :mode-line-height)))
-        (cons (+ window-left (/ (- window-width posframe-width) 2))
-              (+ window-top window-height
-                 (- 0 mode-line-height posframe-height)))))
-    :config
-    (leaf ivy-posframe
-      :doc "Using posframe to show Ivy"
-      :after ivy
-      :ensure t
-      :diminish ivy-posframe-mode
-      :defun (ivy-posframe--display posframe-poshandler-frame-bottom-center)
-      :preface
-      (defun ivy-posframe-display-at-frame-bottom-center (str)
-        (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
-      :custom ((ivy-posframe-mode . t)
-               (ivy-posframe-height-alist . '((swiper . 30) (t . 40)))
-               (ivy-posframe-display-functions-alist
-                . '((swiper . nil) (t . ivy-posframe-display-at-frame-bottom-center)))
-               (ivy-posframe-parameters . '((left-fringe . 10)))))
+;;     (defun posframe-poshandler-window-bottom-center (info)
+;;       "Posframe's position handler.
+;; Get a position which let posframe stay onto current window's
+;; bottom center.  The structure of INFO can be found in docstring of
+;; `posframe-show'."
+;;       (let* ((window-left (plist-get info :parent-window-left))
+;;              (window-top (plist-get info :parent-window-top))
+;;              (window-width (plist-get info :parent-window-width))
+;;              (window-height (plist-get info :parent-window-height))
+;;              (posframe-width (plist-get info :posframe-width))
+;;              (posframe-height (plist-get info :posframe-height))
+;;              (mode-line-height (plist-get info :mode-line-height)))
+;;         (cons (+ window-left (/ (- window-width posframe-width) 2))
+;;               (+ window-top window-height
+;;                  (- 0 mode-line-height posframe-height)))))
+;;     :config
+;;     (leaf ivy-posframe
+;;       :doc "Using posframe to show Ivy"
+;;       :after ivy
+;;       :ensure t
+;;       :diminish ivy-posframe-mode
+;;       :defun (ivy-posframe--display posframe-poshandler-frame-bottom-center)
+;;       :preface
+;;       (defun ivy-posframe-display-at-frame-bottom-center (str)
+;;         (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
+;;       :custom ((ivy-posframe-mode . t)
+;;                (ivy-posframe-height-alist . '((swiper . 30) (t . 40)))
+;;                (ivy-posframe-display-functions-alist
+;;                 . '((swiper . nil) (t . ivy-posframe-display-at-frame-bottom-center)))
+;;                (ivy-posframe-parameters . '((left-fringe . 10)))))
 
-    (leaf company-posframe
-      :doc "Use a posframe as company candidate menu"
-      :ensure t
-      ;; Currently, posframe has a issue for changing child-frame with GNOME
-      ;; Ref: https://github.com/tumashu/company-posframe/issues/2
-      :disabled (eq window-system 'x)
-      :after company
-      :diminish company-posframe-mode
-      :custom ((company-posframe-mode . t)))
+;;     (leaf company-posframe
+;;       :doc "Use a posframe as company candidate menu"
+;;       :ensure t
+;;       ;; Currently, posframe has a issue for changing child-frame with GNOME
+;;       ;; Ref: https://github.com/tumashu/company-posframe/issues/2
+;;       :disabled (eq window-system 'x)
+;;       :after company
+;;       :diminish company-posframe-mode
+;;       :custom ((company-posframe-mode . t)))
 
-    (leaf flycheck-posframe
-      :ensure t
-      :after flycheck
-      :custom ((flycheck-posframe-mode . t)))
+;;     (leaf flycheck-posframe
+;;       :ensure t
+;;       :after flycheck
+;;       :custom ((flycheck-posframe-mode . t)))
 
-    (leaf which-key-posframe
-      :ensure t
-      :after which-key
-      :custom ((which-key-posframe-mode . t)))
+;;     (leaf which-key-posframe
+;;       :ensure t
+;;       :after which-key
+;;       :custom ((which-key-posframe-mode . t)))
 
-    (leaf ddskk-posframe
-      :doc "Show Henkan tooltip for ddskk via posframe"
-      ;; Currently, posframe has a issue for changing child-frame with GNOME
-      ;; Ref: https://github.com/tumashu/company-posframe/issues/2
-      :disabled (eq window-system 'x)
-      :ensure t
-      :after skk
-      :custom ((ddskk-posframe-mode . t))))
+;;     (leaf ddskk-posframe
+;;       :doc "Show Henkan tooltip for ddskk via posframe"
+;;       ;; Currently, posframe has a issue for changing child-frame with GNOME
+;;       ;; Ref: https://github.com/tumashu/company-posframe/issues/2
+;;       :disabled (eq window-system 'x)
+;;       :ensure t
+;;       :after skk
+;;       :custom ((ddskk-posframe-mode . t))))
 
   (leaf highlight-indent-guides
     :ensure t
