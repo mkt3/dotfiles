@@ -748,13 +748,17 @@ bottom center.  The structure of INFO can be found in docstring of
   :config
   (leaf *python
     :config
+    (leaf poetry
+      :ensure t
+      :hook ((elpy-mode-hook . poetry-tracking-mode)))
+
     (leaf elpy
       :ensure t
       :init
       (elpy-enable)
       :config
       (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
-      :custom ((elpy-rpc-virtualenv-path . 'current))
+      ;; :custom ((elpy-rpc-virtualenv-path . 'current))
       )
 
     (leaf py-isort
