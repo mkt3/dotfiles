@@ -758,7 +758,6 @@
       (elpy-enable)
       :config
       (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
-      ;; :custom ((elpy-rpc-virtualenv-path . 'current))
       )
 
     (leaf py-isort
@@ -766,25 +765,10 @@
       :after python-mode
       :hook ((before-save-hook . py-isort-before-save)))
 
-    ;; (leaf auto-virtualenvwrapper
-    ;;   :ensure t
-    ;;   :require t
-    ;;   :config
-    ;;   (defun wrapper-auto-virtualenvwrapper-activate ()
-    ;;     (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
-    ;;       (when (and path (not (equal path auto-virtualenvwrapper--path)))
-    ;;         (setq auto-virtualenvwrapper--path path
-    ;;               venv-current-name (file-name-base (file-truename path)))
-    ;;         (venv--activate-dir auto-virtualenvwrapper--path)
-    ;;         (pyvenv-activate auto-virtualenvwrapper--path)
-    ;;         (auto-virtualenvwrapper-message "activated virtualenv: %s" auto-virtualenvwrapper--path))))
-    ;;   ;; :hook ((python-mode-hook forcus-in-hook . wrapper-auto-virtualenvwrapper-activate))
-    ;;   ;; :init
-    ;;   (add-hook 'python-mode-hook #'wrapper-auto-virtualenvwrapper-activate)
-    ;;   (add-hook 'focus-in-hook #'wrapper-auto-virtualenvwrapper-activate)
-    ;;   )
-    ;; )
+    (leaf ein
+      :ensure t)
     )
+
   (leaf yaml-mode :ensure t)
 
   (leaf web-mode
