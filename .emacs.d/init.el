@@ -759,7 +759,7 @@
       :config
       (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
       :custom
-      (elpy-rpc-python-command . "~/.pyenv/shims/python")
+      (elpy-rpc-python-command . "python3")
       )
 
     (leaf py-isort
