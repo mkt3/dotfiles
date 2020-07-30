@@ -752,14 +752,21 @@
       :ensure t
       :hook ((elpy-mode-hook . poetry-tracking-mode)))
 
+    (leaf flycheck
+      :ensure t
+      :hook ((elpy-mode-hook . flycheck-mode))
+      )
+
     (leaf elpy
       :ensure t
       :init
       (elpy-enable)
       :config
       (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
+      (remove-hook 'elpy-modules 'elpy-module-flymake)
       :custom
       (elpy-rpc-python-command . "python3")
+      (flycheck-python-flake8-executable . "flake8")
       )
 
     (leaf py-isort
