@@ -113,7 +113,7 @@ case "${PLATFORM}" in
         alias ls="ls --color"
         alias ll="ls -l"
         alias la="ls -aF"
-        alias open="gnome-open"
+        alias open="xdg-open"
         ;;
 esac
 
