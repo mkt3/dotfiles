@@ -148,7 +148,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ["hyper-iceberg",
+  plugins: ["hyper-material-theme",
             "gitrocket",
             "hyper-opacity",
             "hyper-statusline",
