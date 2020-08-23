@@ -29,6 +29,7 @@ cask "aquaskk"
 cask "vivaldi"
 cask "karabiner-elements"
 cask "tunnelblick"
+cask "joplin"
 cask "nextcloud"
 cask "visual-studio-code"
 mas "Kindle", id: 405399194
