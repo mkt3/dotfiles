@@ -1,0 +1,17 @@
+- name: Include var
+  include_vars: main.yml
+
+- name: Link .emacsd
+  file:
+    src: "{{ role_path }}/files/.emacsd"
+    dest: ~/.emacs.d
+    state: link
+
+- name: Stat skk-record
+  stat:
+    path: "{{ ddskk.skk-reord_file }}"
+  register: skk-record_file
+
+- name: touch skk-record
+  shell: touch "{{ ddskk.skk-record_file }}"
+  when: not skk-record_file.stat.exists

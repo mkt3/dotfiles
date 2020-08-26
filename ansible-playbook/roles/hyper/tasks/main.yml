@@ -1,0 +1,5 @@
+- name: Link .hyper.js
+  file:
+    src: "{{ role_path }}/files/.hyper.js"
+    dest: ~/.hyper.js
+    state: link

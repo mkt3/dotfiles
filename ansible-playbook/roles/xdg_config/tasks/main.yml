@@ -1,0 +1,4 @@
+- name: Make config directory
+  file:
+    path: ~/.config
+    state: directory

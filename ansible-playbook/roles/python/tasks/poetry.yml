@@ -1,0 +1,5 @@
+- name: Install poetry
+  shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+
+- name: Enable virtualenvs in project
+  shell: poetry config virtualenvs.in-project true

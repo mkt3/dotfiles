@@ -1,0 +1,11 @@
+- name: Link .Brewfile
+  file:
+    src: "{{ role_path }}/files/.Brewfile"
+    dest: ~/.Brewfile
+    state: link
+
+- name: Install Homebrew
+  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+- name: Install app
+  shell: brew bundle --global
