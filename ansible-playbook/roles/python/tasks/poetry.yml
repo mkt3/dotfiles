@@ -3,3 +3,11 @@
 
 - name: Enable virtualenvs in project
   shell: poetry config virtualenvs.in-project true
+
+- name: Make .zfunc directory
+  file:
+    path: ~/.zfunc
+    state: directory
+
+- name: Enable poetry completions
+  shell: poetry completions zsh > ~/.zfunc/_poetry

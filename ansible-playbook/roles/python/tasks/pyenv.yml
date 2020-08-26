@@ -8,3 +8,6 @@
     repo: "{{ pyenv.git_url }}"
     dest: "{{ pyenv.install_dir }}"
   when: not pyenv_dir.stat.exists
+
+- name: Install global python
+  shell: pyenv install "{{ pyenv.global_python_version }}" && pyenv global "{{ pyenv.global_python_version }}" 
