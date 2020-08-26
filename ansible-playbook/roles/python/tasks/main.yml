@@ -15,3 +15,6 @@
   
 - name: Import poetry
   import_tasks: poetry.yml
+
+- name: Import pipx
+  import_tasks: pipx.yml

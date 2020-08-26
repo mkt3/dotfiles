@@ -1,14 +1,8 @@
-- name: Stat fzf
-  stat:
-    path: "{{ fzf.install_dir }}"
-  register: fzf_dir
-
 - name: Clone fzf
   git:
     repo: "{{ fzf.git_url }}"
     dest: "{{ fzf.install_dir }}"
     depth: 1
-  when: not fzf_dir.stat.exists
 
 - name: Init fzf
   shell: ~/.fzf/install --completion --key-bindings  --no-update-rc --no-bash
