@@ -1,13 +1,7 @@
 - name: Include var
   include_vars: zinit.yml
 
-- name: Stat zinit
-  stat:
-    path: "{{ zinit.install_dir }}"
-  register: zinit_dir
-
 - name: Clone zinit
   git:
     repo: "{{ zinit.git_url }}"
     dest: "{{ zinit.install_dir }}"
-  when: not zinit_dir.stat.exists
