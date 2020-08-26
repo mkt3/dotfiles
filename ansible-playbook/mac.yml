@@ -1,0 +1,12 @@
+- host: localhost
+  connection: local
+  roles:
+    - xdg_config
+    - term
+    - fzf
+    - zsh
+    - python
+    - git
+    - emacs
+    - karabiner
+    - dotfiles

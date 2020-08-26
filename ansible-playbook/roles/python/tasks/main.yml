@@ -1,0 +1,14 @@
+- name: Link yapf
+  file:
+    src: "{{ role_path }}/files/yapf"
+    dest: ~/.config/yapf
+    state: link
+
+- name: Link flake8
+  file:
+    src: "{{ role_path }}/files/flake8"
+    dest: ~/.config/flake8
+    state: link
+
+- name: Import pyenv
+  import_tasks: pyenv.yml

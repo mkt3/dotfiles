@@ -1,0 +1,14 @@
+- name: Link .zshrc
+  file:
+    src: "{{ role_path }}/files/.zshrc"
+    dest: ~/.zshrc
+    state: link
+
+- name: Link .zshenv
+  file:
+    src: "{{ role_path }}/files/.zshenv"
+    dest: ~/.zshenv
+    state: link
+
+- name: Import zinit
+  import_tasks: zinit.yml

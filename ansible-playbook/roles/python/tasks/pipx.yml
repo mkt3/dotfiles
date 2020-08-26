@@ -1,0 +1,8 @@
+- name: Include var
+  include_vars: pipx.yml
+
+- name: Install pipx
+  shell: pip install pipx
+
+- name: Install package
+  shell: pipx install "{{ pipx.pipx_package }}"

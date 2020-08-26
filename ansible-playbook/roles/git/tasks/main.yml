@@ -1,0 +1,8 @@
+- name: Link .gitignore_global
+  file:
+    src: "{{ role_path }}/files/.gitignore_global"
+    dest: ~/.gitignore_global
+    state: link
+
+- name: Init git
+  shell: git config --global core.excludesfile ~/.gitignore_global

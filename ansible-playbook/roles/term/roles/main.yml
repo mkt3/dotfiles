@@ -1,0 +1,2 @@
+- name: add xterm-24bit and xterm-24bits
+  shell: tic -x -o ~/.terminfo "{{ role_path }}/files/terminfo-24bit.src"

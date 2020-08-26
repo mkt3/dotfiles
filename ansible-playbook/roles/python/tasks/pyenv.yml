@@ -1,0 +1,10 @@
+- name: Stat pyenv
+  stat:
+    path: "{{ pyenv.install_dir }}"
+  register: pyenv_dir
+
+- name: Clone pyenv
+  git:
+    repo: "{{ pyenv.git_url }}"
+    dest: "{{ pyenv.install_dir }}"
+  when: not pyenv_dir.stat.exists
