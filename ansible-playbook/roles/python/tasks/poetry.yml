@@ -13,7 +13,7 @@
 - name: Enable virtualenvs in project
   shell: poetry config virtualenvs.in-project true
 
-  - name: Stat _poetry
+- name: Stat _poetry
   stat:
     path: "{{ poetry.completion_file }}"
   register: completion_file

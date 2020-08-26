@@ -1,7 +1,7 @@
 - name: Include var
   include_vars: pyenv.yml
 
-  - name: Stat pyenv
+- name: Stat pyenv
   stat:
     path: "{{ pyenv.install_dir }}"
   register: pyenv_dir

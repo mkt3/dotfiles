@@ -3,7 +3,7 @@
     path: ~/.config/karabiner
     state: directory
 
-  - name: Link karabiner.json
+- name: Link karabiner.json
   file:
     src: "{{ role_path }}/files/karabiner.json"
     dest: ~/.config/karabiner/karabiner.json
