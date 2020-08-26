@@ -1,4 +1,4 @@
-- host: localhost
+- hosts: localhost
   connection: local
   roles:
     - dotfiles

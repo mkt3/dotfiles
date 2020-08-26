@@ -8,7 +8,7 @@
 
 - name: Install pipx
   shell: pip install pipx
-  when not exist_pipx
+  when: not exist_pipx
 
-- name: Install package
+- name: Install packages
   shell: pipx install "{{ pipx.pipx_package }}"
