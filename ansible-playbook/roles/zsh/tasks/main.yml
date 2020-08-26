@@ -10,5 +10,10 @@
     dest: ~/.zshenv
     state: link
 
+- name: Make .zfunc directory
+  file:
+    path: ~/.zfunc
+    state: directory
+
 - name: Import zinit
   import_tasks: zinit.yml

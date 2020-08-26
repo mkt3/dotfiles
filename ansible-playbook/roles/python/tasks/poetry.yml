@@ -1,13 +1,23 @@
+- name: Include var
+  include_vars: poetry.yml
+
+- name: check exist poetry command
+  shell: type poetry
+  register: exist_poetry
+  failed_when: false
+
 - name: Install poetry
   shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  when: not exist_poetry
 
 - name: Enable virtualenvs in project
   shell: poetry config virtualenvs.in-project true
 
-- name: Make .zfunc directory
-  file:
-    path: ~/.zfunc
-    state: directory
+  - name: Stat _poetry
+  stat:
+    path: "{{ poetry.completion_file }}"
+  register: completion_file
 
 - name: Enable poetry completions
-  shell: poetry completions zsh > ~/.zfunc/_poetry
+  shell: poetry completions zsh > "{{ poetry.completion_file }}"
+  when: not completion_file.stat.exists

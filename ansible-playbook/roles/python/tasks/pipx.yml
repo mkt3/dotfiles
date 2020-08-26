@@ -1,8 +1,14 @@
 - name: Include var
   include_vars: pipx.yml
 
+- name: check exist pipx command
+  shell: type pix
+  register: exist_pipx
+  failed_when: false
+
 - name: Install pipx
   shell: pip install pipx
+  when not exist_pipx
 
 - name: Install package
   shell: pipx install "{{ pipx.pipx_package }}"

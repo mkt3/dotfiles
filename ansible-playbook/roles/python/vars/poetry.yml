@@ -1,0 +1,2 @@
+poetry:
+  completion_dir: ~/.zfunc/_poetry

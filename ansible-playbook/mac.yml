@@ -1,6 +1,7 @@
 - host: localhost
   connection: local
   roles:
+    - dotfiles
     - xdg_config
     - term
     - fzf
@@ -9,4 +10,3 @@
     - git
     - emacs
     - karabiner
-    - dotfiles
