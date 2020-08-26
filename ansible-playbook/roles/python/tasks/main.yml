@@ -12,3 +12,6 @@
 
 - name: Import pyenv
   import_tasks: pyenv.yml
+  
+- name: Import poetry
+  import_tasks: poetry.yml
