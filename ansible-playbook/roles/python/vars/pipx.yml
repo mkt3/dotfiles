@@ -1,5 +1,2 @@
-pipx_packages:
-  - jupyterlab
-  - flake8
-  - isort
-  - mlflow
+pipx:
+  pipx_packages: jupyterlab flake8 isort mlflow

@@ -12,5 +12,16 @@
     dest: "{{ pyenv.install_dir }}"
   when: not pyenv_dir.stat.exists
 
+- name: Check global python version
+  shell: bash -lc "pyenv versions | grep {{ pyenv.global_python_version }}"
+  register: pyenv_versions
+  ignore_errors: yes
+  failed_when: pyenv_versions.rc not in [0, 1] 
+
 - name: Install global python
-  shell: pyenv install "{{ pyenv.global_python_version }}" && pyenv global "{{ pyenv.global_python_version }}" 
+  shell: pyenv install {{ pyenv.global_python_version }}
+  when: pyenv_versions.rc == 1
+
+- name: set global python
+  shell: pyenv global {{ pyenv.global_python_version }} && exec $SHELL
+  when: pyenv_versions.rc == 0
