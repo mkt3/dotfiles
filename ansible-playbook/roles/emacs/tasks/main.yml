@@ -3,15 +3,15 @@
 
 - name: Link .emacsd
   file:
-    src: "{{ role_path }}/files/.emacsd"
+    src: "{{ role_path }}/files/.emacs.d"
     dest: ~/.emacs.d
     state: link
 
 - name: Stat skk-record
   stat:
-    path: "{{ ddskk.skk-reord_file }}"
-  register: skk-record_file
+    path: "{{ ddskk.skk_record_file }}"
+  register: skk_record_file
 
 - name: touch skk-record
-  shell: touch "{{ ddskk.skk-record_file }}"
-  when: not skk-record_file.stat.exists
+  shell: touch "{{ ddskk.skk_record_file }}"
+  when: not skk_record_file.stat.exists

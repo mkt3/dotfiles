@@ -12,4 +12,7 @@
   when: exist_pipx.rc != 0
 
 - name: Install pipx packages
-  shell: pipx install {{ pipx.pipx_packages }}
+  shell: pipx install {{ item }}
+  register: pipx_install
+  changed_when: "'already' not in pipx_install.stdout"
+  with_items: "{{ pipx.pipx_packages }}"

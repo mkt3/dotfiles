@@ -1,27 +1,29 @@
 - name: Include var
   include_vars: pyenv.yml
 
-- name: Stat pyenv
-  stat:
-    path: "{{ pyenv.install_dir }}"
-  register: pyenv_dir
-
 - name: Clone pyenv
   git:
     repo: "{{ pyenv.git_url }}"
     dest: "{{ pyenv.install_dir }}"
-  when: not pyenv_dir.stat.exists
 
-- name: Check global python version
+- name: Check installed python version
   shell: bash -lc "pyenv versions | grep {{ pyenv.global_python_version }}"
   register: pyenv_versions
   ignore_errors: yes
-  failed_when: pyenv_versions.rc not in [0, 1] 
+  failed_when: pyenv_versions.rc not in [0, 1]
+  changed_when: false
 
 - name: Install global python
   shell: pyenv install {{ pyenv.global_python_version }}
   when: pyenv_versions.rc == 1
 
+- name: Check global python version
+  shell: bash -lc "pyenv versions | grep '* {{ pyenv.global_python_version }}'"
+  register: global_python_version
+  ignore_errors: yes
+  failed_when: global_python_version.rc not in [0, 1] 
+  changed_when: false
+
 - name: set global python
   shell: pyenv global {{ pyenv.global_python_version }} && exec $SHELL
-  when: pyenv_versions.rc == 0
+  when: global_python_version.rc == 1

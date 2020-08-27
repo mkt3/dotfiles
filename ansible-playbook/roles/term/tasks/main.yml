@@ -1,2 +1,8 @@
+- name: Stat xterm-24bit
+  stat:
+    path: "~/.terminfo/78/xterm-24bit"
+  register: xterm_24bit_file
+
 - name: add xterm-24bit and xterm-24bits
   shell: tic -x -o ~/.terminfo "{{ role_path }}/files/terminfo-24bit.src"
+  when: not xterm_24bit_file.stat.exists   
