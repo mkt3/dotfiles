@@ -1,0 +1,17 @@
+- name: Link .Brewfile
+  file:
+    src: "{{ role_path }}/files/.Brewfile"
+    dest: ~/.Brewfile
+    state: link
+
+- name: check exist brew command
+  shell: type brew
+  register: exist_brew
+  failed_when: false
+
+- name: Install Homebrew
+  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  when: not exist_brew
+
+- name: Install app
+  shell: brew bundle --global

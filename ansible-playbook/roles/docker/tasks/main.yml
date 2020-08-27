@@ -1,0 +1,5 @@
+- name: Link .docker
+  file:
+    src: "{{ role_path }}/files/.docker"
+    dest: ~/.docker
+    state: link

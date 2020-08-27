@@ -1,0 +1,5 @@
+- name: Link .vimrc
+  file:
+    src: "{{ role_path }}/files/.vimrc"
+    dest: ~/.vimrc
+    state: link

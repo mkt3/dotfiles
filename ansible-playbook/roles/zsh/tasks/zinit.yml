@@ -1,0 +1,7 @@
+- name: Include var
+  include_vars: zinit.yml
+
+- name: Clone zinit
+  git:
+    repo: "{{ zinit.git_url }}"
+    dest: "{{ zinit.install_dir }}"

@@ -1,0 +1,9 @@
+- name: Clone fzf
+  git:
+    repo: "{{ fzf.git_url }}"
+    dest: "{{ fzf.install_dir }}"
+    depth: 1
+  register: clone_fzf
+- name: Init fzf
+  shell: ~/.fzf/install --completion --key-bindings  --no-update-rc --no-bash
+  when: clone_fzf.changed
