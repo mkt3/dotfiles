@@ -19,5 +19,5 @@
   register: completion_file
 
 - name: Enable poetry completions
-  shell: poetry completions zsh > "{{ poetry.completion_file }}"
+  shell: poetry completions zsh > {{ poetry.completion_file }}
   when: not completion_file.stat.exists
