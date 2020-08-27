@@ -5,13 +5,22 @@
   shell: type poetry
   register: exist_poetry
   failed_when: false
+  changed_when: false
 
 - name: Install poetry
   shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
   when: not exist_poetry
 
+- name: Check poetry global settings
+  shell: bash -lc "poetry config --list | grep 'virtualenvs.in-project = true'"
+  register: poetry_global
+  ignore_errors: yes
+  failed_when: poetry_global.rc not in [0, 1] 
+  changed_when: false
+
 - name: Enable virtualenvs in project
   shell: poetry config virtualenvs.in-project true
+  when: poetry_global.rc == 1
 
 - name: Stat _poetry
   stat:
