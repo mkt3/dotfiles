@@ -1,0 +1,16 @@
+- name: Check user systemd direcotry
+  stat:
+    path: ~/.config/systemd/user
+  register: user_systemd_dir
+
+- name: Link xkeysnail systemctl
+  file:
+    src: "{{ role_path }}/files/xkeysnail.service"
+    dest: ~/.config/systemd/user/xkeysnail.service
+    state: link
+
+- name: Link xkeysnail
+  file:
+    src: "{{ role_path }}/files/xkeysnail"
+    dest: ~/.config/xkeysnail
+    state: link
