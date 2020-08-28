@@ -683,12 +683,12 @@
              (imenu-list-auto-resize . t))
     )
 
-  (leaf projectile
-    :when (version<= "25.1" emacs-version)
-    :ensure t
-    :leaf-defer nil
-    :bind (("M-o p" . projectile-command-map))
-    :custom ((projectile-mode . t)))
+  ;; (leaf projectile
+  ;;   :when (version<= "25.1" emacs-version)
+  ;;   :ensure t
+  ;;   :leaf-defer nil
+  ;;   :bind (("M-o p" . projectile-command-map))
+  ;;   :custom ((projectile-mode . t)))
 
   (leaf persp-mode
     :ensure t
