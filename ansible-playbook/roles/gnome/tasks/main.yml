@@ -82,9 +82,9 @@
     value: "@as []"
     state: present
 
-- name: set overview-key
+- name: set overlay-key
   dconf:
-    key: "/org/gnome/mutter/overray-key"
+    key: "/org/gnome/mutter/overlay-key"
     value: "''"
     state: present
 
