@@ -1,26 +1,25 @@
 - name: Include var
   include_vars: poetry.yml
 
-- name: check exist poetry command
+- name: Check exist poetry command
   shell: type poetry
   register: exist_poetry
-  failed_when: false
+  ignore_errors: true
   changed_when: false
 
 - name: Install poetry
   shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-  when: exist_poetry.rc != 0
+  when: exist_poetry is failed
 
 - name: Check poetry global settings
   shell: bash -lc "poetry config --list | grep 'virtualenvs.in-project = true'"
   register: poetry_global
-  ignore_errors: yes
-  failed_when: poetry_global.rc not in [0, 1] 
+  ignore_errors: true
   changed_when: false
 
 - name: Enable virtualenvs in project
   shell: poetry config virtualenvs.in-project true
-  when: poetry_global.rc == 1
+  when: poetry_global is failed
 
 - name: Stat _poetry
   stat:
