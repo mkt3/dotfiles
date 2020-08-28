@@ -7,10 +7,9 @@
 - name: Check git global settings
   shell: bash -lc " git config --list --global | grep .gitignore_global"
   register: gitignore_global
-  ignore_errors: yes
-  failed_when: gitignore_global.rc not in [0, 1] 
+  ignore_errors: true
   changed_when: false
 
 - name: Init git
   shell: git config --global core.excludesfile ~/.gitignore_global
-  when: gitignore_global.rc == 1
+  when: gitignore_global is failed

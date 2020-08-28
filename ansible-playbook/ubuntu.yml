@@ -1,12 +1,4 @@
+- import_playbook: common.yml
+
 - hosts: localhost
   connection: local
-  roles:
-    #    - dotfiles
-    - xdg_config
-    - term
-    - fzf
-    - zsh
-    - python
-    - git
-    - emacs
-    - hyper

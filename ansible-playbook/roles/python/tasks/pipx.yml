@@ -4,12 +4,12 @@
 - name: check exist pipx command
   shell: type pipx
   register: exist_pipx
-  failed_when: false
+  ignore_errors: true
   changed_when: false
 
 - name: Install pipx
   shell: pip install pipx
-  when: exist_pipx.rc != 0
+  when: exist_pipx is failed
 
 - name: Install pipx packages
   shell: pipx install {{ item }}

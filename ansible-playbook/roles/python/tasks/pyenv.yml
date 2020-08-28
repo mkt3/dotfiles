@@ -8,22 +8,20 @@
 
 - name: Check installed python version
   shell: bash -lc "pyenv versions | grep {{ pyenv.global_python_version }}"
-  register: pyenv_versions
-  ignore_errors: yes
-  failed_when: pyenv_versions.rc not in [0, 1]
+  register: pyenv_result
+  ignore_errors: true
   changed_when: false
 
 - name: Install global python
   shell: pyenv install {{ pyenv.global_python_version }}
-  when: pyenv_versions.rc == 1
+  when: pyenv_result is failed
 
 - name: Check global python version
   shell: bash -lc "pyenv versions | grep '* {{ pyenv.global_python_version }}'"
   register: global_python_version
-  ignore_errors: yes
-  failed_when: global_python_version.rc not in [0, 1] 
+  ignore_errors: true
   changed_when: false
 
 - name: set global python
   shell: pyenv global {{ pyenv.global_python_version }} && exec $SHELL
-  when: global_python_version.rc == 1
+  when: global_python_version is failed
