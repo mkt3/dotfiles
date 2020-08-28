@@ -13,5 +13,5 @@
   register: skk_record_file
 
 - name: touch skk-record
-  shell: touch "{{ ddskk.skk_record_file }}"
+  shell: touch {{ ddskk.skk_record_file }}
   when: not skk_record_file.stat.exists
