@@ -1,0 +1,14 @@
+- hosts: localhost
+  connection: local
+  roles:
+    - xdg_config
+    - term
+    - fzf
+    - zsh
+    - python
+    - git
+    - tmux
+    - emacs
+    - vim
+    - docker
+    - hyper
