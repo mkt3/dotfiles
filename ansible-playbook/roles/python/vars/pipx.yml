@@ -1,5 +1,6 @@
 pipx:
   pipx_packages:
+    - ansible
     - jupyterlab
     - flake8
     - isort

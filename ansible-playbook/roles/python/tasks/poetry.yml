@@ -9,7 +9,7 @@
 
 - name: Install poetry
   shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-  when: not exist_poetry
+  when: exist_poetry.rc != 0
 
 - name: Check poetry global settings
   shell: bash -lc "poetry config --list | grep 'virtualenvs.in-project = true'"
