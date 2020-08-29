@@ -240,6 +240,16 @@
     :bind(("C-c C-f" . toggle-frame-maximized)))
   )
 
+(leaf *own-func
+  :init
+  (defun rsync-workspace()
+    (interactive)
+    (when (string-match "/workspace/" buffer-file-name)
+      (shell-command "~/.ssh/rsync_workspace.sh")))
+  :hook ((after-save-hook . rsync-workspace))
+  )
+
+
 (leaf *minor-mode
   :config
   (leaf dimmer
