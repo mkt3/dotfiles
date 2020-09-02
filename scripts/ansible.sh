@@ -16,7 +16,11 @@ case $os in
                 PLAYBOOK=ansible-playbook/arch.yml
             ;;
             ubuntu*)
-                PLAYBOOK=ansible-playbook/ubuntu.yml
+                if type dconf > /dev/null 2>&1; then
+                    PLAYBOOK=ansible-playbook/ubuntu_gui.yml
+                else
+                    PLAYBOOK=ansible-playbook/ubuntu_cui.yml
+                fi
             ;;
          esac
     ;;
