@@ -1,7 +1,7 @@
-- name: Check user systemd direcotry
-  stat:
+- name: Make user systemed dir
+  file:
     path: ~/.config/systemd/user
-  register: user_systemd_dir
+    state: directory
 
 - name: Link xkeysnail systemctl
   file:
