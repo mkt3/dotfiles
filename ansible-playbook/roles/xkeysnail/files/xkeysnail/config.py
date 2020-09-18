@@ -14,7 +14,7 @@ define_modmap({
 # [Conditional modmap] Change modifier keys in certain applications
 define_conditional_modmap(re.compile(r'Emacs'), {
     Key.RIGHT_CTRL: Key.ESC,
-    Key.LEFT_ALT: Key.LEFT_META,
+#    Key.LEFT_ALT: Key.LEFT_META,
     Key.LEFT_META: Key.LEFT_ALT,
 })
 
