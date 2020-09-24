@@ -245,7 +245,7 @@
   (defun rsync-workspace()
     (interactive)
     (when (string-match "/workspace/" buffer-file-name)
-      (shell-command "~/.ssh/rsync_workspace.sh")))
+      (call-process-shell-command "~/.ssh/rsync_workspace.sh &" nil 0)))
   :hook ((after-save-hook . rsync-workspace))
   )
 
