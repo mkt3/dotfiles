@@ -7,7 +7,13 @@
 - name: set maximize
   dconf:
     key: "/org/gnome/desktop/wm/keybindings/maximize"
-    value: "['<Alt>semicolon']"
+    value: "['<Alt>period']"
+    state: present
+
+- name: set unmaximize
+  dconf:
+    key: "/org/gnome/desktop/wm/keybindings/unmaximize"
+    value: "['<Alt>comma']"
     state: present
 
 - name: set switch-group
