@@ -14,6 +14,8 @@ define_modmap({
 # [Conditional modmap] Change modifier keys in certain applications
 define_conditional_modmap(re.compile(r'Emacs'), {
     Key.RIGHT_CTRL: Key.ESC,
+#    Key.LEFT_ALT: Key.LEFT_META,
+    Key.LEFT_META: Key.LEFT_ALT,
 })
 
 # [Multipurpose modmap] Give a key two meanings. A normal key when pressed and
@@ -111,4 +113,8 @@ define_keymap(lambda wm_class: wm_class in ("Hyper"), {
     K("Super-v"): [K("C-Shift-v"), set_mark(False)],
     K("Super-z"): [K("C-Shift-z"), set_mark(False)],
     K("Super-t"): [K("C-Shift-t"), set_mark(False)],
+}, "win-like keys")
+
+define_keymap(lambda wm_class: wm_class in ("Emacs"), {
+    K("M-Tab"): [K("Super-Tab"), set_mark(False)],
 }, "win-like keys")

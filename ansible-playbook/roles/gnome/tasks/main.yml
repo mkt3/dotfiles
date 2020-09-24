@@ -34,6 +34,12 @@
     value: "@as []"
     state: present
 
+- name: set panel-main-menu
+  dconf:
+    key: "/org/gnome/desktop/wm/keybindings/panel-main-menu"
+    value: "['LaunchB']"
+    state: present
+
 - name: set switch-windows
   dconf:
     key: "/org/gnome/desktop/wm/keybindings/switch-windows"
@@ -79,7 +85,7 @@
 - name: set toggle-overview
   dconf:
     key: "/org/gnome/shell/keybindings/toggle-overview"
-    value: "@as []"
+    value: "['<Super>Up']"
     state: present
 
 - name: set overlay-key
@@ -98,4 +104,46 @@
   dconf:
     key: "/org/gnome/desktop/interface/clock-show-weekday"
     value: 'true'
+    state: present
+
+- name: eject
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/ejct"
+    value: "['Eject']"
+    state: present
+
+- name: audio next
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/next"
+    value: "['AudioNext']"
+    state: present
+
+- name: audio prev
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/previous"
+    value: "['AudioPrev']"
+    state: present
+
+- name: audio play
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/play"
+    value: "['AudioPlay']"
+    state: present
+
+- name: volume down
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down"
+    value: "['AudioLowerVolume']"
+    state: present
+
+- name: volume up
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up"
+    value: "['AudioRaiseVolume']"
+    state: present
+
+- name: volume mute
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute"
+    value: "['AudioMute']"
     state: present
