@@ -113,8 +113,17 @@ define_keymap(lambda wm_class: wm_class in ("Hyper"), {
     K("Super-v"): [K("C-Shift-v"), set_mark(False)],
     K("Super-z"): [K("C-Shift-z"), set_mark(False)],
     K("Super-t"): [K("C-Shift-t"), set_mark(False)],
-}, "win-like keys")
+}, "Hyper-mac-like keys")
 
 define_keymap(lambda wm_class: wm_class in ("Emacs"), {
     K("M-Tab"): [K("Super-Tab"), set_mark(False)],
-}, "win-like keys")
+}, "Emacs-mac-like keys")
+
+define_keymap(lambda wm_class: wm_class in ("Slack"), {
+    K("Super-k"): [K("C-k"), set_mark(False)],
+    K("Super-k"): [K("C-k"), set_mark(False)],
+    K("Super-g"): [K("C-g"), set_mark(False)],
+    K("Super-f"): [K("C-f"), set_mark(False)],
+    K("Super-Enter"): [K("C-Enter"), set_mark(False)],
+    K("Super-Shift-a"): [K("C-Shift-a"), set_mark(False)],
+}, "slack-mac-like keys")
