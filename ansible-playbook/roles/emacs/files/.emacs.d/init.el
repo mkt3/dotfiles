@@ -790,6 +790,8 @@
 
   (leaf yaml-mode :ensure t)
 
+  (leaf json-reformat :ensure t)
+
   (leaf web-mode
     :ensure t
     :mode ("\\.css\\'"
