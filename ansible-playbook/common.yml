@@ -5,10 +5,9 @@
     - term
     - fzf
     - zsh
-    - python
-    - git
     - tmux
+    - git
     - emacs
     - vim
     - docker
-    - hyper
+    - python

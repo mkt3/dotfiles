@@ -1,3 +1,14 @@
+- name: set keyrepeat delay
+  dconf:
+    key: "/org/gnome/desktop/peripherals/keyboard/delay"
+    value: "uint32 222"
+    state: present
+
+- name: set keyrepeat repeat-interval
+  dconf:
+    key: "/org/gnome/desktop/peripherals/keyboard/repeat-interval"
+    value: "uint32 34"
+
 - name: set close
   dconf:
     key: "/org/gnome/desktop/wm/keybindings/close"
