@@ -13,6 +13,7 @@ define_modmap({
 
 # [Conditional modmap] Change modifier keys in certain applications
 define_conditional_modmap(re.compile(r'Emacs'), {
+    Key.CAPSLOCK: Key.LEFT_CTRL,
     Key.RIGHT_CTRL: Key.ESC,
 #    Key.LEFT_ALT: Key.LEFT_META,
     Key.LEFT_META: Key.LEFT_ALT,
@@ -117,6 +118,7 @@ define_keymap(lambda wm_class: wm_class in ("Hyper"), {
 
 define_keymap(lambda wm_class: wm_class in ("Emacs"), {
     K("M-Tab"): [K("Super-Tab"), set_mark(False)],
+    K("M-Space"): [K("Super-Space"), set_mark(False)],
 }, "Emacs-mac-like keys")
 
 define_keymap(lambda wm_class: wm_class in ("Slack"), {

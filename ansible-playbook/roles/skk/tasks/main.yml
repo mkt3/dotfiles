@@ -1,0 +1,10 @@
+- name: Make config dir
+  file:
+    path: ~/.config/libskk/rules
+    state: directory
+
+- name: Link config
+  file:
+    src: "{{ role_path }}/files/StickyShift"
+    dest: ~/.config/libskk/rules/StickyShift
+    state: link

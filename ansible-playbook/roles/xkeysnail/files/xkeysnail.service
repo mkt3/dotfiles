@@ -7,6 +7,6 @@ ExecStart=/usr/local/bin/xkeysnail /home/mkt3/.config/xkeysnail/config.py
 Type=simple
 Restart=always
 RestartSec=10s
-Environment=DISPLAY=:0
+Environment=DISPLAY=:1
 [Install]
 WantedBy=default.target
