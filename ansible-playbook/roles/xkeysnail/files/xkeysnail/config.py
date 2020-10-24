@@ -8,13 +8,15 @@ define_timeout(1)
 
 # [Global modemap] Change modifier keys as in xmodmap
 define_modmap({
-    Key.CAPSLOCK: Key.LEFT_CTRL
+    Key.CAPSLOCK: Key.LEFT_CTRL,
+    Key.KEY_102ND: Key.GRAVE
 })
 
 # [Conditional modmap] Change modifier keys in certain applications
 define_conditional_modmap(re.compile(r'Emacs'), {
     Key.CAPSLOCK: Key.LEFT_CTRL,
     Key.RIGHT_CTRL: Key.ESC,
+    Key.KEY_102ND: Key.GRAVE,
 #    Key.LEFT_ALT: Key.LEFT_META,
     Key.LEFT_META: Key.LEFT_ALT,
 })
