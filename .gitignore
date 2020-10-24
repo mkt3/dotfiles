@@ -10,7 +10,6 @@ ansible-playbook/roles/emacs/files/.emacs.d/prescient
 ansible-playbook/roles/emacs/files/.emacs.d/projectile-bookmarks.eld
 ansible-playbook/roles/emacs/files/.emacs.d/session.*
 ansible-playbook/roles/emacs/files/.emacs.d/transient/
-s
 .vim/dein/.cache/
 .vim/dein/cache_vim
 .vim/dein/repos/
