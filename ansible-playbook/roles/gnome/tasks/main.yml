@@ -123,9 +123,15 @@
     value: 'true'
     state: present
 
+- name: home
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/home"
+    value: "['<Super>e']"
+    state: present
+
 - name: eject
   dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/ejct"
+    key: "/org/gnome/settings-daemon/plugins/media-keys/eject"
     value: "['Eject']"
     state: present
 
