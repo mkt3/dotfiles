@@ -1,35 +1,34 @@
-(prog1 "prepare leaf"
-  (prog1 "package"
-    (custom-set-variables
-     '(package-archives '(("org"   . "https://orgmode.org/elpa/")
-                          ("melpa" . "https://melpa.org/packages/")
-                          ("gnu"   . "https://elpa.gnu.org/packages/"))))
-    (package-initialize))
 
-  (prog1 "leaf"
-    (unless (package-installed-p 'leaf)
-      (unless (assoc 'leaf package-archive-contents)
-        (package-refresh-contents))
-      (condition-case err
-          (package-install 'leaf)
-        (error
-         (package-refresh-contents)       ; renew local melpa cache if fail
-         (package-install 'leaf))))
+;; <leaf-install-code>
+(eval-and-compile
+  (customize-set-variable
+   'package-archives '(("org" . "https://orgmode.org/elpa/")
+                       ("melpa" . "https://melpa.org/packages/")
+                       ("gnu" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+  (unless (package-installed-p 'leaf)
+    (package-refresh-contents)
+    (package-install 'leaf))
 
-    (leaf leaf-keywords
-      :ensure t
-      :init
-      (leaf diminish
-        :ensure t)
-
-      :config (leaf-keywords-init)))
-
-  (prog1 "optional packages for leaf-keywords"
-    ;; optional packages if you want to use :hydra, :el-get,,,
+  (leaf leaf-keywords
+    :ensure t
+    :init
+    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
     (leaf hydra :ensure t)
-    (leaf el-get :ensure t
-      :custom ((el-get-git-shallow-clone  . t)))))
+    (leaf el-get :ensure t)
+    (leaf blackout :ensure t)
 
+    :config
+    ;; initialize leaf-keywords.el
+    (leaf-keywords-init)))
+;; </leaf-install-code>
+
+;; Now you can use leaf!
+(leaf leaf-tree :ensure t)
+(leaf leaf-convert :ensure t)
+(leaf transient-dwim
+  :ensure t
+  :bind (("M-=" . transient-dwim-dispatch)))
 
 (leaf *initialize-emacs
   :config
@@ -49,6 +48,7 @@
   :config
   (leaf cus-start
     :doc "define customization properties of builtins"
+    :doc "define customization prop"
     :custom `((garbage-collection-messages     . t)
               (fill-column                     . 65)
               (tab-width                       . 4)
@@ -86,7 +86,6 @@
 
   (leaf *default-keybind
     :bind (("M-+" . text-scale-increase)
-           ("M-=" . text-scale-increase)
            ("M--" . text-scale-decrease)
            ("C-c l" . toggle-truncate-lines)
            ("C-x |" . split-window-right)
@@ -129,8 +128,9 @@
 
     (leaf autorevert
       :doc "revert buffers when files on disk change"
-      :custom ((auto-revert-interval . 0.1)
-               (global-auto-revert-mode . t)))
+      :tag "builtin"
+      :custom ((auto-revert-interval . 0.1))
+      :global-minor-mode global-auto-revert-mode)
 
     (leaf autoinsert
       :doc "automatic mode-dependent insertion of text into new files"
