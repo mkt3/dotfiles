@@ -8,7 +8,10 @@ ansible-playbook/roles/emacs/files/.emacs.d/persp-confs/
 ansible-playbook/roles/emacs/files/.emacs.d/places
 ansible-playbook/roles/emacs/files/.emacs.d/prescient
 ansible-playbook/roles/emacs/files/.emacs.d/projectile-bookmarks.eld
+ansible-playbook/roles/emacs/files/.emacs.d/recentf
+ansible-playbook/roles/emacs/files/.emacs.d/request/
 ansible-playbook/roles/emacs/files/.emacs.d/session.*
+ansible-playbook/roles/emacs/files/.emacs.d/snippets/
 ansible-playbook/roles/emacs/files/.emacs.d/transient/
 .vim/dein/.cache/
 .vim/dein/cache_vim
