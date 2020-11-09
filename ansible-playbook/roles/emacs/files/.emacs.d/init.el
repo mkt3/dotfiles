@@ -583,95 +583,6 @@
       ((company-mode-hook . set-yas-as-company-backend))
       ))
 
-;;   (leaf posframe
-;;     :ensure t
-;;     :when (version<= "26.1" emacs-version)
-;;     :when window-system
-;;     :preface
-;;     (defun posframe-poshandler-frame-bottom-center (info)
-;;       "Posframe's position handler.
-;; Get a position which let posframe stay onto its parent-frame's
-;; bottom center.  The structure of INFO can be found in docstring of
-;; `posframe-show'."
-;;       (cons (/ (- (plist-get info :parent-frame-width)
-;;                   (plist-get info :posframe-width))
-;;                2)
-;;             (- 0
-;;                (plist-get info :mode-line-height)
-;;                (plist-get info :minibuffer-height))))
-
-;;     (defun posframe-poshandler-window-top-center (info)
-;;       "Posframe's position handler.
-;; Get a position which let posframe stay onto current window's
-;; top center.  The structure of INFO can be found in docstring of
-;; `posframe-show'."
-;;       (let* ((window-left (plist-get info :parent-window-left))
-;;              (window-top (plist-get info :parent-window-top))
-;;              (window-width (plist-get info :parent-window-width))
-;;              (posframe-width (plist-get info :posframe-width)))
-;;         (cons (+ window-left (/ (- window-width posframe-width) 2))
-;;               window-top)))
-
-;;     (defun posframe-poshandler-window-bottom-center (info)
-;;       "Posframe's position handler.
-;; Get a position which let posframe stay onto current window's
-;; bottom center.  The structure of INFO can be found in docstring of
-;; `posframe-show'."
-;;       (let* ((window-left (plist-get info :parent-window-left))
-;;              (window-top (plist-get info :parent-window-top))
-;;              (window-width (plist-get info :parent-window-width))
-;;              (window-height (plist-get info :parent-window-height))
-;;              (posframe-width (plist-get info :posframe-width))
-;;              (posframe-height (plist-get info :posframe-height))
-;;              (mode-line-height (plist-get info :mode-line-height)))
-;;         (cons (+ window-left (/ (- window-width posframe-width) 2))
-;;               (+ window-top window-height
-;;                  (- 0 mode-line-height posframe-height)))))
-;;     :config
-;;     (leaf ivy-posframe
-;;       :doc "Using posframe to show Ivy"
-;;       :after ivy
-;;       :ensure t
-;;       :diminish ivy-posframe-mode
-;;       :defun (ivy-posframe--display posframe-poshandler-frame-bottom-center)
-;;       :preface
-;;       (defun ivy-posframe-display-at-frame-bottom-center (str)
-;;         (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
-;;       :custom ((ivy-posframe-mode . t)
-;;                (ivy-posframe-height-alist . '((swiper . 30) (t . 40)))
-;;                (ivy-posframe-display-functions-alist
-;;                 . '((swiper . nil) (t . ivy-posframe-display-at-frame-bottom-center)))
-;;                (ivy-posframe-parameters . '((left-fringe . 10)))))
-
-;;     (leaf company-posframe
-;;       :doc "Use a posframe as company candidate menu"
-;;       :ensure t
-;;       ;; Currently, posframe has a issue for changing child-frame with GNOME
-;;       ;; Ref: https://github.com/tumashu/company-posframe/issues/2
-;;       :disabled (eq window-system 'x)
-;;       :after company
-;;       :diminish company-posframe-mode
-;;       :custom ((company-posframe-mode . t)))
-
-;;     (leaf flycheck-posframe
-;;       :ensure t
-;;       :after flycheck
-;;       :custom ((flycheck-posframe-mode . t)))
-
-;;     (leaf which-key-posframe
-;;       :ensure t
-;;       :after which-key
-;;       :custom ((which-key-posframe-mode . t)))
-
-;;     (leaf ddskk-posframe
-;;       :doc "Show Henkan tooltip for ddskk via posframe"
-;;       ;; Currently, posframe has a issue for changing child-frame with GNOME
-;;       ;; Ref: https://github.com/tumashu/company-posframe/issues/2
-;;       :disabled (eq window-system 'x)
-;;       :ensure t
-;;       :after skk
-;;       :custom ((ddskk-posframe-mode . t))))
-
   (leaf highlight-indent-guides
     :ensure t
     :require t
@@ -693,50 +604,6 @@
              (imenu-list-auto-resize . t))
     )
 
-  ;; (leaf projectile
-  ;;   :when (version<= "25.1" emacs-version)
-  ;;   :ensure t
-  ;;   :leaf-defer nil
-  ;;   :bind (("M-o p" . projectile-command-map))
-  ;;   :custom ((projectile-mode . t)))
-
-  (leaf persp-mode
-    :ensure t
-    :leaf-defer nil
-    :custom `((persp-keymap-prefix                 . ,(kbd "C-c p"))
-              (persp-nil-name                      . "default")
-              (persp-set-last-persp-for-new-frames . nil)
-              (persp-init-frame-behaviour          . nil)
-              (persp-auto-resume-time              . 0.1)
-              (persp-mode . t))
-    :hook ((emacs-startup-hook . toggle-frame-maximized))
-    :config
-    ;; NOTE: Redefine `persp-add-new' to raddress.
-    ;; Issue: Unable to create/handle persp-mode
-    ;; https://github.com/Bad-ptr/persp-mode.el/issues/96
-    ;; https://github.com/Bad-ptr/persp-mode-projectile-bridge.el/issues/4
-    ;; https://emacs-china.org/t/topic/6416/7
-    ;; (defun* persp-add-new (name &optional (phash *persp-hash*))
-    ;;   "Create a new perspective with the given `NAME'. Add it to `PHASH'.
-    ;; Return the created perspective."
-    ;;   (interactive "sA name for the new perspective: ")
-    ;;   (if (and name (not (equal "" name)))
-    ;;       (destructuring-bind (e . p)
-    ;;           (persp-by-name-and-exists name phash)
-    ;;         (if e p
-    ;;           (setq p (if (equal persp-nil-name name)
-    ;;                  nil (make-persp :name name)))
-    ;;           (persp-add p phash)
-    ;;           (run-hook-with-args 'persp-created-functions p phash)
-    ;;           p))
-    ;;     (message "[persp-mode] Error: Can't create a perspective with empty name.")
-    ;;     nil))
-
-    ;; Ignore temporary buffers
-    ;; (add-hook 'persp-common-buffer-filter-functions
-    ;;           (lambda (b) (or (string-prefix-p "*" (buffer-name b))
-    ;;                 (string-prefix-p "magit" (buffer-name b)))))
-    )
   (leaf rainbow-delimiters
     :ensure t
     :hook
@@ -803,15 +670,16 @@
     :mode ("\\.md\\'")
   )
 
-(leaf *docker-modes
+  (leaf *docker-mode
     :config
     (leaf docker              :ensure t)
     (leaf dockerfile-mode     :ensure t)
     (leaf docker-compose-mode :ensure t)
     (leaf docker-tramp        :ensure t))
+  )
 
 (leaf *misc-tools
-  :config
+    :config
   (leaf *git-tools
     :config
     (leaf gitattributes-mode :ensure t)
@@ -851,30 +719,4 @@
           (set-process-query-on-exit-flag proc nil))))
     (add-hook 'term-exec-hook 'set-no-process-query-on-exit)
     )
-
-  ;; (leaf multi-term
-  ;;   :ensure t
-  ;;   :custom `((multi-term-program . ,(getenv "SHELL")))
-  ;;   :preface
-  ;;   (defun namn/open-shell-sub (new)
-  ;;     (split-window-below)
-  ;;     (enlarge-window 5)
-  ;;     (other-window 1)
-  ;;     (let ((term) (res))
-  ;;       (if (or new (null (setq term (dolist (buf (buffer-list) res)
-  ;;                                      (if (string-match "*terminal<[0-9]+>*" (buffer-name buf))
-  ;;                                          (setq res buf))))))
-  ;;           (multi-term)
-  ;;         (switch-to-buffer term))))
-  ;;   (defun namn/open-shell ()
-  ;;     (interactive)
-  ;;     (namn/open-shell-sub t))
-  ;;   (defun namn/to-shell ()
-  ;;     (interactive)
-  ;;     (namn/open-shell-sub nil))
-  ;;   :bind (("C-^"   . namn/to-shell)
-  ;;          ("C-M-^" . namn/open-shell)
-  ;;          (:term-raw-map
-  ;;           ("C-t" . other-window))))
   )
-)
