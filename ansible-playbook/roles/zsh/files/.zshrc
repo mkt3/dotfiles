@@ -164,7 +164,7 @@ if [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
     if [[ -z "$ID" ]]; then
        ID="${create_new_session}:\nExit:"
     else
-       ID="$ID\n${create_new_session}:"
+       ID="$ID\n${create_new_session}:\nExit:"
     fi
     ID="`echo $ID | $PERCOL | cut -d: -f1`"
     if [[ "$ID" = "${create_new_session}" ]]; then
