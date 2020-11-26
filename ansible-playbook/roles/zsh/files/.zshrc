@@ -158,13 +158,14 @@ export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --lin
 # Tmux config
 export PERCOL=fzf
 
-if [[ -n ${SSH_CONNECTION} ]] && [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
+if [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
     ID="`tmux list-sessions`"
-    if [[ -z "$ID" ]]; then
-      tmux new-session
-    fi
     create_new_session="Create New Session"
-    ID="$ID\n${create_new_session}:"
+    if [[ -z "$ID" ]]; then
+       ID="${create_new_session}:\nExit:"
+    else
+       ID="$ID\n${create_new_session}:"
+    fi
     ID="`echo $ID | $PERCOL | cut -d: -f1`"
     if [[ "$ID" = "${create_new_session}" ]]; then
        tmux new-session
