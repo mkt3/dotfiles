@@ -3,7 +3,8 @@
 - hosts: localhost
   connection: local
   roles:
-    - apt
+    - apt_common
+    - apt_gui
     - gnome
     - skk
     - hyper
