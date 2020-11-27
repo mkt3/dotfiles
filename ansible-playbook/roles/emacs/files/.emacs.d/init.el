@@ -374,9 +374,72 @@
     :init
     (leaf *ivy-requirements
       :config
+      (leaf migemo
+        :if (executable-find "cmigemo")
+        :ensure t
+        :require t
+        :custom
+        '((migemo-user-dictionary  . nil)
+          (migemo-regex-dictionary . nil)
+          (migemo-options          . '("-q" "--emacs"))
+          (migemo-command          . "cmigemo")
+          (migemo-coding-system    . 'utf-8-unix))
+        :init
+        (cond
+         ((and (eq system-type 'darwin)
+               (file-directory-p "/usr/local/share/migemo/utf-8/"))
+          (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"))
+         (t
+          (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
+        :config
+        (migemo-init)
+        (defun my/migemo-get-pattern-shyly (word)
+          (replace-regexp-in-string
+           "\\\\("
+           "\\\\(?:"
+           (migemo-get-pattern word)))
+        (defun my/ivy--regex-migemo-pattern (word)
+          (cond
+           ((string-match "\\(.*\\)\\(\\[[^\0]+\\]\\)"  word)
+            (concat (my/migemo-get-pattern-shyly (match-string 1 word))
+                    (match-string 2 word)))
+           ((string-match "\\`\\\\([^\0]*\\\\)\\'" word)
+            (match-string 0 word))
+           (t
+            (my/migemo-get-pattern-shyly word))))
+        (defun my/ivy--regex-migemo (str)
+          (when (string-match-p "\\(?:[^\\]\\|^\\)\\\\\\'" str)
+            (setq str (substring str 0 -1)))
+          (setq str (ivy--trim-trailing-re str))
+          (cdr (let ((subs (ivy--split str)))
+                 (if (= (length subs) 1)
+                     (cons
+                      (setq ivy--subexps 0)
+                      (if (string-match-p "\\`\\.[^.]" (car subs))
+                          (concat "\\." (my/ivy--regex-migemo-pattern (substring (car subs) 1)))
+                        (my/ivy--regex-migemo-pattern (car subs))))
+                   (cons
+                    (setq ivy--subexps (length subs))
+                    (replace-regexp-in-string
+                     "\\.\\*\\??\\\\( "
+                     "\\( "
+                     (mapconcat
+                      (lambda (x)
+                        (if (string-match-p "\\`\\\\([^?][^\0]*\\\\)\\'" x)
+                            x
+                          (format "\\(%s\\)" (my/ivy--regex-migemo-pattern x))))
+                      subs
+                      ".*")
+                     nil t))))))
+        (defun my/ivy--regex-migemo-plus (str)
+          (cl-letf (((symbol-function 'ivy--regex) #'my/ivy--regex-migemo))
+            (ivy--regex-plus str))))
       (leaf swiper
         :ensure t
-        :bind (([remap isearch-forward] . swiper)))
+        :bind (([remap isearch-forward] . swiper))
+        :init
+        (setf (alist-get 'swiper ivy-re-builders-alist) #'my/ivy--regex-migemo-plus)
+        )
       (leaf counsel
         :ensure t
         :bind (("M-s c" . counsel-ag)
