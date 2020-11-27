@@ -169,6 +169,8 @@ if [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
     ID="`echo $ID | $PERCOL | cut -d: -f1`"
     if [[ "$ID" = "${create_new_session}" ]]; then
        tmux new-session
+    elif [[ "$ID" = "Exit" ]]; then
+       :
     elif [[ -n "$ID" ]]; then
        tmux attach-session -t "$ID"
     else
