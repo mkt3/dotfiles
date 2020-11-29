@@ -17,7 +17,6 @@
     (leaf hydra :ensure t)
     (leaf el-get :ensure t)
     (leaf blackout :ensure t)
-
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
@@ -104,7 +103,7 @@
       )
 
     (leaf abbrev
-      :diminish abbrev-mode)
+      :blackout (abbrev-mode . " Abv"))
 
     (leaf display-line-numbers
       :config
@@ -156,6 +155,7 @@
     (leaf vc-hooks
       :custom ((vc-follow-symlinks . t))))
   )
+
 (leaf *color-theme
   :config
   (leaf doom-themes
@@ -523,7 +523,7 @@
   (leaf company
     :ensure t
     :leaf-defer nil
-    :diminish company-mode
+    :blackout company-mode
     :bind ((company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
@@ -549,7 +549,7 @@
       :when (version<= "26.1" emacs-version)
       :disabled (eq window-system 'x)
       :ensure t
-      :diminish company-box-mode
+      :blackout company-box-mode
       :defvar (company-box-icons-alist company-box-icons-all-the-icons)
       :init (leaf all-the-icons :ensure t :require t)
       :custom ((company-box-max-candidates . 50)
@@ -614,7 +614,7 @@
     (leaf yasnippet
       :ensure t
       :url "https://kiwanami.hatenadiary.org/entry/20110224/1298526678"
-      :diminish yas-minor-mode
+      :blackout yas-minor-mode
       :custom ((yas-indent-line . 'fixed)
                (yas-global-mode . t)
                                      )
@@ -649,7 +649,7 @@
   (leaf highlight-indent-guides
     :ensure t
     :require t
-    :diminish
+    :blackout t
     :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
     :custom (
              (highlight-indent-guides-method . 'character)  ;; fill,column,character
