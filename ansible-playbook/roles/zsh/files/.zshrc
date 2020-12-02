@@ -160,16 +160,17 @@ export PERCOL=fzf
 
 if [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
     ID="`tmux list-sessions`"
-    create_new_session="Create New Session"
+    create_new_session="Create new session"
+    connect_ssh="Connect ssh"
     if [[ -z "$ID" ]]; then
-       ID="${create_new_session}:\nExit:"
+       ID="${create_new_session}:\n${connect_ssh}:"
     else
-       ID="$ID\n${create_new_session}:\nExit:"
+       ID="$ID\n${create_new_session}:\n${connect_ssh}:"
     fi
     ID="`echo $ID | $PERCOL | cut -d: -f1`"
     if [[ "$ID" = "${create_new_session}" ]]; then
        tmux new-session
-    elif [[ "$ID" = "Exit" ]]; then
+    elif [[ "$ID" = "${connect_ssh}" ]]; then
        :
     elif [[ -n "$ID" ]]; then
        tmux attach-session -t "$ID"
