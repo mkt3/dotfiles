@@ -19,7 +19,7 @@ case $os in
                 if type dconf > /dev/null 2>&1; then
                     PLAYBOOK="ansible-playbook/ubuntu_gui.yml -K"
                 else
-                    PLAYBOOK=ansible-playbook/ubuntu_cui.yml
+                    PLAYBOOK="ansible-playbook/ubuntu_cui.yml -K"
                 fi
             ;;
          esac

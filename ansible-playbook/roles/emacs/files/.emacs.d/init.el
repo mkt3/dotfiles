@@ -687,6 +687,7 @@
 (leaf *major-mode
   :config
   (leaf *python
+    :custom (python-indent-guess-indent-offset-verbose . nil)
     :config
     (leaf poetry
       :ensure t
@@ -709,13 +710,9 @@
       (flycheck-python-flake8-executable . "flake8")
       )
 
-    (leaf py-isort
-      :ensure t
-      :after python-mode
-      :hook ((before-save-hook . py-isort-before-save)))
+    (leaf py-isort :ensure t)
 
-    (leaf ein
-      :ensure t)
+    (leaf ein :ensure t)
     )
 
   (leaf yaml-mode :ensure t)
