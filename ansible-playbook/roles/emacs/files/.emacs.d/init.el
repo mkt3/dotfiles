@@ -68,24 +68,24 @@
               (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
               (ring-bell-function              . 'ignore)
               (text-quoting-style              . 'straight)
-              (truncate-lines   . nil)
-              (truncate-partial-width-windows . nil)
-              (menu-bar-mode    . nil)
-              (tool-bar-mode    . nil)
-              (scroll-bar-mode  . nil)
-              (fringe-mode      . 10)
-              (indent-tabs-mode . nil)
-              (inhibit-startup-message . t)
-              (inhibit-startup-screen . t)
-              (gc-cons-threshold . ,(* gc-cons-threshold 10)))
+              (truncate-lines                  . nil)
+              (truncate-partial-width-windows  . nil)
+              (menu-bar-mode                   . nil)
+              (tool-bar-mode                   . nil)
+              (scroll-bar-mode                 . nil)
+              (fringe-mode                     . 10)
+              (indent-tabs-mode                . nil)
+              (inhibit-startup-message         . t)
+              (inhibit-startup-screen          . t)
+              (gc-cons-threshold               . ,(* gc-cons-threshold 10)))
     :config
     (defalias 'yes-or-no-p 'y-or-n-p)
     (keyboard-translate ?\C-h ?\C-?)
     )
 
   (leaf *default-keybind
-    :bind (("M-+" . text-scale-increase)
-           ("M--" . text-scale-decrease)
+    :bind (("M-+"   . text-scale-increase)
+           ("M--"   . text-scale-decrease)
            ("C-c l" . toggle-truncate-lines)
            ("C-x |" . split-window-right)
            ("C-x -" . split-window-below)
@@ -94,9 +94,9 @@
   (leaf *lisp
     :config
     (leaf simple
-      :custom ((kill-ring-max . 100)
+      :custom ((kill-ring-max     . 100)
                (kill-read-only-ok . t)
-               (kill-whole-line . t)
+               (kill-whole-line   . t)
                (eval-expression-print-length . nil)
                (eval-expression-print-lepvel  . nil))
       ;; :hook ((before-save-hook . delete-trailing-whitespace))
@@ -162,7 +162,7 @@
     :ensure t
     :require t
     :custom ((doom-themes-enable-italic . t)
-             (doom-themes-enable-bold . t))
+             (doom-themes-enable-bold   . t))
     :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
     :config
     (load-theme 'doom-dracula t)
@@ -669,7 +669,6 @@
 
   (leaf nyan-mode
     :ensure t
-    :require t
     :custom ((nyan-cat-face-number . 4)
              (nyan-animate-nyancat . t))
     :hook
