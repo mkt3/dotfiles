@@ -155,30 +155,6 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
 export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
 
-# Tmux config
-export PERCOL=fzf
-
-if [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
-    ID="`tmux list-sessions`"
-    create_new_session="Create new session"
-    connect_ssh="Connect ssh"
-    if [[ -z "$ID" ]]; then
-       ID="${create_new_session}:\n${connect_ssh}:"
-    else
-       ID="$ID\n${create_new_session}:\n${connect_ssh}:"
-    fi
-    ID="`echo $ID | $PERCOL | cut -d: -f1`"
-    if [[ "$ID" = "${create_new_session}" ]]; then
-       tmux new-session
-    elif [[ "$ID" = "${connect_ssh}" ]]; then
-       :
-    elif [[ -n "$ID" ]]; then
-       tmux attach-session -t "$ID"
-    else
-       :  # Start terminal normally
-    fi
- fi
-
 # poetry config
 if type "poetry" > /dev/null 2>&1; then
     poetry config virtualenvs.in-project true
@@ -190,3 +166,36 @@ if [ -f "${HOME}/gcp/google-cloud-sdk/path.zsh.inc" ]; then . "${HOME}/gcp/googl
 # The next line enables shell command completion for gcloud.
 if [ -f "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc"; fi
 
+
+# Tmux config
+SSH_CONFIG=$HOME/.ssh/config
+
+ssh_command_list=""
+if test -e $SSH_CONFIG; then
+    for i in `grep "^Host " $SSH_CONFIG | sed s/"^Host "//`
+    do
+        ssh_command_list="${ssh_command_list}ssh ${i}:\n"
+    done
+fi
+
+export PERCOL=fzf
+
+if [[ ! -n $TMUX && $- == *l* ]] && [[ "TERM" != "dumb" ]]; then
+    ID="`tmux list-sessions`"
+    create_new_session="Create new session"
+    if [[ -z "$ID" ]]; then
+       ID="${create_new_session}:\n${ssh_command_list}"
+    else
+       ID="$ID\n${create_new_session}:\n${ssh_command_list}"
+    fi
+    ID="`echo $ID | $PERCOL | cut -d: -f1`"
+    if [[ "$ID" = "${create_new_session}" ]]; then
+       tmux new-session
+    elif [[ `echo $ID | grep ssh` ]]; then
+       eval $ID
+    elif [[ -n "$ID" ]]; then
+       tmux attach-session -t "$ID"
+    else
+       :  # Start terminal normally
+    fi
+ fi
