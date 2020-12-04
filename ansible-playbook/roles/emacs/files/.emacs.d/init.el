@@ -524,16 +524,18 @@
             ("C-s" . company-filter-candidates)
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)
-            ("C-i" . company-complete-selection))
+            ("C-i" . company-complete-common-or-cycle))
+            ;; ("C-i" . company-complete-selection))
            (company-search-map
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)))
-    :custom ((company-tooltip-limit         . 12)
-             (company-idle-delay            . 0)
-             (company-minimum-prefix-length . 1)
-             (company-transformers          . '(company-sort-by-occurrence))
-             (global-company-mode           . t)
-             (company-selection-wrap-around . t))
+    :custom ((company-tooltip-limit             . 12)
+             (company-idle-delay                . 0)
+             (company-minimum-prefix-length     . 1)
+             (company-transformers              . '(company-sort-by-occurrence))
+             (global-company-mode               . t)
+             (company-selection-wrap-around     . t)
+             (vompany-tooltip-align-annotations . t))
     :config
     (leaf company-prescient
       :ensure t
