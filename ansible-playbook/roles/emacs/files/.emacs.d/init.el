@@ -650,8 +650,6 @@
              (highlight-indent-guides-auto-enabled . t)  ;; automatically calculate faces.
              (highlight-indent-guides-responsive . t)
              (highlight-indent-guides-character . ?\|)))
-    ;; :config
-    ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
   (leaf imenu-list
     :ensure t
     :bind (("C-o" . imenu-list-smart-toggle))
