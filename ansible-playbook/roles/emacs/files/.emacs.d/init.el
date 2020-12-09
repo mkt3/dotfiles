@@ -1,3 +1,6 @@
+;; common lisp
+(eval-when-compile (require 'cl-lib nil t))
+(setq byte-compile-warnings '(not cl-functions obsolete))
 
 ;; <leaf-install-code>
 (eval-and-compile
