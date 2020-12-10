@@ -13,6 +13,7 @@ ansible-playbook/roles/emacs/files/.emacs.d/request/
 ansible-playbook/roles/emacs/files/.emacs.d/session.*
 ansible-playbook/roles/emacs/files/.emacs.d/snippets/
 ansible-playbook/roles/emacs/files/.emacs.d/transient/
+ansible-playbook/roles/emacs/files/.emacs.d/custom.el
 .vim/dein/.cache/
 .vim/dein/cache_vim
 .vim/dein/repos/
