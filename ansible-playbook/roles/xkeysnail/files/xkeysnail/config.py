@@ -63,7 +63,7 @@ define_keymap(re.compile("Firefox|Google-chrome"), {
 }, "Firefox and Chrome")
 
 # Emacs-like keybindings in non-Emacs applications
-define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Gnome-terminal", "Hyper"), {
+define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Gnome-terminal"), {
     K("Super-a"): [K("C-home"), K("C-a"), set_mark(True)],
     K("Super-c"): [K("C-c"), set_mark(False)],
     K("Super-v"): [K("C-v"), set_mark(False)],
@@ -118,18 +118,10 @@ define_keymap(lambda wm_class: wm_class in ("Gnome-terminal"), {
     K("RSuper-v"): [K("C-Shift-v"), set_mark(False)],
     K("RSuper-z"): [K("C-Shift-z"), set_mark(False)],
     K("RSuper-t"): [K("C-Shift-t"), set_mark(False)],
+    K("C-Tab"): [K("C-page_down"), set_mark(False)],
     K("M-Tab"): [K("Super-Tab"), set_mark(False)],
     K("M-Space"): [K("Super-Space"), set_mark(False)],
 }, "win-like keys")
-
-define_keymap(lambda wm_class: wm_class in ("Hyper"), {
-    K("RSuper-c"): [K("C-Shift-c"), set_mark(False)],
-    K("RSuper-v"): [K("C-Shift-v"), set_mark(False)],
-    K("RSuper-z"): [K("C-Shift-z"), set_mark(False)],
-    K("RSuper-t"): [K("C-Shift-t"), set_mark(False)],
-    K("M-Tab"): [K("Super-Tab"), set_mark(False)],
-    K("M-Space"): [K("Super-Space"), set_mark(False)],
-}, "Hyper-mac-like keys")
 
 define_keymap(lambda wm_class: wm_class in ("Emacs"), {
     K("M-Tab"): [K("Super-Tab"), set_mark(False)],
