@@ -170,3 +170,9 @@
     key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute"
     value: "['AudioMute']"
     state: present
+
+- name: new terminal mode
+  dconf:
+    key: "/org/gnome/terminal/legacy/new-terminal-mode"
+    value: "'tab'"
+    state: present
