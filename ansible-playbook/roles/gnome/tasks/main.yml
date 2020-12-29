@@ -176,3 +176,21 @@
     key: "/org/gnome/terminal/legacy/new-terminal-mode"
     value: "'tab'"
     state: present
+
+- name: default terminal profile
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:e1c194b2-bbd2-40fc-9914-61d2704fcecf/visible-name"
+    value: "'default'"
+    state: present
+
+- name: set default terminal profile
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/default"
+    value: "'e1c194b2-bbd2-40fc-9914-61d2704fcecf'"
+    state: present
+
+- name: terminal profile list
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/list"
+    value: "['e1c194b2-bbd2-40fc-9914-61d2704fcecf']"
+    state: present
