@@ -8,7 +8,8 @@ sudo pacman -S ansible
 
 - mac
 ```bash
-pip3 install ansible
+sudo pip3 install --upgrade pip
+sudo pip3 install ansible
 ```
 
 - ubuntu
