@@ -8,8 +8,8 @@ sudo pacman -S ansible
 
 - mac
 ```bash
-sudo pip3 install --upgrade pip
-sudo pip3 install ansible
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install ansible
 ```
 
 - ubuntu

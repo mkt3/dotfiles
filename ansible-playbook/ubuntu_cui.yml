@@ -5,3 +5,4 @@
   roles:
     - apt_common
     - apt_cui
+    - python
