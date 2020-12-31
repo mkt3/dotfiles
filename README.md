@@ -21,7 +21,7 @@ sudo apt install ansible
 
 ## setup
 ```bash
-git clone https://github.com/mkt3/dotfiles
-cd dotfiles
+git clone https://github.com/mkt3/dotfiles .dotfiles
+cd .dotfiles
 ./setup.sh
 ```

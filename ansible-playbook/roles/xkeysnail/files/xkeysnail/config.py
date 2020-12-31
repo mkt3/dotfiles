@@ -21,6 +21,14 @@ define_conditional_modmap(re.compile(r'Emacs'), {
     Key.LEFT_META: Key.LEFT_ALT,
 })
 
+define_conditional_modmap(re.compile(r'Gnome-terminal'), {
+    Key.CAPSLOCK: Key.LEFT_CTRL,
+    Key.RIGHT_CTRL: Key.ESC,
+    Key.KEY_102ND: Key.GRAVE,
+#    Key.LEFT_ALT: Key.LEFT_META,
+    Key.LEFT_META: Key.LEFT_ALT,
+})
+
 # [Multipurpose modmap] Give a key two meanings. A normal key when pressed and
 # released, and a modifier key when held down with another key. See Xcape,
 # Carabiner and caps2esc for ideas and concept.
@@ -55,7 +63,7 @@ define_keymap(re.compile("Firefox|Google-chrome"), {
 }, "Firefox and Chrome")
 
 # Emacs-like keybindings in non-Emacs applications
-define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Gnome-terminal", "Hyper"), {
+define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Gnome-terminal"), {
     K("Super-a"): [K("C-home"), K("C-a"), set_mark(True)],
     K("Super-c"): [K("C-c"), set_mark(False)],
     K("Super-v"): [K("C-v"), set_mark(False)],
@@ -106,17 +114,14 @@ define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Gnome-termina
 }, "Emacs-like keys")
 
 define_keymap(lambda wm_class: wm_class in ("Gnome-terminal"), {
-    K("Super-c"): [K("C-c"), set_mark(False)],
-    K("Super-v"): [K("C-v"), set_mark(False)],
-    K("Super-z"): [K("C-z"), set_mark(False)],
+    K("RSuper-c"): [K("C-Shift-c"), set_mark(False)],
+    K("RSuper-v"): [K("C-Shift-v"), set_mark(False)],
+    K("RSuper-z"): [K("C-Shift-z"), set_mark(False)],
+    K("RSuper-t"): [K("C-Shift-t"), set_mark(False)],
+    K("C-Tab"): [K("C-page_down"), set_mark(False)],
+    K("M-Tab"): [K("Super-Tab"), set_mark(False)],
+    K("M-Space"): [K("Super-Space"), set_mark(False)],
 }, "win-like keys")
-
-define_keymap(lambda wm_class: wm_class in ("Hyper"), {
-    K("Super-c"): [K("C-Shift-c"), set_mark(False)],
-    K("Super-v"): [K("C-Shift-v"), set_mark(False)],
-    K("Super-z"): [K("C-Shift-z"), set_mark(False)],
-    K("Super-t"): [K("C-Shift-t"), set_mark(False)],
-}, "Hyper-mac-like keys")
 
 define_keymap(lambda wm_class: wm_class in ("Emacs"), {
     K("M-Tab"): [K("Super-Tab"), set_mark(False)],

@@ -1,0 +1,9 @@
+- name: Clone gogh
+  git:
+    repo: "{{ gogh.git_url}}"
+    dest: "{{ gogh.install_dir}}"
+    depth: 1
+  register: clone_gogh
+- name: Install color theme
+  script: gogh_install.sh
+  when: clone_gogh.changed
