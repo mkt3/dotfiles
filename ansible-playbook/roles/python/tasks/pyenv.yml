@@ -7,21 +7,21 @@
     dest: "{{ pyenv.install_dir }}"
 
 - name: Check installed python version
-  shell: bash -lc "pyenv versions | grep {{ pyenv.global_python_version }}"
+  shell: bash -lc "~/.pyenv/bin/pyenv versions | grep {{ pyenv.global_python_version }}"
   register: pyenv_result
   ignore_errors: true
   changed_when: false
 
 - name: Install global python
-  shell: pyenv install {{ pyenv.global_python_version }}
+  shell: ~/.pyenv/bin/pyenv install {{ pyenv.global_python_version }}
   when: pyenv_result is failed
 
 - name: Check global python version
-  shell: bash -lc "pyenv versions | grep '* {{ pyenv.global_python_version }}'"
+  shell: bash -lc "~/.pyenv/bin/pyenv versions | grep '* {{ pyenv.global_python_version }}'"
   register: global_python_version
   ignore_errors: true
   changed_when: false
 
 - name: set global python
-  shell: pyenv global {{ pyenv.global_python_version }} && exec $SHELL
+  shell: ~/.pyenv/bin/pyenv global {{ pyenv.global_python_version }} && exec $SHELL
   when: global_python_version is failed
