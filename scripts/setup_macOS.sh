@@ -1,11 +1,6 @@
 #!/bin/bash
 
 ##
-# xclode install
-##
-xcode-select --install
-
-##
 # macOSの設定
 ##
 
@@ -126,16 +121,4 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 
 ## Time MachineからTime Machine用のSMBフォルダを参照できるように
 defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
-
-## terminfoに24bit color-modeを登録
-tic -x -o "${HOME}/.terminfo"  "${HOME}/.dotfiles/script/terminfo-24bit.src"
-
-##
-# Homebrew
-##
-
-# Honebrewのインストール
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-## ~/Brewfileに従ってアプリケーション等のインストール
-brew bundle --global
 
