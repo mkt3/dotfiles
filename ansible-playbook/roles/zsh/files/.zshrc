@@ -199,3 +199,5 @@ if [[ ! -n $TMUX && $- == *i* ]] && [[ "$TERM" != "dumb" ]]; then
        :  # Start terminal normally
     fi
  fi
+
+export PATH="$HOME/.poetry/bin:$PATH"

@@ -5,5 +5,4 @@
   roles:
     - homebrew
     - karabiner
-    - gogh
     - python
