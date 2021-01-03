@@ -12,13 +12,13 @@
   when: exist_poetry is failed
 
 - name: Check poetry global settings
-  shell: bash -lc "poetry config --list | grep 'virtualenvs.in-project = true'"
+  shell: bash -lc "~/.poetry/bin/poetry config --list | grep 'virtualenvs.in-project = true'"
   register: poetry_global
   ignore_errors: true
   changed_when: false
 
 - name: Enable virtualenvs in project
-  shell: poetry config virtualenvs.in-project true
+  shell: ~/.poetry/bin/poetry config virtualenvs.in-project true
   when: poetry_global is failed
 
 - name: Stat _poetry
@@ -27,5 +27,5 @@
   register: completion_file
 
 - name: Enable poetry completions
-  shell: poetry completions zsh > {{ poetry.completion_file }}
+  shell: ~/.poetry/bin/poetry completions zsh > {{ poetry.completion_file }}
   when: not completion_file.stat.exists
