@@ -60,6 +60,7 @@ define_keymap(re.compile("Firefox|Google-chrome"), {
     K("Super-c"): [K("C-c"), set_mark(False)],
     K("Super-v"): [K("C-v"), set_mark(False)],
     K("Super-z"): [K("C-z"), set_mark(False)],
+    K("Super-slash"): [K("M-slash"), set_mark(False)],
 }, "Firefox and Chrome")
 
 # Emacs-like keybindings in non-Emacs applications
