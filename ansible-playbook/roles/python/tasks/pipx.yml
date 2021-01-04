@@ -2,17 +2,17 @@
   include_vars: pipx.yml
 
 - name: check exist pipx command
-  shell: type pipx
+  shell: type ~/.pyenv/shims/pipx
   register: exist_pipx
   ignore_errors: true
   changed_when: false
 
 - name: Install pipx
-  shell: pip install pipx
+  shell: ~/.pyenv/shims/pip install pipx
   when: exist_pipx is failed
 
 - name: Install pipx packages
-  shell: pipx install {{ item }}
+  shell: ~/.pyenv/shims/pipx install {{ item }}
   register: pipx_install
   changed_when: "'already' not in pipx_install.stdout"
   with_items: "{{ pipx.pipx_packages }}"
