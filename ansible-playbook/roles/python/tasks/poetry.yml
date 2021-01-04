@@ -2,13 +2,13 @@
   include_vars: poetry.yml
 
 - name: Check exist poetry command
-  shell: type poetry
+  shell: type ~/.poetry/bin/poetry
   register: exist_poetry
   ignore_errors: true
   changed_when: false
 
 - name: Install poetry
-  shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | ~/.pyenv/shims/python
   when: exist_poetry is failed
 
 - name: Check poetry global settings
