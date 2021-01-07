@@ -3,3 +3,9 @@
   apt:
     name:
       - cmigemo
+
+- name: xsel
+  become: yes 
+  apt:
+    name:
+      - xsel
