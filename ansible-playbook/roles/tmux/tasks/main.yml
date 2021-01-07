@@ -3,3 +3,9 @@
     src: "{{ role_path }}/files/.tmux.conf"
     dest: ~/.tmux.conf
     state: link
+
+- name: Clone Tmux Plugin Manager
+  git:
+    repo: "{{ tpm.git_url }}"
+    dest: "{{ tpm.install_dir }}"
+
