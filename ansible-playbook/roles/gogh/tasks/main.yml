@@ -6,4 +6,3 @@
   register: clone_gogh
 - name: Install color theme
   script: gogh_install.sh
-  when: clone_gogh.changed
