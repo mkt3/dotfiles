@@ -183,6 +183,12 @@
     value: "'default'"
     state: present
 
+- name: default terminal profile fonts
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:e1c194b2-bbd2-40fc-9914-61d2704fcecf/font"
+    value: "'Cica 15'"
+    state: present
+
 - name: set default terminal profile
   dconf:
     key: "/org/gnome/terminal/legacy/profiles:/default"

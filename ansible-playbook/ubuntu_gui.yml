@@ -5,6 +5,7 @@
   roles:
     - apt_common
     - apt_gui
+    - font
     - gnome
     - skk
     - gogh
