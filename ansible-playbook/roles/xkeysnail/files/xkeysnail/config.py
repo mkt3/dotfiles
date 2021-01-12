@@ -122,15 +122,26 @@ define_keymap(lambda wm_class: wm_class in ("Gnome-terminal"), {
     K("C-Tab"): [K("C-page_down"), set_mark(False)],
     K("M-Tab"): [K("Super-Tab"), set_mark(False)],
     K("M-Space"): [K("Super-Space"), set_mark(False)],
+    K("C-M-h"): [K("C-Super-h"), set_mark(False)],
+    K("C-M-l"): [K("C-Super-l"), set_mark(False)],
+    K("C-M-j"): [K("C-Super-j"), set_mark(False)],
+    K("C-M-k"): [K("C-Super-k"), set_mark(False)],
+    K("C-M-comma"): [K("C-Super-comma"), set_mark(False)],
+    K("C-M-dot"): [K("C-Super-dot"), set_mark(False)],
 }, "win-like keys")
 
 define_keymap(lambda wm_class: wm_class in ("Emacs"), {
     K("M-Tab"): [K("Super-Tab"), set_mark(False)],
     K("M-Space"): [K("Super-Space"), set_mark(False)],
+    K("C-M-h"): [K("C-Super-h"), set_mark(False)],
+    K("C-M-l"): [K("C-Super-l"), set_mark(False)],
+    K("C-M-j"): [K("C-Super-j"), set_mark(False)],
+    K("C-M-k"): [K("C-Super-k"), set_mark(False)],
+    K("C-M-comma"): [K("C-Super-comma"), set_mark(False)],
+    K("C-M-dot"): [K("C-Super-dot"), set_mark(False)],
 }, "Emacs-mac-like keys")
 
 define_keymap(lambda wm_class: wm_class in ("Slack"), {
-    K("Super-k"): [K("C-k"), set_mark(False)],
     K("Super-k"): [K("C-k"), set_mark(False)],
     K("Super-g"): [K("C-g"), set_mark(False)],
     K("Super-f"): [K("C-f"), set_mark(False)],
