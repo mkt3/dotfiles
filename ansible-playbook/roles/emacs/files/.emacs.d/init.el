@@ -306,7 +306,7 @@
              (whitespace-display-mappings . '((space-mark ?\u3000 [?\u25a1])
                                               (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
              (whitespace-space-regexp . "\\(\u3000+\\)")
-             (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode))
+             (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode markdown-mode))
              (global-whitespace-mode . t))
 
     :config
@@ -712,6 +712,8 @@
   (leaf markdown-mode
     :ensure t
     :mode ("\\.md\\'")
+    :init
+    (add-hook 'markdown-mode-hook '(lambda () (setq tab-width 2)))
   )
 
   (leaf *docker-mode
