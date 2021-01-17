@@ -1,13 +1,13 @@
 - name: set keyrepeat delay
   dconf:
     key: "/org/gnome/desktop/peripherals/keyboard/delay"
-    value: "uint32 222"
+    value: "uint32 34"
     state: present
 
 - name: set keyrepeat repeat-interval
   dconf:
     key: "/org/gnome/desktop/peripherals/keyboard/repeat-interval"
-    value: "uint32 34"
+    value: "uint32 28"
 
 - name: set close
   dconf:
@@ -18,13 +18,13 @@
 - name: set maximize
   dconf:
     key: "/org/gnome/desktop/wm/keybindings/maximize"
-    value: "['<Alt>period']"
+    value: "['<Primary><Super>period']"
     state: present
 
 - name: set unmaximize
   dconf:
     key: "/org/gnome/desktop/wm/keybindings/unmaximize"
-    value: "['<Alt>comma']"
+    value: "['<Primary><Super>comma']"
     state: present
 
 - name: set switch-group
@@ -72,13 +72,13 @@
 - name: set toggle-tiled-left
   dconf:
     key: "/org/gnome/mutter/keybindings/toggle-tiled-left"
-    value: "['<Alt>h']"
+    value: "['<Primary><Super>h']"
     state: present
 
 - name: set toggle-tiled-right
   dconf:
     key: "/org/gnome/mutter/keybindings/toggle-tiled-right"
-    value: "['<Alt>l']"
+    value: "['<Primary><Super>l']"
     state: present
 
 - name: set toggle-application-view
@@ -181,6 +181,12 @@
   dconf:
     key: "/org/gnome/terminal/legacy/profiles:/:e1c194b2-bbd2-40fc-9914-61d2704fcecf/visible-name"
     value: "'default'"
+    state: present
+
+- name: default terminal profile fonts
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:e1c194b2-bbd2-40fc-9914-61d2704fcecf/font"
+    value: "'Cica 15'"
     state: present
 
 - name: set default terminal profile
