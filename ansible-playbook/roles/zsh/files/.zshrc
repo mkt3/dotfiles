@@ -181,7 +181,7 @@ fi
 
 export PERCOL=fzf
 
-if [[ ! -n $TMUX && $- == *i* ]] && [[ "$TERM" != "dumb" ]]; then
+if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     ID="`tmux list-sessions`"
     create_new_session="Create new session"
     if [[ -z "$ID" ]]; then

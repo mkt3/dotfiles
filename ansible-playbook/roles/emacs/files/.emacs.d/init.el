@@ -38,7 +38,7 @@
     :ensure t
     :when (memq window-system '(mac ns x))
     :defun (exec-path-from-shell-initialize)
-    :custom ((exec-path-from-shell-check-startup-files . nil)
+    :custom ((exec-path-from-shell-arguments . "") ; zshの.zshrcでinteractiveのUIにしているため
              (exec-path-from-shell-variables . '("PATH" "GOPATH")))
     :config
     (exec-path-from-shell-initialize))
