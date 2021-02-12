@@ -1,0 +1,10 @@
+- name: install rust by rustup
+  shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+- name: auto complete
+  shell: ~/.cargo/bin/rustup completions zsh > ~/.zfunc/_rustup
+  args:
+    creates: ~/.zfunc/_rustup
+
+- name: common
+  include: "common.yml"
