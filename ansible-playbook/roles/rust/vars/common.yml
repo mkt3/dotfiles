@@ -1,0 +1,8 @@
+common:
+  crates:
+    - bat
+    - fd-find
+    - ripgrep
+    - git-delta
+    - grex
+    - lsd

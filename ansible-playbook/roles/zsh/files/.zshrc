@@ -104,15 +104,9 @@ setopt complete_aliases
 
 case "${PLATFORM}" in
     osx)
-        alias ls="ls -FGh"
-        alias ll="ls -l"
-        alias la="ls -aF"
         alias ssh="~/.ssh/ssh_change.sh"
         ;;
     linux)
-        alias ls="ls --color"
-        alias ll="ls -l"
-        alias la="ls -aF"
         alias open="xdg-open"
         ;;
 esac
@@ -124,6 +118,12 @@ alias grep='grep --color=auto'
 alias x="exit"
 alias cdh="cd ~/"
 alias sudo='TERM=xterm-256color sudo'
+alias cat='bat'
+alias grep='rg'
+alias find='fd'
+alias ls='fd'
+alias ll='fd -l'
+alias la="fd -aF"
 
 chpwd() {
     ls

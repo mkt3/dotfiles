@@ -48,3 +48,6 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 export PYTHONDONTWRITEBYTECODE=1
+
+# Cargo path
+source "$HOME/.cargo/env"

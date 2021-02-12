@@ -1,0 +1,6 @@
+- name: Include var
+  include_vars: common.yml
+
+- name: install all common packages
+  shell: ~/.cargo/bin/rustup run stable cargo install {{ item }}
+  with_items: "{{ common.crates }}"
