@@ -1,6 +1,6 @@
-- import_playbook: common.yml
+- import_playbook: pre-common.yml
 
 - hosts: localhost
   connection: local
-  roles:
-    - python
+
+- import_playbook: post-common.yml
