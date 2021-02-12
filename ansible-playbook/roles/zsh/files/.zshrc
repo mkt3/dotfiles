@@ -121,9 +121,12 @@ alias sudo='TERM=xterm-256color sudo'
 alias cat='bat'
 alias grep='rg'
 alias find='fd'
-alias ls='fd'
-alias ll='fd -l'
-alias la="fd -aF"
+alias diff="delta"
+alias ls='lsd'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
 
 chpwd() {
     ls
