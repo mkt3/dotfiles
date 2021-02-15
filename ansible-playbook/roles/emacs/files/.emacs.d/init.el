@@ -223,10 +223,15 @@
                                         ) default-frame-alist))
     )
 
+  (leaf *language
+    :config
+    (set-language-environment 'Japanese)
+    (prefer-coding-system 'utf-8))
+
   (leaf *font
     :when window-system
     :config
-    (add-to-list 'default-frame-alist '(font . "Hackgen-16")))
+    (add-to-list 'default-frame-alist '(font . "Cica-16")))
 
   (leaf *frame
     :init
