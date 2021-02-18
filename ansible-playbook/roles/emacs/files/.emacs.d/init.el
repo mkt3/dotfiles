@@ -708,6 +708,8 @@
 
   (leaf yaml-mode :ensure t)
 
+  (leaf toml-mode :ensure t)
+
   (leaf json-reformat :ensure t)
 
   (leaf web-mode
