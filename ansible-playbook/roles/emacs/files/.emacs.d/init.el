@@ -344,13 +344,7 @@
     :init
     (setq skk-user-directory "~/.emacs.d/ddskk.d")
     (setq viper-mode nil)
-    (add-hook 'lisp-interaction-mode-hook
-              '(lambda()
-                 (progn
-                   (eval-expression (skk-mode) nil)
-                   (skk-latin-mode (point))
-                   )))
-    )
+    :hook ((lisp-interaction-mode-hook . (lambda() (progn (eval-expression (skk-mode) nil) (skk-latin-mode (point)))))))
 
   (leaf ivy
     :ensure t
@@ -715,15 +709,47 @@
   (leaf web-mode
     :ensure t
     :mode ("\\.css\\'"
-           "\\.js\\'" "\\.json\\'" "\\.p?html?\\'"
-           "\\.php\\'" "\\.tsx\\'" "\\.vue\\'" "\\.xml\\'"))
+           "\\.json\\'" "\\.p?html?\\'"
+           "\\.php\\'" "\\.vue\\'" "\\.xml\\'"))
+
+  (leaf typescript-mode
+    :ensure t
+    :config
+    (setq typescript-indent-level 2)
+    :hook ((typescript-mode-hook . (lambda () (interactive) (mmm-mode) ))))
+
+  (leaf mmm-mode
+    :ensure t
+    :commands mmm-mode
+    :mode ((("\\.tsx\\'" "\\.jsx\\'" "\\.js\\'") . typescript-mode))
+    :config
+    (setq mmm-global-mode t)
+    (setq mmm-submode-decoration-level 0)
+    (mmm-add-classes
+     '((mmm-jsx-mode
+        :submode web-mode
+        :face mmm-code-submode-face
+        :front "\\(return\s\\|n\s\\|(\n\s*\\)<"
+        :front-offset -1
+        :back ">\n?\s*)\n}\n"
+        :back-offset 1
+        )))
+    (mmm-add-mode-ext-class 'typescript-mode nil 'mmm-jsx-mode)
+
+    (defun mmm-reapply ()
+      (mmm-mode)
+      (mmm-mode))
+
+    (add-hook 'after-save-hook
+              (lambda ()
+                (when (string-match-p "\\.tsx?" buffer-file-name)
+                  (mmm-reapply)
+                  ))))
 
   (leaf markdown-mode
     :ensure t
     :mode ("\\.md\\'")
-    :init
-    (add-hook 'markdown-mode-hook '(lambda () (setq tab-width 2)))
-  )
+    :hook ((markdown-mode-hook . (lambda () (setq tab-width 2)))))
 
   (leaf *docker-mode
     :config
