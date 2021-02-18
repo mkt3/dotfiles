@@ -51,3 +51,5 @@ export PYTHONDONTWRITEBYTECODE=1
 
 # Cargo path
 source "$HOME/.cargo/env"
+
+export PATH="$PATH:~/.nodebrew/current/bin/"
