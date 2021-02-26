@@ -120,7 +120,6 @@ alias x="exit"
 alias cdh="cd ~/"
 alias sudo='TERM=xterm-256color sudo'
 alias cat='bat'
-alias grep='rg'
 alias find='fd'
 alias diff="delta"
 alias ls='lsd'

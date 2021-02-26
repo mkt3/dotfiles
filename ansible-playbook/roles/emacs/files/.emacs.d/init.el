@@ -712,39 +712,59 @@
            "\\.json\\'" "\\.p?html?\\'"
            "\\.php\\'" "\\.vue\\'" "\\.xml\\'"))
 
+  (leaf scss-mode
+    :ensure t
+    :hook ((scss-mode-hook . (lambda () (and
+                                       (set (make-local-variable 'css-indent-offset) 2)
+                                       (set (make-local-variable 'scss-compile-at-save) nil)
+      )))))
+
+
+  (leaf rjsx-mode
+    :ensure t
+    :mode ((("\\.jsx\\'" "\\.js\\'") . typescript-mode))
+    :custom ((indent-tabs-mode . nil)
+             (js-indent-level . 2)
+             (js2-strict-missing-semi-waring . nil)))
+
   (leaf typescript-mode
     :ensure t
     :config
     (setq typescript-indent-level 2)
     :hook ((typescript-mode-hook . (lambda () (interactive) (mmm-mode) ))))
 
-  (leaf mmm-mode
-    :ensure t
-    :commands mmm-mode
-    :mode ((("\\.tsx\\'" "\\.jsx\\'" "\\.js\\'") . typescript-mode))
-    :config
-    (setq mmm-global-mode t)
-    (setq mmm-submode-decoration-level 0)
-    (mmm-add-classes
-     '((mmm-jsx-mode
-        :submode web-mode
-        :face mmm-code-submode-face
-        :front "\\(return\s\\|n\s\\|(\n\s*\\)<"
-        :front-offset -1
-        :back ">\n?\s*)\n}\n"
-        :back-offset 1
-        )))
-    (mmm-add-mode-ext-class 'typescript-mode nil 'mmm-jsx-mode)
+  ;; (leaf mmm-mode
+  ;;   :ensure t
+  ;;   :commands mmm-mode
+  ;;   :mode ((("\\.tsx\\'") . typescript-mode))
+  ;;   :config
+  ;;   (setq mmm-global-mode t)
+  ;;   (setq mmm-submode-decoration-level 0)
+  ;;   (mmm-add-classes
+  ;;    '((mmm-jsx-mode
+  ;;       :submode web-mode
+  ;;       :face mmm-code-submode-face
+  ;;       :front "\\(return\s\\|n\s\\|(\n\s*\\)<"
+  ;;       :front-offset -1
+  ;;       :back ">\n?\s*)\n}\n"
+  ;;       :back-offset 1
+  ;;       )))
+  ;;   (mmm-add-mode-ext-class 'typescript-mode nil 'mmm-jsx-mode)
 
-    (defun mmm-reapply ()
-      (mmm-mode)
-      (mmm-mode))
+  ;;   (defun mmm-reapply ()
+  ;;     (mmm-mode)
+  ;;     (mmm-mode))
 
-    (add-hook 'after-save-hook
-              (lambda ()
-                (when (string-match-p "\\.tsx?" buffer-file-name)
-                  (mmm-reapply)
-                  ))))
+  ;;   (add-hook 'after-save-hook
+  ;;             (lambda ()
+  ;;               (when (string-match-p "\\.tsx?" buffer-file-name)
+  ;;                 (mmm-reapply)
+  ;;                 ))))
+  ;;   (add-hook 'after-save-hook
+  ;;             (lambda ()
+  ;;               (when (string-match-p "\\.jsx?" buffer-file-name)
+  ;;                 (mmm-reapply)
+  ;;                 ))))
 
   (leaf markdown-mode
     :ensure t
