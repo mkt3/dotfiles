@@ -311,7 +311,7 @@
              (whitespace-display-mappings . '((space-mark ?\u3000 [?\u25a1])
                                               (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
              (whitespace-space-regexp . "\\(\u3000+\\)")
-             (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode markdown-mode))
+             (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode org-mode markdown-mode rjsx-mode css-mode))
              (global-whitespace-mode . t))
 
     :config
@@ -722,10 +722,13 @@
 
   (leaf rjsx-mode
     :ensure t
-    :mode ((("\\.jsx\\'" "\\.js\\'") . typescript-mode))
+    :mode ("\\.jsx\\'" "\\.js\\'")
     :custom ((indent-tabs-mode . nil)
              (js-indent-level . 2)
-             (js2-strict-missing-semi-waring . nil)))
+             (js2-strict-missing-semi-waring . nil))
+    :config
+    (setq js2-strict-missing-semi-warning nil)
+    )
 
   (leaf typescript-mode
     :ensure t
