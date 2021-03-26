@@ -152,6 +152,13 @@
              ("C-M-k" . windmove-up)
              ("C-M-j" . windmove-down)
              ("C-M-l" . windmove-right)))
+
+    (leaf gcmh
+      :ensure t
+      :custom
+      (gcmh-verbose . t)
+      :config
+      (gcmh-mode 1))
     )
   (leaf *lisp/vc
     :config
@@ -665,6 +672,27 @@
              (nyan-animate-nyancat . t))
     :hook
     ((doom-modeline-mode-hook . nyan-mode)))
+  (leaf projectile
+    :ensure t
+    :init
+    :config
+    (setq projectile-mode-line-prefix " Prj")
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+  (leaf  treemacs :ensure t)
+
+  (leaf treemacs-projectile
+  :after treemacs projectile
+  :ensure t)
+
+  (leaf flycheck
+    :ensure t
+    :hook (prog-mode-hook . flycheck-mode))
+
+  (leaf add-node-modules-path
+    :ensure t
+    :commands add-node-modules-path)
   )
 
 (leaf *major-mode
@@ -675,11 +703,6 @@
     (leaf poetry
       :ensure t
       :hook ((elpy-mode-hook . poetry-tracking-mode)))
-
-    (leaf flycheck
-      :ensure t
-      :hook ((elpy-mode-hook . flycheck-mode))
-      )
 
     (leaf elpy
       :ensure t
@@ -693,6 +716,7 @@
       (flycheck-python-flake8-executable . "flake8")
       :bind (elpy-mode-map
              ("C-c C-r f" . elpy-format-code))
+      :hook ((elpy-mode-hook . flycheck-mode))
       )
 
     (leaf py-isort :ensure t)
@@ -706,11 +730,6 @@
 
   (leaf json-reformat :ensure t)
 
-  (leaf web-mode
-    :ensure t
-    :mode ("\\.css\\'"
-           "\\.json\\'" "\\.p?html?\\'"
-           "\\.php\\'" "\\.vue\\'" "\\.xml\\'"))
 
   (leaf scss-mode
     :ensure t
@@ -728,46 +747,71 @@
              (js2-strict-missing-semi-waring . nil))
     :config
     (setq js2-strict-missing-semi-warning nil)
-    )
+    :hook (rjsx-mode-hook
+           .
+            (lambda ()
+              (add-node-modules-path)
+              (flycheck-mode t))))
+
+  (leaf tide
+    :ensure t
+    :commands tide-setup)
 
   (leaf typescript-mode
     :ensure t
+    :defun flycheck-add-mode
+    :custom
+    ((typescript-indent-level . 2))
     :config
-    (setq typescript-indent-level 2)
-    :hook ((typescript-mode-hook . (lambda () (interactive) (mmm-mode) ))))
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+    :hook (typescript-mode-hook
+            .
+            (lambda ()
+              (interactive)
+              (add-node-modules-path)
+              (flycheck-mode +1)
+              (tide-setup)
+              (eldoc-mode +1)
+              (tide-hl-identifier +1)
+              (company-mode +1)
+              (setq flycheck-checker 'javascript-eslint)
+              )))
 
-  ;; (leaf mmm-mode
-  ;;   :ensure t
-  ;;   :commands mmm-mode
-  ;;   :mode ((("\\.tsx\\'") . typescript-mode))
-  ;;   :config
-  ;;   (setq mmm-global-mode t)
-  ;;   (setq mmm-submode-decoration-level 0)
-  ;;   (mmm-add-classes
-  ;;    '((mmm-jsx-mode
-  ;;       :submode web-mode
-  ;;       :face mmm-code-submode-face
-  ;;       :front "\\(return\s\\|n\s\\|(\n\s*\\)<"
-  ;;       :front-offset -1
-  ;;       :back ">\n?\s*)\n}\n"
-  ;;       :back-offset 1
-  ;;       )))
-  ;;   (mmm-add-mode-ext-class 'typescript-mode nil 'mmm-jsx-mode)
 
-  ;;   (defun mmm-reapply ()
-  ;;     (mmm-mode)
-  ;;     (mmm-mode))
-
-  ;;   (add-hook 'after-save-hook
-  ;;             (lambda ()
-  ;;               (when (string-match-p "\\.tsx?" buffer-file-name)
-  ;;                 (mmm-reapply)
-  ;;                 ))))
-  ;;   (add-hook 'after-save-hook
-  ;;             (lambda ()
-  ;;               (when (string-match-p "\\.jsx?" buffer-file-name)
-  ;;                 (mmm-reapply)
-  ;;                 ))))
+  (leaf web-mode
+    :ensure t
+    :after flycheck
+    :defun flycheck-add-mode
+    :mode ("\\.tsx\\'" "\\.css\\'" "\\.json\\'" "\\.p?html?\\'" "\\.php\\'" )
+    :config
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+    :custom
+    ((web-mode-markup-indent-offset . 2)
+     (web-mode-css-indent-offset . 2)
+     (web-mode-code-indent-offset . 2)
+     (web-mode-comment-style . 2)
+     (web-mode-style-padding . 1)
+     (web-mode-script-padding . 1)
+     (web-mode-enable-auto-closing . t)
+     (web-mode-enable-auto-pairing . t)
+     (web-mode-auto-close-style . 2)
+     (web-mode-tag-auto-close-style . 2)
+     (indent-tabs-mode . nil)
+     (tab-width . 2))
+    :hook (web-mode-hook
+            .
+            (lambda ()
+              (interactive)
+              (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                (add-node-modules-path)
+                (tide-setup)
+                (flycheck-mode +1)
+                (setq flycheck-checker 'javascript-eslint)
+                (eldoc-mode +1)
+                (tide-hl-identifier +1)
+                (company-mode +1)
+                )))
+    )
 
   (leaf markdown-mode
     :ensure t
