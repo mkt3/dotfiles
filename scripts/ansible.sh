@@ -21,6 +21,9 @@ case $os in
                 else
                     PLAYBOOK="ansible-playbook/ubuntu_cui.yml -K"
                 fi
+            *photon*)
+                PLAYBOOK=ansible-playbook/photon.yml
+            ;;
             ;;
          esac
     ;;

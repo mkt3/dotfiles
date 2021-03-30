@@ -1,0 +1,11 @@
+- hosts: localhost
+  connection: local
+  roles:
+    - term
+    - fzf
+    - zsh
+    - tmux
+    - git
+    - vim
+    - docker
+
