@@ -296,12 +296,9 @@
     :ensure t
     :leaf-defer nil
     :global-minor-mode global-undo-tree-mode
-    :bind (  ("M-/" . undo-tree-redo)))
-
-  (leaf undohist
-    :ensure t
-    :commands (undohist-initialize)
-    :config (undohist-initialize))
+    :bind (  ("M-/" . undo-tree-redo))
+    :custom ((undo-tree-auto-save-history . t)
+             (undo-tree-history-directory-alist . `(("." . ,(concat user-emacs-directory ".cache/undo-tree-hist/"))))))
 
   (leaf whitespace
     :ensure t
