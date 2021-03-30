@@ -119,10 +119,15 @@ alias grep='grep --color=auto'
 alias x="exit"
 alias cdh="cd ~/"
 alias sudo='TERM=xterm-256color sudo'
-alias cat='bat'
-alias find='fd'
-alias diff="delta"
-alias ls='lsd'
+
+if type bat > /dev/null 2>&1; then
+    alias cat='bat'
+    alias find='fd'
+    alias diff="delta"
+    alias ls='lsd'
+else
+    alias ls='ls --color=auto'
+fi
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
