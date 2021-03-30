@@ -102,7 +102,6 @@
                (kill-whole-line   . t)
                (eval-expression-print-length . nil)
                (eval-expression-print-lepvel  . nil))
-      ;; :hook ((before-save-hook . delete-trailing-whitespace))
       )
 
     (leaf abbrev
@@ -118,8 +117,8 @@
 
     (leaf uniquify
       :custom ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
-            (uniquify-min-dir-content . 1)
-            (funiquify-ignore-buffers-re . "*[^*]+*")))
+               (uniquify-min-dir-content . 1)
+               (funiquify-ignore-buffers-re . "*[^*]+*")))
 
     (leaf elec-pair
       :custom ((electric-pair-mode . t)))
@@ -215,14 +214,14 @@
     :doc "next/open/gnustep / macos communication module"
     :when (eq 'ns window-system)
     :custom ((ns-control-modifier       . 'control)
-         (ns-option-modifier        . 'super)
-         (ns-command-modifier       . 'meta)
+             (ns-option-modifier        . 'super)
+             (ns-command-modifier       . 'meta)
 
-         (ns-right-control-modifier . 'control)
-         (ns-right-option-modifier  . 'hyper)
-         (ns-right-command-modifier . 'meta)
-         ;; use fn key as normal way.
-         (ns-function-modifier      . 'super))
+             (ns-right-control-modifier . 'control)
+             (ns-right-option-modifier  . 'hyper)
+             (ns-right-command-modifier . 'meta)
+             ;; use fn key as normal way.
+             (ns-function-modifier      . 'super))
     :config
     (setq default-frame-alist (append '((inhibit-double-buffering . t)
                                         (ns-appearance            . dark)
@@ -296,7 +295,7 @@
   (leaf undo-tree
     :ensure t
     :leaf-defer nil
-    :custom ((global-undo-tree-mode . t))
+    :global-minor-mode global-undo-tree-mode
     :bind (  ("M-/" . undo-tree-redo)))
 
   (leaf undohist
@@ -309,12 +308,12 @@
     :commands whitespace-mode
     :bind ("C-c W" . whitespace-cleanup)
     :custom ((whitespace-style . '(face
-                                  trailing
-                                  tabs
-                                  spaces
-                                  empty
-                                  space-mark
-                                  tab-mark))
+                                   trailing
+                                   tabs
+                                   spaces
+                                   empty
+                                   space-mark
+                                   tab-mark))
              (whitespace-display-mappings . '((space-mark ?\u3000 [?\u25a1])
                                               (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
              (whitespace-space-regexp . "\\(\u3000+\\)")
@@ -442,7 +441,7 @@
                ;; ([remap isearch-forward] . counsel-imenu)
                ("C-x C-r" . counsel-recentf))
         :custom `((counsel-find-file-ignore-regexp
-                  p . ,(rx-to-string '(| "./" "../") 'no-group))))
+                   p . ,(rx-to-string '(| "./" "../") 'no-group))))
       :custom ((ivy-initial-inputs-alist   . nil)
                (counsel-yank-pop-separator . "\n----------\n")))
     :config
@@ -524,7 +523,7 @@
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)
             ("C-i" . company-complete-common-or-cycle))
-            ;; ("C-i" . company-complete-selection))
+           ;; ("C-i" . company-complete-selection))
            (company-search-map
             ("C-n" . company-select-next)
             ("C-p" . company-select-previous)))
@@ -611,7 +610,7 @@
       :blackout yas-minor-mode
       :custom ((yas-indent-line . 'fixed)
                (yas-global-mode . t)
-                                     )
+               )
       :bind ((yas-keymap
               ("<tab>" . nil))            ; conflict with company
              (yas-minor-mode-map
@@ -672,19 +671,22 @@
              (nyan-animate-nyancat . t))
     :hook
     ((doom-modeline-mode-hook . nyan-mode)))
+
   (leaf projectile
     :ensure t
     :init
     :config
     (setq projectile-mode-line-prefix " Prj")
     (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+    :custom ((projectile-mode-line-prefix . " Prj"))
+    :bind (projectile-mode-map
+           ("C-c p" . projectile-command-map)))
 
-  (leaf  treemacs :ensure t)
+  (leaf treemacs :ensure t)
 
   (leaf treemacs-projectile
-  :after treemacs projectile
-  :ensure t)
+    :after treemacs projectile
+    :ensure t)
 
   (leaf flycheck
     :ensure t
@@ -694,7 +696,6 @@
     :ensure t
     :commands add-node-modules-path)
   )
-
 (leaf *major-mode
   :config
   (leaf *python
@@ -734,9 +735,9 @@
   (leaf scss-mode
     :ensure t
     :hook ((scss-mode-hook . (lambda () (and
-                                       (set (make-local-variable 'css-indent-offset) 2)
-                                       (set (make-local-variable 'scss-compile-at-save) nil)
-      )))))
+                                         (set (make-local-variable 'css-indent-offset) 2)
+                                         (set (make-local-variable 'scss-compile-at-save) nil)
+                                         )))))
 
 
   (leaf rjsx-mode
@@ -749,9 +750,9 @@
     (setq js2-strict-missing-semi-warning nil)
     :hook (rjsx-mode-hook
            .
-            (lambda ()
-              (add-node-modules-path)
-              (flycheck-mode t))))
+           (lambda ()
+             (add-node-modules-path)
+             (flycheck-mode t))))
 
   (leaf tide
     :ensure t
@@ -765,18 +766,17 @@
     :config
     (flycheck-add-mode 'javascript-eslint 'web-mode)
     :hook (typescript-mode-hook
-            .
-            (lambda ()
-              (interactive)
-              (add-node-modules-path)
-              (flycheck-mode +1)
-              (tide-setup)
-              (eldoc-mode +1)
-              (tide-hl-identifier +1)
-              (company-mode +1)
-              (setq flycheck-checker 'javascript-eslint)
-              )))
-
+           .
+           (lambda ()
+             (interactive)
+             (add-node-modules-path)
+             (flycheck-mode +1)
+             (tide-setup)
+             (eldoc-mode +1)
+             (tide-hl-identifier +1)
+             (company-mode +1)
+             (setq flycheck-checker 'javascript-eslint)
+             )))
 
   (leaf web-mode
     :ensure t
@@ -799,18 +799,18 @@
      (indent-tabs-mode . nil)
      (tab-width . 2))
     :hook (web-mode-hook
-            .
-            (lambda ()
-              (interactive)
-              (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                (add-node-modules-path)
-                (tide-setup)
-                (flycheck-mode +1)
-                (setq flycheck-checker 'javascript-eslint)
-                (eldoc-mode +1)
-                (tide-hl-identifier +1)
-                (company-mode +1)
-                )))
+           .
+           (lambda ()
+             (interactive)
+             (when (string-equal "tsx" (file-name-extension buffer-file-name))
+               (add-node-modules-path)
+               (tide-setup)
+               (flycheck-mode +1)
+               (setq flycheck-checker 'javascript-eslint)
+               (eldoc-mode +1)
+               (tide-hl-identifier +1)
+               (company-mode +1)
+               )))
     )
 
   (leaf markdown-mode
@@ -827,7 +827,7 @@
   )
 
 (leaf *misc-tools
-    :config
+  :config
   (leaf *git-tools
     :config
     (leaf gitattributes-mode :ensure t)
@@ -865,6 +865,5 @@
       (let ((proc (get-buffer-process (current-buffer))))
         (when (processp proc)
           (set-process-query-on-exit-flag proc nil))))
-    (add-hook 'term-exec-hook 'set-no-process-query-on-exit)
-    )
+    (add-hook 'term-exec-hook 'set-no-process-query-on-exit))
   )
