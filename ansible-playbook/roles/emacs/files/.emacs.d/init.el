@@ -80,7 +80,8 @@
               (indent-tabs-mode                . nil)
               (inhibit-startup-message         . t)
               (inhibit-startup-screen          . t)
-              (gc-cons-threshold               . ,(* gc-cons-threshold 10)))
+              ;; (gc-cons-threshold               . ,(* gc-cons-threshold 10))
+              )
     :config
     (defalias 'yes-or-no-p 'y-or-n-p)
     (keyboard-translate ?\C-h ?\C-?)
@@ -687,7 +688,17 @@
 
   (leaf flycheck
     :ensure t
-    :hook (prog-mode-hook . flycheck-mode))
+    :hook (prog-mode-hook . flycheck-mode)
+    :custom ((flycheck-display-errors-delay . 0.3))
+    :config
+    (leaf flycheck-inline
+      :ensure t
+      ;; :defun flycheck-inline-mode
+      :hook (flycheck-mode-hook . flycheck-inline-mode))
+    (leaf flycheck-color-mode-line
+      :ensure t
+      ;; :defun flycheck-color-mode-line-mode
+      :hook (flycheck-mode-hook . flycheck-color-mode-line-mode)))
 
   (leaf add-node-modules-path
     :ensure t
