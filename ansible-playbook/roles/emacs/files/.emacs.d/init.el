@@ -80,8 +80,7 @@
               (indent-tabs-mode                . nil)
               (inhibit-startup-message         . t)
               (inhibit-startup-screen          . t)
-              ;; (gc-cons-threshold               . ,(* gc-cons-threshold 10))
-              )
+              (gc-cons-threshold               . ,(* gc-cons-threshold 100)))
     :config
     (defalias 'yes-or-no-p 'y-or-n-p)
     (keyboard-translate ?\C-h ?\C-?)
