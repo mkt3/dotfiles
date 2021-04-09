@@ -692,11 +692,9 @@
     :config
     (leaf flycheck-inline
       :ensure t
-      ;; :defun flycheck-inline-mode
       :hook (flycheck-mode-hook . flycheck-inline-mode))
     (leaf flycheck-color-mode-line
       :ensure t
-      ;; :defun flycheck-color-mode-line-mode
       :hook (flycheck-mode-hook . flycheck-color-mode-line-mode)))
 
   (leaf add-node-modules-path
@@ -754,7 +752,6 @@
              (js-indent-level . 2)
              (js2-strict-missing-semi-waring . nil))
     :config
-    (setq js2-strict-missing-semi-warning nil)
     :hook (rjsx-mode-hook
            .
            (lambda ()
@@ -789,7 +786,7 @@
     :ensure t
     :after flycheck
     :defun flycheck-add-mode
-    :mode ("\\.tsx\\'" "\\.css\\'" "\\.json\\'" "\\.p?html?\\'" "\\.php\\'" )
+    :mode ("\\.tsx\\'" "\\.css\\'" "\\.json\\'" "\\.p?html?\\'" "\\.php\\'")
     :config
     (flycheck-add-mode 'javascript-eslint 'web-mode)
     :custom
@@ -815,7 +812,7 @@
                (flycheck-mode +1)
                (setq flycheck-checker 'javascript-eslint)
                (eldoc-mode +1)
-               (tide-hl-identifier +1)
+               (tide-hl-identifier-mode +1)
                (company-mode +1)
                )))
     )
