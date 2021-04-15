@@ -720,6 +720,7 @@
       :custom
       (elpy-rpc-python-command . "python3")
       (flycheck-python-flake8-executable . "flake8")
+      (flycheck-python-mypy-config . "~/.config/mypy/config/mypy.ini")
       :bind (elpy-mode-map
              ("C-c C-r f" . elpy-format-code))
       :hook ((elpy-mode-hook . flycheck-mode))
