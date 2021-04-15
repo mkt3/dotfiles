@@ -5,3 +5,4 @@ pipx:
     - flake8
     - isort
     - mlflow
+    - mypy

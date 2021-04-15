@@ -10,6 +10,12 @@
     dest: ~/.config/flake8
     state: link
 
+- name: Link mypy
+  file:
+    src: "{{ role_path }}/files/mypy"
+    dest: ~/.config/mypy
+    state: link
+
 - name: Import pyenv
   import_tasks: pyenv.yml
   
