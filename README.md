@@ -10,7 +10,8 @@ sudo pacman -S ansible
 ```bash
 xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install ansible
+brew install ansible python3
+pip3 install pipx
 ```
 
 - ubuntu
