@@ -43,3 +43,4 @@ mas "RunCat", id: 1429033973
 mas "Magnet", id: 441258766
 mas "Sequel Ace", id: 1518036000
 mas "GoodNotes", id: 1444383602
+mas "Dictonaries", id: 1380563956
