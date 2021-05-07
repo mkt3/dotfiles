@@ -105,6 +105,7 @@ setopt complete_aliases
 case "${PLATFORM}" in
     osx)
         alias ssh="~/.ssh/ssh_change.sh"
+        alias sed="gsed"
         ;;
     linux)
         alias open="xdg-open"
