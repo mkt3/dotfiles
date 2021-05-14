@@ -40,10 +40,10 @@ fi
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$HOME/.pyenv/bin:$PATH"
+if command -v pyenv 1 > /dev/null 2>&1; then eval "$(pyenv init --path)"; fi
+
 export PATH="$HOME/.poetry/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 export PATH=$HOME/.nodebrew/current/bin:$PATH
 
