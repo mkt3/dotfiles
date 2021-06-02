@@ -38,6 +38,8 @@ elif [[ "$PLATFORM" == 'linux' ]];then
     export PATH="$LINUX_DEFAULT_PATH"
 fi
 
+export PYTHONUSERBASE="$HOME/.local"
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$HOME/.pyenv/bin:$PATH"
 if command -v pyenv 1 > /dev/null 2>&1; then eval "$(pyenv init --path)"; fi
