@@ -50,6 +50,6 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 export PYTHONDONTWRITEBYTECODE=1
 
 # Cargo path
-source "$HOME/.cargo/env"
+. "$HOME/.cargo/env"
 
 export PATH="$PATH:~/.nodebrew/current/bin/"
