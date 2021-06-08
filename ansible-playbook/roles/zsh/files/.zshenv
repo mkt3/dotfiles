@@ -45,13 +45,12 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 if command -v pyenv 1 > /dev/null 2>&1; then eval "$(pyenv init --path)"; fi
 
 export PATH="$HOME/.poetry/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
 
-export PATH=$HOME/.nodebrew/current/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
 
 export PYTHONDONTWRITEBYTECODE=1
 
 # Cargo path
 . "$HOME/.cargo/env"
 
-export PATH="$PATH:~/.nodebrew/current/bin/"
+export PATH="$PATH:$HOME/.nodebrew/current/bin/"
