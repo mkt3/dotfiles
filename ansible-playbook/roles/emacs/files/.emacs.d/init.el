@@ -349,292 +349,324 @@
     (setq viper-mode nil)
     :hook ((lisp-interaction-mode-hook . (lambda() (progn (eval-expression (skk-mode) nil) (skk-latin-mode (point)))))))
 
-  (leaf ivy
+  ;; (leaf ivy
+  ;;   :ensure t
+  ;;   :leaf-defer nil
+  ;;   :custom ((ivy-mode . t)
+  ;;            (counsel-mode . t)
+  ;;            )
+  ;;   :bind ((:ivy-minibuffer-map
+  ;;           ("C-w" . ivy-backward-kill-word)
+  ;;           ("C-k" . ivy-kill-line)
+  ;;           ("RET" . ivy-alt-done)
+  ;;           ("C-h" . ivy-backward-delete-char)))
+  ;;   :init
+  ;;   (leaf *ivy-requirements
+  ;;     :config
+  ;;     (leaf migemo
+  ;;       :if (executable-find "cmigemo")
+  ;;       :ensure t
+  ;;       :require t
+  ;;       :custom
+  ;;       '((migemo-user-dictionary  . nil)
+  ;;         (migemo-regex-dictionary . nil)
+  ;;         (migemo-options          . '("-q" "--emacs"))
+  ;;         (migemo-command          . "cmigemo")
+  ;;         (migemo-coding-system    . 'utf-8-unix))
+  ;;       :init
+  ;;       (cond
+  ;;        ((and (eq system-type 'darwin)
+  ;;              (file-directory-p "/usr/local/share/migemo/utf-8/"))
+  ;;         (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"))
+  ;;        (t
+  ;;         (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
+  ;;       :config
+  ;;       (migemo-init)
+  ;;       (defun my/migemo-get-pattern-shyly (word)
+  ;;         (replace-regexp-in-string
+  ;;          "\\\\("
+  ;;          "\\\\(?:"
+  ;;          (migemo-get-pattern word)))
+  ;;       (defun my/ivy--regex-migemo-pattern (word)
+  ;;         (cond
+  ;;          ((string-match "\\(.*\\)\\(\\[[^\0]+\\]\\)"  word)
+  ;;           (concat (my/migemo-get-pattern-shyly (match-string 1 word))
+  ;;                   (match-string 2 word)))
+  ;;          ((string-match "\\`\\\\([^\0]*\\\\)\\'" word)
+  ;;           (match-string 0 word))
+  ;;          (t
+  ;;           (my/migemo-get-pattern-shyly word))))
+  ;;       (defun my/ivy--regex-migemo (str)
+  ;;         (when (string-match-p "\\(?:[^\\]\\|^\\)\\\\\\'" str)
+  ;;           (setq str (substring str 0 -1)))
+  ;;         (setq str (ivy--trim-trailing-re str))
+  ;;         (cdr (let ((subs (ivy--split str)))
+  ;;                (if (= (length subs) 1)
+  ;;                    (cons
+  ;;                     (setq ivy--subexps 0)
+  ;;                     (if (string-match-p "\\`\\.[^.]" (car subs))
+  ;;                         (concat "\\." (my/ivy--regex-migemo-pattern (substring (car subs) 1)))
+  ;;                       (my/ivy--regex-migemo-pattern (car subs))))
+  ;;                  (cons
+  ;;                   (setq ivy--subexps (length subs))
+  ;;                   (replace-regexp-in-string
+  ;;                    "\\.\\*\\??\\\\( "
+  ;;                    "\\( "
+  ;;                    (mapconcat
+  ;;                     (lambda (x)
+  ;;                       (if (string-match-p "\\`\\\\([^?][^\0]*\\\\)\\'" x)
+  ;;                           x
+  ;;                         (format "\\(%s\\)" (my/ivy--regex-migemo-pattern x))))
+  ;;                     subs
+  ;;                     ".*")
+  ;;                    nil t))))))
+  ;;       (defun my/ivy--regex-migemo-plus (str)
+  ;;         (cl-letf (((symbol-function 'ivy--regex) #'my/ivy--regex-migemo))
+  ;;           (ivy--regex-plus str))))
+  ;;     (leaf swiper
+  ;;       :ensure t
+  ;;       :bind (([remap isearch-forward] . swiper))
+  ;;       :init
+  ;;       (setf (alist-get 'swiper ivy-re-builders-alist) #'my/ivy--regex-migemo-plus)
+  ;;       )
+  ;;     (leaf counsel
+  ;;       :ensure t
+  ;;       :bind (("M-s c" . counsel-ag)
+  ;;              ("M-o f" . counsel-fzf)
+  ;;              ("M-o r" . counsel-recentf)
+  ;;              ("M-y" . counsel-yank-pop)
+  ;;              ;; ([remap isearch-forward] . counsel-imenu)
+  ;;              ("C-x C-r" . counsel-recentf))
+  ;;       :custom `((counsel-find-file-ignore-regexp
+  ;;                  p . ,(rx-to-string '(| "./" "../") 'no-group))))
+  ;;     :custom ((ivy-initial-inputs-alist   . nil)
+  ;;              (counsel-yank-pop-separator . "\n----------\n")))
+  ;;   :config
+  ;;   (leaf *other-ivy-packages
+  ;;     :config
+  ;;     (leaf ivy-prescient
+  ;;       :when (version<= "25.1" emacs-version)
+  ;;       :init
+  ;;       (leaf prescient
+  ;;         :custom `((prescient-aggressive-file-save . t)
+  ;;                   (prescient-save-file            . ,(locate-user-emacs-file "prescient"))
+  ;;                   (prescient-persist-mode         . t)))
+  ;;       :ensure t
+  ;;       :custom ((ivy-prescient-retain-classic-highlighting . t)
+  ;;                (ivy-prescient-mode . t)))
+
+  ;;     (leaf ivy-hydra
+  ;;       :doc "Additional key bindings for Ivy"
+  ;;       :ensure t
+  ;;       :bind (("C-c i i" . hydra-ivy/body)))
+
+  ;;     (leaf ivy-xref
+  ;;       :doc "Ivy interface for xref results"
+  ;;       :when (version<= "25.1" emacs-version)
+  ;;       :ensure t
+  ;;       :custom ((xref-show-xrefs-function . #'ivy-xref-show-xrefs)))
+
+  ;;     (leaf ivy-rich
+  ;;       :doc "More friendly display transformer for ivy"
+  ;;       :ensure t
+  ;;       :custom ((ivy-rich-mode . t)))
+
+  ;;     ;; (leaf ivy-point-history
+  ;;     ;;   :el-get SuzumiyaAoba/ivy-point-history
+  ;;     ;;   :bind (("C-c b p" . ivy-point-history))
+  ;;     ;;   :require t)
+
+  ;;     (leaf all-the-icons-ivy
+  ;;       :when window-system
+  ;;       :after all-the-icons
+  ;;       :defun (all-the-icons-ivy-setup)
+  ;;       :ensure t
+  ;;       :config (all-the-icons-ivy-setup))
+
+  ;;     (leaf flx :ensure t)
+  ;;     ;; Enhance M-x
+  ;;     (leaf amx :ensure t)
+
+  ;;     (leaf ivy-yasnippet
+  ;;       :ensure t
+  ;;       :bind ("C-c y s" . ivy-yasnippet)
+  ;;       :config
+  ;;       (setq ivy-yasnippet-expand-keys "smart") ; nil "always" , "smart"
+  ;;                                       ; https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-ivy.el
+  ;;       (advice-add #'ivy-yasnippet--preview :override #'ignore))
+  ;;     )
+
+  ;;   (leaf *ivy-integration
+  ;;     :config
+  ;;     ;; Integration with `projectile'
+  ;;     (leaf counsel-projectile
+  ;;       :ensure t
+  ;;       :after projectile
+  ;;       :custom ((projectile-completion-system . 'ivy)
+  ;;                (counsel-projectile-mode . t)))
+  ;;     ;; Integration with `magit'
+  ;;     (leaf *magit-integration
+  ;;       :after magit
+  ;;       :custom (((magit-completing-read-function . 'ivy-completing-read))))))
+
+  ;; (leaf company
+  ;;   :ensure t
+  ;;   :leaf-defer nil
+  ;;   :blackout company-mode
+  ;;   :bind ((company-active-map
+  ;;           ("M-n" . nil)
+  ;;           ("M-p" . nil)
+  ;;           ("C-s" . company-filter-candidates)
+  ;;           ("C-n" . company-select-next)
+  ;;           ("C-p" . company-select-previous)
+  ;;           ("C-i" . company-complete-common-or-cycle))
+  ;;          ;; ("C-i" . company-complete-selection))
+  ;;          (company-search-map
+  ;;           ("C-n" . company-select-next)
+  ;;           ("C-p" . company-select-previous)))
+  ;;   :custom ((company-tooltip-limit             . 12)
+  ;;            (company-idle-delay                . 0)
+  ;;            (company-minimum-prefix-length     . 1)
+  ;;            (company-transformers              . '(company-sort-by-occurrence))
+  ;;            (global-company-mode               . t)
+  ;;            (company-selection-wrap-around     . t)
+  ;;            (vompany-tooltip-align-annotations . t))
+  ;;   :config
+  ;;   (leaf company-prescient
+  ;;     :ensure t
+  ;;     :custom ((company-prescient-mode . t)))
+  ;;   (leaf company-box
+  ;;     :url "https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-company.el"
+  ;;     :when (version<= "26.1" emacs-version)
+  ;;     :disabled (eq window-system 'x)
+  ;;     :ensure t
+  ;;     :blackout company-box-mode
+  ;;     :defvar (company-box-icons-alist company-box-icons-all-the-icons)
+  ;;     :init (leaf all-the-icons :ensure t :require t)
+  ;;     :custom ((company-box-max-candidates . 50)
+  ;;              (company-box-icons-alist    . 'company-box-icons-all-the-icons))
+  ;;     :hook ((company-mode-hook . company-box-mode))
+  ;;     :config
+  ;;     (when (memq window-system '(ns mac))
+  ;;       (declare-function all-the-icons-faicon 'all-the-icons)
+  ;;       (declare-function all-the-icons-material 'all-the-icons)
+  ;;       (declare-function all-the-icons-octicon 'all-the-icons)
+  ;;       (setq company-box-icons-all-the-icons
+  ;;             `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
+  ;;               (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
+  ;;               (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+  ;;               (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+  ;;               (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+  ;;               (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+  ;;               (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+  ;;               (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+  ;;               (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+  ;;               (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+  ;;               (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
+  ;;               (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
+  ;;               (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+  ;;               (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+  ;;               (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
+  ;;               (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
+  ;;               (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
+  ;;               (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
+  ;;               (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
+  ;;               (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
+  ;;               (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+  ;;               (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
+  ;;               (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+  ;;               (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
+  ;;               (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
+  ;;               (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
+  ;;               (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
+  ;;       (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
+
+  ;;   (leaf company-quickhelp
+  ;;     :when (display-graphic-p)
+  ;;     :ensure t
+  ;;     :custom ((company-quickhelp-delay . 0.8)
+  ;;              (company-quickhelp-mode  . t))
+  ;;     :bind (company-active-map
+  ;;            ("M-h" . company-quickhelp-manual-begin))
+  ;;     :hook ((company-mode-hook . company-quickhelp-mode)))
+
+  ;;   (leaf company-math
+  ;;     :ensure t
+  ;;     :defvar (company-backends)
+  ;;     :preface
+  ;;     (defun c/latex-mode-setup ()
+  ;;       (setq-local company-backends
+  ;;                   (append '((company-math-symbols-latex
+  ;;                              company-math-symbols-unicode
+  ;;                              company-latex-commands))
+  ;;                           company-backends)))
+  ;;     :hook ((org-mode-hook . c/latex-mode-setup)
+  ;;            (tex-mode-hook . c/latex-mode-setup)))
+  ;;   (leaf yasnippet
+  ;;     :ensure t
+  ;;     :blackout yas-minor-mode
+  ;;     :custom ((yas-indent-line . 'fixed)
+  ;;              (yas-global-mode . t)
+  ;;              )
+  ;;     :bind ((yas-keymap
+  ;;             ("<tab>" . nil))            ; conflict with company
+  ;;            (yas-minor-mode-map
+  ;;             ("C-c y i" . yas-insert-snippet)
+  ;;             ("C-c y n" . yas-new-snippet)
+  ;;             ("C-c y v" . yas-visit-snippet-file)
+  ;;             ("C-c y l" . yas-describe-tables)
+  ;;             ("C-c y g" . yas-reload-all)))
+  ;;     :config
+  ;;     (leaf yasnippet-snippets :ensure t)
+  ;;     (leaf yatemplate
+  ;;       :ensure t
+  ;;       :config
+  ;;       (yatemplate-fill-alist))
+  ;;     (defvar company-mode/enable-yas t
+  ;;       "Enable yasnippet for all backends.")
+  ;;     (defun company-mode/backend-with-yas (backend)
+  ;;       (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+  ;;           backend
+  ;;         (append (if (consp backend) backend (list backend))
+  ;;                 '(:with company-yasnippet))))
+  ;;     (defun set-yas-as-company-backend ()
+  ;;       (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  ;;       )
+  ;;     :hook
+  ;;     ((company-mode-hook . set-yas-as-company-backend))
+  ;;     ))
+
+  (leaf vertico
     :ensure t
-    :leaf-defer nil
-    :custom ((ivy-mode . t)
-             (counsel-mode . t)
-             )
-    :bind ((:ivy-minibuffer-map
-            ("C-w" . ivy-backward-kill-word)
-            ("C-k" . ivy-kill-line)
-            ("RET" . ivy-alt-done)
-            ("C-h" . ivy-backward-delete-char)))
+    :custom ((vertico-count . 20)
+             (enable-recursive-minibuffers .t))h
     :init
-    (leaf *ivy-requirements
+    (vertico-mode)
+    (savehist-mode)
+    (leaf *vertico-requirements
       :config
-      (leaf migemo
-        :if (executable-find "cmigemo")
+      (leaf consult
         :ensure t
-        :require t
+        )
+      (leaf marginalia
+        :ensure t
+        :init
+        (marginalia-mode)
+        )
+      (leaf orderless
+        :ensure t
         :custom
-        '((migemo-user-dictionary  . nil)
-          (migemo-regex-dictionary . nil)
-          (migemo-options          . '("-q" "--emacs"))
-          (migemo-command          . "cmigemo")
-          (migemo-coding-system    . 'utf-8-unix))
-        :init
-        (cond
-         ((and (eq system-type 'darwin)
-               (file-directory-p "/usr/local/share/migemo/utf-8/"))
-          (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"))
-         (t
-          (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
-        :config
-        (migemo-init)
-        (defun my/migemo-get-pattern-shyly (word)
-          (replace-regexp-in-string
-           "\\\\("
-           "\\\\(?:"
-           (migemo-get-pattern word)))
-        (defun my/ivy--regex-migemo-pattern (word)
-          (cond
-           ((string-match "\\(.*\\)\\(\\[[^\0]+\\]\\)"  word)
-            (concat (my/migemo-get-pattern-shyly (match-string 1 word))
-                    (match-string 2 word)))
-           ((string-match "\\`\\\\([^\0]*\\\\)\\'" word)
-            (match-string 0 word))
-           (t
-            (my/migemo-get-pattern-shyly word))))
-        (defun my/ivy--regex-migemo (str)
-          (when (string-match-p "\\(?:[^\\]\\|^\\)\\\\\\'" str)
-            (setq str (substring str 0 -1)))
-          (setq str (ivy--trim-trailing-re str))
-          (cdr (let ((subs (ivy--split str)))
-                 (if (= (length subs) 1)
-                     (cons
-                      (setq ivy--subexps 0)
-                      (if (string-match-p "\\`\\.[^.]" (car subs))
-                          (concat "\\." (my/ivy--regex-migemo-pattern (substring (car subs) 1)))
-                        (my/ivy--regex-migemo-pattern (car subs))))
-                   (cons
-                    (setq ivy--subexps (length subs))
-                    (replace-regexp-in-string
-                     "\\.\\*\\??\\\\( "
-                     "\\( "
-                     (mapconcat
-                      (lambda (x)
-                        (if (string-match-p "\\`\\\\([^?][^\0]*\\\\)\\'" x)
-                            x
-                          (format "\\(%s\\)" (my/ivy--regex-migemo-pattern x))))
-                      subs
-                      ".*")
-                     nil t))))))
-        (defun my/ivy--regex-migemo-plus (str)
-          (cl-letf (((symbol-function 'ivy--regex) #'my/ivy--regex-migemo))
-            (ivy--regex-plus str))))
-      (leaf swiper
+          (completion-styles . '(orderless))
+          )
+      (leaf embark
         :ensure t
-        :bind (([remap isearch-forward] . swiper))
         :init
-        (setf (alist-get 'swiper ivy-re-builders-alist) #'my/ivy--regex-migemo-plus)
         )
-      (leaf counsel
+      (leaf embark-consult
         :ensure t
-        :bind (("M-s c" . counsel-ag)
-               ("M-o f" . counsel-fzf)
-               ("M-o r" . counsel-recentf)
-               ("M-y" . counsel-yank-pop)
-               ;; ([remap isearch-forward] . counsel-imenu)
-               ("C-x C-r" . counsel-recentf))
-        :custom `((counsel-find-file-ignore-regexp
-                   p . ,(rx-to-string '(| "./" "../") 'no-group))))
-      :custom ((ivy-initial-inputs-alist   . nil)
-               (counsel-yank-pop-separator . "\n----------\n")))
-    :config
-    (leaf *other-ivy-packages
-      :config
-      (leaf ivy-prescient
-        :when (version<= "25.1" emacs-version)
-        :init
-        (leaf prescient
-          :custom `((prescient-aggressive-file-save . t)
-                    (prescient-save-file            . ,(locate-user-emacs-file "prescient"))
-                    (prescient-persist-mode         . t)))
-        :ensure t
-        :custom ((ivy-prescient-retain-classic-highlighting . t)
-                 (ivy-prescient-mode . t)))
-
-      (leaf ivy-hydra
-        :doc "Additional key bindings for Ivy"
-        :ensure t
-        :bind (("C-c i i" . hydra-ivy/body)))
-
-      (leaf ivy-xref
-        :doc "Ivy interface for xref results"
-        :when (version<= "25.1" emacs-version)
-        :ensure t
-        :custom ((xref-show-xrefs-function . #'ivy-xref-show-xrefs)))
-
-      (leaf ivy-rich
-        :doc "More friendly display transformer for ivy"
-        :ensure t
-        :custom ((ivy-rich-mode . t)))
-
-      ;; (leaf ivy-point-history
-      ;;   :el-get SuzumiyaAoba/ivy-point-history
-      ;;   :bind (("C-c b p" . ivy-point-history))
-      ;;   :require t)
-
-      (leaf all-the-icons-ivy
-        :when window-system
-        :after all-the-icons
-        :defun (all-the-icons-ivy-setup)
-        :ensure t
-        :config (all-the-icons-ivy-setup))
-
-      (leaf flx :ensure t)
-      ;; Enhance M-x
-      (leaf amx :ensure t)
-
-      (leaf ivy-yasnippet
-        :ensure t
-        :bind ("C-c y s" . ivy-yasnippet)
-        :config
-        (setq ivy-yasnippet-expand-keys "smart") ; nil "always" , "smart"
-                                        ; https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-ivy.el
-        (advice-add #'ivy-yasnippet--preview :override #'ignore))
-      )
-
-    (leaf *ivy-integration
-      :config
-      ;; Integration with `projectile'
-      (leaf counsel-projectile
-        :ensure t
-        :after projectile
-        :custom ((projectile-completion-system . 'ivy)
-                 (counsel-projectile-mode . t)))
-      ;; Integration with `magit'
-      (leaf *magit-integration
-        :after magit
-        :custom (((magit-completing-read-function . 'ivy-completing-read))))))
-
-  (leaf company
-    :ensure t
-    :leaf-defer nil
-    :blackout company-mode
-    :bind ((company-active-map
-            ("M-n" . nil)
-            ("M-p" . nil)
-            ("C-s" . company-filter-candidates)
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)
-            ("C-i" . company-complete-common-or-cycle))
-           ;; ("C-i" . company-complete-selection))
-           (company-search-map
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)))
-    :custom ((company-tooltip-limit             . 12)
-             (company-idle-delay                . 0)
-             (company-minimum-prefix-length     . 1)
-             (company-transformers              . '(company-sort-by-occurrence))
-             (global-company-mode               . t)
-             (company-selection-wrap-around     . t)
-             (vompany-tooltip-align-annotations . t))
-    :config
-    (leaf company-prescient
-      :ensure t
-      :custom ((company-prescient-mode . t)))
-    (leaf company-box
-      :url "https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-company.el"
-      :when (version<= "26.1" emacs-version)
-      :disabled (eq window-system 'x)
-      :ensure t
-      :blackout company-box-mode
-      :defvar (company-box-icons-alist company-box-icons-all-the-icons)
-      :init (leaf all-the-icons :ensure t :require t)
-      :custom ((company-box-max-candidates . 50)
-               (company-box-icons-alist    . 'company-box-icons-all-the-icons))
-      :hook ((company-mode-hook . company-box-mode))
-      :config
-      (when (memq window-system '(ns mac))
-        (declare-function all-the-icons-faicon 'all-the-icons)
-        (declare-function all-the-icons-material 'all-the-icons)
-        (declare-function all-the-icons-octicon 'all-the-icons)
-        (setq company-box-icons-all-the-icons
-              `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
-                (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
-                (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-                (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-                (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
-                (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
-                (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
-                (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
-                (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
-                (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
-                (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
-                (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
-                (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
-                (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
-                (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
-                (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
-                (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
-        (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
-
-    (leaf company-quickhelp
-      :when (display-graphic-p)
-      :ensure t
-      :custom ((company-quickhelp-delay . 0.8)
-               (company-quickhelp-mode  . t))
-      :bind (company-active-map
-             ("M-h" . company-quickhelp-manual-begin))
-      :hook ((company-mode-hook . company-quickhelp-mode)))
-
-    (leaf company-math
-      :ensure t
-      :defvar (company-backends)
-      :preface
-      (defun c/latex-mode-setup ()
-        (setq-local company-backends
-                    (append '((company-math-symbols-latex
-                               company-math-symbols-unicode
-                               company-latex-commands))
-                            company-backends)))
-      :hook ((org-mode-hook . c/latex-mode-setup)
-             (tex-mode-hook . c/latex-mode-setup)))
-    (leaf yasnippet
-      :ensure t
-      :blackout yas-minor-mode
-      :custom ((yas-indent-line . 'fixed)
-               (yas-global-mode . t)
-               )
-      :bind ((yas-keymap
-              ("<tab>" . nil))            ; conflict with company
-             (yas-minor-mode-map
-              ("C-c y i" . yas-insert-snippet)
-              ("C-c y n" . yas-new-snippet)
-              ("C-c y v" . yas-visit-snippet-file)
-              ("C-c y l" . yas-describe-tables)
-              ("C-c y g" . yas-reload-all)))
-      :config
-      (leaf yasnippet-snippets :ensure t)
-      (leaf yatemplate
-        :ensure t
-        :config
-        (yatemplate-fill-alist))
-      (defvar company-mode/enable-yas t
-        "Enable yasnippet for all backends.")
-      (defun company-mode/backend-with-yas (backend)
-        (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-            backend
-          (append (if (consp backend) backend (list backend))
-                  '(:with company-yasnippet))))
-      (defun set-yas-as-company-backend ()
-        (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-        )
-      :hook
-      ((company-mode-hook . set-yas-as-company-backend))
-      ))
+        :after (embark consult)
+        ))
+    )
 
   (leaf highlight-indent-guides
     :ensure t
