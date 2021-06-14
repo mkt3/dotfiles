@@ -349,6 +349,51 @@
     (setq viper-mode nil)
     :hook ((lisp-interaction-mode-hook . (lambda() (progn (eval-expression (skk-mode) nil) (skk-latin-mode (point)))))))
 
+  (leaf vertico
+    :ensure t
+    :custom ((vertico-count . 20)
+             (enable-recursive-minibuffers .t))
+    :bind ((vertico-map
+            ("C-r" . vertico-previous)
+            ("C-s" . vertico-next)))
+    :init
+    (vertico-mode)
+    (savehist-mode)
+    (leaf *vertico-requirements
+      :config
+      (leaf consult
+        :ensure t
+        :preface
+        (defun my:consult-line (&optional at-point)
+          (interactive "P")
+          (if at-point
+              (consult-line (thing-at-point 'symbol))
+            (consult-line)))
+        :custom (recentf-mode . t)
+        :bind* (("C-s" . my:consult-line)
+                ("C-c C-a" . consult-buffer)
+                ([remap goto-line] . consult-goto-line))
+        )
+      (leaf marginalia
+        :ensure t
+        :init
+        (marginalia-mode)
+        )
+      (leaf orderless
+        :ensure t
+        :custom
+          (completion-styles . '(orderless))
+          )
+      (leaf embark
+        :ensure t
+        :init
+        )
+      (leaf embark-consult
+        :ensure t
+        :after (embark consult)
+        ))
+    )
+
   ;; (leaf ivy
   ;;   :ensure t
   ;;   :leaf-defer nil
@@ -509,164 +554,132 @@
   ;;       :after magit
   ;;       :custom (((magit-completing-read-function . 'ivy-completing-read))))))
 
-  ;; (leaf company
-  ;;   :ensure t
-  ;;   :leaf-defer nil
-  ;;   :blackout company-mode
-  ;;   :bind ((company-active-map
-  ;;           ("M-n" . nil)
-  ;;           ("M-p" . nil)
-  ;;           ("C-s" . company-filter-candidates)
-  ;;           ("C-n" . company-select-next)
-  ;;           ("C-p" . company-select-previous)
-  ;;           ("C-i" . company-complete-common-or-cycle))
-  ;;          ;; ("C-i" . company-complete-selection))
-  ;;          (company-search-map
-  ;;           ("C-n" . company-select-next)
-  ;;           ("C-p" . company-select-previous)))
-  ;;   :custom ((company-tooltip-limit             . 12)
-  ;;            (company-idle-delay                . 0)
-  ;;            (company-minimum-prefix-length     . 1)
-  ;;            (company-transformers              . '(company-sort-by-occurrence))
-  ;;            (global-company-mode               . t)
-  ;;            (company-selection-wrap-around     . t)
-  ;;            (vompany-tooltip-align-annotations . t))
-  ;;   :config
-  ;;   (leaf company-prescient
-  ;;     :ensure t
-  ;;     :custom ((company-prescient-mode . t)))
-  ;;   (leaf company-box
-  ;;     :url "https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-company.el"
-  ;;     :when (version<= "26.1" emacs-version)
-  ;;     :disabled (eq window-system 'x)
-  ;;     :ensure t
-  ;;     :blackout company-box-mode
-  ;;     :defvar (company-box-icons-alist company-box-icons-all-the-icons)
-  ;;     :init (leaf all-the-icons :ensure t :require t)
-  ;;     :custom ((company-box-max-candidates . 50)
-  ;;              (company-box-icons-alist    . 'company-box-icons-all-the-icons))
-  ;;     :hook ((company-mode-hook . company-box-mode))
-  ;;     :config
-  ;;     (when (memq window-system '(ns mac))
-  ;;       (declare-function all-the-icons-faicon 'all-the-icons)
-  ;;       (declare-function all-the-icons-material 'all-the-icons)
-  ;;       (declare-function all-the-icons-octicon 'all-the-icons)
-  ;;       (setq company-box-icons-all-the-icons
-  ;;             `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
-  ;;               (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
-  ;;               (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-  ;;               (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-  ;;               (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-  ;;               (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-  ;;               (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
-  ;;               (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-  ;;               (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-  ;;               (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-  ;;               (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
-  ;;               (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
-  ;;               (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-  ;;               (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-  ;;               (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
-  ;;               (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
-  ;;               (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
-  ;;               (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
-  ;;               (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
-  ;;               (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
-  ;;               (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-  ;;               (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
-  ;;               (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-  ;;               (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
-  ;;               (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
-  ;;               (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
-  ;;               (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
-  ;;       (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
-
-  ;;   (leaf company-quickhelp
-  ;;     :when (display-graphic-p)
-  ;;     :ensure t
-  ;;     :custom ((company-quickhelp-delay . 0.8)
-  ;;              (company-quickhelp-mode  . t))
-  ;;     :bind (company-active-map
-  ;;            ("M-h" . company-quickhelp-manual-begin))
-  ;;     :hook ((company-mode-hook . company-quickhelp-mode)))
-
-  ;;   (leaf company-math
-  ;;     :ensure t
-  ;;     :defvar (company-backends)
-  ;;     :preface
-  ;;     (defun c/latex-mode-setup ()
-  ;;       (setq-local company-backends
-  ;;                   (append '((company-math-symbols-latex
-  ;;                              company-math-symbols-unicode
-  ;;                              company-latex-commands))
-  ;;                           company-backends)))
-  ;;     :hook ((org-mode-hook . c/latex-mode-setup)
-  ;;            (tex-mode-hook . c/latex-mode-setup)))
-  ;;   (leaf yasnippet
-  ;;     :ensure t
-  ;;     :blackout yas-minor-mode
-  ;;     :custom ((yas-indent-line . 'fixed)
-  ;;              (yas-global-mode . t)
-  ;;              )
-  ;;     :bind ((yas-keymap
-  ;;             ("<tab>" . nil))            ; conflict with company
-  ;;            (yas-minor-mode-map
-  ;;             ("C-c y i" . yas-insert-snippet)
-  ;;             ("C-c y n" . yas-new-snippet)
-  ;;             ("C-c y v" . yas-visit-snippet-file)
-  ;;             ("C-c y l" . yas-describe-tables)
-  ;;             ("C-c y g" . yas-reload-all)))
-  ;;     :config
-  ;;     (leaf yasnippet-snippets :ensure t)
-  ;;     (leaf yatemplate
-  ;;       :ensure t
-  ;;       :config
-  ;;       (yatemplate-fill-alist))
-  ;;     (defvar company-mode/enable-yas t
-  ;;       "Enable yasnippet for all backends.")
-  ;;     (defun company-mode/backend-with-yas (backend)
-  ;;       (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-  ;;           backend
-  ;;         (append (if (consp backend) backend (list backend))
-  ;;                 '(:with company-yasnippet))))
-  ;;     (defun set-yas-as-company-backend ()
-  ;;       (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-  ;;       )
-  ;;     :hook
-  ;;     ((company-mode-hook . set-yas-as-company-backend))
-  ;;     ))
-
-  (leaf vertico
+  (leaf company
     :ensure t
-    :custom ((vertico-count . 20)
-             (enable-recursive-minibuffers .t))h
-    :init
-    (vertico-mode)
-    (savehist-mode)
-    (leaf *vertico-requirements
+    :leaf-defer nil
+    :blackout company-mode
+    :bind ((company-active-map
+            ("M-n" . nil)
+            ("M-p" . nil)
+            ("C-s" . company-filter-candidates)
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)
+            ("C-i" . company-complete-common-or-cycle))
+           ;; ("C-i" . company-complete-selection))
+           (company-search-map
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)))
+    :custom ((company-tooltip-limit             . 12)
+             (company-idle-delay                . 0)
+             (company-minimum-prefix-length     . 1)
+             (company-transformers              . '(company-sort-by-occurrence))
+             (global-company-mode               . t)
+             (company-selection-wrap-around     . t)
+             (vompany-tooltip-align-annotations . t))
+    :config
+    (leaf company-prescient
+      :ensure t
+      :custom ((company-prescient-mode . t)))
+    (leaf company-box
+      :url "https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-company.el"
+      :when (version<= "26.1" emacs-version)
+      :disabled (eq window-system 'x)
+      :ensure t
+      :blackout company-box-mode
+      :defvar (company-box-icons-alist company-box-icons-all-the-icons)
+      :init (leaf all-the-icons :ensure t :require t)
+      :custom ((company-box-max-candidates . 50)
+               (company-box-icons-alist    . 'company-box-icons-all-the-icons))
+      :hook ((company-mode-hook . company-box-mode))
       :config
-      (leaf consult
+      (when (memq window-system '(ns mac))
+        (declare-function all-the-icons-faicon 'all-the-icons)
+        (declare-function all-the-icons-material 'all-the-icons)
+        (declare-function all-the-icons-octicon 'all-the-icons)
+        (setq company-box-icons-all-the-icons
+              `((Unknown       . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
+                (Text          . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
+                (Method        . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+                (Function      . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+                (Constructor   . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+                (Field         . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+                (Variable      . ,(all-the-icons-octicon "tag" :height 0.85 :v-adjust 0 :face 'all-the-icons-lblue))
+                (Class         . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+                (Interface     . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Module        . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Property      . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
+                (Unit          . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
+                (Value         . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Enum          . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+                (Keyword       . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
+                (Snippet       . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
+                (Color         . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
+                (File          . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
+                (Reference     . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
+                (Folder        . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
+                (EnumMember    . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Constant      . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
+                (Struct        . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+                (Event         . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
+                (Operator      . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
+                (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
+                (Template      . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))))
+        (setq company-box-icons-alist 'company-box-icons-all-the-icons)))
+
+    (leaf company-quickhelp
+      :when (display-graphic-p)
+      :ensure t
+      :custom ((company-quickhelp-delay . 0.8)
+               (company-quickhelp-mode  . t))
+      :bind (company-active-map
+             ("M-h" . company-quickhelp-manual-begin))
+      :hook ((company-mode-hook . company-quickhelp-mode)))
+
+    (leaf company-math
+      :ensure t
+      :defvar (company-backends)
+      :preface
+      (defun c/latex-mode-setup ()
+        (setq-local company-backends
+                    (append '((company-math-symbols-latex
+                               company-math-symbols-unicode
+                               company-latex-commands))
+                            company-backends)))
+      :hook ((org-mode-hook . c/latex-mode-setup)
+             (tex-mode-hook . c/latex-mode-setup)))
+    (leaf yasnippet
+      :ensure t
+      :blackout yas-minor-mode
+      :custom ((yas-indent-line . 'fixed)
+               (yas-global-mode . t)
+               )
+      :bind ((yas-keymap
+              ("<tab>" . nil))            ; conflict with company
+             (yas-minor-mode-map
+              ("C-c y i" . yas-insert-snippet)
+              ("C-c y n" . yas-new-snippet)
+              ("C-c y v" . yas-visit-snippet-file)
+              ("C-c y l" . yas-describe-tables)
+              ("C-c y g" . yas-reload-all)))
+      :config
+      (leaf yasnippet-snippets :ensure t)
+      (leaf yatemplate
         :ensure t
+        :config
+        (yatemplate-fill-alist))
+      (defvar company-mode/enable-yas t
+        "Enable yasnippet for all backends.")
+      (defun company-mode/backend-with-yas (backend)
+        (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+            backend
+          (append (if (consp backend) backend (list backend))
+                  '(:with company-yasnippet))))
+      (defun set-yas-as-company-backend ()
+        (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
         )
-      (leaf marginalia
-        :ensure t
-        :init
-        (marginalia-mode)
-        )
-      (leaf orderless
-        :ensure t
-        :custom
-          (completion-styles . '(orderless))
-          )
-      (leaf embark
-        :ensure t
-        :init
-        )
-      (leaf embark-consult
-        :ensure t
-        :after (embark consult)
-        ))
-    )
+      :hook
+      ((company-mode-hook . set-yas-as-company-backend))
+      ))
 
   (leaf highlight-indent-guides
     :ensure t
