@@ -5,4 +5,4 @@
     state: link
 
 - name: Install app
-  shell: /usr/local/bin/brew bundle --global
+  shell: brew bundle --global
