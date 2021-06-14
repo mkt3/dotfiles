@@ -32,7 +32,7 @@ export XDG_CONFIG_HOME=~/.config
 
 if [[ "$PLATFORM" == 'osx' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
-    export PATH="/usr/local/bin:$MAC_DEFAULT_PATH"
+    export PATH="/opt/homebrew/bin:/usr/local/bin:$MAC_DEFAULT_PATH"
 elif [[ "$PLATFORM" == 'linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
@@ -53,4 +53,5 @@ export PYTHONDONTWRITEBYTECODE=1
 # Cargo path
 . "$HOME/.cargo/env"
 
-export PATH="$PATH:$HOME/.nodebrew/current/bin/"
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
