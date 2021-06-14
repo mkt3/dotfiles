@@ -14,5 +14,6 @@
 - name: Install pipx packages
   shell: ~/.local/bin/pipx install {{ item }}
   register: pipx_install
+  failed_when: false
   changed_when: "'already' not in pipx_install.stdout"
   with_items: "{{ pipx.pipx_packages }}"
