@@ -1,8 +1,6 @@
 pipx:
   pipx_packages:
     - jupyterlab
-    - tensorboard
     - flake8
     - isort
-    - mlflow
     - mypy
