@@ -6,5 +6,6 @@
     - homebrew
     - karabiner
     - macos
+    - aquaskk
 
 - import_playbook: post-common.yml
