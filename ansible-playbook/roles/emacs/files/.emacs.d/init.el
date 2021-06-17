@@ -351,6 +351,8 @@
 
   (leaf vertico
     :ensure t
+    :emacs>= 27.2
+    :global-minor-mode t
     :preface
     (defun my:filename-upto-parent ()
       "Move to parent directory like \"cd ..\" in find-file."
@@ -374,202 +376,201 @@
             ("C-s" . vertico-next)
             ("C-l" . my:filename-upto-parent)))
     :init
-    (vertico-mode)
     (savehist-mode)
-    (leaf *vertico-requirements
-      :config
-      (leaf consult
-        :ensure t
-        :preface
-        (defun my:consult-line (&optional at-point)
-          (interactive "P")
-          (if at-point
-              (consult-line (thing-at-point 'symbol))
-            (consult-line)))
-        :custom (recentf-mode . t)
-        :bind* (("C-s" . my:consult-line)
-                ("C-c C-a" . consult-buffer)
-                ([remap goto-line] . consult-goto-line))
-        )
-      (leaf marginalia
-        :ensure t
-        :init
-        (marginalia-mode)
-        )
-      (leaf orderless
-        :ensure t
-        :custom
-          (completion-styles . '(orderless))
-          )
-      (leaf embark
-        :ensure t
-        :init
-        )
-      (leaf embark-consult
-        :ensure t
-        :after (embark consult)
-        ))
     )
 
-  ;; (leaf ivy
-  ;;   :ensure t
-  ;;   :leaf-defer nil
-  ;;   :custom ((ivy-mode . t)
-  ;;            (counsel-mode . t)
-  ;;            )
-  ;;   :bind ((:ivy-minibuffer-map
-  ;;           ("C-w" . ivy-backward-kill-word)
-  ;;           ("C-k" . ivy-kill-line)
-  ;;           ("RET" . ivy-alt-done)
-  ;;           ("C-h" . ivy-backward-delete-char)))
-  ;;   :init
-  ;;   (leaf *ivy-requirements
-  ;;     :config
-  ;;     (leaf migemo
-  ;;       :if (executable-find "cmigemo")
-  ;;       :ensure t
-  ;;       :require t
-  ;;       :custom
-  ;;       '((migemo-user-dictionary  . nil)
-  ;;         (migemo-regex-dictionary . nil)
-  ;;         (migemo-options          . '("-q" "--emacs"))
-  ;;         (migemo-command          . "cmigemo")
-  ;;         (migemo-coding-system    . 'utf-8-unix))
-  ;;       :init
-  ;;       (cond
-  ;;        ((and (eq system-type 'darwin)
-  ;;              (file-directory-p "/usr/local/share/migemo/utf-8/"))
-  ;;         (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"))
-  ;;        (t
-  ;;         (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
-  ;;       :config
-  ;;       (migemo-init)
-  ;;       (defun my/migemo-get-pattern-shyly (word)
-  ;;         (replace-regexp-in-string
-  ;;          "\\\\("
-  ;;          "\\\\(?:"
-  ;;          (migemo-get-pattern word)))
-  ;;       (defun my/ivy--regex-migemo-pattern (word)
-  ;;         (cond
-  ;;          ((string-match "\\(.*\\)\\(\\[[^\0]+\\]\\)"  word)
-  ;;           (concat (my/migemo-get-pattern-shyly (match-string 1 word))
-  ;;                   (match-string 2 word)))
-  ;;          ((string-match "\\`\\\\([^\0]*\\\\)\\'" word)
-  ;;           (match-string 0 word))
-  ;;          (t
-  ;;           (my/migemo-get-pattern-shyly word))))
-  ;;       (defun my/ivy--regex-migemo (str)
-  ;;         (when (string-match-p "\\(?:[^\\]\\|^\\)\\\\\\'" str)
-  ;;           (setq str (substring str 0 -1)))
-  ;;         (setq str (ivy--trim-trailing-re str))
-  ;;         (cdr (let ((subs (ivy--split str)))
-  ;;                (if (= (length subs) 1)
-  ;;                    (cons
-  ;;                     (setq ivy--subexps 0)
-  ;;                     (if (string-match-p "\\`\\.[^.]" (car subs))
-  ;;                         (concat "\\." (my/ivy--regex-migemo-pattern (substring (car subs) 1)))
-  ;;                       (my/ivy--regex-migemo-pattern (car subs))))
-  ;;                  (cons
-  ;;                   (setq ivy--subexps (length subs))
-  ;;                   (replace-regexp-in-string
-  ;;                    "\\.\\*\\??\\\\( "
-  ;;                    "\\( "
-  ;;                    (mapconcat
-  ;;                     (lambda (x)
-  ;;                       (if (string-match-p "\\`\\\\([^?][^\0]*\\\\)\\'" x)
-  ;;                           x
-  ;;                         (format "\\(%s\\)" (my/ivy--regex-migemo-pattern x))))
-  ;;                     subs
-  ;;                     ".*")
-  ;;                    nil t))))))
-  ;;       (defun my/ivy--regex-migemo-plus (str)
-  ;;         (cl-letf (((symbol-function 'ivy--regex) #'my/ivy--regex-migemo))
-  ;;           (ivy--regex-plus str))))
-  ;;     (leaf swiper
-  ;;       :ensure t
-  ;;       :bind (([remap isearch-forward] . swiper))
-  ;;       :init
-  ;;       (setf (alist-get 'swiper ivy-re-builders-alist) #'my/ivy--regex-migemo-plus)
-  ;;       )
-  ;;     (leaf counsel
-  ;;       :ensure t
-  ;;       :bind (("M-s c" . counsel-ag)
-  ;;              ("M-o f" . counsel-fzf)
-  ;;              ("M-o r" . counsel-recentf)
-  ;;              ("M-y" . counsel-yank-pop)
-  ;;              ;; ([remap isearch-forward] . counsel-imenu)
-  ;;              ("C-x C-r" . counsel-recentf))
-  ;;       :custom `((counsel-find-file-ignore-regexp
-  ;;                  p . ,(rx-to-string '(| "./" "../") 'no-group))))
-  ;;     :custom ((ivy-initial-inputs-alist   . nil)
-  ;;              (counsel-yank-pop-separator . "\n----------\n")))
-  ;;   :config
-  ;;   (leaf *other-ivy-packages
-  ;;     :config
-  ;;     (leaf ivy-prescient
-  ;;       :when (version<= "25.1" emacs-version)
-  ;;       :init
-  ;;       (leaf prescient
-  ;;         :custom `((prescient-aggressive-file-save . t)
-  ;;                   (prescient-save-file            . ,(locate-user-emacs-file "prescient"))
-  ;;                   (prescient-persist-mode         . t)))
-  ;;       :ensure t
-  ;;       :custom ((ivy-prescient-retain-classic-highlighting . t)
-  ;;                (ivy-prescient-mode . t)))
+  (leaf consult
+    :ensure t
+    :preface
+    (defun my:consult-line (&optional at-point)
+      (interactive "P")
+      (if at-point
+          (consult-line (thing-at-point 'symbol))
+        (consult-line)))
+    :custom (recentf-mode . t)
+    :bind* (("C-s" . my:consult-line)
+            ("C-c C-a" . consult-buffer)
+            ([remap goto-line] . consult-goto-line)
+            ([remap yank-pop] . consult-yank-pop))
+    )
 
-  ;;     (leaf ivy-hydra
-  ;;       :doc "Additional key bindings for Ivy"
-  ;;       :ensure t
-  ;;       :bind (("C-c i i" . hydra-ivy/body)))
+  (leaf marginalia
+    :ensure t
+    :global-minor-mode t)
 
-  ;;     (leaf ivy-xref
-  ;;       :doc "Ivy interface for xref results"
-  ;;       :when (version<= "25.1" emacs-version)
-  ;;       :ensure t
-  ;;       :custom ((xref-show-xrefs-function . #'ivy-xref-show-xrefs)))
+  (leaf orderless
+    :ensure t
+    :custom (completion-styles . '(orderless)))
 
-  ;;     (leaf ivy-rich
-  ;;       :doc "More friendly display transformer for ivy"
-  ;;       :ensure t
-  ;;       :custom ((ivy-rich-mode . t)))
+  (leaf embark
+    :ensure t
+    :init
+    :config
+    (leaf embark-consult
+      :ensure t
+      :after (embark consult))
+    )
 
-  ;;     ;; (leaf ivy-point-history
-  ;;     ;;   :el-get SuzumiyaAoba/ivy-point-history
-  ;;     ;;   :bind (("C-c b p" . ivy-point-history))
-  ;;     ;;   :require t)
+  (leaf ivy
+    :ensure t
+    :emacs< 27.2
+    :leaf-defer nil
+    :custom ((ivy-mode . t)
+             (counsel-mode . t)
+             )
+    :bind ((:ivy-minibuffer-map
+            ("C-w" . ivy-backward-kill-word)
+            ("C-k" . ivy-kill-line)
+            ("RET" . ivy-alt-done)
+            ("C-h" . ivy-backward-delete-char)))
+    :init
+    (leaf *ivy-requirements
+      :config
+      (leaf migemo
+        :if (executable-find "cmigemo")
+        :ensure t
+        :require t
+        :custom
+        '((migemo-user-dictionary  . nil)
+          (migemo-regex-dictionary . nil)
+          (migemo-options          . '("-q" "--emacs"))
+          (migemo-command          . "cmigemo")
+          (migemo-coding-system    . 'utf-8-unix))
+        :init
+        (cond
+         ((and (eq system-type 'darwin)
+               (file-directory-p "/usr/local/share/migemo/utf-8/"))
+          (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"))
+         (t
+          (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
+        :config
+        (migemo-init)
+        (defun my/migemo-get-pattern-shyly (word)
+          (replace-regexp-in-string
+           "\\\\("
+           "\\\\(?:"
+           (migemo-get-pattern word)))
+        (defun my/ivy--regex-migemo-pattern (word)
+          (cond
+           ((string-match "\\(.*\\)\\(\\[[^\0]+\\]\\)"  word)
+            (concat (my/migemo-get-pattern-shyly (match-string 1 word))
+                    (match-string 2 word)))
+           ((string-match "\\`\\\\([^\0]*\\\\)\\'" word)
+            (match-string 0 word))
+           (t
+            (my/migemo-get-pattern-shyly word))))
+        (defun my/ivy--regex-migemo (str)
+          (when (string-match-p "\\(?:[^\\]\\|^\\)\\\\\\'" str)
+            (setq str (substring str 0 -1)))
+          (setq str (ivy--trim-trailing-re str))
+          (cdr (let ((subs (ivy--split str)))
+                 (if (= (length subs) 1)
+                     (cons
+                      (setq ivy--subexps 0)
+                      (if (string-match-p "\\`\\.[^.]" (car subs))
+                          (concat "\\." (my/ivy--regex-migemo-pattern (substring (car subs) 1)))
+                        (my/ivy--regex-migemo-pattern (car subs))))
+                   (cons
+                    (setq ivy--subexps (length subs))
+                    (replace-regexp-in-string
+                     "\\.\\*\\??\\\\( "
+                     "\\( "
+                     (mapconcat
+                      (lambda (x)
+                        (if (string-match-p "\\`\\\\([^?][^\0]*\\\\)\\'" x)
+                            x
+                          (format "\\(%s\\)" (my/ivy--regex-migemo-pattern x))))
+                      subs
+                      ".*")
+                     nil t))))))
+        (defun my/ivy--regex-migemo-plus (str)
+          (cl-letf (((symbol-function 'ivy--regex) #'my/ivy--regex-migemo))
+            (ivy--regex-plus str))))
+      (leaf swiper
+        :ensure t
+        :bind (([remap isearch-forward] . swiper))
+        :init
+        (setf (alist-get 'swiper ivy-re-builders-alist) #'my/ivy--regex-migemo-plus)
+        )
+      (leaf counsel
+        :ensure t
+        :bind (("M-s c" . counsel-ag)
+               ("M-o f" . counsel-fzf)
+               ("M-o r" . counsel-recentf)
+               ("M-y" . counsel-yank-pop)
+               ;; ([remap isearch-forward] . counsel-imenu)
+               ("C-x C-r" . counsel-recentf))
+        :custom `((counsel-find-file-ignore-regexp
+                   p . ,(rx-to-string '(| "./" "../") 'no-group))))
+      :custom ((ivy-initial-inputs-alist   . nil)
+               (counsel-yank-pop-separator . "\n----------\n")))
+    :config
+    (leaf *other-ivy-packages
+      :config
+      (leaf ivy-prescient
+        :when (version<= "25.1" emacs-version)
+        :init
+        (leaf prescient
+          :custom `((prescient-aggressive-file-save . t)
+                    (prescient-save-file            . ,(locate-user-emacs-file "prescient"))
+                    (prescient-persist-mode         . t)))
+        :ensure t
+        :custom ((ivy-prescient-retain-classic-highlighting . t)
+                 (ivy-prescient-mode . t)))
 
-  ;;     (leaf all-the-icons-ivy
-  ;;       :when window-system
-  ;;       :after all-the-icons
-  ;;       :defun (all-the-icons-ivy-setup)
-  ;;       :ensure t
-  ;;       :config (all-the-icons-ivy-setup))
+      (leaf ivy-hydra
+        :doc "Additional key bindings for Ivy"
+        :ensure t
+        :bind (("C-c i i" . hydra-ivy/body)))
 
-  ;;     (leaf flx :ensure t)
-  ;;     ;; Enhance M-x
-  ;;     (leaf amx :ensure t)
+      (leaf ivy-xref
+        :doc "Ivy interface for xref results"
+        :when (version<= "25.1" emacs-version)
+        :ensure t
+        :custom ((xref-show-xrefs-function . #'ivy-xref-show-xrefs)))
 
-  ;;     (leaf ivy-yasnippet
-  ;;       :ensure t
-  ;;       :bind ("C-c y s" . ivy-yasnippet)
-  ;;       :config
-  ;;       (setq ivy-yasnippet-expand-keys "smart") ; nil "always" , "smart"
-  ;;                                       ; https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-ivy.el
-  ;;       (advice-add #'ivy-yasnippet--preview :override #'ignore))
-  ;;     )
+      (leaf ivy-rich
+        :doc "More friendly display transformer for ivy"
+        :ensure t
+        :custom ((ivy-rich-mode . t)))
 
-  ;;   (leaf *ivy-integration
-  ;;     :config
-  ;;     ;; Integration with `projectile'
-  ;;     (leaf counsel-projectile
-  ;;       :ensure t
-  ;;       :after projectile
-  ;;       :custom ((projectile-completion-system . 'ivy)
-  ;;                (counsel-projectile-mode . t)))
-  ;;     ;; Integration with `magit'
-  ;;     (leaf *magit-integration
-  ;;       :after magit
-  ;;       :custom (((magit-completing-read-function . 'ivy-completing-read))))))
+      ;; (leaf ivy-point-history
+      ;;   :el-get SuzumiyaAoba/ivy-point-history
+      ;;   :bind (("C-c b p" . ivy-point-history))
+      ;;   :require t)
+
+      (leaf all-the-icons-ivy
+        :when window-system
+        :after all-the-icons
+        :defun (all-the-icons-ivy-setup)
+        :ensure t
+        :config (all-the-icons-ivy-setup))
+
+      (leaf flx :ensure t)
+      ;; Enhance M-x
+      (leaf amx :ensure t)
+
+      (leaf ivy-yasnippet
+        :ensure t
+        :bind ("C-c y s" . ivy-yasnippet)
+        :config
+        (setq ivy-yasnippet-expand-keys "smart") ; nil "always" , "smart"
+                                        ; https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-ivy.el
+        (advice-add #'ivy-yasnippet--preview :override #'ignore))
+      )
+
+    (leaf *ivy-integration
+      :config
+      ;; Integration with `projectile'
+      (leaf counsel-projectile
+        :ensure t
+        :after projectile
+        :custom ((projectile-completion-system . 'ivy)
+                 (counsel-projectile-mode . t)))
+      ;; Integration with `magit'
+      (leaf *magit-integration
+        :after magit
+        :custom (((magit-completing-read-function . 'ivy-completing-read))))))
 
   (leaf company
     :ensure t
