@@ -828,6 +828,51 @@
              (setq flycheck-checker 'javascript-eslint)
              )))
 
+  (leaf org
+    :preface
+    (setq my:org-directory "~/Nextcloud/org-mode/")
+    (defvar org-gtd-file (concat my:org-directory "gtd.org"))
+    (defvar org-memo-file (concat my:org-directory "memo.org"))
+    (defun gtd ()
+      (interactive)
+      (find-file org-gtd-file))
+    :if (file-directory-p my:org-directory)
+    :bind (("C-c c" . org-capture)
+           ("C-c a" . org-agenda)
+           ("C-c g" . gtd))
+    :advice
+    (:before org-calendar-holiday
+             (lambda () (require 'japanese-holidays)))
+    :init
+    (setq org-directory my:org-directory)
+    :custom
+    (
+     (org-agenda-files . (list org-directory))
+     (org-startup-indent . t)
+     (org-hide-leading-stars . t)
+     (org-return-follows-link . t)
+     (org-log-done . t)
+     (org-todo-keywords . '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
+                            (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
+     (org-todo-keyword-faces . '(("TODO" :foreground "red" :weight bold)
+                                 ("STARTED" :foreground "cornflower blue" :weight bold)
+                                 ("DONE" :foreground "green" :weight bold)
+                                 ("WAITING" :foreground "orange" :weight bold)
+                                 ("CANCELLED" :foreground "green" :weight bold)))
+     )
+    )
+  (leaf org-capture
+    :leaf-defer t
+    :after org
+    :commands (org-capture)
+    :config
+    (setq org-capture-templates `(
+                                  ("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+                                   "** %^{Brief Description}")
+                                  ("m" " Memo" entry (file ,org-memo-file)
+                                   "* %U %i %?")
+                                  )))
+
   (leaf web-mode
     :ensure t
     :after flycheck
