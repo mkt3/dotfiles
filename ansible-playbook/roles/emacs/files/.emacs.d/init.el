@@ -351,11 +351,28 @@
 
   (leaf vertico
     :ensure t
+    :preface
+    (defun my:filename-upto-parent ()
+      "Move to parent directory like \"cd ..\" in find-file."
+      (interactive)
+      (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
+        (save-excursion
+          (left-char 1)
+          (when (looking-at-p sep)
+            (delete-char 1)))
+        (save-match-data
+          (when (search-backward-regexp sep nil t)
+            (right-char 1)
+            (filter-buffer-substring (point)
+                                     (save-excursion (end-of-line) (point))
+                                     #'delete)))))
     :custom ((vertico-count . 20)
-             (enable-recursive-minibuffers .t))
+             (enable-recursive-minibuffers .t)
+             (vertico-cycle . t))
     :bind ((vertico-map
             ("C-r" . vertico-previous)
-            ("C-s" . vertico-next)))
+            ("C-s" . vertico-next)
+            ("C-l" . my:filename-upto-parent)))
     :init
     (vertico-mode)
     (savehist-mode)
