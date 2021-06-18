@@ -6,3 +6,5 @@ common:
     - git-delta
     - grex
     - lsd
+    - bottom
+    - csview
