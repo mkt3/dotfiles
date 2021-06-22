@@ -133,6 +133,7 @@ alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree'
+alias jl='~/.local/bin/jupyterlab.sh'
 
 chpwd() {
     ls
