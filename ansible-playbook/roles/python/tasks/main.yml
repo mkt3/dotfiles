@@ -16,6 +16,12 @@
     dest: ~/.config/mypy
     state: link
 
+- name: Link jupyterlab.sh
+  file:
+    src: "{{ role_path }}/files/jupyterlab.sh"
+    dest: ~/.local/bin/jupyterlab.sh
+    state: link
+
 - name: Import pyenv
   import_tasks: pyenv.yml
   
