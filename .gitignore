@@ -14,6 +14,7 @@ ansible-playbook/roles/emacs/files/.emacs.d/session.*
 ansible-playbook/roles/emacs/files/.emacs.d/snippets/
 ansible-playbook/roles/emacs/files/.emacs.d/transient/
 ansible-playbook/roles/emacs/files/.emacs.d/custom.el
+ansible-playbook/roles/emacs/files/.emacs.d/bookmarks
 ansible-playbook/roles/emacs/files/.emacs.d/history
 ansible-playbook/roles/emacs/files/.emacs.d/.cache/
 .vim/dein/.cache/

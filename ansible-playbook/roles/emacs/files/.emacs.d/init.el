@@ -237,7 +237,7 @@
   (leaf *font
     :when window-system
     :config
-    (add-to-list 'default-frame-alist '(font . "Cica-16")))
+    (add-to-list 'default-frame-alist '(font . "Cica-18")))
 
   (leaf *frame
     :init
@@ -256,6 +256,49 @@
 
 (leaf *minor-mode
   :config
+  (leaf tab-bar-mode
+    :init
+    (defvar my:ctrl-o-map (make-sparse-keymap)
+      "My original keymap binded to C-o.")
+    (defalias 'my:ctrl-o-prefix my:ctrl-o-map)
+    (define-key global-map (kbd "C-o") 'my:ctrl-o-prefix)
+    (define-key my:ctrl-o-map (kbd "c")   'tab-new)
+    (define-key my:ctrl-o-map (kbd "C-c") 'tab-new)
+    (define-key my:ctrl-o-map (kbd "k")   'tab-close)
+    (define-key my:ctrl-o-map (kbd "C-k") 'tab-close)
+    (define-key my:ctrl-o-map (kbd "n")   'tab-next)
+    (define-key my:ctrl-o-map (kbd "C-n") 'tab-next)
+    (define-key my:ctrl-o-map (kbd "p")   'tab-previous)
+    (define-key my:ctrl-o-map (kbd "C-p") 'tab-previous)
+  ;;
+    (defun my:tab-bar-tab-name-truncated ()
+      "Custom: Generate tab name from the buffer of the selected window."
+      (let ((tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
+            (ellipsis (cond
+                       (tab-bar-tab-name-ellipsis)
+                       ((char-displayable-p ?…) "…")
+                     ("..."))))
+        (if (< (length tab-name) tab-bar-tab-name-truncated-max)
+            (format "%-12s" tab-name)
+          (propertize (truncate-string-to-width
+                       tab-name tab-bar-tab-name-truncated-max nil nil
+                       ellipsis)
+                      'help-echo tab-name))))
+    :custom
+    ((tab-bar-close-button-show      . nil)
+     (tab-bar-close-last-tab-choice  . nil)
+     (tab-bar-close-tab-select       . 'left)
+     (tab-bar-history-mode           . nil)
+     (tab-bar-new-tab-choice         . "*scratch*")
+     (tab-bar-new-button-show        . nil)
+     (tab-bar-tab-name-function      . 'my:tab-bar-tab-name-truncated)
+     (tab-bar-tab-name-truncated-max . 12)
+     (tab-bar-separator              . "")
+     )
+    :config
+    (tab-bar-mode +1)
+    )
+
   (leaf dimmer
     :ensure t
     :custom ((dimmer-fraction . 0.5)
@@ -708,9 +751,10 @@
              (highlight-indent-guides-auto-enabled . t)  ;; automatically calculate faces.
              (highlight-indent-guides-responsive . t)
              (highlight-indent-guides-character . ?\|)))
+
   (leaf imenu-list
     :ensure t
-    :bind (("C-o" . imenu-list-smart-toggle))
+    :bind (("C-z" . imenu-list-smart-toggle))
     :custom-face
     (imenu-list-entry-face-1 . '((t (:foreground "white"))))
     :custom ((imenu-list-focus-after-activation . t)
