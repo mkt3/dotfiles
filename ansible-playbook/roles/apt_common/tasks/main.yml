@@ -1,3 +1,22 @@
+- name: Link python3
+  become: yes 
+  file:
+    src: /usr/bin/python3
+    dest: /usr/bin/python
+    state: link
+
+- name: build essential
+  become: yes 
+  apt:
+    name:
+      - build-essential
+
+- name: tig
+  become: yes 
+  apt:
+    name:
+      - tig
+
 - name: cmigemo
   become: yes 
   apt:
@@ -9,3 +28,20 @@
   apt:
     name:
       - xsel
+
+- name: Install a list of python lib
+  become: yes 
+  apt:
+    pkg:
+    - libbz2-dev
+    - libdb-dev
+    - libreadline-dev
+    - libffi-dev
+    - libgdbm-dev
+    - liblzma-dev
+    - libncursesw5-dev
+    - libsqlite3-dev
+    - libssl-dev
+    - zlib1g-dev
+    - uuid-dev 
+    - tk-dev
