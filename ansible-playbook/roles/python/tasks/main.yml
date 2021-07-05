@@ -16,6 +16,11 @@
     dest: ~/.config/mypy
     state: link
 
+- name: Make bin directory
+  file:
+    path: ~/.local/bin
+    state: directory
+
 - name: Link jupyterlab.sh
   file:
     src: "{{ role_path }}/files/jupyterlab.sh"
