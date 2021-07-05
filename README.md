@@ -11,6 +11,7 @@ sudo pacman -S ansible
 xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install ansible python3
+export PYTHONUSERBASE="$HOME/.local"
 pip3 install --user pipx
 ```
 
