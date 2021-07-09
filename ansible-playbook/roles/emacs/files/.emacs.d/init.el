@@ -386,7 +386,9 @@
     :defun (skk-get)
     :require t skk-study
     :bind (("C-x j"  . skk-mode))
-    :custom ((default-input-method . "japanese-skk"))
+    :custom ((skk-server-portnum . 1178)
+             (skk-server-host . "localhost")
+             (default-input-method . "japanese-skk"))
     :init
     (setq skk-user-directory "~/.emacs.d/ddskk.d")
     (setq viper-mode nil)
