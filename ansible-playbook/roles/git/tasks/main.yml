@@ -1,15 +1,10 @@
-- name: Link .gitignore_global
+- name: Make git config directory
   file:
-    src: "{{ role_path }}/files/.gitignore_global"
-    dest: ~/.gitignore_global
-    state: link
-  
-- name: Check git global settings
-  shell: bash -lc " git config --list --global | grep .gitignore_global"
-  register: gitignore_global
-  ignore_errors: true
-  changed_when: false
+    path: ~/.config/git
+    state: directory
 
-- name: Init git
-  shell: git config --global core.excludesfile ~/.gitignore_global
-  when: gitignore_global is failed
+- name: Link .ignore
+  file:
+    src: "{{ role_path }}/files/ignore"
+    dest: ~/.config/git/ignore
+    state: link
