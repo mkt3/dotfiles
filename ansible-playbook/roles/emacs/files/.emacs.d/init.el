@@ -172,14 +172,13 @@
     :require t
     :custom
     ((modus-themes-italic-constructs . t)
-     (modus-themes-bold-constructs . nil)
+     (modus-themes-bold-constructs . t)
      (modus-themes-region . '(bg-only no-extend))
      (modus-themes-syntax . 'faint)
      (modus-themes-diffs . 'deuteranopia)
      )
-    :init
-    (modus-themes-load-themes)
     :config
+    (modus-themes-load-themes)
     (modus-themes-load-vivendi))
 
   ;; (leaf doom-themes
