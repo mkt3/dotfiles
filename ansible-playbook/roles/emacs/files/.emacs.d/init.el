@@ -167,42 +167,42 @@
 
 (leaf *color-theme
   :config
-  (leaf modus-themes
-    :ensure t
-    :require t
-    :custom
-    ((modus-themes-italic-constructs . t)
-     (modus-themes-bold-constructs . t)
-     (modus-themes-region . '(bg-only no-extend))
-     (modus-themes-syntax . 'faint)
-     (modus-themes-diffs . 'deuteranopia)
-     )
-    :config
-    (modus-themes-load-themes)
-    (modus-themes-load-vivendi))
-
-  ;; (leaf doom-themes
+  ;; (leaf modus-themes
   ;;   :ensure t
   ;;   :require t
-  ;;   :custom ((doom-themes-enable-italic . t)
-  ;;            (doom-themes-enable-bold   . t))
-  ;;   :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
+  ;;   :custom
+  ;;   ((modus-themes-italic-constructs . t)
+  ;;    (modus-themes-bold-constructs . t)
+  ;;    (modus-themes-region . '(bg-only no-extend))
+  ;;    (modus-themes-syntax . 'faint)
+  ;;    (modus-themes-diffs . 'deuteranopia)
+  ;;    )
   ;;   :config
-  ;;   (load-theme 'doom-dracula t)
-  ;;   (doom-themes-neotree-config)
-  ;;   (doom-themes-org-config)
+  ;;   (modus-themes-load-themes)
+  ;;   (modus-themes-load-vivendi))
 
-  ;;   (leaf doom-modeline
-  ;;     :ensure t
-  ;;     :custom ((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-  ;;              (doom-modeline-icon . t)
-  ;;              (doom-modeline-major-mode-icon . nil)
-  ;;              (doom-modeline-minor-modes . nil))
-  ;;     :hook
-  ;;     ((after-init-hook . doom-modeline-mode))
-  ;;     :config
-  ;;     (set-cursor-color "cyan")
-  ;;     ))
+  (leaf doom-themes
+    :ensure t
+    :require t
+    :custom ((doom-themes-enable-italic . t)
+             (doom-themes-enable-bold   . t))
+    :custom-face ((doom-modeline-bar . '((t (:background "#6272a4")))))
+    :config
+    (load-theme 'doom-dracula t)
+    (doom-themes-neotree-config)
+    (doom-themes-org-config)
+
+    (leaf doom-modeline
+      :ensure t
+      :custom ((doom-modeline-buffer-file-name-style . 'truncate-with-project)
+               (doom-modeline-icon . t)
+               (doom-modeline-major-mode-icon . nil)
+               (doom-modeline-minor-modes . nil))
+      :hook
+      ((after-init-hook . doom-modeline-mode))
+      :config
+      (set-cursor-color "cyan")
+      ))
   )
 
 (leaf *ui
