@@ -11,8 +11,8 @@
     name:
       - ibus-skk
 
-- name: emacs
+- name: emacs27
   become: yes 
   apt:
     name:
-      - emacs
+      - emacs27

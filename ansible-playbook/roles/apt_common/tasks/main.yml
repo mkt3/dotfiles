@@ -45,3 +45,7 @@
     - zlib1g-dev
     - uuid-dev 
     - tk-dev
+
+- name: Add emacs27 repository from PPA
+  ansible.builtin.apt_repository:
+    repo: ppa:kelleyk/emacs

@@ -1,5 +1,5 @@
-- name: emacs-nox
+- name: emacs27-nox
   become: yes 
   apt:
     name:
-      - emacs-nox
+      - emacs27-nox
