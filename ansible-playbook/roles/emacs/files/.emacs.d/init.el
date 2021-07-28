@@ -107,6 +107,9 @@
     (leaf abbrev
       :blackout (abbrev-mode . " Abv"))
 
+    (leaf files
+      :setq-default ((find-file-visit-truename . t)))
+
     (leaf display-line-numbers
       :config
       (global-display-line-numbers-mode) ;; 行番号を常に表示
