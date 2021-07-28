@@ -47,5 +47,6 @@
     - tk-dev
 
 - name: Add emacs27 repository from PPA
+  become: yes
   ansible.builtin.apt_repository:
     repo: ppa:kelleyk/emacs
