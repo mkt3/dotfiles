@@ -1,5 +1,15 @@
-- name: Link .docker
+- name: Make docker config directory
   file:
-    src: "{{ role_path }}/files/.docker"
-    dest: ~/.docker
+    path: ~/.docker
+    state: directory
+
+- name: Link config.json
+  file:
+    src: "{{ role_path }}/files/config.json"
+    dest: ~/.docker/config.json
     state: link
+
+- name: Download docker-compose completions
+  get_url:
+    url: https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/zsh/_docker-compose
+    dest: "~/.zfunc/_docker-compose"

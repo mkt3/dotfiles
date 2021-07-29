@@ -121,6 +121,7 @@ alias x="exit"
 alias cdh="cd ~/"
 alias sudo='TERM=xterm-256color sudo'
 alias dc='docker-compose'
+compdef dc=docker-compose
 
 if type bat > /dev/null 2>&1; then
     alias cat='bat'
