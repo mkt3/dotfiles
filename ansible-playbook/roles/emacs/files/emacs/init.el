@@ -407,7 +407,7 @@
              (skk-server-host . "localhost")
              (default-input-method . "japanese-skk"))
     :init
-    (setq skk-user-directory "~/.emacs.d/ddskk.d")
+    (setq skk-user-directory (concat user-emacs-directory "ddskk.d"))
     (setq viper-mode nil)
     :hook ((lisp-interaction-mode-hook . (lambda() (progn (eval-expression (skk-mode) nil) (skk-latin-mode (point)))))))
 

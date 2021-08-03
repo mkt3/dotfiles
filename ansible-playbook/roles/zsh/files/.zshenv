@@ -36,6 +36,8 @@ if [[ "$PLATFORM" == 'osx' ]];then
 elif [[ "$PLATFORM" == 'linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
+    # Rootless docker path
+    export DOCKER_HOST=unix:///run/user/`id $(whoami) | awk -F'[=()]' '{print $2}'`/docker.sock
 fi
 
 export PYTHONUSERBASE="$HOME/.local"
@@ -55,6 +57,3 @@ export PYTHONDONTWRITEBYTECODE=1
 
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# Rootless docker path
-export DOCKER_HOST=unix:///run/user/`id $(whoami) | awk -F'[=()]' '{print $2}'`/docker.sock
