@@ -28,7 +28,7 @@ fi
 export PLATFORM
 
 # PATH
-export XDG_CONFIG_HOME=~/.config
+export XDG_CONFIG_HOME="$HOME/.config"
 
 if [[ "$PLATFORM" == 'osx' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
