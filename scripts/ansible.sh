@@ -16,7 +16,7 @@ case $os in
                 PLAYBOOK=ansible-playbook/arch.yml
             ;;
             ubuntu*)
-                if type dconf > /dev/null 2>&1; then
+                if systemctl get-default | grep 'graphical.target' > /dev/null 2>&1; then
                     PLAYBOOK="ansible-playbook/ubuntu_gui.yml -K"
                 else
                     PLAYBOOK="ansible-playbook/ubuntu_cui.yml -K"
