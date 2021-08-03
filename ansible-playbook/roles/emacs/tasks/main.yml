@@ -3,8 +3,8 @@
 
 - name: Link .emacsd
   file:
-    src: "{{ role_path }}/files/.emacs.d"
-    dest: ~/.emacs.d
+    src: "{{ role_path }}/files/emacs"
+    dest: ~/.config/emacs
     state: link
 
 - name: Stat skk-record
