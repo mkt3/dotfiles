@@ -141,8 +141,10 @@
       :custom ((auto-insert-mode . t)))
 
     (leaf paren
+      :custom-face (show-paren-match . '((t (:weight regular :background "#44475a" :underline "$ffff00"))))
       :custom ((show-paren-delay . 0.0)
-               (show-paren-mode  . t)))
+               (show-paren-mode  . t))
+      )
 
     (leaf save-place-mode
       :doc "automatically save place in files"
@@ -812,7 +814,8 @@
   (leaf flycheck
     :ensure t
     :hook (prog-mode-hook . flycheck-mode)
-    :custom ((flycheck-display-errors-delay . 0.3))
+    :custom ((flycheck-display-errors-delay . 0.3)
+             )
     :config
     (leaf flycheck-inline
       :ensure t
