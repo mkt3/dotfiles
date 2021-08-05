@@ -815,8 +815,9 @@
     :ensure t
     :hook (prog-mode-hook . flycheck-mode)
     :custom ((flycheck-display-errors-delay . 0.3)
-             )
+             (flycheck-indication-mode . 'left-margin))
     :config
+    (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
     (leaf flycheck-inline
       :ensure t
       :hook (flycheck-mode-hook . flycheck-inline-mode))
