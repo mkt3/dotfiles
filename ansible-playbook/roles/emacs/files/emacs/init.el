@@ -55,8 +55,8 @@
               (fill-column                     . 65)
               (tab-width                       . 4)
               (create-lockfiles                . nil)
-              (make-backup-files               . nil);; backup fileの作成を停止
-              (auto-save-default               . nil) ;; auto-save fileの作成を停止
+              (make-backup-files               . nil)
+              (auto-save-default               . nil)
               (use-dialog-box                  . nil)
               (column-number-mode              . t)
               (use-file-dialog                 . nil)
@@ -80,7 +80,9 @@
               (indent-tabs-mode                . nil)
               (inhibit-startup-message         . t)
               (inhibit-startup-screen          . t)
-              (gc-cons-threshold               . ,(* gc-cons-threshold 100)))
+              (gc-cons-threshold               . ,(* gc-cons-threshold 100))
+              (read-process-output-max         . ,(* 1024 1024))
+              )
     :config
     (defalias 'yes-or-no-p 'y-or-n-p)
     (keyboard-translate ?\C-h ?\C-?)
@@ -820,10 +822,11 @@
     (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
     (leaf flycheck-inline
       :ensure t
-      :hook (flycheck-mode-hook . flycheck-inline-mode))
-    (leaf flycheck-color-mode-line
-      :ensure t
-      :hook (flycheck-mode-hook . flycheck-color-mode-line-mode)))
+      :hook (emacs-lisp-mode-hook . flycheck-inline-mode))
+    ;; (leaf flycheck-color-mode-line
+    ;;   :ensure t
+    ;;   :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
+    )
 
   (leaf add-node-modules-path
     :ensure t
@@ -831,30 +834,71 @@
   )
 (leaf *major-mode
   :config
+  (leaf lsp-mode
+    :ensure t
+    :commands (lsp lsp-deferred)
+    :config
+    :custom
+    ((lsp-keymap-prefix                  . "C-c l")
+     (lsp-log-io                         . t)
+     (lsp-eldoc-render-all               . t)
+     (lsp-keep-workspace-alive           . nil)
+     (lsp-document-sync-method           . 2)
+     (lsp-response-timeout               . 5)
+     (lsp-enable-file-watchers           . nil))
+    :hook ((python-mode-hook . lsp-deferred)
+           (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
+    :init
+    (leaf lsp-ui
+      :ensure t
+      :after lsp-mode markdown-mode
+      :custom
+      ((lsp-ui-doc-enable            . t)
+       (lsp-ui-doc-position          . 'at-point)
+       (lsp-ui-doc-header            . t)
+       (lsp-ui-doc-include-signature . t)
+       (lsp-ui-doc-max-width         . 150)
+       (lsp-ui-doc-max-height        . 30)
+       (lsp-ui-doc-use-childframe    . nil)
+       (lsp-ui-doc-use-webkit        . nil)
+       (lsp-ui-peek-enable           . t)
+       (lsp-ui-peek-peek-height      . 20)
+       (lsp-ui-peek-list-width       . 50)
+       )
+      :bind (lsp-ui-mode-map
+             ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+             ([remap xref-find-references] . lsp-ui-peek-find-references))
+      :hook ((lsp-mode-hook . lsp-ui-mode))
+      ))
+
   (leaf *python
     :custom (python-indent-guess-indent-offset-verbose . nil)
     :config
-    (leaf poetry
-      :ensure t
-      :hook ((elpy-mode-hook . poetry-tracking-mode)))
+    ;; (leaf poetry
+    ;;   :ensure t
+    ;;   :hook ((python-mode-hook . #'poetry-tracking-mode)))
 
-    (leaf elpy
+    (leaf lsp-pyright
       :ensure t
       :init
-      (elpy-enable)
-      :config
-      (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
-      (remove-hook 'elpy-modules 'elpy-module-flymake)
-      :custom
-      (elpy-rpc-python-command . "python3")
-      (flycheck-python-flake8-executable . "flake8")
-      (flycheck-python-mypy-config . "~/.config/mypy/config/mypy.ini")
-      :bind (elpy-mode-map
-             ("C-c C-r f" . elpy-format-code))
-      :hook ((elpy-mode-hook . flycheck-mode))
+      (setq lsp-pyright-typechecking-mode "strict")
+      :hook (python-mode-hook . (lambda ()
+                                  (require 'lsp-pyright)
+                                  (lsp-deferred))))
+
+    (leaf py-isort
+      :ensure t
+      :preface
+      (defun my:py-isort--find-settings-path ()
+        (expand-file-name
+         (file-name-directory "~/.isort.cfg")))
+      :advice (:override py-isort--find-settings-path my:py-isort--find-settings-path)
       )
 
-    (leaf py-isort :ensure t)
+    (leaf blacken
+      :ensure t
+      :custom (blacken-line-length . 180)
+      )
 
     (leaf ein :ensure t)
     )

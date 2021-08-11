@@ -1,13 +1,13 @@
-- name: Link yapf
-  file:
-    src: "{{ role_path }}/files/yapf"
-    dest: ~/.config/yapf
-    state: link
-
 - name: Link flake8
   file:
     src: "{{ role_path }}/files/flake8"
     dest: ~/.config/flake8
+    state: link
+
+- name: Link isort
+  file:
+    src: "{{ role_path }}/files/isort.cfg"
+    dest: ~/.isort.cfg
     state: link
 
 - name: Link mypy

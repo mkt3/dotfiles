@@ -3,4 +3,5 @@ pipx:
     - jupyterlab
     - flake8
     - isort
+    - black
     - mypy
