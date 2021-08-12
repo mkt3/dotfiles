@@ -459,6 +459,12 @@
             ([remap yank-pop] . consult-yank-pop))
     )
 
+  (leaf consult-lsp
+    :ensure t
+    :bind (lsp-mode-map
+           ([remap xref-apropos] . consult-lsp-symbols))
+    )
+
   (leaf marginalia
     :ensure t
     :global-minor-mode t)
@@ -841,7 +847,7 @@
     :custom
     ((lsp-keymap-prefix                  . "C-c l")
      (lsp-log-io                         . t)
-     (lsp-eldoc-render-all               . t)
+     ;; (lsp-eldoc-render-all               . t)
      (lsp-keep-workspace-alive           . nil)
      (lsp-document-sync-method           . 2)
      (lsp-response-timeout               . 5)
@@ -865,9 +871,13 @@
        (lsp-ui-peek-peek-height      . 20)
        (lsp-ui-peek-list-width       . 50)
        )
-      :bind (lsp-ui-mode-map
+      :bind ((lsp-ui-mode-map
              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
              ([remap xref-find-references] . lsp-ui-peek-find-references))
+             (lsp-mode-map
+              ("C-c s" . lsp-ui-sideline-mode)
+              ("C-c d" . lsp-ui-doc-mode))
+             )
       :hook ((lsp-mode-hook . lsp-ui-mode))
       ))
 
