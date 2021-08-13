@@ -1,7 +1,6 @@
 pipx:
   pipx_packages:
     - jupyterlab
+    - mlflow
     - flake8
     - isort
-    - black
-    - mypy
