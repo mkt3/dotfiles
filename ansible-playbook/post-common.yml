@@ -2,3 +2,4 @@
   connection: local
   roles:
     - python
+    - nvm
