@@ -11,6 +11,12 @@
     name:
       - build-essential
 
+- name: zsh
+  become: yes 
+  apt:
+    name:
+      - zsh
+
 - name: tig
   become: yes 
   apt:
