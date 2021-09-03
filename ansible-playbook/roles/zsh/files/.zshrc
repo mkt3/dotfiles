@@ -104,7 +104,7 @@ setopt complete_aliases
 
 case "${PLATFORM}" in
     osx)
-        alias ssh="~/.ssh/ssh_change.sh"
+        alias ssh="~/.ssh/bin/ssh_change.sh"
         alias sed="gsed"
         ;;
     linux)
@@ -181,15 +181,23 @@ if [ -f "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/gcp
 
 
 # Tmux config
-SSH_CONFIG=$HOME/.ssh/config
+SSH_CONFIG_FILE_LIST=`ls ~/.ssh/*/config`
 
-ssh_command_list=""
-if test -e $SSH_CONFIG; then
-    for i in `grep "^Host " $SSH_CONFIG | sed s/"^Host "//`
+host_list=""
+for ssh_config in ${=SSH_CONFIG_FILE_LIST}
+do
+    for i in `grep "^Host " $ssh_config | grep -v "*" | sed s/"^Host "// | sed s/","/\ /g`
     do
+        host_list="${i} ${host_list}"
         ssh_command_list="${ssh_command_list}ssh ${i}:\n"
     done
-fi
+done
+
+ssh_command_list=""
+for i in ${=host_list}
+do
+    ssh_command_list="${ssh_command_list}ssh ${i}:\n"
+done
 
 export PERCOL=fzf
 
