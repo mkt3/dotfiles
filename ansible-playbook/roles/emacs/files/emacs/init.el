@@ -53,6 +53,7 @@
             :doc "define customization properties of builtins"
             :doc "define customization prop"
             :custom `((garbage-collection-messages     . t)
+                      (gc-cons-threshold               . 100000000)
                       (fill-column                     . 65)
                       (tab-width                       . 4)
                       (create-lockfiles                . nil)
@@ -714,7 +715,7 @@
     ;;   :hook ((python-mode-hook . #'poetry-tracking-mode)))
     (leaf lsp-pyright
       :ensure t
-      :init (setq lsp-pyright-typechecking-mode "strict")
+      ;; :init (setq lsp-pyright-typechecking-mode "strict")
       :hook (python-mode-hook . (lambda ()
                                   (require 'lsp-pyright)
                                   (lsp-deferred))))
