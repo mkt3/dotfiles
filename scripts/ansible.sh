@@ -4,13 +4,13 @@ set -e
 
 os=$(uname -s | tr '[A-Z]' '[a-z]')
 
-if [ $# -ne 1 ] && [ $1 = "minimal" ]; then
+if [ $# -eq 1 ] && [ $1 = "minimal" ]; then
     os="minimal"
 fi
 
 case $os in
     darwin)
-        PLAYBOOK=ansible-playbook/minimal.yml
+        PLAYBOOK=ansible-playbook/mac.yml
     ;;
     linux)
         dist=$(cat /etc/issue | tr '[A-Z]' '[a-z]')
@@ -28,10 +28,10 @@ case $os in
             *photon*)
                 PLAYBOOK=ansible-playbook/photon.yml
             ;;
-            minimal)
-                PLAYBOOK=ansible-playbook/minimal.yml
-            ;;
-         esac
+        esac
+    ;;
+    minimal)
+         PLAYBOOK=ansible-playbook/minimal.yml
     ;;
 esac
 
