@@ -44,7 +44,7 @@ export PYTHONUSERBASE="$HOME/.local"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init --path)"
+[ -d $PYENV ] && eval "$(pyenv init --path)"
 
 export PATH="$HOME/.poetry/bin:$PATH"
 
@@ -53,7 +53,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PYTHONDONTWRITEBYTECODE=1
 
 # Cargo path
-. "$HOME/.cargo/env"
+[ -d "$HOME/.cargo" ] && \. "$HOME/.cargo/env"
 
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
