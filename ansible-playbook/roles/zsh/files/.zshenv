@@ -44,7 +44,7 @@ export PYTHONUSERBASE="$HOME/.local"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$HOME/.pyenv/bin:$PATH"
-[ -d $PYENV ] && eval "$(pyenv init --path)"
+[ -d $PYENV_ROOT ] && eval "$(pyenv init --path)"
 
 export PATH="$HOME/.poetry/bin:$PATH"
 
