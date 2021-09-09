@@ -6,6 +6,7 @@ os=$(uname -s | tr '[A-Z]' '[a-z]')
 
 if [ $# -ne 1 ] && [$1 = "minimal" ] ;then
     os="minimal"
+fi
 
 case $os in
     darwin)
