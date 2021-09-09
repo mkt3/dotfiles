@@ -4,7 +4,7 @@ set -e
 
 os=$(uname -s | tr '[A-Z]' '[a-z]')
 
-if [ $# -ne 1 ] && [$1 = "minimal" ] ;then
+if [ $# -ne 1 ] && [ $1 = "minimal" ]; then
     os="minimal"
 fi
 
@@ -29,7 +29,7 @@ case $os in
                 PLAYBOOK=ansible-playbook/photon.yml
             ;;
             minimal)
-                PLAYBOOK=ansible-playbook/photon.yml
+                PLAYBOOK=ansible-playbook/minimal.yml
             ;;
          esac
     ;;
