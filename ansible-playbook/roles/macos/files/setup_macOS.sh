@@ -123,7 +123,7 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
 
 ## システムの透過設定を無効化
-defaults write com.apple.universalaccess reduceTransparency 1
+#defaults write com.apple.universalaccess reduceTransparency 1
 
 ## Dictationの無効化して、ダイアログを再表示させない
 defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 1
