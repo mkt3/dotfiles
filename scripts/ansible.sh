@@ -1,9 +1,12 @@
-  
 #!/bin/bash
 
 set -e
 
 os=$(uname -s | tr '[A-Z]' '[a-z]')
+
+if [ $# -eq 1 ] && [ $1 = "minimal" ]; then
+    os="minimal"
+fi
 
 case $os in
     darwin)
@@ -25,7 +28,10 @@ case $os in
             *photon*)
                 PLAYBOOK=ansible-playbook/photon.yml
             ;;
-         esac
+        esac
+    ;;
+    minimal)
+         PLAYBOOK=ansible-playbook/minimal.yml
     ;;
 esac
 

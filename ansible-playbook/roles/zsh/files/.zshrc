@@ -181,7 +181,7 @@ if [ -f "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/gcp
 
 
 # Tmux config
-SSH_CONFIG_FILE_LIST=`ls ~/.ssh/*/config`
+SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
 
 host_list=""
 for ssh_config in ${=SSH_CONFIG_FILE_LIST}
@@ -220,5 +220,3 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
        :  # Start terminal normally
     fi
  fi
-
-export PATH="$HOME/.poetry/bin:$PATH"

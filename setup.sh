@@ -2,4 +2,4 @@
 
 set -eu
 
-./scripts/ansible.sh
+./scripts/ansible.sh "$@"
