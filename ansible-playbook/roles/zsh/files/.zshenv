@@ -46,14 +46,20 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$HOME/.pyenv/bin:$PATH"
 [ -d $PYENV_ROOT ] && eval "$(pyenv init --path)"
 
+# Poety path
 export PATH="$HOME/.poetry/bin:$PATH"
 
 export PATH="$HOME/.local/bin:$PATH"
 
 export PYTHONDONTWRITEBYTECODE=1
 
+# Jupyter path
+export JUPYTER_CONFIG_DIR="$HOME/.config/jupyter"
+export JUPYTER_DATA_DIR="$HOME/.local/share/jupyter"
+
 # Cargo path
 [ -d "$HOME/.cargo" ] && \. "$HOME/.cargo/env"
 
+# nvm path
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

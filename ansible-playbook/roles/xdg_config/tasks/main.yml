@@ -1,4 +1,9 @@
-- name: Make config directory
+- name: Make xdg_config directory
   file:
     path: ~/.config
+    state: directory
+
+- name: Make xdg_data directory
+  file:
+    path: ~/.local/share
     state: directory
