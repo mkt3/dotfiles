@@ -1007,6 +1007,6 @@ c.ServerApp.password = 'sha1:0017874a6c54:92269de89f6585d717d9934f82fee08f61e07e
 #  Default: ''
 # c.ServerApp.websocket_url = ''
 
-c.JupyterLabTemplates.template_dirs = ['templates']
+c.JupyterLabTemplates.template_dirs = ['']
 c.JupyterLabTemplates.include_default = True
 c.JupyterLabTemplates.include_core_paths = True
