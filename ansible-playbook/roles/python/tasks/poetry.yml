@@ -1,4 +1,4 @@
-- name: Include var
+jjjjj- name: Include var
   include_vars: poetry.yml
 
 - name: Check exist poetry command
@@ -8,7 +8,7 @@
   changed_when: false
 
 - name: Install poetry
-  shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | ~/.pyenv/shims/python
+  shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | ~/.pyenv/shims/python
   when: exist_poetry is failed
 
 - name: Check poetry global settings
