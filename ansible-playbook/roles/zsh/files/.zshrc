@@ -173,12 +173,6 @@ if type "poetry" > /dev/null 2>&1; then
     poetry config virtualenvs.in-project true
 fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "${HOME}/gcp/google-cloud-sdk/path.zsh.inc" ]; then . "${HOME}/gcp/google-cloud-sdk/path.zsh.inc"; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/gcp/google-cloud-sdk/completion.zsh.inc"; fi
-
 
 # Tmux config
 SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
@@ -220,3 +214,7 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
        :  # Start terminal normally
     fi
  fi
+
+# Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
