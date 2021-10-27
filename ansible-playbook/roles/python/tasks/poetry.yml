@@ -1,4 +1,4 @@
-jjjjj- name: Include var
+- name: Include var
   include_vars: poetry.yml
 
 - name: Check exist poetry command
