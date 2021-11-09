@@ -727,7 +727,8 @@
                          my:py-isort--find-settings-path))
     (leaf blacken
       :ensure t
-      :custom (blacken-line-length . 119))
+      :custom ((blacken-line-length . 119)
+               blacken-skip-string-normalization . t))
     (leaf ein
       :ensure t))
   (leaf yaml-mode
