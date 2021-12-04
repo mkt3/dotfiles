@@ -854,11 +854,7 @@
 
 (leaf *misc-tools
   :config (leaf *git-tools
-            :config (leaf gitattributes-mode
-                      :ensure t)
-            (leaf gitconfig-mode
-              :ensure t)
-            (leaf gitignore-mode
+            (leaf git-modes
               :ensure t)
             (leaf magit
               :when (version<= "25.1" emacs-version)
