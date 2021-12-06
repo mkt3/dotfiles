@@ -119,8 +119,6 @@
        :custom ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
                 (uniquify-min-dir-content . 1)
                 (funiquify-ignore-buffers-re . "*[^*]+*")))
-     (leaf elec-pair
-       :custom ((electric-pair-mode . t)))
      (leaf time
        :custom ((display-time-string-forms . '(month "/" day "(" dayname ") " 24-hours ":" minutes))
                 (display-time-mode . t)))
@@ -325,9 +323,9 @@
    #+BEGIN_SRC emacs-lisp
      (leaf smartparens
        :ensure t
-       :defun (sp-pair)
        :hook (after-init-hook . smartparens-global-strict-mode)
-       :require smartparens-config)
+       :require smartparens-config
+       :custom ((electric-pair-mode . nil)))
    #+END_SRC
 ** ace-window
    #+BEGIN_SRC emacs-lisp
@@ -778,7 +776,8 @@
        :hook (prog-mode-hook . flycheck-mode)
        :custom ((flycheck-display-errors-delay . 0.3)
                 (flycheck-indication-mode . 'left-margin))
-       :config (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
+       :config 
+       (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
        (leaf flycheck-inline
          :ensure t
          :hook (emacs-lisp-mode-hook . flycheck-inline-mode))
@@ -807,12 +806,10 @@
                 (lsp-document-sync-method           . 2)
                 (lsp-response-timeout               . 5)
                 (lsp-enable-file-watchers           . nil))
-       :hook ((python-mode-hook . lsp-deferred)
-              (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
+       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode)
        :init (leaf lsp-ui
                :ensure t
                :after lsp-mode
-               markdown-mode
                :custom ((lsp-ui-doc-enable            . t)
                         (lsp-ui-doc-position          . 'at-point)
                         (lsp-ui-doc-header            . t)
@@ -855,7 +852,7 @@
        (leaf blacken
          :ensure t
          :custom ((blacken-line-length . 119)
-                    blacken-skip-string-normalization . t))
+                  (blacken-skip-string-normalization . t)))
        (leaf ein
          :ensure t))
    #+END_SRC
