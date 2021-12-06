@@ -781,10 +781,17 @@
        (leaf flycheck-inline
          :ensure t
          :hook (emacs-lisp-mode-hook . flycheck-inline-mode))
-       ;; (leaf flycheck-color-mode-line
-       ;;     :ensure t
-       ;;     :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
-         )
+       )
+     (flycheck-define-checker textlint
+       "A linter for Markdown."
+       :command ("textlint" "--format" "unix" source)
+       :error-patterns
+       ((warning line-start (file-name) ":" line ":" column ": "
+                 (id (one-or-more (not (any " "))))
+                 (message (one-or-more not-newline)
+                          (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+                 line-end))
+       :modes (text-mode markdown-mode gfm-mode))
    #+END_SRC
 ** node module path
    #+BEGIN_SRC emacs-lisp
@@ -995,7 +1002,10 @@
        :ensure t
        :mode ("\\.md\\'")
        :hook ((markdown-mode-hook . (lambda ()
-                                      (setq tab-width 2)))))
+                                      (setq tab-width 2)))
+              (markdown-mode-hook . (lambda ()
+                                      (setq flycheck-checker 'textlint)
+                                      (flycheck-mode 1)))))
    #+END_SRC
 ** docker-mode
    #+BEGIN_SRC emacs-lisp
