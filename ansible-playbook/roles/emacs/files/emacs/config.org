@@ -1000,7 +1000,9 @@
    #+BEGIN_SRC emacs-lisp
      (leaf markdown-mode
        :ensure t
-       :mode ("\\.md\\'")
+       :mode (("\\.md\\'" "\\.markdown\\'")
+              (("README\\.md\\'" . gfm-mode)))
+       :custom ((markdown-fontify-code-blocks-natively . t))
        :hook ((markdown-mode-hook . (lambda ()
                                       (setq tab-width 2)))
               (markdown-mode-hook . (lambda ()
