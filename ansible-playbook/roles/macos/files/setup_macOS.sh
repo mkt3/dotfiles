@@ -41,6 +41,10 @@ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -boolean true
 ## 「ゴミ箱に入れる」のショートカットキーをctrl + dへ
 defaults write com.apple.Finder NSUserKeyEquivalents -dict-add "ゴミ箱に入れる" -string "^d"
+## 「Emoji & Symbols」のショートカットキーをctrl + shift + f12へ
+defaults write "Apple Global Domain" NSUserKeyEquivalents -dict-add "Emoji & Symbols" -string "@$\\Uf70f"
+## 「絵文字と記号」のショートカットキーをctrl + shift + f12へ
+defaults write "Apple Global Domain" NSUserKeyEquivalents -dict-add "\\U7d75\\U6587\\U5b57\\U3068\\U8a18\\U53f7" -string "@$\\Uf70f"
 ## 名前で並べ替えを選択時にディレクトリを前に置くようにする
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 ## 検索時にデフォルトでカレントディレクトリを検索

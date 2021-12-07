@@ -1,0 +1,33 @@
+- name: Link textlink dirctory
+  file:
+    src: "{{ role_path }}/files/textlink"
+    dest: ~/.config/textlink
+    state: link
+
+- name: Make bin directory
+  file:
+    path: ~/.local/bin
+    state: directory
+
+- name: Link textlink.sh
+  file:
+    src: "{{ role_path }}/files/textlink.sh"
+    dest: ~/.local/bin/textlink.sh
+    state: link
+
+
+- name: Install textlint's package
+  npm:
+    name: "{{ item }}"
+    global: yes
+  with_items:
+    - textlint
+    - xtextlint-rule-preset-ja-technical-writing
+    - textlint-rule-unexpanded-acronym
+    - textlint-rule-rousseau
+    - textlint-rule-alex
+    - textlint-rule-common-misspellings
+    - textlint-rule-ginger
+    - textlint-rule-spellchecker
+    - textlint-rule-write-good
+    - textlint-rule-en-max-word-count

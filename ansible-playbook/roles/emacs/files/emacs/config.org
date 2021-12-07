@@ -784,7 +784,7 @@
        )
      (flycheck-define-checker textlint
        "A linter for Markdown."
-       :command ("textlint" "--format" "unix" source)
+       :command ("textlint.sh" source)
        :error-patterns
        ((warning line-start (file-name) ":" line ":" column ": "
                  (id (one-or-more (not (any " "))))
