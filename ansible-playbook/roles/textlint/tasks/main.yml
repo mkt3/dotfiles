@@ -1,7 +1,7 @@
 - name: Link textlint dirctory
   file:
     src: "{{ role_path }}/files/textlint"
-    dest: ~/.config/textlink
+    dest: ~/.config/textlint
     state: link
 
 - name: Make bin directory
@@ -12,7 +12,7 @@
 - name: Link textlint.sh
   file:
     src: "{{ role_path }}/files/textlint.sh"
-    dest: ~/.local/bin/textlink.sh
+    dest: ~/.local/bin/textlint.sh
     state: link
 
 
