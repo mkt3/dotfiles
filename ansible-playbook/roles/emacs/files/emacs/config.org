@@ -776,11 +776,11 @@
        :hook (prog-mode-hook . flycheck-mode)
        :custom ((flycheck-display-errors-delay . 0.3)
                 (flycheck-indication-mode . 'left-margin))
-       :config 
+       :config
        (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
        (leaf flycheck-inline
          :ensure t
-         :hook (emacs-lisp-mode-hook . flycheck-inline-mode))
+         :hook (flycheck-mode-hook . flycheck-inline-mode))
        )
      (flycheck-define-checker textlint
        "A linter for Markdown."
@@ -791,7 +791,7 @@
                  (message (one-or-more not-newline)
                           (zero-or-more "\n" (any " ") (one-or-more not-newline)))
                  line-end))
-       :modes (text-mode markdown-mode gfm-mode))
+       :modes (text-mode markdown-mode gfm-mode org-mode))
    #+END_SRC
 ** node module path
    #+BEGIN_SRC emacs-lisp
@@ -933,6 +933,9 @@
          (interactive)
          (find-file org-gtd-file))
        :if (file-directory-p my:org-directory)
+       :hook ((org-mode-hook . (lambda ()
+                                 (setq flycheck-checker 'textlint)
+                                 (flycheck-mode 1))))
        :bind (("C-c c" . org-capture)
               ("C-c a" . org-agenda)
               ("C-c g" . gtd))
@@ -1004,8 +1007,7 @@
               (("README\\.md\\'" . gfm-mode)))
        :custom ((markdown-fontify-code-blocks-natively . t))
        :hook ((markdown-mode-hook . (lambda ()
-                                      (setq tab-width 2)))
-              (markdown-mode-hook . (lambda ()
+                                      (setq tab-width 2)
                                       (setq flycheck-checker 'textlint)
                                       (flycheck-mode 1)))))
    #+END_SRC

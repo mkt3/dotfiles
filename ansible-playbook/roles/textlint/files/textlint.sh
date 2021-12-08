@@ -8,5 +8,12 @@ else
     TEXTLINTRC="${HOME}/.config/textlint/textlintrc_en.json"
 fi
 
+EXTENTION=${FILENAME##*.}
 
-textlint --format unix --config ${TEXTLINTRC} ${FILENAME}
+if [ $EXTENTION = "org" ]; then
+    PLUGIN="--plugin org"
+else
+    PLUGIN=""
+fi
+
+textlint --format unix --config ${TEXTLINTRC} ${PLUGIN} ${FILENAME}
