@@ -1,6 +1,6 @@
-- name: Link textlink dirctory
+- name: Link textlint dirctory
   file:
-    src: "{{ role_path }}/files/textlink"
+    src: "{{ role_path }}/files/textlint"
     dest: ~/.config/textlink
     state: link
 
@@ -9,9 +9,9 @@
     path: ~/.local/bin
     state: directory
 
-- name: Link textlink.sh
+- name: Link textlint.sh
   file:
-    src: "{{ role_path }}/files/textlink.sh"
+    src: "{{ role_path }}/files/textlint.sh"
     dest: ~/.local/bin/textlink.sh
     state: link
 
@@ -22,7 +22,7 @@
     global: yes
   with_items:
     - textlint
-    - xtextlint-rule-preset-ja-technical-writing
+    - textlint-rule-preset-ja-technical-writing
     - textlint-rule-unexpanded-acronym
     - textlint-rule-rousseau
     - textlint-rule-alex
