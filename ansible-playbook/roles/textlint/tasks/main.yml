@@ -23,6 +23,7 @@
   with_items:
     - textlint
     - textlint-plugin-org
+    - traverse
     - textlint-rule-preset-ja-technical-writing
     - textlint-rule-unexpanded-acronym
     - textlint-rule-rousseau
