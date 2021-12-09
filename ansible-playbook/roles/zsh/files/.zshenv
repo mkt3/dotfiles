@@ -54,12 +54,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PYTHONDONTWRITEBYTECODE=1
 
 # Jupyter path
-export JUPYTER_CONFIG_DIR="$HOME/.config/jupyter"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG/jupyter"
 export JUPYTER_DATA_DIR="$HOME/.local/share/jupyter"
 
 # Cargo path
 [ -d "$HOME/.cargo" ] && \. "$HOME/.cargo/env"
-
-# nvm path
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
