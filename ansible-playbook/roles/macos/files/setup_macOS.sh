@@ -76,6 +76,9 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "<dic
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 60 "<dict><key>enabled</key><false/></dict>"
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 61 "<dict><key>enabled</key><false/></dict>"
 
+## Disable Dictation Shortcut
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 164 "<dict><key>enabled</key><false/></dict>"
+
 # スペルの訂正を無効にする
 defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
 # 自動大文字の無効化
