@@ -25,11 +25,10 @@
     - textlint-plugin-org
     - traverse
     - textlint-rule-preset-ja-technical-writing
+    - textlint-rule-preset-ja-spacing
     - textlint-rule-unexpanded-acronym
     - textlint-rule-alex
     - textlint-rule-common-misspellings
     - textlint-rule-ginger
     - textlint-rule-write-good
     - textlint-rule-en-max-word-count
-    - textlint-rule-preset-ja-spacing
-    - textlint-rule-no-dead-link
