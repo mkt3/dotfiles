@@ -1,13 +1,10 @@
 {
     "rules": {
-        "preset-ja-technical-writing": true,
-        "textlint-rule-unexpanded-acronym": true,
-        "textlint-rule-rousseau": true,
-        "textlint-rule-alex": true,
-        "textlint-rule-common-misspellings": true,
-        "textlint-rule-ginger": true,
-        "textlint-rule-spellchecker": true,
-        "textlint-rule-write-good": true,
-        "textlint-rule-en-max-word-count": true
+        "unexpanded-acronym": true,
+        "alex": true,
+        "common-misspellings": true,
+        "ginger": true,
+        "write-good": true,
+        "en-max-word-count": true,
     }
 }

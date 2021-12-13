@@ -26,10 +26,10 @@
     - traverse
     - textlint-rule-preset-ja-technical-writing
     - textlint-rule-unexpanded-acronym
-    - textlint-rule-rousseau
     - textlint-rule-alex
     - textlint-rule-common-misspellings
     - textlint-rule-ginger
-    - textlint-rule-spellchecker
     - textlint-rule-write-good
     - textlint-rule-en-max-word-count
+    - textlint-rule-preset-ja-spacing
+    - textlint-rule-no-dead-link
