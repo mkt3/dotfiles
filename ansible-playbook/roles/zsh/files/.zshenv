@@ -59,3 +59,8 @@ export JUPYTER_DATA_DIR="$HOME/.local/share/jupyter"
 
 # Cargo path
 [ -d "$HOME/.cargo" ] && \. "$HOME/.cargo/env"
+
+
+# nvm path
+export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

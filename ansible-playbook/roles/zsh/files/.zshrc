@@ -113,7 +113,6 @@ case "${PLATFORM}" in
 esac
 
 alias rm="rm -i"
-alias emacs="emacs -nw"
 alias cp="cp -i"
 alias mv="mv -i"
 alias grep='grep --color=auto'
@@ -219,7 +218,4 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
 if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 
-# nvm path
-export NVM_DIR="$XDG_CONFIG_HOME/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+## Emacsにpathを通すため、pathは.zshenvに書くこと。

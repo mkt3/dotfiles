@@ -926,9 +926,11 @@
 ** org-mode
    #+BEGIN_SRC emacs-lisp
      (leaf org
-       :preface (setq my:org-directory "~/Nextcloud/org-mode/")
+       :ensure t
+       :preface
+       (setq my:org-directory "~/Nextcloud/gtd/")
        (defvar org-gtd-file (concat my:org-directory "gtd.org"))
-       (defvar org-memo-file (concat my:org-directory "memo.org"))
+       (defvar org-memo-file "~/Nextcloud/memo/memo.org")
        (defun gtd ()
          (interactive)
          (find-file org-gtd-file))
@@ -942,8 +944,11 @@
        :advice (:before org-calendar-holiday
                         (lambda ()
                           (require 'japanese-holidays)))
-       :init (setq org-directory my:org-directory)
-       :custom ((org-agenda-files . (list org-directory))
+       :init
+       (setq org-directory my:org-directory)
+       (setq org-agenda-files (list org-directory))
+
+       :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 3)))
                 (org-startup-indent . t)
                 (org-hide-leading-stars . t)
                 (org-return-follows-link . t)
@@ -964,9 +969,9 @@
        :leaf-defer t
        :after org
        :commands (org-capture)
-       :config (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+       :config (setq org-capture-templates `(("i" " Inbox" entry (file+headline (concat org-directory "inboxxx.org") "Inbox")
                                               "** %^{Brief Description}")
-                                             ("m" " Memo" entry (file ,org-memo-file) "* %U %i %?"))))
+                                             ("m" " Memo" entry (file ,org-memo-file) "* %? %U %i"))))
    #+END_SRC
 ** web-mode
    #+BEGIN_SRC emacs-lisp
