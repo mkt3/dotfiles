@@ -26,7 +26,6 @@
     - traverse
     - textlint-rule-preset-ja-technical-writing
     - textlint-rule-preset-ja-spacing
-    - textlint-rule-unexpanded-acronym
     - textlint-rule-alex
     - textlint-rule-common-misspellings
     - textlint-rule-ginger

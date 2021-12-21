@@ -948,7 +948,7 @@
        (setq org-directory my:org-directory)
        (setq org-agenda-files (list org-directory))
 
-       :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 3)))
+       :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 1)))
                 (org-startup-indent . t)
                 (org-hide-leading-stars . t)
                 (org-return-follows-link . t)

@@ -113,6 +113,7 @@ case "${PLATFORM}" in
 esac
 
 alias rm="rm -i"
+alias emacs="emacs -nw"
 alias cp="cp -i"
 alias mv="mv -i"
 alias grep='grep --color=auto'

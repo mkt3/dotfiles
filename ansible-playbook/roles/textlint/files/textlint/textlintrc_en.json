@@ -1,6 +1,5 @@
 {
     "rules": {
-        "unexpanded-acronym": true,
         "alex": true,
         "common-misspellings": true,
         "ginger": true,
