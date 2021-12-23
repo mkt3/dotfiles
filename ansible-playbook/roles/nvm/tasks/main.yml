@@ -3,6 +3,7 @@
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
   environment:
     XDG_CONFIG_HOME: "{{ ansible_env.HOME }}/.config"
+    PROFILE: "{{ ansible_env.HOME }}/.zshenv"
   args:
     executable: /bin/bash
     creates: "{{ ansible_env.HOME }}/nvm/nvm.sh"
