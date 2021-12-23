@@ -13,6 +13,7 @@
 
 - name: Update poetry
   shell: ~/.local/bin/poetry self update
+  ignore_errors: true
 
 - name: Check poetry global settings
   shell: bash -lc "~/.local/bin/poetry config --list | grep 'virtualenvs.in-project = true'"
