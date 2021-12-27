@@ -54,7 +54,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PYTHONDONTWRITEBYTECODE=1
 
 # Jupyter path
-export JUPYTER_CONFIG_DIR="$XDG_CONFIG/jupyter"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export JUPYTER_DATA_DIR="$HOME/.local/share/jupyter"
 
 # Cargo path
