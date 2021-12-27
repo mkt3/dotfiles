@@ -182,7 +182,7 @@
    #+END_SRC
 
 ** modus-theme
-   doom-themega見やすいので、一旦無効化
+   doom-themeが見やすいので、一旦無効化。
    #+BEGIN_SRC emacs-lisp
      ;; (leaf modus-themes
      ;;   :ensure nil
@@ -399,6 +399,7 @@
    #+BEGIN_SRC emacs-lisp
      (leaf skk
        :ensure ddskk
+       :when window-system
        :defun (skk-get)
        :require t
        skk-study
