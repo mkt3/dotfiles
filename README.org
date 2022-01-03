@@ -1,13 +1,15 @@
 #+title: dotfiles
+#+author: mkt3rb
+#+startup: content
+#+startup: nohideblocks
 
 * install ansible
-- arch linux
+** arch linux
   #+begin_src bash
     sudo pacman -S ansible
   #+end_src
 
-- mac
-
+** mac
   Login app store.
 
   #+begin_src bash
@@ -18,7 +20,7 @@
     pip3 install --user pipx
   #+end_src
 
-- ubuntu
+** ubuntu
   #+begin_src bash
     sudo apt update
     sudo apt install software-properties-common

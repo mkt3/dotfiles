@@ -1,6 +1,6 @@
 #+title: Configurations for Emacs
 #+author: mkt3rb
-#+startup: contentx
+#+startup: content
 #+startup: nohideblocks
 
 * Initialize
