@@ -18,7 +18,7 @@ ansible-playbook/roles/emacs/files/emacs/bookmarks
 ansible-playbook/roles/emacs/files/emacs/history
 ansible-playbook/roles/emacs/files/emacs/.cache/
 ansible-playbook/roles/emacs/files/emacs/.lsp-session*
-ansible-playbook/roles/emacs/files/emacs/config.el
+ansible-playbook/roles/emacs/files/emacs/README.el
 ansible-playbook/roles/emacs/files/emacs/init.bak
 .vim/dein/.cache/
 .vim/dein/cache_vim
