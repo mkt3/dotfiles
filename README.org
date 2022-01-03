@@ -6,8 +6,8 @@
   #+begin_src bash
     sudo pacman -S ansible
   #+end_src
-
 - mac
+
   Login app store.
 
   #+begin_src bash
@@ -17,7 +17,6 @@
     export PYTHONUSERBASE="$HOME/.local"
     pip3 install --user pipx
   #+end_src
-
 - ubuntu
   #+begin_src bash
     sudo apt update
@@ -25,7 +24,6 @@
     sudo apt-add-repository --yes --update ppa:ansible/ansible
     sudo apt install ansible python3-pip python3-venv
   #+end_src
-
 * setup
   #+begin_src bash
     bash
