@@ -3,9 +3,10 @@
 * install ansible
 
 - arch linux
-  #+begin_src bash
-    sudo pacman -S ansible
-  #+end_src
+#+begin_src bash
+  sudo pacman -S ansible
+#+end_src
+
 - mac
 
   Login app store.
