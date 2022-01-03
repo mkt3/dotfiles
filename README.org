@@ -1,11 +1,10 @@
 #+title: dotfiles
 
 * install ansible
-
 - arch linux
-   #+begin_src bash
-     sudo pacman -S ansible
-#+end_src
+  #+begin_src bash
+    sudo pacman -S ansible
+  #+end_src
 
 - mac
 
@@ -17,7 +16,7 @@
     brew install ansible python3
     export PYTHONUSERBASE="$HOME/.local"
     pip3 install --user pipx
-#+end_src
+  #+end_src
 
 - ubuntu
   #+begin_src bash
@@ -28,9 +27,12 @@
   #+end_src
 
 * setup
-  #+begin_src bash
-    bash
-    git clone https://github.com/mkt3/dotfiles .dotfiles
-    cd .dotfiles
-    ./setup.sh
-  #+end_src
+#+begin_src bash
+  bash
+  git clone https://github.com/mkt3/dotfiles .dotfiles
+  cd .dotfiles
+  ./setup.sh
+#+end_src
+
+* link
+  [[file:ansible-playbook/roles/emacs/files/emacs/][emacs conf]]
