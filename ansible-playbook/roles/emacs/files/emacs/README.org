@@ -890,16 +890,17 @@
    #+END_SRC
 ** rjsx-mode
    #+BEGIN_SRC emacs-lisp
-     (leaf rjsx-mode
-       :ensure t
-       :mode ("\\.jsx\\'" "\\.js\\'")
-       :custom ((indent-tabs-mode . nil)
-                (js-indent-level . 2)
-                (js2-strict-missing-semi-waring . nil))
-       :config
-       :hook (rjsx-mode-hook . (lambda ()
-                                 (add-node-modules-path)
-                                 (flycheck-mode t))))
+          (leaf rjsx-mode
+            :ensure t
+            :mode ("\\.jsx\\'" "\\.js\\'")
+            :custom ((indent-tabs-mode . nil)
+                     (js-indent-level . 2)
+                     (js2-strict-missing-semi-waring . nil)
+                     (js2-mode-show-strict-warnings . nil))
+            :config
+            :hook (rjsx-mode-hook . (lambda ()
+                                      (add-node-modules-path)
+                                      (flycheck-mode t))))
    #+END_SRC
 ** tide
    #+BEGIN_SRC emacs-lisp
