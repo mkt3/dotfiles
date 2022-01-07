@@ -19,11 +19,3 @@
     src: "~/.config/kitty/kitty-themes/themes/Japanesque.conf"
     dest: "~/.config/kitty/theme.conf"
     state: link
-
-- name: replace icon 
-  copy:
-    src: "{{ role_path }}/files/kitty-dark.png"
-    dest: "/Applications/kitty.app/Contents/Resources/kitty.icns"
-
-- name: delete icon cache
-  shell: rm -rf /var/folders/*/*/*/com.apple.dock.iconcache; killall Dock
