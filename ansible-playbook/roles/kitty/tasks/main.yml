@@ -1,0 +1,29 @@
+- name: Make kitty config directory
+  file:
+    path: ~/.config/kitty
+    state: directory
+
+- name: Link .kitty.conf
+  file:
+    src: "{{ role_path }}/files/kitty.conf"
+    dest: "~/.config/kitty/kitty.conf"
+    state: link
+
+- name: Clone kitty-theme
+  git:
+    repo: "https://github.com/dexpota/kitty-themes.git"
+    dest: "~/.config/kitty/kitty-themes"
+
+- name: Link kitty theme
+  file:
+    src: "~/.config/kitty/kitty-themes/themes/Japanesque.conf"
+    dest: "~/.config/kitty/theme.conf"
+    state: link
+
+- name: replace icon 
+  copy:
+    src: "{{ role_path }}/files/kitty-dark.png"
+    dest: "/Applications/kitty.app/Contents/Resources/kitty.icns"
+
+- name: delete icon cache
+  shell: rm -rf /var/folders/*/*/*/com.apple.dock.iconcache; killall Dock
