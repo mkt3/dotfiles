@@ -9,4 +9,4 @@
     creates: "{{ ansible_env.HOME }}/nvm/nvm.sh"
 
 - name: nodejs install
-  shell:  \. "{{ ansible_env.HOME }}/.config/nvm/nvm.sh" && nvm install 'lts' --latest-npm && nvm alias default 'lts'
+  shell:  \. "{{ ansible_env.HOME }}/.config/nvm/nvm.sh" && nvm install --lts --latest-npm && nvm alias default 'lts'
