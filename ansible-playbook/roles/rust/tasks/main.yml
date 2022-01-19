@@ -7,4 +7,4 @@
     creates: ~/.zfunc/_rustup
 
 - name: common
-  include: "common.yml"
+  include_tasks: "common.yml"
