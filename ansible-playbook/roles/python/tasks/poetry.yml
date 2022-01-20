@@ -8,7 +8,7 @@
   changed_when: false
 
 - name: Install poetry
-  shell: curl -sSL https://install.python-poetry.org | python3
+  shell: curl -sSL https://install.python-poetry.org | python3 -
   when: exist_poetry is failed
 
 - name: Update poetry
