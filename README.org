@@ -30,7 +30,6 @@
 
 * setup
 #+begin_src bash
-  bash
   git clone https://github.com/mkt3/dotfiles .dotfiles
   cd .dotfiles
   ./setup.sh
