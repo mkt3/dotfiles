@@ -6,7 +6,7 @@
 * install ansible
 ** arch linux
   #+begin_src bash
-    sudo pacman -S ansible
+    sudo pacman -S ansible python-pip zsh
   #+end_src
 
 ** mac
@@ -25,14 +25,14 @@
     sudo apt update
     sudo apt install software-properties-common
     sudo apt-add-repository --yes --update ppa:ansible/ansible
-    sudo apt install ansible python3-pip python3-venv
+    sudo apt install ansible python3-pip python3-venv zsh
   #+end_src
 
 * setup
 #+begin_src bash
   git clone https://github.com/mkt3/dotfiles .dotfiles
   cd .dotfiles
-  ./setup.sh
+  zsh -c ./setup.sh
 #+end_src
 
 * link
