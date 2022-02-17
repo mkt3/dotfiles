@@ -2,9 +2,9 @@
   connection: local
   roles:
     - xdg_config
+    - zsh
     - term
     - fzf
-    - zsh
     - tmux
     - git
     - emacs
