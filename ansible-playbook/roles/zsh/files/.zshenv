@@ -66,6 +66,7 @@ export JUPYTER_DATA_DIR="$HOME/.local/share/jupyter"
 export NVM_DIR="$XDG_CONFIG_HOME/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
+# cuda path
 if [[ "$PLATFORM" == 'linux' ]];then
     export PATH="$PATH:/opt/cuda/bin:/usr/local/cuda-11.3/bin"
 fi

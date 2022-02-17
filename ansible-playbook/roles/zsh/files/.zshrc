@@ -125,7 +125,6 @@ compdef dc=docker-compose
 
 if type bat > /dev/null 2>&1; then
     alias cat='bat'
-    alias find='fd'
     alias diff="delta"
     alias ls='lsd'
 else
@@ -216,7 +215,6 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
  fi
 
 # Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
 
 ## Emacsにpathを通すため、pathは.zshenvに書くこと。
