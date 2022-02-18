@@ -2,6 +2,9 @@
 set -e
 set -o pipefail
 
+# pam_tidの存在チェック（間違えてLinux環境などで実行されたら中断する）
+test -f /usr/lib/pam/pam_tid.so.2 || exit 1
+
 # sudoでTouchIDが使えるようにする
 if ! grep -Eq '^auth\s.*\spam_tid\.so$' /etc/pam.d/sudo; then
   ( set -e; set -o pipefail
