@@ -17,11 +17,28 @@
     name:
       - zsh
 
+- name: duf
+  become: yes 
+  apt:
+    deb: https://github.com/muesli/duf/releases/download/v0.8.1/duf_0.8.1_linux_amd64.deb
+
 - name: tig
   become: yes 
   apt:
     name:
       - tig
+
+- name: duf
+  become: yes 
+  apt:
+    name:
+      - duf
+
+- name: jq
+  become: yes 
+  apt:
+    name:
+      - jq
 
 - name: cmigemo
   become: yes 

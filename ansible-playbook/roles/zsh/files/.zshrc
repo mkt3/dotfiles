@@ -130,6 +130,8 @@ if type bat > /dev/null 2>&1; then
 else
     alias ls='ls --color=auto'
 fi
+
+alias df='duf'
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'

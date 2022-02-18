@@ -7,4 +7,5 @@ common:
     - grex
     - lsd
     - bottom
+    - du-dust
     - csview
