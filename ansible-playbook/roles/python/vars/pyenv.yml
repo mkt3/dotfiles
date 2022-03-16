@@ -1,4 +1,4 @@
 pyenv:
-  git_url: git://github.com/yyuu/pyenv.git
+  git_url: https://github.com/pyenv/pyenv.git
   install_dir: ~/.pyenv
   default_python_version: 3.9.10

@@ -36,4 +36,4 @@ case $os in
 esac
 
 echo "run playbook: $PLAYBOOK"
-ansible-playbook --verbose -i ansible-playbook/local $PLAYBOOK
+ansible-playbook -e ansible_python_interpreter=python3 --verbose -i ansible-playbook/local $PLAYBOOK
