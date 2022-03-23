@@ -8,6 +8,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit load "b4b4r07/enhancd"
 zinit ice atload'!_zsh_git_prompt_precmd_hook' lucid
 zinit load woefe/git-prompt.zsh
+zinit light olets/zsh-abbr
 
 # Prompt
 autoload -U colors
@@ -106,6 +107,7 @@ case "${PLATFORM}" in
     osx)
         alias ssh="~/.ssh/bin/ssh_change.sh"
         alias sed="gsed"
+        alias awk="gawk"
         ;;
     linux)
         alias open="xdg-open"
