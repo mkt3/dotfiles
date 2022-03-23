@@ -1,4 +1,4 @@
-. "${HOME}/.zinit/bin/zinit.zsh"
+. "${XDG_DATA_HOME}/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -159,7 +159,7 @@ if [[ "$TERM" == "dumb" ]]; then
     PS1='$ '
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
 #export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 #export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 #export FZF_CTRL_T_COMMAND=rg --files --hidden --follow --glob "!.git/*"

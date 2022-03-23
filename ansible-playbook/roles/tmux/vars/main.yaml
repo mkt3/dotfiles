@@ -1,3 +1,0 @@
-tpm:
-   git_url: https://github.com/tmux-plugins/tpm.git
-   install_dir: ~/.tmux/plugins/tpm

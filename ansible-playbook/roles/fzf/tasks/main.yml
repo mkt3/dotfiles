@@ -5,5 +5,5 @@
     depth: 1
   register: clone_fzf
 - name: Init fzf
-  shell: ~/.fzf/install --completion --key-bindings  --no-update-rc --no-bash
+  shell: ~/.local/share/fzf/install --xdg --completion --key-bindings  --no-update-rc --no-bash --no-fish
   when: clone_fzf.changed

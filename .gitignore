@@ -26,3 +26,4 @@ ansible-playbook/roles/emacs/files/emacs/init.bak
 .vim/dein/state_vim.vim
 !.gitkeep
 .zcompdump
+Brewfile.lock.json

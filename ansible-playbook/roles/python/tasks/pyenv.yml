@@ -7,11 +7,11 @@
     dest: "{{ pyenv.install_dir }}"
 
 - name: Check installed python version
-  shell: bash -lc "~/.pyenv/bin/pyenv versions | grep {{ pyenv.default_python_version }}"
+  shell: bash -lc "~/.local/share/pyenv/bin/pyenv versions | grep {{ pyenv.default_python_version }}"
   register: pyenv_result
   ignore_errors: true
   changed_when: false
 
 - name: Install default python
-  shell: ~/.pyenv/bin/pyenv install {{ pyenv.default_python_version }}
+  shell: ~/.local/share/pyenv/bin/pyenv install {{ pyenv.default_python_version }}
   when: pyenv_result is failed

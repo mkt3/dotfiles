@@ -1,7 +1,5 @@
 setopt no_global_rcs
 
-
-
 # Language
 export LANGUAGE="en_US.UTF-8"
 export LANG="${LANGUAGE}"
@@ -41,6 +39,9 @@ ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 if [[ "$PLATFORM" == 'osx' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
     export PATH="/opt/homebrew/bin:/usr/local/bin:$MAC_DEFAULT_PATH"
+    export SHELL_SESSIONS_DISABLE=1
+    export HOMEBREW_BUNDLE_FILE="$XDG_CONFIG_HOME/homebrew/Brewfile"
+
 elif [[ "$PLATFORM" == 'linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
@@ -51,7 +52,7 @@ fi
 export PYTHONUSERBASE="$HOME/.local"
 
 # Pyenv
-export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_ROOT="$XDG_DATA_HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 [ -d $PYENV_ROOT ] && eval "$(pyenv init --path)"
 [ -d $PYENV_ROOT ] && eval "$(pyenv init -)"
@@ -67,12 +68,17 @@ export PYTHONDONTWRITEBYTECODE=1
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export JUPYTER_DATA_DIR="$HOME/.local/share/jupyter"
 
-# Cargo path
-[ -d "$HOME/.cargo" ] && \. "$HOME/.cargo/env"
+# RUSTUP & Cargo path
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+[ -d "$CARGO_HOME" ] && \. "$CARGO_HOME/env"
 
 # nvm path
 export NVM_DIR="$XDG_CONFIG_HOME/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# npm path
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 
 # cuda path
 if [[ "$PLATFORM" == 'linux' ]];then
@@ -84,3 +90,11 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
 # vim
 export VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
+. "/Users/mkt3/.local/share/cargo/env"
+
+# enhancd
+export ENHANCD_DIR="$XDG_DATA_HOME/enhancd"
+
+# terminfo
+export TERMINFO="$XDG_DATA_HOME/terminfo"
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"

@@ -1,3 +1,0 @@
-zinit:
-  git_url: https://github.com/zdharma-continuum/zinit.git
-  install_dir: ~/.zinit/bin

@@ -3,5 +3,6 @@
   roles:
     - python
     - nvm
+    - npm
     - textlint
     - jupyter

@@ -1,0 +1,13 @@
+- name: Make tig data directory
+  file:
+    path: ~/.local/share/tig
+    state: directory
+
+- name: Link tig config directory
+  file:
+    src: "{{ role_path }}/files/tig"
+    dest: ~/.config/tig
+    state: link
+
+
+  

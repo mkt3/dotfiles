@@ -1,7 +1,9 @@
-- name: Include var
-  include_vars: zinit.yml
+- name: Make zinit directory
+  file:
+    path: ~/.local/share/zinit.git
+    state: directory
 
 - name: Clone zinit
   git:
-    repo: "{{ zinit.git_url }}"
-    dest: "{{ zinit.install_dir }}"
+    repo: https://github.com/zdharma-continuum/zinit.git
+    dest: ~/.local/share/zinit.git
