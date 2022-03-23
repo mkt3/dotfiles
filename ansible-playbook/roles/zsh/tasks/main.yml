@@ -15,5 +15,10 @@
     path: ~/.local/share/zsh/completion
     state: directory
 
+- name: Make history directory
+  file:
+    path: ~/.local/state/zsh
+    state: directory
+
 - name: Import zinit
   import_tasks: zinit.yml
