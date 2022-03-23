@@ -116,6 +116,7 @@ esac
 
 alias rm="rm -i"
 alias emacs="emacs -nw"
+alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 alias cp="cp -i"
 alias mv="mv -i"
 alias grep='grep --color=auto'
