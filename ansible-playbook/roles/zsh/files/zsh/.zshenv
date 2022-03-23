@@ -52,7 +52,7 @@ fi
 export PYTHONUSERBASE="$HOME/.local"
 
 # Pyenv
-export PYENV_ROOT="$XDG_DATA_HOME/.pyenv"
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 [ -d $PYENV_ROOT ] && eval "$(pyenv init --path)"
 [ -d $PYENV_ROOT ] && eval "$(pyenv init -)"
@@ -90,7 +90,6 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
 # vim
 export VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
-. "/Users/mkt3/.local/share/cargo/env"
 
 # enhancd
 export ENHANCD_DIR="$XDG_DATA_HOME/enhancd"
@@ -98,3 +97,4 @@ export ENHANCD_DIR="$XDG_DATA_HOME/enhancd"
 # terminfo
 export TERMINFO="$XDG_DATA_HOME/terminfo"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+. "/home/mako/.local/share/cargo/env"
