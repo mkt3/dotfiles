@@ -1,5 +1,7 @@
 setopt no_global_rcs
 
+
+
 # Language
 export LANGUAGE="en_US.UTF-8"
 export LANG="${LANGUAGE}"
@@ -29,6 +31,12 @@ export PLATFORM
 
 # PATH
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# zsh
+ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 if [[ "$PLATFORM" == 'osx' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
@@ -70,3 +78,9 @@ export NVM_DIR="$XDG_CONFIG_HOME/nvm"
 if [[ "$PLATFORM" == 'linux' ]];then
     export PATH="$PATH:/opt/cuda/bin:/usr/local/cuda-11.3/bin"
 fi
+
+# docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+
+# vim
+export VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"

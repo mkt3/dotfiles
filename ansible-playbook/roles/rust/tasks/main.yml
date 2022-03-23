@@ -4,7 +4,7 @@
 - name: auto complete
   shell: ~/.cargo/bin/rustup completions zsh > ~/.zfunc/_rustup
   args:
-    creates: ~/.zfunc/_rustup
+    creates: ~/.local/share/zsh/completion
 
 - name: common
   include_tasks: "common.yml"

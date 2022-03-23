@@ -3,7 +3,20 @@
     path: ~/.config
     state: directory
 
+- name: Make xdg_cache directory
+  file:
+    path: ~/.cache
+    state: directory
+
 - name: Make xdg_data directory
   file:
     path: ~/.local/share
     state: directory
+
+- name: Make xdg_state directory
+  file:
+    path: ~/.local/state
+    state: directory
+
+
+  

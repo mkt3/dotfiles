@@ -1,5 +1,5 @@
-- name: Link .vimrc
+- name: Link vim config
   file:
-    src: "{{ role_path }}/files/.vimrc"
-    dest: ~/.vimrc
+    src: "{{ role_path }}/files/vim"
+    dest: ~/.config/vim
     state: link

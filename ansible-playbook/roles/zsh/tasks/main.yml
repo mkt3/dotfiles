@@ -1,18 +1,18 @@
-- name: Link .zshrc
-  file:
-    src: "{{ role_path }}/files/.zshrc"
-    dest: ~/.zshrc
-    state: link
-
 - name: Link .zshenv
   file:
-    src: "{{ role_path }}/files/.zshenv"
+    src: "{{ role_path }}/files/zsh/.zshenv"
     dest: ~/.zshenv
     state: link
 
-- name: Make .zfunc directory
+- name: Link zsh config
   file:
-    path: ~/.zfunc
+    src: "{{ role_path }}/files/zsh"
+    dest: ~/.config/zsh
+    state: link
+
+- name: Make completion directory
+  file:
+    path: ~/.local/share/zsh/completion
     state: directory
 
 - name: Import zinit

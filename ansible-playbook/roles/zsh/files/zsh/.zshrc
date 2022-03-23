@@ -55,7 +55,7 @@ setopt no_list_beep
 #setopt sh_word_split
 
 # Command history
-HISTFILE=$HOME/.zsh_history
+HISTFILE=$XDG_STATE_HOME/zsh/history
 HISTSIZE=50000
 SAVEHIST=50000
 setopt hist_ignore_dups
@@ -75,7 +75,7 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
 # Completion
-fpath+=$HOME/.zfunc
+fpath+=$XDG_DATA_HOME/zsh/completion
 autoload -U compinit
 compinit -u
 setopt auto_list
@@ -87,9 +87,9 @@ setopt list_types
 setopt auto_menu
 setopt complete_in_word
 setopt magic_equal_subst
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# Ls colors 
+# Ls colors
 export LSCOLORS=exfxcxdxbxegedabagacad
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 zstyle ':completion:*' list-colors "${LS_COLORS}"
