@@ -18,7 +18,6 @@ for filepath in $setup_files; do
 done
 
 setup_pre_common() {
-    title "Setting up pre-common"
     setup_xdg_config
     setup_zsh
     setup_term
@@ -33,10 +32,9 @@ setup_pre_common() {
 }
 
 setup_post_common() {
-    title "Setting up post-common"
-    setup_python
     setup_nodejs
     setup_textlint
+    setup_python
 }
 
 setup_arch() {
@@ -47,7 +45,7 @@ setup_arch() {
 setup_ubuntu() {
     title "Setting up ubuntu"
     setup_pre_common
-    
+
     setup_apt $1
     if [ $1 = "gui" ]; then
         setup_font
@@ -74,7 +72,7 @@ setup_mac() {
 }
 
 setup_minimal() {
-    title "minimal"
+    title "Setting up minimal"
     setup_xdg_config
     setup_term
     setup_fzf
