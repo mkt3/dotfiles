@@ -3,37 +3,19 @@
 #+startup: content
 #+startup: nohideblocks
 
-* install ansible
-** arch linux
-  #+begin_src bash
-    sudo pacman -S ansible python-pip zsh
-  #+end_src
+** Supported OS
+   - macos
+   - ubuntu
 
-** mac
-  Login app store.
-
-  #+begin_src bash
-    xcode-select --install
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    brew install ansible python3
-    export PYTHONUSERBASE="$HOME/.local"
-    pip3 install --user pipx
-  #+end_src
-
-** ubuntu
-  #+begin_src bash
-    sudo apt update
-    sudo apt install software-properties-common
-    sudo apt-add-repository --yes --update ppa:ansible/ansible
-    sudo apt install ansible python3-pip python3-venv zsh
-  #+end_src
-
-* setup
-#+begin_src bash
-  git clone https://github.com/mkt3/dotfiles .dotfiles
-  cd .dotfiles
-  zsh -c ./setup.sh
-#+end_src
-
-* link
-  [[file:ansible-playbook/roles/emacs/files/emacs/][emacs conf]]
+** Install
+   1. Downlaod
+      #+begin_src bash
+        git clone git@github.com:mkt3/dotfiles.git .dotfiles
+        cd .dotfiles
+      #+end_src
+   2. Install
+      #+begin_src bash
+        ./install.sh
+      #+end_src
+** Link
+  [[file:files/emacs/][emacs conf]]

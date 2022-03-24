@@ -1,3 +1,0 @@
-fzf:
-  git_url: https://github.com/junegunn/fzf.git
-  install_dir: ~/.local/share/fzf

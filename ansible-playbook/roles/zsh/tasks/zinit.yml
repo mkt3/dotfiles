@@ -1,9 +1,0 @@
-- name: Make zinit directory
-  file:
-    path: ~/.local/share/zinit.git
-    state: directory
-
-- name: Clone zinit
-  git:
-    repo: https://github.com/zdharma-continuum/zinit.git
-    dest: ~/.local/share/zinit.git

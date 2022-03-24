@@ -1,2 +1,0 @@
-- name: Setup macOS
-  shell: bash -l ~/.dotfiles/ansible-playbook/roles/macos/files/setup_macOS.sh

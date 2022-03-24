@@ -1,5 +1,0 @@
-- name: Link npm config dir
-  file:
-    src: "{{ role_path }}/files/npm"
-    dest: ~/.config/npm
-    state: link

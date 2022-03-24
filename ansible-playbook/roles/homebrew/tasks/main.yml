@@ -1,8 +1,0 @@
-- name: Link .Brewfile
-  file:
-    src: "{{ role_path }}/files/homebrew"
-    dest: ~/.config/homebrew
-    state: link
-
-- name: Install app
-  shell: brew bundle
