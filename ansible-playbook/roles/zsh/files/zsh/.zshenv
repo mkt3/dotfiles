@@ -97,4 +97,3 @@ export ENHANCD_DIR="$XDG_DATA_HOME/enhancd"
 # terminfo
 export TERMINFO="$XDG_DATA_HOME/terminfo"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
-. "/home/mako/.local/share/cargo/env"
