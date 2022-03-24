@@ -27,4 +27,4 @@ emacs/files/emacs/init.bak
 !.gitkeep
 .zcompdump
 Brewfile.lock.json
-files/git/.gitconfig
+files/git/config
