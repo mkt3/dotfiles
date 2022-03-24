@@ -9,7 +9,7 @@ setup_apt() {
     sudo apt update
     sudo apt -y upgrade
     sudo apt install -y software-properties-common
-    sudo add-apt-repository ppa:kelleyk/emacs
+    sudo add-apt-repository ppa:kelleyk/emacs -y
 
     info "apt update & upgrade"
     sudo apt update
