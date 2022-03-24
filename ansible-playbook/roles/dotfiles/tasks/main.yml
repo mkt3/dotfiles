@@ -1,4 +1,0 @@
-- name: Clone dotfiles
-  git:
-    repo: git@github.com:mkt3/dotfiles.git
-    dest: ~/.dotfiles

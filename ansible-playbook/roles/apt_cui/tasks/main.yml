@@ -1,5 +1,0 @@
-- name: emacs27-nox
-  become: yes 
-  apt:
-    name:
-      - emacs27-nox

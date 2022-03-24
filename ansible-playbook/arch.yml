@@ -1,6 +1,0 @@
-- import_playbook: pre-common.yml
-
-- hosts: localhost
-  connection: local
-
-- import_playbook: post-common.yml
