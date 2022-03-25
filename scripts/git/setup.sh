@@ -21,5 +21,7 @@ setup_git() {
         git config --global user.email $email
 
         mv "${HOME}/.gitconfig" "${git_config_dir}/config"
+
+        git config --global url.git@github.com:.insteadOf https://github.com/
     fi
 }
