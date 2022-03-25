@@ -35,6 +35,7 @@ setup_post_common() {
     setup_nodejs
     setup_textlint
     setup_python
+    setup_ghq
 }
 
 setup_arch() {

@@ -10,6 +10,7 @@ setup_apt() {
     sudo apt -y upgrade
     sudo apt install -y software-properties-common
     sudo add-apt-repository ppa:kelleyk/emacs -y
+    sudo add-apt-repository ppa:longsleep/golang-backports -y
 
     info "apt update & upgrade"
     sudo apt update
@@ -21,6 +22,7 @@ setup_apt() {
                   tig \
                   jq \
                   xsel \
+                  golang-go \
                   libbz2-dev \
                   libdb-dev \
                   libreadline-dev \

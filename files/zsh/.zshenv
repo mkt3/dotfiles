@@ -101,3 +101,7 @@ export ENHANCD_DIR="$XDG_DATA_HOME/enhancd"
 # terminfo
 export TERMINFO="$XDG_DATA_HOME/terminfo"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+
+# go
+export GOPATH="${XDG_DATA_HOME}/go"
+export PATH="$PATH:$(go env GOPATH)/bin"
