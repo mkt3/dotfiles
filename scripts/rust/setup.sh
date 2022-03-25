@@ -5,6 +5,10 @@ set -eu
 setup_rust() {
     title "Setting up rust"
 
+    info "Linking corgo config"
+    mkdir -p ${CARGO_HOME}
+    ln -sfn "${CONFIGS_DIR}/rust/cargo/config" "${CARGO_HOME}/config"
+
     info "Installing rustup"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 
