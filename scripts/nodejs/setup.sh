@@ -6,6 +6,8 @@ setup_nvm() {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
     . "${XDG_CONFIG_HOME}/nvm/nvm.sh" && nvm install --lts --latest-npm && nvm alias default 'lts/*'
 
+    rm "${HOME}/.profile"
+
 }
 
 setup_nodejs() {
