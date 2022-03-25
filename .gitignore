@@ -28,3 +28,4 @@ emacs/files/emacs/init.bak
 .zcompdump
 Brewfile.lock.json
 files/git/config
+key.json
