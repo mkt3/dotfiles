@@ -90,7 +90,7 @@ setup_python() {
 
     if [ $1 == "ubuntu" ]; then
         setup_pipx
-
+    fi
     setup_poetry
 
     setup_jupyterlab
