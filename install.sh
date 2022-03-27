@@ -34,13 +34,15 @@ setup_pre_common() {
 setup_post_common() {
     setup_nodejs
     setup_textlint
-    setup_python
+    setup_python $1
     setup_ghq
 }
 
 setup_arch() {
+    title "Setting up Archlinux"
     setup_pre_common
-    setup_post_common
+    setup_pacman
+    setup_post_common arch
 }
 
 setup_ubuntu() {
@@ -54,7 +56,7 @@ setup_ubuntu() {
         setup_skk
     fi
 
-    setup_post_common
+    setup_post_common ubuntu
 }
 
 setup_photon() {
@@ -68,7 +70,7 @@ setup_mac() {
     setup_pre_common
     setup_karabiner
     setup_aquaskk
-    setup_post_common
+    setup_post_common mac
 
 }
 

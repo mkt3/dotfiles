@@ -18,9 +18,8 @@ setup_pyenv() {
 
 setup_pipx() {
     info "Setting up pipx"
-    local pipx_path="${HOME}/.local/bin/pipx"
 
-    if [ ! -e $pipx_path ]; then
+    if !(type pipx > /dev/null 2>&1); then
         pip3 install --user pipx
     fi
 
@@ -28,11 +27,11 @@ setup_pipx() {
     package_list=(jupyterlab flake8 isort)
     for package in ${package_list[@]}; do
         info "$package ..."
-        $pipx_path install $package
+        pipx install $package
     done
 
     info "Installing jupyterlab template extention"
-    $pipx_path inject jupyterlab jupyterlab_templates
+    pipx inject jupyterlab jupyterlab_templates
 }
 
 setup_poetry() {
@@ -89,7 +88,8 @@ setup_python() {
 
     setup_pyenv
 
-    setup_pipx
+    if [ $1 == "ubuntu" ]; then
+        setup_pipx
 
     setup_poetry
 
