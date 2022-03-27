@@ -11,9 +11,11 @@ setup_pacman() {
                   python-pipx
                       )
 
-    info "Installing packages"
     for package in ${package_list[@]}; do
-        if [ ! "$(echo ${installed_package} | grep "^${package} " )" ] ;then
+        if [ "$(echo "${installed_package}" | grep "^${package} " )" ] ;then
+            info "${package} already installed"
+        else
+            info "$Installing {package}"
             sudo pacman -S $package --noconfirm
         fi
     done
