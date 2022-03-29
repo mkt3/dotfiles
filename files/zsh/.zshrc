@@ -161,16 +161,80 @@ if [[ "$TERM" == "dumb" ]]; then
 fi
 
 [ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
-#export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-#export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
-#export FZF_CTRL_T_COMMAND=rg --files --hidden --follow --glob "!.git/*"
-#export FZF_CTRL_T_OPTS=--preview "bat  --color=always --style=header,grid --line-range :100 {}"
-
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 
 export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
 export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
+
+ec() {
+  local file
+  file=$(rg --files --hidden --follow --glob '!.git/*' $HOME/.config | fzf +m) &&
+  emacs "$file"
+}
+
+vc() {
+  local file
+  file=$(rg --files --hidden --follow --glob '!.git/*' $HOME/.config | fzf +m) &&
+  vim "$file"
+}
+
+
+# poetry config
+if type "poetry" > /dev/null 2>&1; then
+    poetry config virtualenvs.in-project true
+fi
+
+
+# Tmux config
+SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
+
+host_list=""
+for ssh_config in ${=SSH_CONFIG_FILE_LIST}
+do
+    for i in `grep "^Host " $ssh_config | grep -v "*" | sed s/"^Host "// | sed s/","/\ /g`
+    do
+        host_list="${i} ${host_list}"
+        ssh_command_list="${ssh_command_list}ssh ${i}:\n"
+    done
+done
+
+ssh_command_list=""
+for i in ${=host_list}
+do
+    ssh_command_list="${ssh_command_list}ssh ${i}:\n"
+done
+
+export PERCOL=fzf
+
+if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
+    ID="`tmux list-sessions`"
+    create_new_session="Create new session"
+    if [[ -z "$ID" ]]; then
+       ID="${create_new_session}:\n${ssh_command_list}"
+    else
+       ID="$ID\n${create_new_session}:\n${ssh_command_list}"
+    fi
+    ID="`echo $ID | $PERCOL | cut -d: -f1`"
+    if [[ "$ID" = "${create_new_session}" ]]; then
+       tmux new-session
+    elif [[ `echo $ID | grep ssh` ]]; then
+       eval $ID
+    elif [[ -n "$ID" ]]; then
+       tmux attach-session -t "$ID"
+    else
+       :  # Start terminal normally
+    fi
+ fi
+
+# Google Cloud SDK.
+if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
+vc() {
+  local file_list
+  file_list=$(rg --files --hidden --follow --glob '!.git/*' $HOME/.config | fzf +m) &&
+  vim "$file_list"
+}
+
 
 # poetry config
 if type "poetry" > /dev/null 2>&1; then
