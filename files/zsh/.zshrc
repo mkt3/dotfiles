@@ -169,13 +169,19 @@ export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --lin
 
 ec() {
   local file
-  file=$(rg --files --hidden --follow --glob '!.git/*' $HOME/.config | fzf +m) &&
+  file=$(
+         rg --files --hidden --follow --glob "!**/.git/*" | fzf \
+             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
+  )
   emacs "$file"
 }
 
 vc() {
   local file
-  file=$(rg --files --hidden --follow --glob '!.git/*' $HOME/.config | fzf +m) &&
+  file=$(
+         rg --files --hidden --follow --glob "!**/.git/*" | fzf \
+             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
+     ) 
   vim "$file"
 }
 
