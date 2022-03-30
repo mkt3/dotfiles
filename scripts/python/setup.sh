@@ -38,7 +38,7 @@ setup_poetry() {
     local poetry_path="${HOME}/.local/bin/poetry"
     if [ ! -e poetry_path ]; then
         info "Downloading poetry"
-        curl -sSL https://install.python-poetry.org | python3 -
+        pipx install git+https://github.com/python-poetry/poetry.git
     else
         info "Updateing poetry"
         $poetry_path self update
