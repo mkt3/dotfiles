@@ -15,7 +15,7 @@ setup_pacman() {
         if [ "$(echo "${installed_package}" | grep "^${package} " )" ] ;then
             info "${package} already installed"
         else
-            info "$Installing {package}"
+            info "Installing ${package}"
             sudo pacman -S $package --noconfirm
         fi
     done
