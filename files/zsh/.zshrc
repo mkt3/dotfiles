@@ -167,30 +167,10 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
 export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
 
-ec() {
-  local file
-  file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
-             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
-  )
-  emacs "$file"
-}
-
-vc() {
-  local file
-  file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
-             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
-     ) 
-  vim "$file"
-}
-
-
 # poetry config
 if type "poetry" > /dev/null 2>&1; then
     poetry config virtualenvs.in-project true
 fi
-
 
 # Tmux config
 SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
@@ -235,12 +215,24 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
 
 # Google Cloud SDK.
 if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
-vc() {
-  local file_list
-  file_list=$(rg --files --hidden --follow --glob '!.git/*' $HOME/.config | fzf +m) &&
-  vim "$file_list"
+
+ec() {
+  local file
+  file=$(
+         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
+             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
+     ) 
+  emacs "$file"
 }
 
+vc() {
+  local file
+  file=$(
+         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
+             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
+     ) 
+  vim "$file"
+}
 
 # poetry config
 if type "poetry" > /dev/null 2>&1; then
