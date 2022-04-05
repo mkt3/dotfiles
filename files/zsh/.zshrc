@@ -1,3 +1,6 @@
+# Emacs keybind
+bindkey -e
+
 . "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
@@ -66,7 +69,6 @@ setopt hist_ignore_space
 setopt hist_reduce_blanks
 
 # Keybind
-bindkey -e
 ## historical backward/forward search with linehead string bined to ^
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -114,31 +116,15 @@ case "${PLATFORM}" in
         ;;
 esac
 
-alias rm="rm -i"
-alias emacs="emacs -nw"
 alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
-alias cp="cp -i"
-alias mv="mv -i"
-alias grep='grep --color=auto'
-alias x="exit"
-alias cdh="cd ~/"
 alias sudo='TERM=xterm-256color sudo'
-alias dc='docker-compose'
-compdef dc=docker-compose
 
-if type bat > /dev/null 2>&1; then
-    alias cat='bat'
-    alias diff="delta"
+if type lsd > /dev/null 2>&1; then
     alias ls='lsd'
 else
     alias ls='ls --color=auto'
 fi
 
-alias df='duf'
-alias ll='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
 alias jl='~/.local/bin/jupyterlab.sh'
 
 chpwd() {
