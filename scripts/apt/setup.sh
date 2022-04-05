@@ -18,7 +18,6 @@ setup_apt() {
 
     package_list=(build-essential \
                   zsh \
-                  duf \
                   tig \
                   jq \
                   xsel \

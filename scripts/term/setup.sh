@@ -6,6 +6,8 @@ setup_term() {
     title "Setting up term"
     local terminfo_dir="$XDG_DATA_HOME/terminfo"
 
+    mkdir -p $terminfo_dir
+
     if  bash -lc "ls -R $terminfo_dir | grep xterm-24bit > /dev/null"; then
         info "xterm-24bit already exists... Skipping."
     else

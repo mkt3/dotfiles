@@ -9,12 +9,12 @@ setup_rust() {
     mkdir -p ${CARGO_HOME}
     ln -sfn "${CONFIGS_DIR}/rust/cargo/config" "${CARGO_HOME}/config"
 
-    if (type pipx > /dev/null 2>&1); then
+    if (type rustup > /dev/null 2>&1); then
         rustup self update
         rustup update
     else
         info "Installing rustup"
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y
 
     fi
 
