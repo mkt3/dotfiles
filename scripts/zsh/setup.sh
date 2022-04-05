@@ -11,6 +11,9 @@ setup_zsh() {
     ln -sfn "${zsh_file_dir}/.zshenv" "${HOME}/.zshenv"
     ln -sfn $zsh_file_dir "${XDG_CONFIG_HOME}/zsh"
 
+    info "Creating zsh history dir"
+    mkdir -p $XDG_STATE_HOME/zsh
+
     info "Creating zsh completion dir"
     mkdir -p $ZSH_COMPLETION_DIR
 
