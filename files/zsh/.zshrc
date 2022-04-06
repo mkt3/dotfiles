@@ -177,7 +177,6 @@ do
     ssh_command_list="${ssh_command_list}ssh ${i}:\n"
 done
 
-export PERCOL=fzf
 
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     ID="`tmux list-sessions`"
@@ -187,7 +186,7 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     else
        ID="$ID\n${create_new_session}:\n${ssh_command_list}"
     fi
-    ID="`echo $ID | $PERCOL | cut -d: -f1`"
+    ID="`echo $ID | fzf | cut -d: -f1`"
     if [[ "$ID" = "${create_new_session}" ]]; then
        tmux new-session
     elif [[ `echo $ID | grep ssh` ]]; then
