@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WORKSPACE_DIR=$HOME/workspace/*/*/
+WORKSPACE_DIR=$HOME/workspace/*/*/*/
 INSTALLE_DIR=$HOME/.local/share/jupyter/kernels
 
 projects=($(ls ${WORKSPACE_DIR}))
