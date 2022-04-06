@@ -8,5 +8,5 @@ setup_ghq() {
     info "Installing ghq"
     go install github.com/x-motemen/ghq@latest
 
-    git config --global ghq.root "${HOME}/workspace"
+    git config --global ghq.root "${HOME}/workspace/ghq"
 }
