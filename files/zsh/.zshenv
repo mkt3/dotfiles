@@ -103,5 +103,7 @@ export TERMINFO="$XDG_DATA_HOME/terminfo"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
 
 # go
-export GOPATH="${XDG_DATA_HOME}/go"
-export PATH="$PATH:$(go env GOPATH)/bin"
+if type 'go' > /dev/null 2>&1; then
+    export GOPATH="${XDG_DATA_HOME}/go"
+    export PATH="$PATH:$(go env GOPATH)/bin"
+fi
