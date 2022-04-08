@@ -112,6 +112,8 @@ case $os in
             *photon*)
                 setup_photon
                 ;;
+            *)
+                setup_minimal
         esac
         ;;
     minimal)
