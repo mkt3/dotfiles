@@ -1,6 +1,7 @@
 # Emacs keybind
 bindkey -e
 
+# zsh plugin
 . "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
@@ -131,11 +132,6 @@ chpwd() {
     ls
 }
 
-# Config for each environment
-if [ -e $HOME/.zshrc_local ]; then
-    source $HOME/.zshrc_local
-fi
-
 # Emacs tramp config for zsh
 if [[ "$TERM" == "dumb" ]]; then
     unsetopt zle
@@ -146,6 +142,7 @@ if [[ "$TERM" == "dumb" ]]; then
     PS1='$ '
 fi
 
+# fzf
 [ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
@@ -153,12 +150,7 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
 export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
 
-# poetry config
-if type "poetry" > /dev/null 2>&1; then
-    poetry config virtualenvs.in-project true
-fi
-
-# Tmux config
+# Tmux
 SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
 
 host_list=""
@@ -201,6 +193,7 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
 # Google Cloud SDK.
 if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
 
+# config edit command
 ec() {
   local file
   file=$(
@@ -219,56 +212,7 @@ vc() {
   vim "$file"
 }
 
-# poetry config
-if type "poetry" > /dev/null 2>&1; then
-    poetry config virtualenvs.in-project true
-fi
-
-
-# Tmux config
-SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
-
-host_list=""
-for ssh_config in ${=SSH_CONFIG_FILE_LIST}
-do
-    for i in `grep "^Host " $ssh_config | grep -v "*" | sed s/"^Host "// | sed s/","/\ /g`
-    do
-        host_list="${i} ${host_list}"
-        ssh_command_list="${ssh_command_list}ssh ${i}:\n"
-    done
-done
-
-ssh_command_list=""
-for i in ${=host_list}
-do
-    ssh_command_list="${ssh_command_list}ssh ${i}:\n"
-done
-
-export PERCOL=fzf
-
-if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
-    ID="`tmux list-sessions`"
-    create_new_session="Create new session"
-    if [[ -z "$ID" ]]; then
-       ID="${create_new_session}:\n${ssh_command_list}"
-    else
-       ID="$ID\n${create_new_session}:\n${ssh_command_list}"
-    fi
-    ID="`echo $ID | $PERCOL | cut -d: -f1`"
-    if [[ "$ID" = "${create_new_session}" ]]; then
-       tmux new-session
-    elif [[ `echo $ID | grep ssh` ]]; then
-       eval $ID
-    elif [[ -n "$ID" ]]; then
-       tmux attach-session -t "$ID"
-    else
-       :  # Start terminal normally
-    fi
- fi
-
-# Google Cloud SDK.
-if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
-
+# ghq
 function ghq-fzf() {
   local src=$(ghq list | fzf)
   if [ -n "$src" ]; then
@@ -279,6 +223,5 @@ function ghq-fzf() {
 }
 zle -N ghq-fzf
 bindkey '^[' ghq-fzf
-
 
 ## Emacsにpathを通すため、pathは.zshenvに書くこと。
