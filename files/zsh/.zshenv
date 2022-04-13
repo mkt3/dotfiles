@@ -41,7 +41,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 if [[ "$PLATFORM" == 'osx' ]];then
-    MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+    MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export PATH="/opt/homebrew/bin:/usr/local/bin:$MAC_DEFAULT_PATH"
     export SHELL_SESSIONS_DISABLE=1
     export HOMEBREW_BUNDLE_FILE="$XDG_CONFIG_HOME/homebrew/Brewfile"
