@@ -12,7 +12,7 @@ setup_pyenv() {
         git -C $install_dir pull
     else
         info "Clonening pyenv repository"
-        git clone --depth 1 $git_url $install_dir
+        git clone --depth 1 $pyenv_git_url $install_dir
     fi
 }
 
