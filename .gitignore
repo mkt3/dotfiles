@@ -19,7 +19,7 @@ files/emacs/history
 files/emacs/.cache/
 files/emacs/.lsp-session*
 files/emacs/README.el
-emacs/files/emacs/init.bak
+files/emacs/eln-cache/
 .vim/dein/.cache/
 .vim/dein/cache_vim
 .vim/dein/repos/
