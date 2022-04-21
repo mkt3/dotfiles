@@ -9,7 +9,7 @@
 1. Download
 
   ```bash
-  git clone git@github.com:mkt3/dotfiles.git .dotfiles
+  git clone https://github.com/mkt3/dotfiles.git
   cd .dotfiles
   ```
 2. Install
