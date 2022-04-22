@@ -1,3 +1,6 @@
+scriptencoding utf-8
+set encoding=utf-8
+
 " XDG support
 
 if empty($MYVIMRC) | let $MYVIMRC = expand('<sfile>:p') | endif

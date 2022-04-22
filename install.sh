@@ -47,9 +47,10 @@ setup_arch() {
 
 setup_ubuntu() {
     title "Setting up ubuntu"
+    setup_apt $1
+    
     setup_pre_common
 
-    setup_apt $1
     if [ $1 = "gui" ]; then
         setup_font
         setup_gnome
