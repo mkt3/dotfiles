@@ -501,7 +501,14 @@
                 (company-transformers              . '(company-sort-by-occurrence))
                 (global-company-mode               . t)
                 (company-selection-wrap-around     . t)
-                (vompany-tooltip-align-annotations . t))
+                (vompany-tooltip-align-annotations . t)
+                (company-backends . '(company-files
+                                      company-capf
+                                      (company-dabbrev-code
+                                       company-gtags
+                                       company-etags
+                                       company-keywords)
+                                      company-dabbrev)))
        :config (leaf company-prescient
                  :ensure t
                  :custom ((company-prescient-mode . t)))
@@ -672,33 +679,7 @@
                                                             company-math-symbols-unicode
                                                             company-latex-commands)) company-backends)))
          :hook ((org-mode-hook . c/latex-mode-setup)
-                (tex-mode-hook . c/latex-mode-setup)))
-       (leaf yasnippet
-         :ensure t
-         :blackout yas-minor-mode
-         :custom ((yas-indent-line . 'fixed)
-                  (yas-global-mode . t))
-         :bind ((yas-keymap ("<tab>" . nil)) ; conflict with company
-                (yas-minor-mode-map ("C-c y i" . yas-insert-snippet)
-                                    ("C-c y n" . yas-new-snippet)
-                                    ("C-c y v" . yas-visit-snippet-file)
-                                    ("C-c y l" . yas-describe-tables)
-                                    ("C-c y g" . yas-reload-all)))
-         :config (leaf yasnippet-snippets
-                     :ensure t)
-           (leaf yatemplate
-             :ensure t
-             :config (yatemplate-fill-alist))
-           (defvar company-mode/enable-yas t
-             "Enable yasnippet for all backends.")
-           (defun company-mode/backend-with-yas (backend)
-             (if (or (not company-mode/enable-yas)
-                     (and (listp backend)
-                          (member 'company-yasnippet backend))) backend (append (if (consp backend) backend (list backend))
-                                       '(:with company-yasnippet))))
-           (defun set-yas-as-company-backend ()
-             (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
-           :hook ((company-mode-hook . set-yas-as-company-backend))))
+                (tex-mode-hook . c/latex-mode-setup))))
    #+END_SRC
 ** yasnippet
    #+BEGIN_SRC emacs-lisp
@@ -724,7 +705,7 @@
          (if (or (not company-mode/enable-yas)
                  (and (listp backend)
                       (member 'company-yasnippet backend))) backend (append (if (consp backend) backend (list backend))
-                                                                            '(:with company-yasnippet))))
+                                                                            '(:with company-yasnippet ))))
        (defun set-yas-as-company-backend ()
          (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
        :hook ((company-mode-hook . set-yas-as-company-backend)))
@@ -833,12 +814,14 @@
    #+END_SRC
 * major-mode
 ** lsp-mode
+- `lsp-completion-provider` is `:none` for yasnippets [[https://www.reddit.com/r/emacs/comments/imlw1u/cant_get_yasnippets_to_show_on_company_lspmode/][link]]
    #+BEGIN_SRC emacs-lisp
      (leaf lsp-mode
        :ensure t
        :commands (lsp lsp-deferred)
        :config
-       :custom ((lsp-keymap-prefix                  . "C-c l")
+       :custom ((lsp-completion-provider            . :none)
+                (lsp-keymap-prefix                  . "C-c l")
                 (lsp-log-io                         . t)
                 ;; (lsp-eldoc-render-all               . t)
                 (lsp-keep-workspace-alive           . nil)
