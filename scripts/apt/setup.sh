@@ -38,7 +38,7 @@ setup_apt() {
     info "Installing packages"
     sudo apt -y install ${package_list[@]}
 
-    Info "Creating locale"
+    info "Creating locale"
     sudo locale-gen en_US.UTF-8
     sudo locale-gen ja_JP.UTF-8
 

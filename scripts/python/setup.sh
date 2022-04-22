@@ -80,7 +80,7 @@ setup_python() {
     ln -sfn "${python_file_dir}/flake8" "${XDG_CONFIG_HOME}/flake8"
 
     info "Creating symlink for isort"
-    ln -sfn "${python_file_dir}/isort.cfg" "${HOME}/.isort.cfg"
+    ln -sfn "${python_file_dir}/isort.cfg" "${XDG_CONFIG_HOME}/.isort.cfg"
 
     info "Creating symlink for jupyterlab.sh"
     mkdir -p "${HOME}/.local/bin"
