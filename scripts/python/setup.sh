@@ -24,7 +24,7 @@ setup_pipx() {
     fi
 
     info "Installing pipx packages"
-    package_list=(jupyterlab flake8 isort)
+    package_list=(jupyterlab flake8 isort black)
     for package in ${package_list[@]}; do
         info "$package ..."
         pipx install $package
@@ -83,9 +83,6 @@ setup_python() {
 
     info "Creating symlink for flake8"
     ln -sfn "${python_file_dir}/flake8" "${XDG_CONFIG_HOME}/flake8"
-
-    info "Creating symlink for isort"
-    ln -sfn "${python_file_dir}/isort.cfg" "${XDG_CONFIG_HOME}/.isort.cfg"
 
     info "Creating symlink for jupyterlab.sh"
     mkdir -p "${HOME}/.local/bin"

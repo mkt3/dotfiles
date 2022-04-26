@@ -827,6 +827,7 @@
                 (lsp-keep-workspace-alive           . nil)
                 (lsp-document-sync-method           . 2)
                 (lsp-response-timeout               . 5)
+                (lsp-headerline-breadcrumb-icons-enable . nil)
                 (lsp-enable-file-watchers           . nil))
        :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode)
        :init (leaf lsp-ui
@@ -867,10 +868,8 @@
                                      (lsp-deferred))))
        (leaf py-isort
          :ensure t
-         :preface (defun my:py-isort--find-settings-path ()
-                    (expand-file-name (file-name-directory "~/.isort.cfg")))
-         :advice (:override py-isort--find-settings-path
-                            my:py-isort--find-settings-path))
+         :custom (py-isort-options . '("--profile=black"))
+         )
        (leaf blacken
          :ensure t
          :custom ((blacken-line-length . 119)
