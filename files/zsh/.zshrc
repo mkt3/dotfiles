@@ -119,6 +119,12 @@ esac
 
 alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 alias sudo='TERM=xterm-256color sudo'
+alias grep="grep --color=auto"
+alias emacs="emacs -nw"
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
+
 
 if type lsd > /dev/null 2>&1; then
     alias ls='lsd'
