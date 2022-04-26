@@ -1,0 +1,5 @@
+#compdef peu
+
+_peu() {
+  _values versions `pyenv versions | awk ' ORS = " "{ print $1 }' | tr -d '\*'`
+}

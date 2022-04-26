@@ -53,6 +53,11 @@ setup_poetry() {
 
     info "Enable completions"
     $poetry_path completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
+    
+    info "Creating symlink for poetry"
+    mkdir -p "${HOME}/.local/bin"
+    ln -sfn "${python_file_dir}/peu" "${HOME}/.local/bin/peu"
+    ln -sfn "${python_file_dir}/_peu" "${XDG_DATA_HOME}/zsh/completion/_peu"
 }
 
 
