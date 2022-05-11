@@ -217,6 +217,10 @@ vc() {
   vim "$file"
 }
 
+load-nvm() {
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+}
+
 # ghq
 function ghq-fzf() {
   local src=$(ghq list | fzf)

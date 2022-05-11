@@ -94,7 +94,6 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 # nvm path
 export NVM_DIR="$XDG_CONFIG_HOME/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 # npm path
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
