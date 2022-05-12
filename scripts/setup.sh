@@ -36,6 +36,7 @@ setup_post_common() {
     setup_textlint
     setup_python $1
     setup_ghq
+    setup_lazygit
 }
 
 setup_arch() {
