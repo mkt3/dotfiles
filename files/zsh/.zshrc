@@ -6,9 +6,11 @@ bindkey -e
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-syntax-highlighting
+zinit wait lucid blockf light-mode for \
+    @'zsh-users/zsh-autosuggestions' \
+    @'zsh-users/zsh-completions' \
+    @' zsh-users/zsh-syntax-highlighting' 
+
 zinit light "b4b4r07/enhancd"
 zinit ice atload'!_zsh_git_prompt_precmd_hook' lucid
 zinit light woefe/git-prompt.zsh
@@ -78,7 +80,7 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
 # Completion
-fpath+=$XDG_DATA_HOME/zsh/completion
+fpath+=$ZSH_COMPLETION_DIR
 autoload -Uz compinit && compinit
 setopt auto_list
 setopt list_packed

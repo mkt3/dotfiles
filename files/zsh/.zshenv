@@ -39,6 +39,8 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 # zsh
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
+
 
 if [[ "$PLATFORM" == 'osx' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
