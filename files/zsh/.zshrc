@@ -6,15 +6,8 @@ bindkey -e
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-zinit wait lucid blockf light-mode for \
-    @'zsh-users/zsh-autosuggestions' \
-    @'zsh-users/zsh-completions' \
-    @' zsh-users/zsh-syntax-highlighting' 
-
-zinit light "b4b4r07/enhancd"
 zinit ice atload'!_zsh_git_prompt_precmd_hook' lucid
 zinit light woefe/git-prompt.zsh
-zinit light olets/zsh-abbr
 
 # Prompt
 autoload -U colors
@@ -59,6 +52,17 @@ setopt auto_pushd
 setopt no_beep
 setopt no_list_beep
 #setopt sh_word_split
+setopt auto_list
+setopt list_packed
+setopt auto_param_keys
+setopt auto_param_slash
+setopt mark_dirs
+setopt list_types
+setopt auto_menu
+setopt complete_in_word
+setopt magic_equal_subst
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
 
 # Command history
 HISTFILE=$XDG_STATE_HOME/zsh/history
@@ -71,6 +75,11 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
 
+zshaddhistory() {
+    local line="${1%%$'\n'}"
+    [[ ! "$line" =~ "^(cd|history|jj?|lazygit|la|ll|ls|rm|rmdir|trash)($| )" ]]
+}
+
 # Keybind
 ## historical backward/forward search with linehead string bined to ^
 autoload history-search-end
@@ -78,20 +87,6 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
-
-# Completion
-fpath+=$ZSH_COMPLETION_DIR
-autoload -Uz compinit && compinit
-setopt auto_list
-setopt list_packed
-setopt auto_param_keys
-setopt auto_param_slash
-setopt mark_dirs
-setopt list_types
-setopt auto_menu
-setopt complete_in_word
-setopt magic_equal_subst
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # Ls colors
 export LSCOLORS=exfxcxdxbxegedabagacad
@@ -103,51 +98,6 @@ zstyle ":completion:*:commands" rehash 1
 
 # comment
 setopt INTERACTIVE_COMMENTS
-
-# Alias
-setopt complete_aliases
-
-case "${PLATFORM}" in
-    osx)
-        alias ssh="~/.ssh/bin/ssh_change.sh"
-        alias sed="gsed"
-        alias awk="gawk"
-        ;;
-    linux)
-        alias open="xdg-open"
-        ;;
-esac
-
-alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
-alias sudo='TERM=xterm-256color sudo'
-alias grep="grep --color=auto"
-alias emacs="emacs -nw"
-alias cp="cp -i"
-alias mv="mv -i"
-alias rm="rm -i"
-
-
-if type lsd > /dev/null 2>&1; then
-    alias ls='lsd'
-else
-    alias ls='ls --color=auto'
-fi
-
-alias jl='~/.local/bin/jupyterlab.sh'
-
-chpwd() {
-    ls
-}
-
-# Emacs tramp config for zsh
-if [[ "$TERM" == "dumb" ]]; then
-    unsetopt zle
-    unsetopt prompt_cr
-    unsetopt prompt_subst
-    unfunction precmd
-    unfunction preexec
-    PS1='$ '
-fi
 
 # fzf
 [ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
@@ -197,31 +147,6 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     fi
  fi
 
-# Google Cloud SDK.
-if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
-
-# config edit command
-ec() {
-  local file
-  file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
-             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
-     ) 
-  emacs "$file"
-}
-
-vc() {
-  local file
-  file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
-             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
-     ) 
-  vim "$file"
-}
-
-load-nvm() {
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-}
 
 # ghq
 function ghq-fzf() {
@@ -235,4 +160,7 @@ function ghq-fzf() {
 zle -N ghq-fzf
 bindkey '^[' ghq-fzf
 
-## Emacsにpathを通すため、pathは.zshenvに書くこと。
+# lazy load
+zinit wait lucid null for \
+    atinit'source "$ZDOTDIR/zshrc_lazy"' \
+    @'zdharma-continuum/null'

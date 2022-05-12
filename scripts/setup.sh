@@ -6,11 +6,11 @@ REPO_DIR="$(cd "$(dirname "$0")/.."; pwd)"
 CONFIGS_DIR="${REPO_DIR}/files"
 
 SETUP="TRUE"
-. "${CONFIGS_DIR/zsh/.zshenv}"
+. "${CONFIGS_DIR}/zsh/.zshenv"
 
 ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
 
-. ./common.sh
+. "${REPO_DIR}/scripts/common.sh"
 
 setup_files="${REPO_DIR}/scripts/**/setup.sh"
 for filepath in $setup_files; do

@@ -1,0 +1,86 @@
+# plugin
+zinit wait lucid blockf light-mode for \
+    @'zsh-users/zsh-autosuggestions' \
+    @'zsh-users/zsh-completions' \
+    @'zsh-users/zsh-syntax-highlighting' \
+    @'olets/zsh-abbr' \
+    @'b4b4r07/enhancd'
+
+# Alias
+setopt complete_aliases
+
+case "${PLATFORM}" in
+    osx)
+        alias ssh="~/.ssh/bin/ssh_change.sh"
+        alias sed="gsed"
+        alias awk="gawk"
+        ;;
+    linux)
+        alias open="xdg-open"
+        ;;
+esac
+
+alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
+alias sudo='TERM=xterm-256color sudo'
+alias grep="grep --color=auto"
+alias emacs="emacs -nw"
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
+
+if [ -e "$NVM_DIR/nvm.sh" ]; then
+    alias nvm='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && nvm'
+    alias node='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && node'
+    alias npm='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && npm'
+fi
+
+
+if type lsd > /dev/null 2>&1; then
+    alias ls='lsd'
+else
+    alias ls='ls --color=auto'
+fi
+
+alias jl='~/.local/bin/jupyterlab.sh'
+
+chpwd() {
+    ls
+}
+
+# Emacs tramp config for zsh
+if [[ "$TERM" == "dumb" ]]; then
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    unfunction precmd
+    unfunction preexec
+    PS1='$ '
+fi
+
+# Google Cloud SDK.
+if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
+
+# config edit command
+ec() {
+  local file
+  file=$(
+         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
+             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
+     ) 
+  emacs "$file"
+}
+
+vc() {
+  local file
+  file=$(
+         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
+             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
+     ) 
+  vim "$file"
+}
+
+# Completion
+fpath+=$ZSH_COMPLETION_DIR
+autoload -Uz compinit && compinit
+
+

@@ -57,7 +57,7 @@ if [[ "$PLATFORM" == 'osx' ]];then
         export PATH="/usr/local/bin:$MAC_DEFAULT_PATH"
         export PATH="/usr/local/opt/texinfo/bin:$PATH"
         export LIBRARY_PATH="/usr/local/opt/libgccjit/lib/gcc/11"
-        
+
     fi
 
 elif [[ "$PLATFORM" == 'linux' ]];then
@@ -96,6 +96,7 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 # nvm path
 export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+export PATH="${XDG_CONFIG_HOME}/nvm/versions/node/default/bin:${PATH}"
 
 # npm path
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc

@@ -8,15 +8,9 @@
 
 ## Install
 
-1. Download
+  ```bash
+  curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+  ```
 
-  ```bash
-  git clone https://github.com/mkt3/dotfiles.git .dotfiles
-  cd .dotfiles
-  ```
-2. Install
-  ```bash
-  ./install.sh
-  ```
 ## Link
 [emacs conf](./files/emacs)
