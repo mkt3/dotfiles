@@ -11,7 +11,8 @@ setup_git() {
         info "Already exists... Skipping."
     else
         info "Creating symlink for Git"
-        ln -sfn $git_file_dir $git_config_dir
+        mkdir -p $git_file_dir
+        ln -sfn "${git_file_dir}/ignore" "${git_config_dir}/"
 
         info "Setting up personal info."
         read -rp "Name:" name

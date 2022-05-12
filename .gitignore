@@ -7,6 +7,5 @@
 !.gitkeep
 .zcompdump
 Brewfile.lock.json
-files/git/config
 key.json
 meta.json
