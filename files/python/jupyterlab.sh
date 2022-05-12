@@ -11,7 +11,9 @@ for install in ${installs[@]}; do
 done
 
 for project in ${projects[@]}; do
-    ${WORKSPACE_DIR}/${project}/.venv/bin/python -m ipykernel install --user --name=${project} --display-name=${project}
+    if [ -f ${WORKSPACE_DIR}/${project}/.venv/bin/python ]; then
+        ${WORKSPACE_DIR}/${project}/.venv/bin/python -m ipykernel install --user --name=${project} --display-name=${project}
+    fi
 done
 
 jupyter-lab --ip 0.0.0.0
