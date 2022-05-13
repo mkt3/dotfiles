@@ -11,7 +11,6 @@ setup_apt() {
 
     package_list=(build-essential \
                   zsh \
-                  tig \
                   tmux \
                   locales \
                   jq \
