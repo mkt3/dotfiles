@@ -28,12 +28,12 @@ ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
 ZSH_THEME_GIT_PROMPT_BEHIND="↓"
 ZSH_THEME_GIT_PROMPT_AHEAD="↑"
-ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
-ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"
-ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖ "
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}● "
+ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚ "
 ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
-ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
+ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
 
 setopt prompt_subst
 function _vcs_precmd {
@@ -102,32 +102,33 @@ setopt INTERACTIVE_COMMENTS
 # fzf
 [ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border --ansi'
 
 export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
 export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
 
-# Tmux
-SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
+export FZF_TMUX_OPTS="-p 80%"
 
-host_list=""
-for ssh_config in ${=SSH_CONFIG_FILE_LIST}
-do
-    for i in `grep "^Host " $ssh_config | grep -v "*" | sed s/"^Host "// | sed s/","/\ /g`
+# Tmux
+if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
+    SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
+
+    host_list=""
+    for ssh_config in ${=SSH_CONFIG_FILE_LIST}
     do
-        host_list="${i} ${host_list}"
+        for i in `grep "^Host " $ssh_config | grep -v "*" | sed s/"^Host "// | sed s/","/\ /g`
+        do
+            host_list="${i} ${host_list}"
+            ssh_command_list="${ssh_command_list}ssh ${i}:\n"
+        done
+    done
+
+    ssh_command_list=""
+    for i in ${=host_list}
+    do
         ssh_command_list="${ssh_command_list}ssh ${i}:\n"
     done
-done
 
-ssh_command_list=""
-for i in ${=host_list}
-do
-    ssh_command_list="${ssh_command_list}ssh ${i}:\n"
-done
-
-
-if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     ID="`tmux list-sessions`"
     create_new_session="Create new session"
     if [[ -z "$ID" ]]; then
@@ -137,7 +138,7 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     fi
     ID="`echo $ID | fzf | cut -d: -f1`"
     if [[ "$ID" = "${create_new_session}" ]]; then
-       tmux new-session
+       tmux new-session -s "main_session"
     elif [[ `echo $ID | grep ssh` ]]; then
        eval $ID
     elif [[ -n "$ID" ]]; then
@@ -145,20 +146,7 @@ if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     else
        :  # Start terminal normally
     fi
- fi
-
-
-# ghq
-function ghq-fzf() {
-  local src=$(ghq list | fzf)
-  if [ -n "$src" ]; then
-    BUFFER="cd $(ghq root)/$src"
-    zle accept-line
-  fi
-  zle -R -c
-}
-zle -N ghq-fzf
-bindkey '^[' ghq-fzf
+fi
 
 # lazy load
 zinit wait lucid null for \

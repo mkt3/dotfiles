@@ -42,6 +42,7 @@ else
 fi
 
 alias jl='~/.local/bin/jupyterlab.sh'
+alias ta='~/.local/bin/tmux_session.sh'
 
 chpwd() {
     ls
@@ -64,7 +65,7 @@ if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/g
 ec() {
   local file
   file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
+         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf-tmux -p 80% \
              --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
      ) 
   emacs "$file"
@@ -73,7 +74,7 @@ ec() {
 vc() {
   local file
   file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf \
+         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf-tmux -p 80% \
              --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
      ) 
   vim "$file"
@@ -82,5 +83,3 @@ vc() {
 # Completion
 fpath+=$ZSH_COMPLETION_DIR
 autoload -Uz compinit && compinit
-
-

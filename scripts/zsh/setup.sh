@@ -28,4 +28,6 @@ setup_zsh() {
        git clone https://github.com/zdharma-continuum/zinit.git $ZINIT_HOME
     fi
 
+    ln -sfn "${zsh_file_dir}/tmux_session.sh" "${HOME}/.local/bin/"
+
 }
