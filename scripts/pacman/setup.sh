@@ -8,7 +8,8 @@ setup_pacman() {
     installed_package=`sudo pacman -Qe`
     package_list=(python \
                   python-pip \
-                  python-pipx
+                  python-pipx \
+                  lazygit
                       )
 
     for package in ${package_list[@]}; do
