@@ -20,6 +20,7 @@ setup_git() {
 
         git config --global user.name $name
         git config --global user.email $email
+        git config --global pull.rebase false
 
         mv "${HOME}/.gitconfig" "${git_config_dir}/config"
 
