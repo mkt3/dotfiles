@@ -77,7 +77,7 @@ setopt hist_reduce_blanks
 
 zshaddhistory() {
     local line="${1%%$'\n'}"
-    [[ ! "$line" =~ "^(cd|history|jj?|lazygit|la|ll|ls|rm|rmdir|trash)($| )" ]]
+    [[ ! "$line" =~ "^(cd|history|lazygit|la|ll|ls|rm|rmdir)($| )" ]]
 }
 
 # Keybind
