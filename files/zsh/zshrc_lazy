@@ -11,9 +11,22 @@ setopt complete_aliases
 
 case "${PLATFORM}" in
     osx)
+        (( ${+commands[gdate]} )) && alias date='gdate'
+        (( ${+commands[gls]} )) && alias ls='gls'
+        (( ${+commands[gmkdir]} )) && alias mkdir='gmkdir'
+        (( ${+commands[gcp]} )) && alias cp='gcp'
+        (( ${+commands[gmv]} )) && alias mv='gmv'
+        (( ${+commands[grm]} )) && alias rm='grm'
+        (( ${+commands[gdu]} )) && alias du='gdu'
+        (( ${+commands[ghead]} )) && alias head='ghead'
+        (( ${+commands[gtail]} )) && alias tail='gtail'
+        (( ${+commands[gawk]} )) && alias awk='gawk'
+        (( ${+commands[gsed]} )) && alias sed='gsed'
+        (( ${+commands[ggrep]} )) && alias grep='ggrep'
+        (( ${+commands[gfind]} )) && alias find='gfind'
+        (( ${+commands[gdirname]} )) && alias dirname='gdirname'
+        (( ${+commands[gxargs]} )) && alias xargs='gxargs'
         alias ssh="~/.ssh/bin/ssh_change.sh"
-        alias sed="gsed"
-        alias awk="gawk"
         ;;
     linux)
         alias open="xdg-open"
@@ -34,6 +47,10 @@ if [ -e "$NVM_DIR/nvm.sh" ]; then
     alias npm='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && npm'
 fi
 
+
+# Ls colors
+export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+zstyle ':completion:*' list-colors "${LS_COLORS}"
 
 if type lsd > /dev/null 2>&1; then
     alias ls='lsd'
@@ -62,22 +79,26 @@ fi
 if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
 
 # config edit command
-ec() {
+get_config_file() {
   local file
   file=$(
          rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf-tmux -p 80% \
              --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
      ) 
-  emacs "$file"
+  printf "$file"
+}
+ec() {
+  local file="$(get_config_file)"
+  if [ -n "${file}" ]; then
+      emacs "$file"
+  fi
 }
 
 vc() {
-  local file
-  file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf-tmux -p 80% \
-             --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
-     ) 
-  vim "$file"
+  local file="$(get_config_file)"
+  if [ -n  "${file}" ]; then
+      vim "$file"
+  fi
 }
 
 # Completion

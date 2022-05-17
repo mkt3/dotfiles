@@ -24,7 +24,7 @@ setup_pre_common() {
     setup_fzf
     setup_tmux
     setup_git
-    setup_tig
+    # setup_tig
     setup_emacs
     setup_vim
     setup_docker
