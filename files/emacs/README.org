@@ -770,6 +770,16 @@
                  line-end))
        :modes (text-mode markdown-mode gfm-mode org-mode))
    #+END_SRC
+** tree-sitter
+   #+BEGIN_SRC emacs-lisp
+     (leaf tree-sitter
+       :ensure t
+       :init
+       (leaf tree-sitter-langs :ensure t)
+       (global-tree-sitter-mode)
+       :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+       )
+   #+END_SRC
 ** node module path
    #+BEGIN_SRC emacs-lisp
      (leaf add-node-modules-path
