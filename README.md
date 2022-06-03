@@ -3,8 +3,9 @@
 # dotfiles
 
 ## Supported OS
-- macos
-- ubuntu
+- macOS
+- Ubuntu
+- Arch Linux
 
 ## Install
 

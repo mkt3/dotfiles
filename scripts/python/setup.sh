@@ -19,7 +19,7 @@ setup_pyenv() {
 setup_pipx() {
     info "Setting up pipx"
 
-    if !(type pipx > /dev/null 2>&1); then
+    if [ $1 != "mac" ] && !(type pipx > /dev/null 2>&1); then
         pip3 install --user pipx
     fi
 
@@ -90,9 +90,8 @@ setup_python() {
 
     setup_pyenv
 
-    if [ $1 == "ubuntu" ]; then
-        setup_pipx
-    fi
+    setup_pipx $1
+
     setup_poetry
 
     setup_jupyterlab
