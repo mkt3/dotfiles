@@ -36,7 +36,7 @@ setup_pipx() {
 
 setup_poetry() {
     local poetry_path="${HOME}/.local/bin/poetry"
-    if [ ! -e poetry_path ]; then
+    if [ ! -L $poetry_path ]; then
         info "Downloading poetry"
         pipx install git+https://github.com/python-poetry/poetry.git
     else
