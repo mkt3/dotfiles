@@ -36,6 +36,7 @@ setup_post_common() {
     setup_textlint
     setup_python $1
     setup_ghq
+    setup_navi
     setup_lazygit
 }
 
@@ -86,6 +87,7 @@ setup_minimal() {
     setup_git
     setup_vim
     setup_docker
+    setup_navi
 }
 
 os=$(uname -s | tr '[A-Z]' '[a-z]')
