@@ -104,3 +104,6 @@ vc() {
 # Completion
 fpath+=$ZSH_COMPLETION_DIR
 autoload -Uz compinit && compinit
+
+# Navi
+(( ${+commands[navi]} )) &&  eval "$(navi widget zsh)"
