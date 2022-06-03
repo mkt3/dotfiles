@@ -9,7 +9,11 @@ setup_pacman() {
     package_list=(python \
                   python-pip \
                   python-pipx \
-                  lazygit
+                  lazygit \
+                  zsh \
+                  tmux \
+                  go \
+                  duf
                       )
 
     for package in ${package_list[@]}; do
