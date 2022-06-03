@@ -1,0 +1,16 @@
+% default.target
+
+# Get default target
+sudo systemctl get-default
+
+# Switch to multi-user.target
+sudo systemctl isolate multi-user.target
+
+# Switch to graphical.target
+sudo systemctl isolate graphical.target
+
+# Set multi-user.target
+sudo systemctl set-default multi-user.target
+
+# Set graphical.target
+sudo systemctl set-default graphical.target
