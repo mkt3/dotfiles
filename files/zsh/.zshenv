@@ -124,3 +124,6 @@ if type 'go' > /dev/null 2>&1; then
     export GOPATH="${XDG_DATA_HOME}/go"
     export PATH="$PATH:$(go env GOPATH)/bin"
 fi
+
+# navi
+export NAVI_CONFIG="${HOME}/.config/navi/config.yaml"
