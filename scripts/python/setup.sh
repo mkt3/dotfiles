@@ -41,7 +41,8 @@ setup_poetry() {
         pipx install git+https://github.com/python-poetry/poetry.git
     else
         info "Updateing poetry"
-        $poetry_path self update || echo 'no update'
+        ## Degreasing to stable version after update.
+        # $poetry_path self update || echo 'no update'
     fi
 
     if  bash -lc "~/.local/bin/poetry config --list | grep 'virtualenvs.in-project = true' > /dev/null"; then
