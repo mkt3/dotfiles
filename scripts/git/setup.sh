@@ -22,8 +22,9 @@ setup_git() {
         git config --global user.email $email
         git config --global pull.rebase false
 
+        git config --global url.git@github.com:.insteadOf https://github.com/
+
         mv "${HOME}/.gitconfig" "${git_config_dir}/config"
 
-        git config --global url.git@github.com:.insteadOf https://github.com/
     fi
 }
