@@ -87,7 +87,6 @@ setup_minimal() {
     setup_git
     setup_vim
     setup_docker
-    setup_navi
 }
 
 os=$(uname -s | tr '[A-Z]' '[a-z]')
