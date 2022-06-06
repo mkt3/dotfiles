@@ -1,0 +1,7 @@
+% rsync
+
+# Sync directory from <SRC> to <DEST>
+rsync -avh --stats --info=progress2
+
+# Dry run ync directory from <SRC> to <DEST>
+rsync -avhn --stats --info=progress2
