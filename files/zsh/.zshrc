@@ -37,7 +37,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
 
 if [[ "$PLATFORM" == 'osx' ]];then
    OS_FONT=$'\Uf179 '
-elif [[ "$PLATFORM" == 'Linux' ]];then
+elif [[ "$PLATFORM" == 'linux' ]];then
    OS_FONT=$'\Uf17c '
 fi
 
