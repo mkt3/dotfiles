@@ -13,7 +13,8 @@ setup_pacman() {
                   zsh \
                   tmux \
                   go \
-                  duf
+                  duf \
+                  rsync
                       )
 
     for package in ${package_list[@]}; do
