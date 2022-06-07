@@ -21,7 +21,7 @@ else
     local host_color="green"
 fi
 
-ZSH_THEME_GIT_PROMPT_PREFIX="("
+ZSH_THEME_GIT_PROMPT_PREFIX="("''$'\Ue725 '
 ZSH_THEME_GIT_PROMPT_SUFFIX=") "
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
 ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
@@ -35,19 +35,31 @@ ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
 ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
 
+if [[ "$PLATFORM" == 'osx' ]];then
+   OS_FONT=$'\Uf179 '
+elif [[ "$PLATFORM" == 'Linux' ]];then
+   OS_FONT=$'\Uf17c '
+fi
+
+USER_FONT=$'\Uf007 '
+prompt_common_0="%{%(?.${fg[$host_color]}.${fg[red]})%}[${USER_FONT}%n${OS_FONT}%m]%{${reset_color}%}%u"
+prompt_common_1=$'\Ue5ff '"%~"$'\n'"${V_ENV}"
+
 setopt prompt_subst
 function _vcs_precmd {
-    V_ENV="($VIRTUAL_ENV:h:t)"
-    if [[ "$V_ENV" == "(.)" ]]; then
+    V_ENV="$VIRTUAL_ENV:h:t"
+    if [[ "$V_ENV" == "." ]]; then
         V_ENV=""
+    else
+        V_ENV="("$'\Ue606 '"$V_ENV)"
     fi
-    PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u"'$(gitprompt)'"%~"$'\n'"$V_ENV%# "
+    PROMPT="$prompt_common_0"'$(gitprompt)'"${prompt_common_1}%# "
 }
 
 add-zsh-hook precmd _vcs_precmd
 
 function _date_exec {
-    PROMPT="%U%{%(?.${fg[$host_color]}.${fg[red]})%}[%n@%m]%{${reset_color}%}%u$(gitprompt)%~"$'\n'"${V_ENV}[%D{%Y/%m/%d} %*] %# "
+    PROMPT="${prompt_common_0}$(gitprompt)"${prompt_common_1}"[%D{%Y/%m/%d} %*] %# "
     zle .reset-prompt
     zle .accept-line
 }
