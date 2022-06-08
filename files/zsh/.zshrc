@@ -22,7 +22,7 @@ else
 fi
 
 ZSH_THEME_GIT_PROMPT_PREFIX="("''$'\Ue725 '
-ZSH_THEME_GIT_PROMPT_SUFFIX=") "
+ZSH_THEME_GIT_PROMPT_SUFFIX=")"
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
 ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
@@ -43,7 +43,7 @@ fi
 
 USER_FONT=$'\Uf007 '
 prompt_common_0="%{%(?.${fg[$host_color]}.${fg[red]})%}[${USER_FONT}%n${OS_FONT}%m]%{${reset_color}%}%u"
-prompt_common_1=$'\Ue5ff '"%~"$'\n'"${V_ENV}"
+prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
 
 setopt prompt_subst
 function _vcs_precmd {
