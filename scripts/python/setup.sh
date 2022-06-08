@@ -23,15 +23,26 @@ setup_pipx() {
         pip3 install --user pipx
     fi
 
-    info "Installing pipx packages"
+    info "Installing/Updating pipx packages"
     package_list=(jupyterlab flake8 isort black)
+
+    installed_list=$(pipx list)
+
     for package in ${package_list[@]}; do
-        info "$package ..."
-        pipx install $package
+        if [[ $installed_list =~ "package $package" ]]; then
+            info "Updating $package"
+            pipx upgrade --include-injected $package
+        else
+            info "Installing $package"
+            pipx install $package
+
+            if [ $package == "jupyterlab" ]; then
+                info "Installing jupyterlab template extention"
+                pipx inject jupyterlab jupyterlab_templates
+            fi
+        fi
     done
 
-    info "Installing jupyterlab template extention"
-    pipx inject jupyterlab jupyterlab_templates
 }
 
 setup_poetry() {
