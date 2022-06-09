@@ -1,0 +1,17 @@
+% btrfs
+
+# Create a raid1 filesystem across multi drives(mkfs.btrfs -L "label name" -m raid1 -d raid1 /dev/sda /dev/sdb)
+sudo mkfs.btrfs -L "label name" -m raid1 -d raid1 "device list"
+
+# Add new devices to a mounted filesystem
+sudo btrfs device add "device" "mount dir"
+
+# Show a list of all the btrfs filesystems on the systems and which devices they include
+sudo btrfs filesystem show
+
+# Balance (restripe) the allocated extents across all of the existing devices
+sudo btrfs balance start "mount dir"
+
+# Remove devices online
+sudo btrfs device delete "device" "mount dir"
+
