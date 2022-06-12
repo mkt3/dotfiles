@@ -1,5 +1,7 @@
 % btrfs
 
+$ mount_point:  mount | awk '$5=="btrfs"{print $3}'
+
 # Create a raid1 filesystem across multi drives(mkfs.btrfs -L "label name" -m raid1 -d raid1 /dev/sda /dev/sdb)
 sudo mkfs.btrfs -L "label name" -m raid1 -d raid1 "device list"
 
@@ -9,9 +11,15 @@ sudo btrfs device add "device" "mount dir"
 # Show a list of all the btrfs filesystems on the systems and which devices they include
 sudo btrfs filesystem show
 
+# Show usage
+sudo btrfs filesystem usage <mount_point>
+
+# Show disk free
+btrfs filesystem df <mount_point>
+
 # Balance (restripe) the allocated extents across all of the existing devices
-sudo btrfs balance start "mount dir"
+sudo btrfs balance start <mount_point>
 
 # Remove devices online
-sudo btrfs device delete "device" "mount dir"
+sudo btrfs device delete "device" <mount_point>
 
