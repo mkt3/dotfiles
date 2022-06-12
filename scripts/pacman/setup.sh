@@ -14,7 +14,8 @@ setup_pacman() {
                   tmux \
                   go \
                   duf \
-                  rsync
+                  iotop \
+                  rsync 
                       )
 
     for package in ${package_list[@]}; do
