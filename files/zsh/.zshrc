@@ -69,6 +69,7 @@ function _date_exec {
 zle -N accept-line _date_exec
 
 # Setopt
+setopt NO_FLOW_CONTROL
 setopt auto_cd
 setopt auto_pushd
 setopt no_beep
