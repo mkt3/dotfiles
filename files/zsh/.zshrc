@@ -69,7 +69,9 @@ function _date_exec {
 zle -N accept-line _date_exec
 
 # Setopt
-setopt NO_FLOW_CONTROL
+unsetopt glob_dots
+unsetopt ignore_eof
+setopt no_flow_control
 setopt auto_cd
 setopt auto_pushd
 setopt no_beep
@@ -89,6 +91,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # Command history
 HISTFILE=$XDG_STATE_HOME/zsh/history
+HISTTIMEFORMAT="[%Y/%M/%D %H:%M:%S] "
 HISTSIZE=50000
 SAVEHIST=50000
 setopt hist_ignore_dups
