@@ -53,12 +53,14 @@ function _vcs_precmd {
     else
         V_ENV="("$'\Ue606 '"$V_ENV)"
     fi
+    prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
     PROMPT="$prompt_common_0"'$(gitprompt)'"${prompt_common_1}%# "
 }
 
 add-zsh-hook precmd _vcs_precmd
 
 function _date_exec {
+    prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
     PROMPT="${prompt_common_0}$(gitprompt)"${prompt_common_1}"[%D{%Y/%m/%d} %*] %# "
     zle .reset-prompt
     zle .accept-line
