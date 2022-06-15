@@ -14,6 +14,7 @@ setup_pacman() {
                   tmux \
                   go \
                   duf \
+                  htop \
                   iotop \
                   rsync 
                       )
