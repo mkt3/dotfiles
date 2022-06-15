@@ -41,6 +41,7 @@ alias emacs="emacs -nw"
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
+alias history="history -i"
 
 if [ -e "$NVM_DIR/nvm.sh" ]; then
     alias nvm='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && nvm'

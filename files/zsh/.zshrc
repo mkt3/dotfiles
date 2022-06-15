@@ -91,7 +91,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # Command history
 HISTFILE=$XDG_STATE_HOME/zsh/history
-HISTTIMEFORMAT="[%Y/%M/%D %H:%M:%S] "
 HISTSIZE=50000
 SAVEHIST=50000
 setopt hist_ignore_dups
