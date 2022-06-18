@@ -16,6 +16,7 @@ setup_pacman() {
                   duf \
                   htop \
                   iotop \
+                  neofetch \
                   rsync 
                       )
 
