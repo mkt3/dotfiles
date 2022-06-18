@@ -314,14 +314,14 @@
                                                  (("<\\([[:alnum:]-]+\\)>") . ("\\1"))))
                 (which-key-mode . t)))
    #+END_SRC
-** puni
+** smartparens
    #+BEGIN_SRC emacs-lisp
-     (leaf puni
+     (leaf smartparens
        :ensure t
-       :init
-       (puni-global-mode)
-       :custom ((electric-pair-mode . t)))
-   #+END_SRC
+       :hook (after-init-hook . smartparens-global-strict-mode)
+       :require smartparens-config
+       :custom ((electric-pair-mode . nil)))
+      #+END_SRC
 ** ace-window
    #+BEGIN_SRC emacs-lisp
      (leaf ace-window
