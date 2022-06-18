@@ -17,6 +17,7 @@ setup_apt() {
                   xsel \
                   vim \
                   duf \
+                  neofetch \
                   golang \
                   libbz2-dev \
                   libdb-dev \
