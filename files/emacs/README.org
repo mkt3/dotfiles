@@ -993,6 +993,95 @@
                                               "** %^{Brief Description}")
                                              ("m" " Memo" entry (file ,org-memo-file) "* %? %U %i"))))
    #+END_SRC
+** org-roam
+   #+BEGIN_SRC emacs-lisp
+     (leaf org-roam
+       :ensure t
+       :after org
+       :preface
+       (setq my:org-roam-directory "~/Nextcloud/org-roam")
+       :if (and (file-directory-p my:org-roam-directory)
+                (and (executable-find "rg")
+                     (executable-find "sqlite3")))
+       :bind
+       (("C-c n a" . org-roam-alias-add)
+        ("C-c n f" . org-roam-node-find)
+        ("C-c n i" . org-roam-node-insert)
+        ("C-c n o" . org-id-get-create)
+        ("C-c n t" . org-roam-tag-add)
+        ("C-c n l" . org-roam-buffer-toggle)
+        ("C-c n c" . org-roam-capture)
+        ("C-c n j" . org-roam-dailies-capture-today)
+        )
+       :init
+       (setq org-roam-directory my:org-roam-directory)
+       (setq org-roam-dailies-directory "daily_notes/")
+       :defer-config
+       (org-roam-db-autosync-enable)
+       :custom
+       ;; (org-roam-node-display-template . (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+       (org-roam-capture-templates
+        . '(("s" "seed" plain "%?"
+             :if-new (file+head "seed/${slug}.org"
+                                "#+title: ${title}\n")
+             :immediate-finish t
+             :unnarrowed t)
+            ("r" "reference" plain "%?"
+             :if-new
+             (file+head "reference/${slug}.org" "#+title: ${title}\n")
+             :immediate-finish t
+             :unnarrowed t)
+            ("e" "evergreen" plain "%?"
+             :if-new
+             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+filetags: :envergreen:\n")
+             :immediate-finish t
+             :unnarrowed t)))
+       (org-roam-dailies-capture-templates
+        . '(
+            ("j" "journal" entry
+             "* %<%H:%M> %^{title}\n%?"
+             :target (file+head "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n"))
+         ))
+       :config
+       (cl-defmethod org-roam-node-type ((node org-roam-node))
+         "Return the TYPE of NODE."
+         (condition-case nil
+             (file-name-nondirectory
+              (directory-file-name
+               (file-name-directory
+                (file-relative-name (org-roam-node-file node) org-roam-directory))))
+           (error "")))
+       (setq org-roam-node-display-template
+             (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+       (defun my:tag-new-node-as-draft ()
+         (org-roam-tag-add '("draft")))
+       (add-hook 'org-roam-capture-new-node-hook #'my:tag-new-node-as-draft)
+       )
+     (leaf citar
+       :ensure t
+       :require t
+       :custom
+       (citar-bibliography . "~/GoogleDrive/paperpile.bib")
+       :config
+       (defun my:org-roam-node-from-cite (keys-entries)
+         (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
+         (let ((title (citar--format-entry-no-widths (cdr keys-entries)
+                                                     "${author editor} :: ${title}")))
+           (org-roam-capture- :templates
+                              '(("r" "reference" plain "%?" :if-new
+                                 (file+head "reference/${citekey}.org"
+                                            ":PROPERTIES:
+     :ROAM_REFS: [cite:@${citekey}]
+     :END:
+     ,#+title: ${title}\n")
+                                 :immediate-finish t
+                                 :unnarrowed t))
+                              :info (list :citekey (car keys-entries))
+                              :node (org-roam-node-create :title title)
+                              :props '(:finalize find-file))))
+       )
+   #+END_SRC
 ** web-mode
    #+BEGIN_SRC emacs-lisp
      (leaf web-mode
@@ -1013,7 +1102,7 @@
                 (web-mode-tag-auto-close-style . 2)
                 (indent-tabs-mode . nil)
                 (tab-width . 2))
-       :hook (web-mode-hook . (lambda ()
+       :hook (web-mode-hook . (lambda ()jlj
                                 (interactive)
                                 (when (string-equal "tsx" (file-name-extension buffer-file-name))
                                   (add-node-modules-path)
