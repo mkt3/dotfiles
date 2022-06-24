@@ -29,6 +29,7 @@ setup_pre_common() {
     setup_vim
     setup_docker
     setup_rust
+    setup_ripgrep
 }
 
 setup_post_common() {
@@ -88,6 +89,7 @@ setup_minimal() {
     setup_git
     setup_vim
     setup_docker
+    setup_ripgrep
 }
 
 os=$(uname -s | tr '[A-Z]' '[a-z]')

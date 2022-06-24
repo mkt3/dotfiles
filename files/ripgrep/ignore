@@ -1,0 +1,15 @@
+# global
+.cache/
+.local/
+**/.git/*
+
+# for mac
+Applications/
+Library/
+NextCloud/
+Movies/
+Music/
+Pictures/
+Public/
+.DS_Store
+.localized
