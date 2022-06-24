@@ -34,5 +34,6 @@ yabai -m config window_gap                   6
 yabai -m rule --add app="^Dictionaries$"       manage=off
 yabai -m rule --add app="^Disk Utility$"       manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^Enpass$" manage=off
 
 echo "yabai configuration loaded.."
