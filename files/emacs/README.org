@@ -972,6 +972,7 @@
                 (org-startup-indent . t)
                 (org-hide-leading-stars . t)
                 (org-return-follows-link . t)
+                (org-startup-truncated . nil)
                 (org-log-done . t)
                 (org-todo-keywords . '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
                                        (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
