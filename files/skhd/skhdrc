@@ -50,7 +50,6 @@ alt - x : yabai -m space --mirror x-axis
 alt - a : yabai -m space --toggle padding && yabai -m space --toggle gap
 # toggle window fullscreen zoom
 alt - space : yabai -m window --toggle zoom-fullscreen
-alt - 0x2F : yabai -m window --toggle zoom-fullscreen
 # navigate
 alt - 0x2B : yabai -m display --focus prev && yabai -m display --focus stack.prev
 alt - 0x2F : yabai -m display --focus next && yabai -m display --focus stack.next
