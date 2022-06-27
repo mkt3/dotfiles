@@ -404,6 +404,7 @@
                 (default-input-method . "japanese-skk"))
        :init (setq skk-user-directory (concat user-emacs-directory "ddskk.d"))
        (setq viper-mode nil)
+       (setq skk-sticky-key ";")
        :hook ((lisp-interaction-mode-hook . (lambda()
                                               (progn (eval-expression (skk-mode) nil)
                                                      (skk-latin-mode (point)))))))
