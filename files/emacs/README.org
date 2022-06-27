@@ -950,7 +950,6 @@
        :preface
        (setq my:org-directory "~/Nextcloud/gtd/")
        (defvar org-gtd-file (concat my:org-directory "gtd.org"))
-       (defvar org-memo-file "~/Nextcloud/memo/memo.org")
        (defun gtd ()
          (interactive)
          (find-file org-gtd-file))
@@ -960,7 +959,10 @@
                                  (flycheck-mode 1))))
        :bind (("C-c c" . org-capture)
               ("C-c a" . org-agenda)
-              ("C-c g" . gtd))
+              ("C-c g" . gtd)
+              ("C-c C-'" . org-edit-special)
+              (org-src-mode-map ("C-c C-'" . org-edit-src-exit))
+              )
        :advice (:before org-calendar-holiday
                         (lambda ()
                           (require 'japanese-holidays)))
@@ -969,11 +971,13 @@
        (setq org-agenda-files (list org-directory))
 
        :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 1)))
-                (org-startup-indent . t)
+                (org-startup-indent . nil)
                 (org-hide-leading-stars . t)
                 (org-return-follows-link . t)
                 (org-startup-truncated . nil)
+                (org-use-speed-commands . t)
                 (org-log-done . t)
+                (org-adapt-indentation . t)
                 (org-todo-keywords . '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
                                        (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
                 (org-todo-keyword-faces . '(("TODO" :foreground "red"
@@ -990,9 +994,9 @@
        :leaf-defer t
        :after org
        :commands (org-capture)
-       :config (setq org-capture-templates `(("i" " Inbox" entry (file+headline (concat org-directory "inboxxx.org") "Inbox")
-                                              "** %^{Brief Description}")
-                                             ("m" " Memo" entry (file ,org-memo-file) "* %? %U %i"))))
+       :config
+       (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+                                      "** %^{Brief Description}"))))
    #+END_SRC
 ** org-roam
    #+BEGIN_SRC emacs-lisp
@@ -1042,7 +1046,8 @@
             ("j" "journal" entry
              "* %<%H:%M> %^{title}\n%?"
              :target (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n"))
+                                "#+title: %<%Y-%m-%d>\n")
+             :immediate-finish t)
          ))
        :config
        (cl-defmethod org-roam-node-type ((node org-roam-node))
