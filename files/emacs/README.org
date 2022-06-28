@@ -820,7 +820,6 @@
    #+END_SRC
 * major-mode
 ** lsp-mode
-- `lsp-completion-provider` is `:none` for yasnippets [[https://www.reddit.com/r/emacs/comments/imlw1u/cant_get_yasnippets_to_show_on_company_lspmode/][link]]
    #+BEGIN_SRC emacs-lisp
      (leaf lsp-mode
        :ensure t
@@ -1016,6 +1015,7 @@
         ("C-c n i" . org-roam-node-insert)
         ("C-c n o" . org-id-get-create)
         ("C-c n t" . org-roam-tag-add)
+        ("C-c n r" . org-roam-ref-add)
         ("C-c n l" . org-roam-buffer-toggle)
         ("C-c n c" . org-roam-capture)
         ("C-c n j" . org-roam-dailies-capture-today)
