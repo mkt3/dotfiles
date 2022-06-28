@@ -994,6 +994,7 @@
      (leaf org-capture
        :leaf-defer t
        :after org
+       :if (file-directory-p my:org-directory)
        :commands (org-capture)
        :config
        (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
@@ -1148,10 +1149,10 @@
 ** git
    #+BEGIN_SRC emacs-lisp
      (leaf *git-tools
+       :config
        (leaf git-modes
          :ensure t)
        (leaf magit
-         :when (version<= "25.1" emacs-version)
          :ensure t
          :preface (defun c/git-add ()
                     "Add anything."
