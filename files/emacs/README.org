@@ -1,11 +1,18 @@
 #+title: Configurations for Emacs
-#+author: mkt3rb
+#+author: Makoto Morinaga
 #+startup: content
 #+startup: nohideblocks
 
 * Initialize
+** Const
+   #+begin_src emacs-lisp
+     (defconst my:f:bib (expand-file-name "GoogleDrive/paperpile.bib" (getenv "HOME")))
+     (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
+     (defconst my:d:gtd (expand-file-name "gtd" my:d:nextcloud))
+     (defconst my:d:org-roam (expand-file-name "org-roam" my:d:nextcloud))
+   #+end_src
 ** leaf
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (eval-and-compile
        (customize-set-variable
         'package-archives '(("org" . "https://orgmode.org/elpa/")
@@ -27,9 +34,9 @@
          :config
          ;; initialize leaf-keywords.el
          (leaf-keywords-init)))
-   #+END_SRC
+   #+end_src
 ** load Path
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf exec-path-from-shell
        :ensure t
        :when (memq window-system '(mac ns x))
@@ -37,16 +44,16 @@
        :custom ((exec-path-from-shell-arguments . "") ; zshの.zshrcでinteractiveのUIにしているため
                 (exec-path-from-shell-variables . '("PATH" "GOPATH")))
        :config (exec-path-from-shell-initialize))
-   #+END_SRC
+   #+end_src
 ** custom.el path
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf cus-edit
        :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
-   #+END_SRC
+   #+end_src
 
 * buildin confing
 ** customization propeties of buildins
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf cus-start
        :doc "define customization properties of builtins"
        :custom `((garbage-collection-messages     . t)
@@ -84,10 +91,10 @@
        :config
        (defalias 'yes-or-no-p 'y-or-n-p)
        (keyboard-translate ?\C-h ?\C-?))
-   #+END_SRC
+   #+end_src
 
 ** default keybind
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *default-keybind
        :bind (("M-+"   . text-scale-increase)
               ("M--"   . text-scale-decrease)
@@ -95,16 +102,16 @@
               ("C-x |" . split-window-right)
               ("C-x -" . split-window-below)
               ("C-x x" . delete-window)))
-   #+END_SRC
+   #+end_src
 
 ** lisp
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf simple
-       :custom ((kill-ring-max     . 100)
-                (kill-read-only-ok . t)
-                (kill-whole-line   . t)
+       :custom ((kill-ring-max                . 100)
+                (kill-read-only-ok            . t)
+                (kill-whole-line              . t)
                 (eval-expression-print-length . nil)
-                (eval-expression-print-lepvel  . nil)))
+                (eval-expression-print-lepvel . nil)))
      (leaf elisp-format
        :ensure t)
      (leaf abbrev
@@ -150,39 +157,16 @@
        :ensure t
        :custom (gcmh-verbose . t)
        :config (gcmh-mode 1))
-   #+END_SRC
-
+   #+end_src
 ** lisp/vc
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf vc-hooks
        :custom ((vc-follow-symlinks . t)))
-   #+END_SRC
+   #+end_src
 
 * color-theme
-** doom-theme
-   #+BEGIN_SRC emacs-lisp
-     ;; (leaf doom-themes
-     ;;   :ensure t
-     ;;   :require t
-     ;;   :custom ((doom-themes-enable-italic . t)
-     ;;            (doom-themes-enable-bold   . t))
-     ;;   :custom-face ((doom-modeline-bar . '((t
-     ;;                                         (:background "#6272a4")))))
-     ;;   :config (load-theme 'doom-dracula t)
-     ;;   (doom-themes-neotree-config)
-     ;;   (doom-themes-org-config)
-     ;;   (leaf doom-modeline
-     ;;     :ensure t
-     ;;     :custom ((doom-modeline-buffer-file-name-style . 'truncate-with-project)
-     ;;              (doom-modeline-icon . t)
-     ;;              (doom-modeline-major-mode-icon . nil)
-     ;;              (doom-modeline-minor-modes . nil))
-     ;;     :hook ((after-init-hook . doom-modeline-mode))
-     ;;     :config (set-cursor-color "cyan")))
-   #+END_SRC
-
 ** modus-theme
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *modus-themes
        :custom
        ((modus-themes-italic-constructs . t)
@@ -193,10 +177,10 @@
         )
        :config
        (load-theme 'modus-vivendi))
-   #+END_SRC
+   #+end_src
 * UI
 ** mac
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf mac
        :doc "implementation of gui terminal on macos"
        :doc "each symbol can be `control', `meta', `alt', `hyper', or `super'"
@@ -208,9 +192,9 @@
                 (mac-right-control-modifier . 'control)
                 (mac-right-option-modifier  . 'hyper)
                 (mac-right-command-modifier . 'meta)))
-   #+END_SRC
+   #+end_src
 ** ns
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf ns
        :doc "next/open/gnustep / macos communication module"
        :when (eq 'ns window-system)
@@ -226,15 +210,15 @@
                                                    (ns-appearance            . dark)
                                                    (ns-transparent-titlebar  . t))
                                                  default-frame-alist)))
-   #+END_SRC
+   #+end_src
 ** language
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *language
        :config (set-language-environment 'Japanese)
        (prefer-coding-system 'utf-8))
-   #+END_SRC
+   #+end_src
 ** frame
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *frame
        :init (setq default-frame-alist (append '((line-spacing         . 0  ) ; 文字間隔
                                                  (left-fringe          . 10 ) ; 左フリンジ幅
@@ -246,17 +230,17 @@
        :custom (initial-frame-alist . default-frame-alist)
        (frame-title-format . '("emacs " emacs-version (buffer-file-name " - %f"))) :bind(("C-c C-f" .
                                                                                             toggle-frame-maximized)))
-   #+END_SRC
+   #+end_src
 ** font
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *font
        :when window-system
        :config (add-to-list 'default-frame-alist '(font . "Cica-18")))
-   #+END_SRC
+   #+end_src
 
 * minor-mode
 ** tab-bar-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf tab-bar-mode
        :init (defvar my:ctrl-o-map (make-sparse-keymap)
                "My original keymap binded to C-o.")
@@ -291,9 +275,9 @@
                 (tab-bar-tab-name-truncated-max . 12)
                 (tab-bar-separator              . ""))
        :config (tab-bar-mode +1))
-   #+END_SRC
+   #+end_src
 ** dimmer
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf dimmer
        :ensure t
        :custom ((dimmer-fraction . 0.5)
@@ -301,9 +285,9 @@
                                                   ".*Messages.*" ".*Async.*" ".*Warnings.*" ".*LV.*"
                                                   ".*Ilist.*"))
                 (dimmer-mode . t)))
-   #+END_SRC
+   #+end_src
 ** which-key
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf which-key
        :ensure t
        :custom ((which-key-idle-delay . 1)
@@ -313,17 +297,17 @@
                                                  (("<right>") . ("→"))
                                                  (("<\\([[:alnum:]-]+\\)>") . ("\\1"))))
                 (which-key-mode . t)))
-   #+END_SRC
+   #+end_src
 ** smartparens
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf smartparens
        :ensure t
        :hook (after-init-hook . smartparens-global-strict-mode)
        :require smartparens-config
        :custom ((electric-pair-mode . nil)))
-      #+END_SRC
+      #+end_src
 ** ace-window
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf ace-window
        :ensure t
        :bind (("C-x o" . ace-window))
@@ -331,19 +315,19 @@
        :custom-face ((aw-leading-char-face . '((t
                                                 (:height 4.0
                                                          :foreground "#f1fa8c"))))))
-   #+END_SRC
+   #+end_src
 ** popwin
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf popwin
        :ensure t)
-   #+END_SRC
+   #+end_src
 ** amx
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf amx
        :ensure t)
-   #+END_SRC
+   #+end_src
 ** undo-tree
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf undo-tree
        :ensure t
        :leaf-defer nil
@@ -352,9 +336,9 @@
        :custom ((undo-tree-auto-save-history . t)
                 (undo-tree-history-directory-alist . `(("." . ,(concat user-emacs-directory
                                                                        ".cache/undo-tree-hist/"))))))
-   #+END_SRC
+   #+end_src
 ** whitespace
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf whitespace
        :ensure t
        :commands whitespace-mode
@@ -382,16 +366,16 @@
                            :weight 'bold)
        (set-face-attribute 'whitespace-empty nil
                            :background "Black"))
-   #+END_SRC
+   #+end_src
 ** mwim
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf mwim
        :ensure t
        :bind (("C-a" . mwim-beginning-of-code-or-line)
               ("C-e" . mwim-end-of-code-or-line)))
-   #+END_SRC
+   #+end_src
 ** skk
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf skk
        :ensure ddskk
        :when window-system
@@ -408,10 +392,10 @@
        :hook ((lisp-interaction-mode-hook . (lambda()
                                               (progn (eval-expression (skk-mode) nil)
                                                      (skk-latin-mode (point)))))))
-   #+END_SRC
+   #+end_src
 ** Complementaly UI
 *** vertico
-     #+BEGIN_SRC emacs-lisp
+     #+begin_src emacs-lisp
        (leaf vertico
          :ensure t
          :global-minor-mode t
@@ -434,9 +418,9 @@
                              ("C-s" . vertico-next)
                              ("C-l" . my:filename-upto-parent)))
          :init (savehist-mode))
-     #+END_SRC
+     #+end_src
 *** consult
-    #+BEGIN_SRC emacs-lisp
+    #+begin_src emacs-lisp
       (leaf consult
         :ensure t
         :preface (defun my:consult-line
@@ -450,35 +434,35 @@
                 ("C-c C-a" . consult-buffer)
                 ([remap goto-line] . consult-goto-line)
                 ([remap yank-pop] . consult-yank-pop)))
-    #+END_SRC
+    #+end_src
 *** consult-lsp
-    #+BEGIN_SRC emacs-lisp
+    #+begin_src emacs-lisp
       (leaf consult-lsp
         :ensure t
         :bind (lsp-mode-map ([remap xref-apropos] . consult-lsp-symbols)))
-    #+END_SRC
+    #+end_src
 *** marginalia
-    #+BEGIN_SRC emacs-lisp
+    #+begin_src emacs-lisp
       (leaf marginalia
         :ensure t
         :global-minor-mode t)
-    #+END_SRC
+    #+end_src
 *** orderless
-    #+BEGIN_SRC emacs-lisp
+    #+begin_src emacs-lisp
       (leaf orderless
         :ensure t
         :custom (completion-styles . '(orderless)))
-    #+END_SRC
+    #+end_src
 *** embark
-    #+BEGIN_SRC emacs-lisp
+    #+begin_src emacs-lisp
       (leaf embark
         :ensure t
         :config (leaf embark-consult
                   :ensure t
                   :after (embark consult)))
-    #+END_SRC
+    #+end_src
 ** company
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf company
        :ensure t
        :leaf-defer nil
@@ -676,9 +660,9 @@
                                                             company-latex-commands)) company-backends)))
          :hook ((org-mode-hook . c/latex-mode-setup)
                 (tex-mode-hook . c/latex-mode-setup))))
-   #+END_SRC
+   #+end_src
 ** yasnippet
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf yasnippet
        :ensure t
        :blackout yas-minor-mode
@@ -705,40 +689,43 @@
        (defun set-yas-as-company-backend ()
          (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
        :hook ((company-mode-hook . set-yas-as-company-backend)))
-   #+END_SRC
+   #+end_src
 ** highlight-indent-gide
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf highlight-indent-guides
        :ensure t
        :blackout t
        :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
-       :custom ((highlight-indent-guides-method . 'character) ;; fill,column,character
+       :custom ((highlight-indent-guides-method       . 'character) ;; fill,column,character
                 (highlight-indent-guides-auto-enabled . t) ;; automatically calculate faces.
-                (highlight-indent-guides-responsive . t)
-                (highlight-indent-guides-character . ?\|)))
-   #+END_SRC
+                (highlight-indent-guides-responsive   . t)
+                (highlight-indent-guides-character    . ?\|)))
+   #+end_src
 ** imenu-list
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf imenu-list
        :ensure t
        :bind (("C-z" . imenu-list-smart-toggle))
        :custom-face (imenu-list-entry-face-1 . '((t
                                                   (:foreground "white"))))
        :custom ((imenu-list-focus-after-activation . t)
-                (imenu-list-auto-resize . t)))
-   #+END_SRC
+                (imenu-list-auto-resize            . t)))
+   #+end_src
 ** rainbow-delimiters
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf rainbow-delimiters
        :ensure t
-       :hook ((prog-mode-hook       . rainbow-delimiters-mode)))
-
-   #+END_SRC
+       :hook ((prog-mode-hook . rainbow-delimiters-mode)))
+   #+end_src
 ** nyan-mode
-   #+BEGIN_SRC emacs-lisp
-   #+END_SRC
+   #+begin_src emacs-lisp
+     (leaf nyan-mode
+       :ensure t
+       :init
+       (nyan-mode 1))
+   #+end_src
 ** projectile
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf projectile
        :ensure t
        :init
@@ -746,9 +733,9 @@
        (projectile-mode +1)
        :custom ((projectile-mode-line-prefix . " Prj"))
        :bind (projectile-mode-map ("C-c p" . projectile-command-map)))
-   #+END_SRC
+   #+end_src
 ** flycheck
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf flycheck
        :ensure t
        :hook (prog-mode-hook . flycheck-mode)
@@ -770,9 +757,9 @@
                           (zero-or-more "\n" (any " ") (one-or-more not-newline)))
                  line-end))
        :modes (text-mode markdown-mode gfm-mode org-mode))
-   #+END_SRC
+   #+end_src
 ** tree-sitter
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf tree-sitter
        :ensure t
        :init
@@ -780,15 +767,15 @@
        (global-tree-sitter-mode)
        :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
        )
-   #+END_SRC
+   #+end_src
 ** node module path
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf add-node-modules-path
        :ensure t
        :commands add-node-modules-path)
-   #+END_SRC
+   #+end_src
 ** tramp
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf tramp
        :ensure t
        :init
@@ -817,10 +804,10 @@
                            :server-id 'pyright-remote))
          )
        )
-   #+END_SRC
+   #+end_src
 * major-mode
 ** lsp-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf lsp-mode
        :ensure t
        :commands (lsp lsp-deferred)
@@ -856,15 +843,12 @@
                       (lsp-mode-map ("C-c s" . lsp-ui-sideline-mode)
                                     ("C-c d" . lsp-ui-doc-mode)))
                :hook ((lsp-mode-hook . lsp-ui-mode))))
-   #+END_SRC
+   #+end_src
 ** python-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *python
        :custom (python-indent-guess-indent-offset-verbose . nil)
        :config
-       ;; (leaf poetry
-       ;;   :ensure t
-       ;;   :hook ((python-mode-hook . #'poetry-tracking-mode)))
        (leaf lsp-pyright
          :ensure t
          ;; :init (setq lsp-pyright-typechecking-mode "strict")
@@ -881,33 +865,33 @@
                   (blacken-skip-string-normalization . t)))
        (leaf ein
          :ensure t))
-   #+END_SRC
+   #+end_src
 ** yaml-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf yaml-mode
        :ensure t)
-   #+END_SRC
+   #+end_src
 ** toml-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf toml-mode
        :ensure t)
-   #+END_SRC
+   #+end_src
 ** json-reformat
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf json-reformat
        :ensure t)
-   #+END_SRC
+   #+end_src
 ** scss-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf scss-mode
        :ensure t
        :hook ((scss-mode-hook . (lambda ()
                                   (and
                                    (set (make-local-variable 'css-indent-offset) 2)
                                    (set (make-local-variable 'scss-compile-at-save) nil))))))
-   #+END_SRC
+   #+end_src
 ** rjsx-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
           (leaf rjsx-mode
             :ensure t
             :mode ("\\.jsx\\'" "\\.js\\'")
@@ -919,15 +903,15 @@
             :hook (rjsx-mode-hook . (lambda ()
                                       (add-node-modules-path)
                                       (flycheck-mode t))))
-   #+END_SRC
+   #+end_src
 ** tide
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf tide
        :ensure t
        :commands tide-setup)
-   #+END_SRC
+   #+end_src
 ** typescript-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf typescript-mode
        :ensure t
        :defun flycheck-add-mode
@@ -942,18 +926,17 @@
                                        (tide-hl-identifier +1)
                                        (company-mode +1)
                                        (setq flycheck-checker 'javascript-eslint))))
-   #+END_SRC
+   #+end_src
 ** org-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf org
        :ensure t
        :preface
-       (setq my:org-directory "~/Nextcloud/gtd/")
-       (defvar org-gtd-file (concat my:org-directory "gtd.org"))
+       (defvar org-gtd-file my:d:gtd)
        (defun gtd ()
          (interactive)
          (find-file org-gtd-file))
-       :if (file-directory-p my:org-directory)
+       :if (file-directory-p my:d:gtd)
        :hook ((org-mode-hook . (lambda ()
                                  (setq flycheck-checker 'textlint)
                                  (flycheck-mode 1))))
@@ -967,7 +950,7 @@
                         (lambda ()
                           (require 'japanese-holidays)))
        :init
-       (setq org-directory my:org-directory)
+       (setq org-directory my:d:gtd)
        (setq org-agenda-files (list org-directory))
 
        :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 1)))
@@ -993,22 +976,18 @@
      (leaf org-capture
        :leaf-defer t
        :after org
-       :if (file-directory-p my:org-directory)
+       :if (file-directory-p my:d:gtd)
        :commands (org-capture)
        :config
        (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
                                       "** %^{Brief Description}"))))
-   #+END_SRC
+   #+end_src
 ** org-roam
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf org-roam
        :ensure t
        :after org
-       :preface
-       (setq my:org-roam-directory "~/Nextcloud/org-roam")
-       :if (and (file-directory-p my:org-roam-directory)
-                (and (executable-find "rg")
-                     (executable-find "sqlite3")))
+       :if (file-directory-p my:d:org-roam)
        :bind
        (("C-c n a" . org-roam-alias-add)
         ("C-c n f" . org-roam-node-find)
@@ -1021,7 +1000,7 @@
         ("C-c n j" . org-roam-dailies-capture-today)
         )
        :init
-       (setq org-roam-directory my:org-roam-directory)
+       (setq org-roam-directory my:d:org-roam)
        (setq org-roam-dailies-directory "daily_notes/")
        :defer-config
        (org-roam-db-autosync-enable)
@@ -1050,7 +1029,7 @@
              :target (file+head "%<%Y-%m-%d>.org"
                                 "#+title: %<%Y-%m-%d>\n")
              :immediate-finish t)
-         ))
+            ))
        :config
        (cl-defmethod org-roam-node-type ((node org-roam-node))
          "Return the TYPE of NODE."
@@ -1066,11 +1045,20 @@
          (org-roam-tag-add '("draft")))
        (add-hook 'org-roam-capture-new-node-hook #'my:tag-new-node-as-draft)
        )
+     (leaf org-roam-ui
+       :ensure t
+       :if (file-directory-p my:d:org-roam)
+       :config
+       (setq org-roam-ui-sync-theme t
+             org-roam-ui-follow t
+             org-roam-ui-update-on-save t
+             org-roam-ui-open-on-start t))
      (leaf citar
        :ensure t
+       :if (file-directory-p my:f:bib)
        :require t
        :custom
-       (citar-bibliography . "~/GoogleDrive/paperpile.bib")
+       (citar-bibliography . my:f:bib)
        :config
        (defun my:org-roam-node-from-cite (keys-entries)
          (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
@@ -1089,9 +1077,9 @@
                               :node (org-roam-node-create :title title)
                               :props '(:finalize find-file))))
        )
-   #+END_SRC
+   #+end_src
 ** web-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf web-mode
        :ensure t
        :after flycheck
@@ -1120,9 +1108,9 @@
                                   (eldoc-mode +1)
                                   (tide-hl-identifier-mode +1)
                                   (company-mode +1)))))
-   #+END_SRC
+   #+end_src
 ** markdown-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf markdown-mode
        :ensure t
        :mode (("\\.md\\'" "\\.markdown\\'")
@@ -1132,22 +1120,23 @@
                                       (setq tab-width 2)
                                       (setq flycheck-checker 'textlint)
                                       (flycheck-mode 1)))))
-   #+END_SRC
+   #+end_src
 ** docker-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *docker-mode
-       :config (leaf docker
-                 :ensure t)
+       :config
+       (leaf docker
+         :ensure t)
        (leaf dockerfile-mode
          :ensure t)
        (leaf docker-compose-mode
          :ensure t)
        (leaf docker-tramp
          :ensure t))
-   #+END_SRC
+   #+end_src
 * misc-tools
 ** git
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf *git-tools
        :config
        (leaf git-modes
@@ -1165,9 +1154,9 @@
            (magit-commit-create))
          :bind (("C-x g" . magit-status)
                 ("C-x M-g" . magit-dispatch-popup))))
-   #+END_SRC
+   #+end_src
 ** shell-pop
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (leaf shell-pop
        :ensure t
        :bind* (("C-t" . shell-pop))
@@ -1184,4 +1173,4 @@
            (when (processp proc)
              (set-process-query-on-exit-flag proc nil))))
        (add-hook 'term-exec-hook 'set-no-process-query-on-exit))
-   #+END_SRC
+   #+end_src
