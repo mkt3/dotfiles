@@ -4,6 +4,25 @@ alt + shift - space : [ "$(yabai -m query --spaces --space | jq -r '.type')" = b
     && yabai -m space --layout stack \
     || yabai -m space --layout bsp
 
+ctrl + cmd - e : osascript -e 'tell application "Emacs" to run' \
+  -e 'tell application "System Events"' \
+  -e 'if visible of application process "Emacs" is true then' \
+  -e 'set visible of application process "Emacs" to false' \
+  -e 'else' \
+  -e 'set visible of application process "Emacs" to true' \
+  -e 'tell application "Emacs" to activate' \
+  -e 'end if' \
+  -e 'end tell'
+
+ctrl + cmd - o : osascript -e 'tell application "iTerm2" to run' \
+  -e 'tell application "System Events"' \
+  -e 'if visible of application process "iTerm2" is true then' \
+  -e 'set visible of application process "iTerm2" to false' \
+  -e 'else' \
+  -e 'set visible of application process "iTerm2" to true' \
+  -e 'tell application "iTerm2" to activate' \
+  -e 'end if' \
+  -e 'end tell'
 
 # close
 alt - c : yabai -m window --close
