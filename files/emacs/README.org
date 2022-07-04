@@ -932,7 +932,7 @@
      (leaf org
        :ensure t
        :preface
-       (defvar org-gtd-file my:d:gtd)
+       (defvar org-gtd-file (expand-file-name "gtd.org" my:d:gtd))
        (defun gtd ()
          (interactive)
          (find-file org-gtd-file))
@@ -1025,9 +1025,10 @@
        (org-roam-dailies-capture-templates
         . '(
             ("j" "journal" entry
-             "* %<%H:%M> %^{title}\n%?"
-             :target (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n")
+             "** %<%H:%M> %^{title}\n%?"
+             :target (file+head+olp "%<%Y-%m>.org"
+                                "#+title: %<%Y-%m>\n"
+                                ("%<%Y-%m-%d>"))
              :immediate-finish t)
             ))
        :config

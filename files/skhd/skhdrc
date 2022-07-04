@@ -6,7 +6,7 @@ alt + shift - space : [ "$(yabai -m query --spaces --space | jq -r '.type')" = b
 
 ctrl + cmd - e : ~/.config/skhd/toggle.sh Emacs
 ctrl + cmd - o : ~/.config/skhd/toggle.sh iTerm2
-ctrl + cmd - b : ~/.config/skhd/toggle.sh "Google Chrome"
+ctrl + cmd - b : ~/.config/skhd/toggle.sh "Google Chrome Beta"
 
 # close
 alt - c : yabai -m window --close
