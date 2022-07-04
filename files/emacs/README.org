@@ -1056,7 +1056,7 @@
              org-roam-ui-open-on-start t))
      (leaf citar
        :ensure t
-       :if (file-directory-p my:f:bib)
+       :if (file-exists-p my:f:bib)
        :require t
        :custom
        (citar-bibliography . my:f:bib)
