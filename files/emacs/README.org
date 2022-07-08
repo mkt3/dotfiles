@@ -1027,8 +1027,8 @@
             ("j" "journal" entry
              "** %<%H:%M> %^{title}\n%?"
              :target (file+head+olp "%<%Y-%m>.org"
-                                "#+title: %<%Y-%m>\n"
-                                ("%<%Y-%m-%d>"))
+                                    "#+title: %<%Y-%m>\n"
+                                    ("%<%Y-%m-%d>"))
              :immediate-finish t)
             ))
        :config
@@ -1054,6 +1054,16 @@
              org-roam-ui-follow t
              org-roam-ui-update-on-save t
              org-roam-ui-open-on-start t))
+     (leaf consult-org-roam
+       :ensure t
+       :init
+       (consult-org-roam-mode 1)
+       :custom
+       (consult-org-roam-grep-func . #'consult-ripgrep)
+       :bind
+       ("C-c n e" . consult-org-roam-file-find)
+       ("C-c n b" . consult-org-roam-backlinks)
+       ("C-c n s" . consult-org-roam-search))
      (leaf citar
        :ensure t
        :if (file-exists-p my:f:bib)
