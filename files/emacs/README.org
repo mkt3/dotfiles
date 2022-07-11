@@ -1002,6 +1002,7 @@
        :init
        (setq org-roam-directory my:d:org-roam)
        (setq org-roam-dailies-directory "daily_notes/")
+       (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
        :defer-config
        (org-roam-db-autosync-enable)
        :custom

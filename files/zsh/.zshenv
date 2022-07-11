@@ -127,3 +127,6 @@ fi
 
 # navi
 export NAVI_CONFIG="${HOME}/.config/navi/config.yaml"
+
+# latex
+export PATH="${PATH}:/Library/TeX/texbin"
