@@ -243,7 +243,7 @@
    #+begin_src emacs-lisp
      (leaf *font
        :when window-system
-       :config (add-to-list 'default-frame-alist '(font . "Cica-18")))
+       :config (add-to-list 'default-frame-alist '(font . "Cica-20")))
    #+end_src
 
 * authentication
