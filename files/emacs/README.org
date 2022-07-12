@@ -167,9 +167,11 @@
 
 * color-theme
 ** doracula-theme
-   #+begin_src emacs-lisp :tangle yes
+   #+begin_src emacs-lisp
      (leaf dracula-theme
-       ensure t)
+       :ensure t
+       :config
+       (load-theme 'dracula t))
    #+end_src
 ** modus-theme
    #+begin_src emacs-lisp
@@ -971,7 +973,7 @@
        :init
        (setq org-directory my:d:gtd)
        (setq org-agenda-files (list org-directory))
-
+       (setq org-latex-create-formula-image-program 'dvisvgm)
        :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 1)))
                 (org-startup-indent . nil)
                 (org-hide-leading-stars . t)
