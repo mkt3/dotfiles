@@ -24,6 +24,8 @@ setup_git() {
 
         git config --global url.git@github.com:.insteadOf https://github.com/
 
+        git config --global init.defaultBranch main
+
         mv "${HOME}/.gitconfig" "${git_config_dir}/config"
 
     fi
