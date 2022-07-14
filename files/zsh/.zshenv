@@ -131,5 +131,8 @@ export NAVI_CONFIG="${HOME}/.config/navi/config.yaml"
 # latex
 export PATH="${PATH}:/Library/TeX/texbin"
 
+# GnuPG
+export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+
 # gcp
 export PATH="${PATH}:${HOME}/.local/src/google-cloud-sdk/bin"
