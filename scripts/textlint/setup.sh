@@ -15,7 +15,7 @@ setup_textlint() {
 
     info "Installing textlint's packages"
     installed_package=`npm ls --location=global`
-    package_list=(textlint textlint-plugin-org traverse textlint-rule-preset-ja-technical-writing textlint-rule-preset-ja-spacing textlint-rule-alex textlint-rule-common-misspellings textlint-rule-ginger textlint-rule-write-good textlint-rule-en-max-word-count)
+    package_list=(textlint textlint-plugin-org traverse textlint-rule-preset-ja-technical-writing textlint-rule-preset-ja-spacing textlint-rule-alex textlint-rule-common-misspellings textlint-rule-ginger textlint-rule-write-good)
     for package in ${package_list[@]}; do
         if [ "$(echo ${installed_package} | grep "${package}" )" ] ;then
             info "$package updating..."
