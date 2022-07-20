@@ -731,8 +731,9 @@
    #+begin_src emacs-lisp
      (leaf lsp-grammarly
        :when (string= "osx" (getenv "PLATFORM"))
-       :el-get
-       (emacs-grammarly/lsp-grammarly :type github :checkout "1e2aff23dfaf419bfae66718761a0eddbd6f613e")
+       :ensure t
+       ;; :el-get
+       ;; (emacs-grammarly/lsp-grammarly :type github :checkout "1e2aff23dfaf419bfae66718761a0eddbd6f613e")
        :hook
        ((text-mode-hook org-mode-hook markdown-mode-hook) . (lambda ()
                                                               (require 'lsp-grammarly)
