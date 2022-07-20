@@ -51,6 +51,7 @@ cask "aquaskk"
 cask "karabiner-elements"
 cask "tunnelblick"
 cask "nextcloud"
+cask "visual-studio-code"
 mas "Kindle", id: 405399194
 mas "Spark", id: 1176895641
 mas "Slack", id: 803453959
