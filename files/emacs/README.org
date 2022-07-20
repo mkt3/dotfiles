@@ -43,7 +43,7 @@
        :when (memq window-system '(mac ns x))
        :defun (exec-path-from-shell-initialize)
        :custom ((exec-path-from-shell-arguments . "") ; zshの.zshrcでinteractiveのUIにしているため
-                (exec-path-from-shell-variables . '("PATH" "GOPATH")))
+                (exec-path-from-shell-variables . '("PATH" "GOPATH" "PLATFORM")))
        :config (exec-path-from-shell-initialize))
    #+end_src
 ** custom.el path
@@ -730,6 +730,7 @@
 ** grammarly
    #+begin_src emacs-lisp
      (leaf lsp-grammarly
+       :when (string= "osx" (getenv "PLATFORM"))
        :el-get
        (emacs-grammarly/lsp-grammarly :type github :checkout "1e2aff23dfaf419bfae66718761a0eddbd6f613e")
        :hook
