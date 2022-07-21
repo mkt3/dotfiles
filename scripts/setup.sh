@@ -24,7 +24,6 @@ setup_pre_common() {
     setup_fzf
     setup_tmux
     setup_git
-    # setup_tig
     setup_emacs
     setup_vim
     setup_docker
@@ -34,7 +33,7 @@ setup_pre_common() {
 
 setup_post_common() {
     setup_nodejs
-    setup_textlint
+    # setup_textlint
     setup_python $1
     setup_ghq
     setup_navi
