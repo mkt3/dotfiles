@@ -833,9 +833,9 @@
          (interactive)
          (find-file org-gtd-file))
        :if (file-directory-p my:d:gtd)
-       :hook ((org-mode-hook . (lambda ()
-                                 (setq flycheck-checker 'textlint)
-                                 (flycheck-mode 1))))
+       ;; :hook ((org-mode-hook . (lambda ()
+       ;;                           (setq flycheck-checker 'textlint)
+       ;;                           (flycheck-mode 1))))
        :bind (("C-c c" . org-capture)
               ("C-c a" . org-agenda)
               ("C-c g" . gtd)
@@ -877,6 +877,15 @@
        :config
        (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
                                       "** %^{Brief Description}"))))
+     (leaf org-appear
+       :ensure t
+       :after org
+       :hook (org-mode-hook . org-appear-mode)
+       :custom
+       (org-hide-emphasis-markers . t)
+       (org-appear-inside-latex   . t)
+       (org-appear-autosubmarkers . t)
+       )
    #+end_src
 ** org-pomodoro
    #+begin_src emacs-lisp
@@ -1037,8 +1046,9 @@
        :custom ((markdown-fontify-code-blocks-natively . t))
        :hook ((markdown-mode-hook . (lambda ()
                                       (setq tab-width 2)
-                                      (setq flycheck-checker 'textlint)
-                                      (flycheck-mode 1)))))
+                                      ;; (setq flycheck-checker 'textlint)
+                                      ;; (flycheck-mode 1)
+                                                    ))))
    #+end_src
 ** docker-mode
    #+begin_src emacs-lisp
