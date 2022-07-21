@@ -868,24 +868,25 @@
                                             ("WAITING" :foreground "orange"
                                              :weight bold)
                                             ("CANCELLED" :foreground "green"
-                                             :weight bold)))))
-     (leaf org-capture
+                                             :weight bold))))
+       :config
+       (leaf org-capture
        :leaf-defer t
-       :after org
        :if (file-directory-p my:d:gtd)
        :commands (org-capture)
        :config
        (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
                                       "** %^{Brief Description}"))))
-     (leaf org-appear
-       :ensure t
-       :after org
-       :hook (org-mode-hook . org-appear-mode)
-       :custom
-       (org-hide-emphasis-markers . t)
-       (org-appear-inside-latex   . t)
-       (org-appear-autosubmarkers . t)
+       (leaf org-appear
+         :ensure t
+         :hook (org-mode-hook . org-appear-mode)
+         :custom
+         (org-hide-emphasis-markers . t)
+         (org-appear-inside-latex   . t)
+         (org-appear-autosubmarkers . t)
+         )
        )
+
    #+end_src
 ** org-pomodoro
    #+begin_src emacs-lisp
