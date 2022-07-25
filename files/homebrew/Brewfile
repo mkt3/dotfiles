@@ -35,6 +35,7 @@ brew "emacs-plus@28", args: ["with-native-comp"]
 tap "koekeishiya/formulae"
 brew "yabai"
 brew "skhd"
+brew "monitorcontrol"
 cask "alfred"
 cask "discord"
 cask "notion"
