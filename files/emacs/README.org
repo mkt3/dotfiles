@@ -870,6 +870,13 @@
                                             ("CANCELLED" :foreground "green"
                                              :weight bold))))
        :config
+       (add-hook 'org-mode-hook (lambda ()
+                                  (setq-local time-stamp-active t
+                                              time-stamp-line-limit 18
+                                              time-stamp-start "^#\\+last_modified: [ \t]*"
+                                              time-stamp-end "$"
+                                              time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
+                                  (add-hook 'before-save-hook 'time-stamp nil 'local)))
        (leaf org-capture
        :leaf-defer t
        :if (file-directory-p my:d:gtd)
@@ -927,17 +934,17 @@
        (org-roam-capture-templates
         . '(("s" "seed" plain "%?"
              :if-new (file+head "seed/${slug}.org"
-                                "#+title: ${title}\n")
+                                "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n")
              :immediate-finish t
              :unnarrowed t)
             ("r" "reference" plain "%?"
              :if-new
-             (file+head "reference/${slug}.org" "#+title: ${title}\n")
+             (file+head "reference/${slug}.org" "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n")
              :immediate-finish t
              :unnarrowed t)
             ("e" "evergreen" plain "%?"
              :if-new
-             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+filetags: :envergreen:\n")
+             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n#+filetags: :envergreen:\n")
              :immediate-finish t
              :unnarrowed t)))
        (org-roam-dailies-capture-templates
