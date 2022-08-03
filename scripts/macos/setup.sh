@@ -12,4 +12,7 @@ setup_macos() {
 
     info "Changing macos config"
     bash -l "${CONFIGS_DIR}/macos/setup_macOS.sh"
+
+    info "Creating symlink for samba"
+    sudo ln -sfn "${CONFIGS_DIR}/macos/nsmb.conf" /etc/nsmb.conf
 }
