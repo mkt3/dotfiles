@@ -158,6 +158,13 @@
        :ensure t
        :custom (gcmh-verbose . t)
        :config (gcmh-mode 1))
+     (leaf recentf
+       :ensure t
+       :custom
+       (recentf-exclude . '(".recentf"
+                            "^/tmp\\.*"
+                            "bookmarks"
+                            "\\.*.calendar.ics")))
    #+end_src
 ** lisp/vc
    #+begin_src emacs-lisp
