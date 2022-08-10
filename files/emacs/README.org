@@ -892,8 +892,28 @@
          (org-appear-inside-latex   . t)
          (org-appear-autosubmarkers . t)
          )
-       )
+       (leaf org-mac-iCal
+         :when (string= "osx" (getenv "PLATFORM"))
+         :el-get
+         (mkt3/org-mac-iCal :type github)
+         :config
+         (setq org-agenda-include-diary t)
+         (setq diary-file (expand-file-name "calendar" my:d:gtd))
+         (add-hook 'org-agenda-cleanup-fancy-diary-hook
+                 (lambda ()
+                   (goto-char (point-min))
+                   (save-excursion
+                     (while (re-search-forward "^[a-z]" nil t)
+                       (goto-char (match-beginning 0))
+                       (insert "0:00-24:00 ")))
+                   (while (re-search-forward "^ [a-z]" nil t)
+                     (goto-char (match-beginning 0))
+                     (save-excursion
+                       (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
+                     (insert (match-string 0)))))
 
+         )
+       )
    #+end_src
 ** org-pomodoro
    #+begin_src emacs-lisp
