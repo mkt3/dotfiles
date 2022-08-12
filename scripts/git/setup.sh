@@ -8,25 +8,24 @@ setup_git() {
     local git_config_dir="${XDG_CONFIG_HOME}/git"
 
     if [ -d $git_config_dir ]; then
-        info "Already exists... Skipping."
+        info "Already exists config file."
     else
-        info "Creating symlink for Git"
+        info "Creating git config file"
         mkdir -p $git_config_dir
-        ln -sfn "${git_file_dir}/ignore" "${git_config_dir}/"
-
-        info "Setting up personal info."
-        read -rp "Name:" name
-        read -rp "Email:" email
-
-        git config --global user.name $name
-        git config --global user.email $email
-        git config --global pull.rebase false
-
-        git config --global url.git@github.com:.insteadOf https://github.com/
-
-        git config --global init.defaultBranch main
-
-        mv "${HOME}/.gitconfig" "${git_config_dir}/config"
-
+        touch "${git_config_dir}/config"
     fi
+
+    ln -sfn "${git_file_dir}/ignore" "${git_config_dir}/"
+
+    info "Setting up git"
+    git config --global pull.rebase false
+
+    git config --global url.git@github.com:.insteadOf https://github.com/
+
+    git config --global init.defaultBranch main
+
+    # delta
+    git config --global delta.navigate true 
+    git config --global delta.light false 
+    git config --global delta.line-numbers true 
 }

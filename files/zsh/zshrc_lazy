@@ -130,3 +130,6 @@ _navi_widget() {
 zle -N _navi_widget
 
 (( ${+commands[navi]} )) &&  bindkey '^s' _navi_widget
+
+# for delta bat completion
+compdef _gnu_generic bat delta
