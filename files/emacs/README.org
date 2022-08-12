@@ -857,6 +857,7 @@
        (setq org-agenda-files (list org-directory))
        (setq org-latex-create-formula-image-program 'dvisvgm)
        :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 1)))
+                (org-agenda-current-time-string . "now ============")
                 (org-startup-indent . nil)
                 (org-hide-leading-stars . t)
                 (org-return-follows-link . t)
