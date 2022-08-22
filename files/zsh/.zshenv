@@ -41,6 +41,9 @@ export XDG_STATE_HOME="$HOME/.local/state"
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
 
+# personal env
+[ -d "${HOME}/Nextcloud/personal_config/env" ] && . "${HOME}/Nextcloud/personal_config/env/zshenv"
+
 
 if [[ "$PLATFORM" == 'osx' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"

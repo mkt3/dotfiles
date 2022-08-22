@@ -4,14 +4,6 @@
 #+startup: nohideblocks
 
 * Initialize
-** Const
-   #+begin_src emacs-lisp
-     (defconst my:f:bib (expand-file-name "GoogleDrive/paperpile.bib" (getenv "HOME")))
-     (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
-     (defconst my:d:gtd (expand-file-name "gtd" my:d:nextcloud))
-     (defconst my:d:org-roam (expand-file-name "org-roam" my:d:nextcloud))
-     (defconst my:d:password-store (expand-file-name "password-store" my:d:nextcloud))
-   #+end_src
 ** leaf
    #+begin_src emacs-lisp
      (eval-and-compile
@@ -43,8 +35,17 @@
        :when (memq window-system '(mac ns x))
        :defun (exec-path-from-shell-initialize)
        :custom ((exec-path-from-shell-arguments . "") ; zshの.zshrcでinteractiveのUIにしているため
-                (exec-path-from-shell-variables . '("PATH" "GOPATH" "PLATFORM")))
+                (exec-path-from-shell-variables . '("PATH" "GOPATH" "PLATFORM" "NAME" "ORG_HUGO")))
        :config (exec-path-from-shell-initialize))
+   #+end_src
+** Const
+   #+begin_src emacs-lisp
+     (defconst my:f:bib (expand-file-name "GoogleDrive/paperpile.bib" (getenv "HOME")))
+     (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
+     (defconst my:d:gtd (expand-file-name "gtd" my:d:nextcloud))
+     (defconst my:d:org-roam (expand-file-name "org-roam" my:d:nextcloud))
+     (defconst my:d:org-hugo (getenv "ORG_HUGO"))
+     (defconst my:d:password-store (expand-file-name "password-store" my:d:nextcloud))
    #+end_src
 ** custom.el path
    #+begin_src emacs-lisp
@@ -91,7 +92,9 @@
                  (read-process-output-max         . ,(* 1024 1024)))
        :config
        (defalias 'yes-or-no-p 'y-or-n-p)
-       (keyboard-translate ?\C-h ?\C-?))
+       (keyboard-translate ?\C-h ?\C-?)
+       (setq user-full-name (getenv "NAME"))
+     )
    #+end_src
 
 ** default keybind
@@ -964,17 +967,17 @@
        (org-roam-capture-templates
         . '(("s" "seed" plain "%?"
              :if-new (file+head "seed/${slug}.org"
-                                "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n")
+                                "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_draft: true\n")
              :immediate-finish t
              :unnarrowed t)
             ("r" "reference" plain "%?"
              :if-new
-             (file+head "reference/${slug}.org" "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n")
+             (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_draft: true\n")
              :immediate-finish t
              :unnarrowed t)
             ("e" "evergreen" plain "%?"
              :if-new
-             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n#+filetags: :envergreen:\n")
+             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_draft: true\n#+filetags: :envergreen:\n")
              :immediate-finish t
              :unnarrowed t)))
        (org-roam-dailies-capture-templates
@@ -1042,6 +1045,18 @@
                               :info (list :citekey (car keys-entries))
                               :node (org-roam-node-create :title title)
                               :props '(:finalize find-file))))
+       )
+   #+end_src
+** ox-hugo
+   #+begin_src emacs-lisp
+     (leaf ox-hugo
+       :ensure t
+       :after org
+       :if (and (file-directory-p my:d:org-roam)
+                (file-directory-p my:d:org-hugo))
+       :custom
+       (org-hugo-base-dir . my:d:org-hugo)
+       (org-hugo-default-section-directory . "notes")
        )
    #+end_src
 ** web-mode
