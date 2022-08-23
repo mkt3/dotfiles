@@ -967,17 +967,17 @@
        (org-roam-capture-templates
         . '(("s" "seed" plain "%?"
              :if-new (file+head "seed/${slug}.org"
-                                "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_draft: true\n")
+                                "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
              :immediate-finish t
              :unnarrowed t)
             ("r" "reference" plain "%?"
              :if-new
-             (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_draft: true\n")
+             (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
              :immediate-finish t
              :unnarrowed t)
             ("e" "evergreen" plain "%?"
              :if-new
-             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_draft: true\n#+filetags: :envergreen:\n")
+             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n#+filetags: :envergreen:\n")
              :immediate-finish t
              :unnarrowed t)))
        (org-roam-dailies-capture-templates
@@ -1056,8 +1056,7 @@
                 (file-directory-p my:d:org-hugo))
        :custom
        (org-hugo-base-dir . my:d:org-hugo)
-       (org-hugo-default-section-directory . "notes")
-       )
+       (org-hugo-default-section-directory . "notes"))
    #+end_src
 ** web-mode
    #+begin_src emacs-lisp
