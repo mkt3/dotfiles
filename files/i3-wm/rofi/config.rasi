@@ -1,0 +1,6 @@
+configuration {
+  modes: "window,drun,combi";
+  combi-modes: [window,drun];
+}
+
+@theme "solarized"
