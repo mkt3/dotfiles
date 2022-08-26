@@ -197,6 +197,15 @@
      ;;   (load-theme 'modus-vivendi))
    #+end_src
 * UI
+** x
+   #+begin_src emacs-lisp
+     (leaf *x
+       :when (eq 'x window-system)
+       :custom (x-super-keysym . 'meta)
+  
+       )
+
+   #+end_src
 ** mac
    #+begin_src emacs-lisp
      (leaf mac
