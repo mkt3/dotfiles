@@ -44,6 +44,16 @@ setup_arch() {
     title "Setting up Archlinux"
     setup_pre_common
     setup_pacman
+
+    if [ $1 = "gui" ]; then
+        setup_font
+        setup_i3-wm
+        setup_picom
+        setup_wezterm
+        setup_xremap
+        setup_skk
+    fi
+
     setup_post_common arch
 }
 
@@ -106,7 +116,11 @@ case $os in
         dist=$(cat /etc/issue | tr '[A-Z]' '[a-z]')
         case $dist in
             arch*)
-                setup_arch
+                if systemctl get-default | grep 'graphical.target' > /dev/null 2>&1; then
+                    setup_arch gui
+                else
+                    setup_arch cui
+                fi
                 ;;
             ubuntu*)
                 if systemctl get-default | grep 'graphical.target' > /dev/null 2>&1; then
