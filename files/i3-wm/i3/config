@@ -220,7 +220,7 @@ exec --no-startup-id nextcloud
 for_window [class="enpass"] floating enable
 exec --no-startup-id enpass
 assign [class="Slack"] workspace 2
-exec --no-startup-id Slack
+exec --no-startup-id slack
 assign [class="google-chrome-stable"] workspace 1
 exec --no-startup-id google-chrome-stable
 assign [class="wezterm"] workspace 1
