@@ -43,7 +43,7 @@ setup_post_common() {
 setup_arch() {
     title "Setting up Archlinux"
     setup_pre_common
-    setup_pacman
+    setup_pacman $1
 
     if [ $1 = "gui" ]; then
         setup_font

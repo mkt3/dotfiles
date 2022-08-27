@@ -24,21 +24,43 @@ install_aur_package() {
 setup_pacman() {
     title "Setting up pacman"
 
-    package_list=(python \
-                  python-pip \
-                  python-pipx \
-                  lazygit \
-                  zsh \
-                  tmux \
-                  go \
-                  duf \
-                  htop \
-                  iotop \
-                  neofetch \
-                  rsync
-                      )
+    cui_pacman_package_list=(python \
+                          python-pip \
+                          python-pipx \
+                          lazygit \
+                          zsh \
+                          tmux \
+                          go \
+                          duf \
+                          htop \
+                          iotop \
+                          neofetch \
+                          rsync
+                     )
 
-    for package in ${package_list[@]}; do
+    gui_pacman_package_list=(xorg-server \
+                          lightdm \
+                          lightdm-gtk-greeter \
+                          emacs-nativecomp \
+                          texlive-core \
+                          wezterm \
+                          picom \
+                          i3-gaps \
+                          i3blocks \
+                          rofi
+                            )
+    gui_aur_package_list=(xremap-x11-bin)
+
+    for package in ${cui_pacman_package_list[@]}; do
         install_pacman_package $package
     done
+
+    if [ $1 = "gui" ]; then
+        for package in ${gui_pacman_package_list[@]}; do
+            install_pacman_package $package
+        done
+        for package in ${gui_aur_package_list[@]}; do
+            install_aur_package $package
+        done
+    fi
 }
