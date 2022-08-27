@@ -214,11 +214,11 @@ exec --no-startup-id xset r rate 200 25
 exec --no-startup-id nm-applet
 exec --no-startup-id fcitx5
 exec --no-startup-id volumeicon
-exec --no-startup-id picom
+exec --no-startup-id picom --config ~/.config/picom/picom.conf
 for_window [class="nextcloud"] floating enable
 exec --no-startup-id nextcloud
 for_window [class="enpass"] floating enable
-exec --no-startup-id enpass
+exec --no-startup-id enpass -minimize
 assign [class="Slack"] workspace 2
 exec --no-startup-id slack
 assign [class="google-chrome-stable"] workspace 1
