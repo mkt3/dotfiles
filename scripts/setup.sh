@@ -47,6 +47,7 @@ setup_arch() {
 
     if [ $1 = "gui" ]; then
         setup_font
+        setup_xwindow
         setup_i3-wm
         setup_picom
         setup_wezterm
