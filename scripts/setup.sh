@@ -50,6 +50,7 @@ setup_arch() {
         setup_xwindow
         setup_i3-wm
         setup_picom
+        setup_dunst
         setup_wezterm
         setup_xremap
         setup_skk

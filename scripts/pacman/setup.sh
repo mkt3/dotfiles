@@ -45,6 +45,7 @@ setup_pacman() {
                           texlive-core \
                           wezterm \
                           picom \
+                          dunst \
                           i3-gaps \
                           i3blocks \
                           rofi
