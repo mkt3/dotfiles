@@ -1,4 +1,7 @@
 modmap:
+  - name: Global
+    remap:
+      CapsLock: Ctrl_L
   - name: wezterm
     application:
       only: wezterm
@@ -6,10 +9,10 @@ modmap:
       Super_L: Alt_L
 
 keymap:
-  - name: Global
-    remap:
+  # - name: Global
+    # remap:
       # Underscore without Shift
-      RO: Shift-RO
+      # RO: Shift-RO
 
       # SKK hack for Chrome
       #C-j: C-m

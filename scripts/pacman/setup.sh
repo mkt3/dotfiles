@@ -3,20 +3,20 @@
 set -eu
 install_pacman_package() {
     package=$1
-    if [ "$(sudo pacman -Qe ${package} | grep "^${package} " )" ] ;then
-        info "${package} already installed"
+    if [ "$(sudo pacman -Qs ${package} | grep "^local/${package} " )" ] ;then
+        info "${package}(pacman) already installed"
     else
-        info "Installing ${package}"
+        info "Installing ${package}(pacman)"
         sudo pacman -S $package --noconfirm
      fi
 }
 
 install_aur_package() {
     package=$1
-    if [ "$(yay -Qe ${package} | grep "^${package} " )" ] ;then
-        info "${package} already installed"
+    if [ "$(yay -Qs ${package} | grep "^local/${package} " )" ] ;then
+        info "${package}(aur) already installed"
     else
-        info "Installing ${package}"
+        info "Installing ${package}(aur)"
         yay -S $package --noconfirm
      fi
 }
@@ -35,12 +35,22 @@ setup_pacman() {
                           htop \
                           iotop \
                           neofetch \
+                          zip \
+                          unzip \
                           rsync
                      )
 
     gui_pacman_package_list=(xorg-server \
                           lightdm \
                           lightdm-gtk-greeter \
+                          light-locker \
+                          dex \
+                          network-manager-applet \
+                          networkmanager-openvpn \
+                          thunar \
+                          gvfs \
+                          gvfs-smb \
+                          sshfs \
                           emacs-nativecomp \
                           texlive-core \
                           wezterm \
@@ -48,9 +58,17 @@ setup_pacman() {
                           dunst \
                           i3-gaps \
                           i3blocks \
-                          rofi
+                          rofi \
+                          nextcloud-client \
+                          qtkeychain-qt5 \
+                          libsecret \
+                          gnome-keyring \
+                          volumeicon
                             )
-    gui_aur_package_list=(xremap-x11-bin)
+    gui_aur_package_list=(xremap-x11-bin \
+                              enpass-bin \
+                              autotiling
+                         )
 
     for package in ${cui_pacman_package_list[@]}; do
         install_pacman_package $package
