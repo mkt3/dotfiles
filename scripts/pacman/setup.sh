@@ -63,7 +63,8 @@ setup_pacman() {
                           qtkeychain-qt5 \
                           libsecret \
                           gnome-keyring \
-                          volumeicon
+                          volumeicon \
+                          autorandr
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \

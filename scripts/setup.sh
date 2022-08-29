@@ -49,6 +49,7 @@ setup_arch() {
         setup_font
         setup_xwindow
         setup_i3-wm
+        setup_autorandr
         setup_picom
         setup_dunst
         setup_wezterm

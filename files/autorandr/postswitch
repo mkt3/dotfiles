@@ -1,0 +1,4 @@
+#!/bin/bash
+
+feh --no-fehbg --bg-fill '/usr/share/backgrounds/archlinux/small.png'
+notify-send -i display "Display profile" "$AUTORANDR_CURRENT_PROFILE"
