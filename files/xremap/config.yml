@@ -115,6 +115,8 @@ keymap:
       only: Google-chrome
     remap:
       Super-s: C-f
+      C-g: Esc
+      C-s: C-g
 
   - name: Terminal
     application:
