@@ -68,7 +68,8 @@ setup_pacman() {
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \
-                              autotiling
+                              autotiling \
+                              zoom
                          )
 
     for package in ${cui_pacman_package_list[@]}; do
