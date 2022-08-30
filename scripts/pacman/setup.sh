@@ -64,7 +64,8 @@ setup_pacman() {
                           libsecret \
                           gnome-keyring \
                           volumeicon \
-                          autorandr
+                          autorandr \
+                          discord
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \
