@@ -146,6 +146,7 @@ keymap:
       Super-j: M-down
       C-M-k: Shift-Alt-up
       C-M-j: Shift-Alt-down
+      C-Super-m: C-Enter
 
       Super-1: C-1
       Super-2: C-2
