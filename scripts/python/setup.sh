@@ -49,11 +49,10 @@ setup_poetry() {
     local poetry_path="${HOME}/.local/bin/poetry"
     if [ ! -L $poetry_path ]; then
         info "Downloading poetry"
-        pipx install git+https://github.com/python-poetry/poetry.git
+        pipx install poetry
     else
         info "Updateing poetry"
-        ## Degreasing to stable version after update.
-        # $poetry_path self update || echo 'no update'
+        $poetry_path self update || echo 'No update'
     fi
 
     if  bash -lc "~/.local/bin/poetry config --list | grep 'virtualenvs.in-project = true' > /dev/null"; then
