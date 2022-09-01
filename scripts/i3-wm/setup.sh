@@ -15,6 +15,6 @@ setup_i3-wm() {
     info "Creating symlink for rofi"
     ln -sfn "${i3wm_file_dir}/rofi" "${XDG_CONFIG_HOME}"
 
-    info "Creating symlink for blight.sh"
-    ln -sfn "${i3wm_file_dir}/blight.sh" "${HOME}/.local/bin/"
+    info "Creating symlink for backlight.sh"
+    ln -sfn "${i3wm_file_dir}/backlight.sh" "${HOME}/.local/bin/"
 }
