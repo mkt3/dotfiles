@@ -82,11 +82,11 @@ mode $layout {
      bindsym $mod+v mode "default"
      bindsym Control+g mode "default"
 
-	   bindsym h layout splith; mode "default"
-	   bindsym v layout splitv; mode "default"
-	   bindsym s layout stacking; mode "default"
-	   bindsym t layout tabbed; mode "default"
-	   bindsym f floating toggle; mode "default"
+     bindsym h layout splith; mode "default"
+     bindsym v layout splitv; mode "default"
+     bindsym s layout stacking; mode "default"
+     bindsym t layout tabbed; mode "default"
+     bindsym f floating toggle; mode "default"
      bindsym x layout toggle stacking tabbed splith
 }
 
@@ -189,11 +189,6 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-    tray_output primary
-    position top
-    status_command i3blocks
-}
 
 # Gaps
 gaps top 2
@@ -203,13 +198,12 @@ gaps left 2
 gaps inner 2
 
 # exec --no-startup-id xrandr --output HDMI-1 --mode 2880x1620
-exec --no-startup-id "feh --no-fehbg --bg-fill '/usr/share/backgrounds/archlinux/small.png'"
+exec --no-startup-id "feh --no-fehbg --bg-fill ~/Nextcloud/Picture/wallpaper/forest_gruvbox.jpg"
 exec --no-startup-id "light-locker --lock-on-suspend"
 exec --no-startup-id xremap ~/.config/xremap/config.yml
 exec --no-startup-id xset r rate 200 25
 exec --no-startup-id nm-applet
 exec --no-startup-id fcitx5
-exec --no-startup-id volumeicon
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
 for_window [class="nextcloud"] floating enable
 exec --no-startup-id nextcloud
@@ -226,3 +220,39 @@ exec --no-startup-id Emacs
 
 # auto tiling
 exec_always --no-startup-id autotiling
+
+# color
+set $bg #282828
+set $red #cc241d
+set $green #98971a
+set $yellow #d79921
+set $blue #458588
+set $purple #b16286
+set $aqua #689d68
+set $gray #a89984
+set $darkgray #1d2021
+set $lightgray #bdae93
+
+bar {
+    tray_output primary
+    position top
+    status_command i3blocks
+    colors {
+        # bar background color
+        background $bg
+        # text color used for blocks that do not have a color specified.
+        statusline $lightgray
+        # workspaces section            
+        #                    border  backgr. text
+        focused_workspace    $lightgray $lightgray $bg
+        inactive_workspace   $darkgray $darkgray $lightgray
+        active_workspace     $darkgray $darkgray $lightgray
+        urgent_workspace     $red $red $bg
+    }
+}
+
+# class                 border|backgr|text|indicator|child_border
+client.focused          $lightgray $lightgray $bg $purple $darkgray
+client.focused_inactive $darkgray $darkgray $lightgray $purple $darkgray
+client.unfocused        $darkgray $darkgray $lightgray $purple $darkgray
+client.urgent           $red $red $white $red $red

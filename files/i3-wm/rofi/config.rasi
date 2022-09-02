@@ -3,4 +3,4 @@ configuration {
   combi-modes: [window,drun];
 }
 
-@theme "solarized"
+@theme "/usr/share/rofi/themes/gruvbox-dark.rasi"

@@ -176,12 +176,19 @@
    #+end_src
 
 * color-theme
-** doracula-theme
+** gruvbox
    #+begin_src emacs-lisp
-     (leaf dracula-theme
+     (leaf gruvbox-theme
        :ensure t
        :config
-       (load-theme 'dracula t))
+       (load-theme 'gruvbox-dark-medium t))
+   #+end_src
+** doracula-theme
+   #+begin_src emacs-lisp
+     ;; (leaf dracula-theme
+     ;;   :ensure t
+     ;;   :config
+     ;;   (load-theme 'dracula t))
    #+end_src
 ** modus-theme
    #+begin_src emacs-lisp
