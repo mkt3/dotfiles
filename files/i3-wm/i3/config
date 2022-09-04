@@ -122,8 +122,8 @@ set $ws_sub "9: sub"
 # switch to workspace
 #bindsym $mod+1 workspace number $ws1
 bindsym $mod+1 workspace number $ws_main
-bindsym $mod+2 workspace number $ws_contact
-bindsym $mod+3 workspace number $ws3
+bindsym $mod+2 workspace number $ws_chat
+bindsym $mod+3 workspace number $ws_mail
 bindsym $mod+4 workspace number $ws4
 bindsym $mod+5 workspace number $ws5
 bindsym $mod+6 workspace number $ws6
@@ -134,8 +134,8 @@ bindsym $mod+0 workspace number $ws_media
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws_main
-bindsym $mod+Shift+2 move container to workspace number $ws_contact
-bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+2 move container to workspace number $ws_chatt
+bindsym $mod+Shift+3 move container to workspace number $ws_mail
 bindsym $mod+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
 bindsym $mod+Shift+6 move container to workspace number $ws6
@@ -150,9 +150,10 @@ bindsym Mod4+Next workspace next
 
 
 workspace $ws_main output primary
-workspace $ws_contact output primary
+workspace $ws_chat output primary
+workspace $ws_mail output primary
 workspace $ws_media output eDP-1
-workspace $ws_su output eDP-1
+workspace $ws_sub output eDP-1
 
 # screen lock
 bindsym $mod+Shift+x exec --no-startup-id light-locker-command -l
@@ -213,14 +214,20 @@ for_window [class="nextcloud"] floating enable
 exec --no-startup-id nextcloud
 for_window [class="enpass"] floating enable
 exec --no-startup-id enpass -minimize
-assign [class="Slack"] workspace $ws_contact
+assign [class="Slack"] workspace $ws_chat
 exec --no-startup-id slack
-assign [class="google-chrome-stable"] workspace $ws_main
+assign [class="Google-chrome"] workspace $ws_main
 exec --no-startup-id google-chrome-stable
 assign [class="wezterm"] workspace $ws_main
 exec --no-startup-id wezterm
 assign [class="Emacs"] workspace $ws_main
 exec --no-startup-id emacs
+assign [class="thunderbird"] workspace $ws_mail
+exec --no-startup-id tunderbird
+
+
+for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
+for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws_media
 
 # auto tiling
 exec_always --no-startup-id autotiling
