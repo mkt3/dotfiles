@@ -115,7 +115,8 @@ set $ws9 "9"
 set $ws10 "10"
 
 set $ws_main "1: main"
-set $ws_contact "2: contact"
+set $ws_chat "2: chat"
+set $ws_mail "3: mail"
 set $ws_media "10: media"
 set $ws_sub "9: sub"
 
