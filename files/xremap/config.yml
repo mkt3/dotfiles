@@ -102,14 +102,6 @@ keymap:
       C-d: delete
       Super-d: C-delete
 
-  - name: Tab changes + Alt-Enter simulation
-    application:
-      not: [Gnome-terminal, Nocturn]
-    remap:
-      Super-o: C-Shift-tab
-      Super-p: C-tab
-      Super-Enter: M-Enter
-
   - name: Google Search
     application:
       only: Google-chrome
@@ -117,33 +109,13 @@ keymap:
       Super-s: C-f
       C-g: Esc
       C-s: C-g
-
-  - name: Terminal
-    application:
-      only: Gnome-terminal
-    remap:
-      Super-o: M-o
-      Super-p: M-p
-      Super-j: M-j
-      Super-k: M-k
-      Super-r: M-r
-      Super-b: M-b
-      Super-f: M-f
-      Super-d: M-d
-      Super-i: M-i
-      Super-w: M-w
-      Super-w: M-w
-      Super-t: M-t
-      Super-c: M-c
-      Super-v: M-v
+      Super-Enter: C-Enter
 
   - name: Slack
     application:
       only: Slack
     remap:
-      Super-n: C-k
-      Super-k: M-up
-      Super-j: M-down
+      Super-k: C-k
       C-M-k: Shift-Alt-up
       C-M-j: Shift-Alt-down
       C-Super-m: C-Enter

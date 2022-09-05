@@ -91,6 +91,7 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+Return fullscreen toggle
+popup_during_fullscreen smart
 
 # change focus between tiling / floating windows
 # bindsym $mod+space focus mode_toggle
@@ -225,7 +226,7 @@ assign [class="Emacs"] workspace $ws_main
 exec --no-startup-id emacs
 assign [class="thunderbird"] workspace $ws_mail
 exec --no-startup-id tunderbird
-
+assign [class="zoom"] workspace $ws_sub
 
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
 for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws_media
