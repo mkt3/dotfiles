@@ -1,6 +1,8 @@
 configuration {
-  modes: "window,drun,combi";
-  combi-modes: [window,drun];
+  modes: "window,drun,combibookmark:~/.config/rofi/scripts/bookmark.sh";
+  combi-modes: [window,drun,bookmark];
+  side-bar-mode: true;
+  width: 500;
 }
 
 @theme "/usr/share/rofi/themes/gruvbox-dark.rasi"
