@@ -225,7 +225,7 @@ exec --no-startup-id wezterm
 assign [class="Emacs"] workspace $ws_main
 exec --no-startup-id emacs
 assign [class="thunderbird"] workspace $ws_mail
-exec --no-startup-id tunderbird
+exec --no-startup-id thunderbird
 assign [class="zoom"] workspace $ws_sub
 
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
