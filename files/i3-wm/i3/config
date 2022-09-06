@@ -17,13 +17,6 @@ font pango:monospace 8
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -44,7 +37,7 @@ bindsym $super+q kill
 bindsym $super+Tab exec --no-startup-id "rofi -show window"
 
 # start rofi (a program launcher)
-bindsym $super+space exec --no-startup-id "rofi -show combi -dpi 192" 
+bindsym $super+space exec --no-startup-id "rofi -show combi" 
 
 # mouse config
 focus_follows_mouse no
@@ -98,6 +91,7 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+Return fullscreen toggle
+popup_during_fullscreen smart
 
 # change focus between tiling / floating windows
 # bindsym $mod+space focus mode_toggle
@@ -122,32 +116,34 @@ set $ws9 "9"
 set $ws10 "10"
 
 set $ws_main "1: main"
-set $ws_contact "2: contact"
+set $ws_chat "2: chat"
+set $ws_mail "3: mail"
 set $ws_media "10: media"
+set $ws_sub "9: sub"
 
 # switch to workspace
 #bindsym $mod+1 workspace number $ws1
 bindsym $mod+1 workspace number $ws_main
-bindsym $mod+2 workspace number $ws_contact
-bindsym $mod+3 workspace number $ws3
+bindsym $mod+2 workspace number $ws_chat
+bindsym $mod+3 workspace number $ws_mail
 bindsym $mod+4 workspace number $ws4
 bindsym $mod+5 workspace number $ws5
 bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
+bindsym $mod+9 workspace number $ws_sub
 bindsym $mod+0 workspace number $ws_media
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws_main
-bindsym $mod+Shift+2 move container to workspace number $ws_contact
-bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+2 move container to workspace number $ws_chatt
+bindsym $mod+Shift+3 move container to workspace number $ws_mail
 bindsym $mod+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
 bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+9 move container to workspace number $ws_sub
 bindsym $mod+Shift+0 move container to workspace number $ws_media
 
 # move to worspace
@@ -156,8 +152,10 @@ bindsym Mod4+Next workspace next
 
 
 workspace $ws_main output primary
-workspace $ws_contact output primary
+workspace $ws_chat output primary
+workspace $ws_mail output primary
 workspace $ws_media output eDP-1
+workspace $ws_sub output eDP-1
 
 # screen lock
 bindsym $mod+Shift+x exec --no-startup-id light-locker-command -l
@@ -207,7 +205,6 @@ gaps right 2
 gaps left 2
 gaps inner 2
 
-# exec --no-startup-id xrandr --output HDMI-1 --mode 2880x1620
 exec --no-startup-id "feh --no-fehbg --bg-fill ~/Nextcloud/Picture/wallpaper/forest_gruvbox.jpg"
 exec --no-startup-id "light-locker --lock-on-suspend"
 exec --no-startup-id xremap ~/.config/xremap/config.yml
@@ -219,14 +216,20 @@ for_window [class="nextcloud"] floating enable
 exec --no-startup-id nextcloud
 for_window [class="enpass"] floating enable
 exec --no-startup-id enpass -minimize
-assign [class="Slack"] workspace $ws_contact
+assign [class="Slack"] workspace $ws_chat
 exec --no-startup-id slack
-assign [class="google-chrome-stable"] workspace $ws_main
+assign [class="Google-chrome"] workspace $ws_main
 exec --no-startup-id google-chrome-stable
 assign [class="wezterm"] workspace $ws_main
 exec --no-startup-id wezterm
 assign [class="Emacs"] workspace $ws_main
-exec --no-startup-id Emacs
+exec --no-startup-id emacs
+assign [class="thunderbird"] workspace $ws_mail
+exec --no-startup-id tunderbird
+assign [class="zoom"] workspace $ws_sub
+
+for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
+for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws_media
 
 # auto tiling
 exec_always --no-startup-id autotiling
