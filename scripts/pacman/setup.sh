@@ -73,7 +73,8 @@ setup_pacman() {
                               enpass-bin \
                               autotiling \
                               zoom \
-                              google-chrome
+                              google-chrome \
+                              anki-official-binary-bundle
                          )
 
     for package in ${cui_pacman_package_list[@]}; do
