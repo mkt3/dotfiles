@@ -37,7 +37,8 @@ setup_pacman() {
                           neofetch \
                           zip \
                           unzip \
-                          rsync
+                          rsync \
+                          pacman-contrib
                      )
 
     gui_pacman_package_list=(xorg-server \
@@ -67,7 +68,9 @@ setup_pacman() {
                           autorandr \
                           discord \
                           firefox \
-                          thunderbird
+                          thunderbird \
+                          acpi \
+                          sysstat
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \
