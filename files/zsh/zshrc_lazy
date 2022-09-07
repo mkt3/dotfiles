@@ -133,3 +133,12 @@ zle -N _navi_widget
 
 # for delta bat completion
 compdef _gnu_generic bat delta
+
+
+function t()
+{
+    cd ./$(git rev-parse --show-cdup)
+    if [ $# = 1 ]; then
+        cd $1
+    fi
+}
