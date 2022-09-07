@@ -138,4 +138,12 @@ export PATH="${PATH}:/Library/TeX/texbin"
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 
 # gcp
+export CLOUDSDK_PYTHON=python3.8
 export PATH="${PATH}:${HOME}/.local/src/google-cloud-sdk/bin"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc" ]; then . "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc"; fi
+
