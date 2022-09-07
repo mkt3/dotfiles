@@ -95,7 +95,7 @@ export JUPYTER_DATA_DIR="${XDG_DATA_HOME}/jupyter"
 # RUSTUP & Cargo path
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
-[ -d "$CARGO_HOME" ] && \. "$CARGO_HOME/env"
+[ -d "$CARGO_HOME" ] && . "$CARGO_HOME/env"
 
 # nvm path
 export NVM_DIR="$XDG_CONFIG_HOME/nvm"
@@ -139,11 +139,14 @@ export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 
 # gcp
 export CLOUDSDK_PYTHON=python3.8
-export PATH="${PATH}:${HOME}/.local/src/google-cloud-sdk/bin"
+if [[ $SETUP != "TRUE" ]];then
+   [ -f "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc"
+   [ -f "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc"
+fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc" ]; then . "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc"; fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc"; fi
+# zoom
+export SSB_HOME="${XDG_DATA_HOME}/zoom"
 
+# gtk2
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
