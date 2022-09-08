@@ -7,6 +7,11 @@ BEGIN {
     init_color=ENVIRON["init_color"]
     on_color=ENVIRON["on_color"]
 }
+$3=="wireguard" {
+    name=$1
+    status="ON"
+    color=on_color
+}
 $3=="vpn" {
     name=$1
     status="INIT"
