@@ -96,6 +96,9 @@ popup_during_fullscreen smart
 # change focus between tiling / floating windows
 #bindsym $mod+space focus mode_toggle
 
+# Toggle floating/tiling
+bindsym $mod+t floating toggle
+
 # focus the parent container
 bindsym $mod+a focus parent
 
@@ -206,9 +209,9 @@ exec --no-startup-id xset r rate 200 25
 exec --no-startup-id nm-applet
 exec --no-startup-id fcitx5
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
-for_window [class="nextcloud"] floating enable
+for_window [class="Nextcloud"] floating enable
 exec --no-startup-id nextcloud
-for_window [class="enpass"] floating enable
+for_window [class="Enpass"] floating enable
 exec --no-startup-id enpass -minimize
 assign [class="Slack"] workspace $ws_chat
 exec --no-startup-id slack
