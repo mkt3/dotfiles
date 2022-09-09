@@ -30,6 +30,11 @@ setup_pacman() {
                           lazygit \
                           zsh \
                           tmux \
+                          noto-fonts \
+                          noto-fonts-cjk \
+                          noto-fonts-emoji \
+                          noto-fonts-extra \
+                          ttf-font-awesome \
                           go \
                           duf \
                           htop \
@@ -77,6 +82,7 @@ setup_pacman() {
                               enpass-bin \
                               autotiling \
                               zoom \
+                              slack-desktop \
                               google-chrome \
                               anki-official-binary-bundle
                          )
