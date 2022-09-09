@@ -26,7 +26,11 @@ else:
     commasplitstatus_batteries=[]
     percentleft_batteries=[]
     time = ""
+
+    battery_exist = False
     for battery in batteries:
+        if 'design capacity' in battery:
+            battery_exist = True
         if battery!='':
             state_batteries.append(battery.split(": ")[1].split(", ")[0])
             commasplitstatus = battery.split(", ")
@@ -100,7 +104,8 @@ else:
     fulltext += form.format(percentleft)
     fulltext += timeleft
 
-print(fulltext)
-print(fulltext)
+if battery_exist:
+    print(fulltext)
+    print(fulltext)
 if percentleft < 10:
     exit(33)

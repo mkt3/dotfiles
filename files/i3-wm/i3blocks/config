@@ -10,7 +10,7 @@ interval=5
 [cpu_usage]
 command=~/.config/i3blocks/scripts/cpu_usage.pl
 interval=30
-label=
+label= 
 
 [load average]
 command=~/.config/i3blocks/scripts/load_average.sh
