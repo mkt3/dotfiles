@@ -64,6 +64,7 @@ setup_pacman() {
                           qtkeychain-qt5 \
                           libsecret \
                           gnome-keyring \
+                          seahorse \
                           volumeicon \
                           autorandr \
                           discord \
