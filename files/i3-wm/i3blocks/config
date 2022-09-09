@@ -5,7 +5,7 @@ separator_block_width=16
 on_color=#bdae93
 command=~/.config/i3blocks/scripts/nm-vpn.sh
 label= 
-interval=30
+interval=5
 
 [cpu_usage]
 command=~/.config/i3blocks/scripts/cpu_usage.pl

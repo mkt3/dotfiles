@@ -1,6 +1,6 @@
 configuration {
-  modes: "window,drun,combi,bookmark:~/.config/rofi/scripts/bookmark.sh";
-  combi-modes: [window,drun,bookmark];
+  modes: "window,drun,combi,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh";
+  combi-modes: [window,drun,bookmark,vpn];
   sidebar-mode: true;
 }
 
