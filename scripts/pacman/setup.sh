@@ -43,7 +43,10 @@ setup_pacman() {
                           zip \
                           unzip \
                           rsync \
-                          pacman-contrib
+                          pacman-contrib \
+                          fcitx5-skk \
+                          fcitx5-im \
+                          fcitx5-configtool
                      )
 
     gui_pacman_package_list=(xorg-server \

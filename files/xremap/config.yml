@@ -2,6 +2,7 @@ modmap:
   - name: Global
     remap:
       CapsLock: Ctrl_L
+      kEY_102ND: KEY_GRAVE
   - name: wezterm
     application:
       only: wezterm
