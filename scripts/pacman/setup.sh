@@ -30,6 +30,11 @@ setup_pacman() {
                           lazygit \
                           zsh \
                           tmux \
+                          noto-fonts \
+                          noto-fonts-cjk \
+                          noto-fonts-emoji \
+                          noto-fonts-extra \
+                          ttf-font-awesome \
                           go \
                           duf \
                           htop \
@@ -37,7 +42,11 @@ setup_pacman() {
                           neofetch \
                           zip \
                           unzip \
-                          rsync
+                          rsync \
+                          pacman-contrib \
+                          fcitx5-skk \
+                          fcitx5-im \
+                          fcitx5-configtool
                      )
 
     gui_pacman_package_list=(xorg-server \
@@ -63,17 +72,22 @@ setup_pacman() {
                           qtkeychain-qt5 \
                           libsecret \
                           gnome-keyring \
+                          seahorse \
                           volumeicon \
                           autorandr \
                           discord \
                           firefox \
-                          thunderbird
+                          thunderbird \
+                          acpi \
+                          sysstat
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \
                               autotiling \
                               zoom \
-                              google-chrome
+                              slack-desktop \
+                              google-chrome \
+                              anki-official-binary-bundle
                          )
 
     for package in ${cui_pacman_package_list[@]}; do

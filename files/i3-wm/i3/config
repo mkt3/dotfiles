@@ -7,7 +7,7 @@ set $super Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:monospace 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -94,7 +94,10 @@ bindsym $mod+Return fullscreen toggle
 popup_during_fullscreen smart
 
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
+#bindsym $mod+space focus mode_toggle
+
+# Toggle floating/tiling
+bindsym $mod+t floating toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -104,16 +107,11 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
 
 set $ws_main "1: main"
 set $ws_chat "2: chat"
@@ -207,14 +205,13 @@ gaps inner 2
 
 exec --no-startup-id "feh --no-fehbg --bg-fill ~/Nextcloud/Picture/wallpaper/forest_gruvbox.jpg"
 exec --no-startup-id "light-locker --lock-on-suspend"
-exec --no-startup-id xremap ~/.config/xremap/config.yml
 exec --no-startup-id xset r rate 200 25
 exec --no-startup-id nm-applet
 exec --no-startup-id fcitx5
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
-for_window [class="nextcloud"] floating enable
+for_window [class="Nextcloud"] floating enable
 exec --no-startup-id nextcloud
-for_window [class="enpass"] floating enable
+for_window [class="Enpass"] floating enable
 exec --no-startup-id enpass -minimize
 assign [class="Slack"] workspace $ws_chat
 exec --no-startup-id slack
@@ -225,7 +222,7 @@ exec --no-startup-id wezterm
 assign [class="Emacs"] workspace $ws_main
 exec --no-startup-id emacs
 assign [class="thunderbird"] workspace $ws_mail
-exec --no-startup-id tunderbird
+exec --no-startup-id thunderbird
 assign [class="zoom"] workspace $ws_sub
 
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
@@ -236,6 +233,7 @@ exec_always --no-startup-id autotiling
 
 # color
 set $bg #282828
+set $white
 set $red #cc241d
 set $green #98971a
 set $yellow #d79921

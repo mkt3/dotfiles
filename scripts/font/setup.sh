@@ -5,7 +5,11 @@ set -eu
 setup_font() {
     title "Setting up font"
 
-    info "Add cica conf"
+    info "Noto font"
+    mkdir -p "${XDG_CONFIG_HOME}/fontconfig/conf.d"
+    ln -sf "${CONFIGS_DIR}/font/99-system_fonts.conf" "${XDG_CONFIG_HOME}/fontconfig/conf.d/"
+
+    info "Add cica font"
     local font_dir="${XDG_DATA_HOME}/fonts/Cica"
     local font_name="Cica"
 
