@@ -38,7 +38,7 @@ setup_pacman() {
                           zip \
                           unzip \
                           rsync \
-                          httpei \
+                          httpie \
                           unarchiver
                      )
 
