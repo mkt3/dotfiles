@@ -30,11 +30,6 @@ setup_pacman() {
                           lazygit \
                           zsh \
                           tmux \
-                          noto-fonts \
-                          noto-fonts-cjk \
-                          noto-fonts-emoji \
-                          noto-fonts-extra \
-                          ttf-font-awesome \
                           go \
                           duf \
                           htop \
@@ -43,10 +38,8 @@ setup_pacman() {
                           zip \
                           unzip \
                           rsync \
-                          pacman-contrib \
-                          fcitx5-skk \
-                          fcitx5-im \
-                          fcitx5-configtool
+                          httpei \
+                          unarchiver
                      )
 
     gui_pacman_package_list=(xorg-server \
@@ -56,6 +49,15 @@ setup_pacman() {
                           dex \
                           network-manager-applet \
                           networkmanager-openvpn \
+                          noto-fonts \
+                          noto-fonts-cjk \
+                          noto-fonts-emoji \
+                          noto-fonts-extra \
+                          ttf-font-awesome \
+                          pacman-contrib \
+                          fcitx5-skk \
+                          fcitx5-im \
+                          fcitx5-configtool
                           thunar \
                           gvfs \
                           gvfs-smb \
