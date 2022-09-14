@@ -39,7 +39,8 @@ setup_pacman() {
                           unzip \
                           rsync \
                           httpie \
-                          unarchiver
+                          unarchiver \
+                          cmake
                      )
 
     gui_pacman_package_list=(xorg-server \
@@ -81,7 +82,8 @@ setup_pacman() {
                           firefox \
                           thunderbird \
                           acpi \
-                          sysstat
+                          sysstat \
+                          xclip
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \
