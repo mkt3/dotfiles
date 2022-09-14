@@ -30,6 +30,7 @@ brew "python3"
 brew "pipx"
 brew "go"
 brew "hugo"
+brew "cmake"
 tap "d12frosted/emacs-plus"
 brew "emacs-plus@28", args: ["with-native-comp"]
 tap "koekeishiya/formulae"
