@@ -29,7 +29,7 @@ else:
 
     battery_exist = False
     for battery in batteries:
-        if 'remaining' in battery:
+        if 'remaining' in battery or 'Charging' in battery:
             battery_exist = True
         if battery!='':
             state_batteries.append(battery.split(": ")[1].split(", ")[0])
