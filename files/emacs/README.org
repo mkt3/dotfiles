@@ -761,13 +761,11 @@
        :when (or (string= "osx" (getenv "PLATFORM"))
                  (string= "linux" (getenv "PLATFORM"))
                  )
-       :ensure t
-       ;; :el-get
-       ;; (emacs-grammarly/lsp-grammarly :type github :checkout "1e2aff23dfaf419bfae66718761a0eddbd6f613e")
+       :ensure t  
        :hook
-       ((text-mode-hook org-mode-hook markdown-mode-hook) . (lambda ()
-                                                              (require 'lsp-grammarly)
-                                                              (lsp-deferred)))
+       ((text-mode-hook markdown-mode-hook) . (lambda ()
+                                                (require 'lsp-grammarly)
+                                                (lsp-deferred)))
        )
    #+end_src
 ** python-mode
@@ -789,8 +787,19 @@
          :ensure t
          :custom ((blacken-line-length . 119)
                   (blacken-skip-string-normalization . t)))
-       (leaf ein
-         :ensure t))
+       (leaf jupyter
+         :ensure t
+         :config
+         (org-babel-do-load-languages
+          'org-babel-load-languages
+          '((emacs-lisp . t) ;; Other languages
+            (shell . t)
+            ;; Python & Jupyter
+            (python . t)
+            (jupyter . t)))
+         (org-babel-jupyter-override-src-block "python")
+         )
+       )
    #+end_src
 ** yaml-mode
    #+begin_src emacs-lisp
