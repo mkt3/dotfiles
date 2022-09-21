@@ -83,7 +83,9 @@ setup_pacman() {
                           thunderbird \
                           acpi \
                           sysstat \
-                          xclip
+                          xclip \
+                          libreoffice-fresh \
+                          jupyterlab
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \
