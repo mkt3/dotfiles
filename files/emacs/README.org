@@ -871,7 +871,7 @@
        (defun gtd ()
          (interactive)
          (find-file org-gtd-file))
-       :if (file-directory-p my:d:gtd)
+       ;; :if (file-directory-p my:d:gtd)
        ;; :hook ((org-mode-hook . (lambda ()
        ;;                           (setq flycheck-checker 'textlint)
        ;;                           (flycheck-mode 1))))
@@ -897,6 +897,7 @@
                 (org-use-speed-commands . t)
                 (org-log-done . t)
                 (org-adapt-indentation . t)
+                (org-confirm-babel-evaluate . nil)
                 (org-todo-keywords . '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
                                        (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
                 (org-todo-keyword-faces . '(("TODO" :foreground "red"
@@ -931,27 +932,6 @@
          (org-hide-emphasis-markers . t)
          (org-appear-inside-latex   . t)
          (org-appear-autosubmarkers . t)
-         )
-       (leaf org-mac-iCal
-         :when (string= "osx" (getenv "PLATFORM"))
-         :el-get
-         (mkt3/org-mac-iCal :type github)
-         :config
-         (setq org-agenda-include-diary t)
-         (setq diary-file (expand-file-name "calendar" my:d:gtd))
-         (add-hook 'org-agenda-cleanup-fancy-diary-hook
-                 (lambda ()
-                   (goto-char (point-min))
-                   (save-excursion
-                     (while (re-search-forward "^[a-z]" nil t)
-                       (goto-char (match-beginning 0))
-                       (insert "0:00-24:00 ")))
-                   (while (re-search-forward "^ [a-z]" nil t)
-                     (goto-char (match-beginning 0))
-                     (save-excursion
-                       (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
-                     (insert (match-string 0)))))
-         (org-mac-iCal)
          )
        )
    #+end_src
