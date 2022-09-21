@@ -1,5 +1,5 @@
 configuration {
-  modes: "window,drun,combi,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh";
+  modes: "window,drun,combi,search:~/.config/rofi/scripts/rofi-web-search.py,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh";
   combi-modes: [window,drun,bookmark,vpn];
   sidebar-mode: true;
 }
