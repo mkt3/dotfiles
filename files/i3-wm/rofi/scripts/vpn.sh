@@ -32,12 +32,12 @@ determine_connection_list(){
 }
 
 activate_connection(){
-    nmcli connection up "$SELECTED_CONNECTION" &> /dev/null
+    nmcli connection up "$SELECTED_CONNECTION" &> /dev/null &
     return 0
 }
 
 deactivate_connection(){
-    nmcli connection down "$SELECTED_CONNECTION" &> /dev/null
+    nmcli connection down "$SELECTED_CONNECTION" &> /dev/null &
     return 0
 }
 
