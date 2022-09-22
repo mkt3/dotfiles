@@ -78,6 +78,7 @@ setup_pacman() {
                           seahorse \
                           volumeicon \
                           autorandr \
+                          gnome-screenshot \
                           discord \
                           firefox \
                           thunderbird \

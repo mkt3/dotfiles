@@ -29,6 +29,11 @@ bindsym XF86MonBrightnessUp exec --no-startup-id ~/.config/i3/scripts/backlight.
 # window promoting
 bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/promote-window.py
 
+# screen shot
+bindsym $super+Shift+2 exec gnome-screenshot --window -f $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+bindsym $super+Shift+3 exec gnome-screenshot -f $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+bindsym $super+Shift+4 exec gnome-screenshot --area -f $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
