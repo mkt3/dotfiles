@@ -59,7 +59,6 @@
      (leaf cus-start
        :doc "define customization properties of builtins"
        :custom `((garbage-collection-messages     . t)
-                 (gc-cons-threshold               . 100000000)
                  (fill-column                     . 65)
                  (tab-width                       . 4)
                  (create-lockfiles                . nil)
@@ -88,7 +87,6 @@
                  (indent-tabs-mode                . nil)
                  (inhibit-startup-message         . t)
                  (inhibit-startup-screen          . t)
-                 (gc-cons-threshold               . ,(* gc-cons-threshold 100))
                  (read-process-output-max         . ,(* 1024 1024)))
        :config
        (defalias 'yes-or-no-p 'y-or-n-p)
@@ -209,7 +207,7 @@
      (leaf *x
        :when (eq 'x window-system)
        :custom (x-super-keysym . 'meta)
-  
+
        )
 
    #+end_src
@@ -761,7 +759,7 @@
        :when (or (string= "osx" (getenv "PLATFORM"))
                  (string= "linux" (getenv "PLATFORM"))
                  )
-       :ensure t  
+       :ensure t
        :hook
        ((text-mode-hook markdown-mode-hook) . (lambda ()
                                                 (require 'lsp-grammarly)
