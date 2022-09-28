@@ -82,6 +82,7 @@ setup_mac() {
     title "Setting up mac"
     setup_macos
     setup_homebrew
+    setup_wezterm
     setup_pre_common
     setup_karabiner
     setup_yabai_skhd
