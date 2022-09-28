@@ -3,11 +3,6 @@ modmap:
     remap:
       CapsLock: Ctrl_L
       kEY_102ND: KEY_GRAVE
-  - name: wezterm
-    application:
-      only: wezterm
-    remap:
-      Super_L: Alt_L
 
 keymap:
   # - name: Global
@@ -54,13 +49,6 @@ keymap:
 
       C-d: delete
       Super-d: C-delete
-
-  - name: wezterm
-    application:
-      only: wezterm
-    remap:
-      Alt_L-space: Super-space
-      Alt_L-tab: Super-tab
 
   - name: Chrome, Slack (modified from Default)
     application:
