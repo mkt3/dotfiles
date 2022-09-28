@@ -267,7 +267,7 @@
                                                  (right-fringe         . 11 ) ; 右フリンジ幅
                                                  (scroll-bar-width     . 17 ) ; スクロールバー幅
                                                  (cursor-type          . box) ; カーソル種別
-                                                 (alpha                . 95 ) ; 透明度
+                                                 ;; (alpha                . 95 ) ; 透明度
                                                  ) default-frame-alist))
        :custom (initial-frame-alist . default-frame-alist)
        (frame-title-format . '("emacs " emacs-version (buffer-file-name " - %f"))) :bind(("C-c C-f" .
