@@ -2,7 +2,7 @@ separator_block_width=16
 
 [nm-vpn]
 #init_color=#FFFF00
-on_color=#bdae93
+on_color=#81a1c1
 command=~/.config/i3blocks/scripts/nm-vpn.sh
 label= 
 interval=5
@@ -11,6 +11,7 @@ interval=5
 command=~/.config/i3blocks/scripts/cpu_usage.pl
 interval=30
 label=
+COLOR_NORMAL=#81a1c1
 
 [load average]
 command=~/.config/i3blocks/scripts/load_average.sh

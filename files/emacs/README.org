@@ -157,7 +157,10 @@
               ("C-M-l" . windmove-right)))
      (leaf gcmh
        :ensure t
-       :custom (gcmh-verbose . t)
+       :blackout gcmh
+       :custom ((gcmh-verbose . t)
+                (gcmh-high-cons-threshold . 100000000)
+                )
        :config (gcmh-mode 1))
      (leaf recentf
        :ensure t
@@ -174,12 +177,19 @@
    #+end_src
 
 * color-theme
-** gruvbox
+** doom-nord
    #+begin_src emacs-lisp
-     (leaf gruvbox-theme
+     (leaf doom-themes
        :ensure t
        :config
-       (load-theme 'gruvbox-dark-medium t))
+       (load-theme 'doom-nord t))
+   #+end_src
+** gruvbox
+   #+begin_src emacs-lisp
+     ;; (leaf gruvbox-theme
+     ;;  :ensure t
+     ;;  :config
+     ;;  (load-theme 'gruvbox-dark-medium t))
    #+end_src
 ** doracula-theme
    #+begin_src emacs-lisp
@@ -709,6 +719,14 @@
        )
    #+end_src
 * major-mode
+** eglot
+   #+begin_src emacs-lisp
+     ;; (leaf eglot
+     ;;   :ensure t
+     ;;   :config
+     ;;   (add-hook 'python-mode-hook 'eglot-ensure)
+     ;;   )
+   #+end_src
 ** lsp-mode
    #+begin_src emacs-lisp
      (leaf lsp-mode
@@ -728,7 +746,7 @@
        :init (leaf lsp-ui
                :ensure t
                :after lsp-mode
-               :custom ((lsp-ui-doc-enable            . t)
+               :custom ((lsp-ui-doc-enable            . nil)
                         (lsp-ui-doc-position          . 'at-point)
                         (lsp-ui-doc-header            . t)
                         (lsp-ui-doc-include-signature . t)
@@ -738,12 +756,11 @@
                         (lsp-ui-peek-enable           . t)
                         (lsp-ui-peek-peek-height      . 20)
                         (lsp-ui-peek-list-width       . 50)
-                        (lsp-ui-doc-enable            . nil)
                         (lsp-ui-sideline-enable       . t)
-                        (lsp-ui-sideline-show-code-actions . t)
+                        (lsp-ui-sideline-show-code-actions . nil)
                         (lsp-ui-sideline-show-diagnostics . t)
-                        (lsp-ui-sideline-diagnostic-max-lines . 30)
-                        (lsp-ui-sideline-show-hover . t)
+                        (lsp-ui-sideline-diagnostic-max-lines . 200)
+                        (lsp-ui-sideline-show-hover . nil)
                         )
                :bind ((lsp-ui-mode-map ([remap xref-find-definitions] .
                                         lsp-ui-peek-find-definitions)
@@ -761,7 +778,7 @@
                  )
        :ensure t
        :hook
-       ((text-mode-hook markdown-mode-hook) . (lambda ()
+       ((markdown-mode-hook) . (lambda ()
                                                 (require 'lsp-grammarly)
                                                 (lsp-deferred)))
        )

@@ -220,7 +220,7 @@ gaps inner 2
 # auto tiling
 exec --no-startup-id ~/.config/i3/scripts/column-layout.py
 
-exec --no-startup-id "feh --no-fehbg --bg-fill ~/Nextcloud/Picture/wallpaper/forest_gruvbox.jpg"
+exec --no-startup-id "feh --no-fehbg --bg-fill /usr/share/backgrounds/archlinux/small.png"
 exec --no-startup-id "light-locker --lock-on-suspend"
 exec --no-startup-id xset r rate 200 25
 exec --no-startup-id nm-applet
@@ -245,39 +245,28 @@ assign [class="zoom"] workspace $ws_sub
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
 for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws_media
 
-# color
-set $bg #282828
-set $white
-set $red #cc241d
-set $green #98971a
-set $yellow #d79921
-set $blue #458588
-set $purple #b16286
-set $aqua #689d68
-set $gray #a89984
-set $darkgray #1d2021
-set $lightgray #bdae93
-
 bar {
     tray_output primary
     position top
     status_command i3blocks
     colors {
-        # bar background color
-        background $bg
-        # text color used for blocks that do not have a color specified.
-        statusline $lightgray
-        # workspaces section            
-        #                    border  backgr. text
-        focused_workspace    $lightgray $lightgray $bg
-        inactive_workspace   $darkgray $darkgray $lightgray
-        active_workspace     $darkgray $darkgray $lightgray
-        urgent_workspace     $red $red $bg
+            separator  #1f222d
+            background #1f222d
+            statusline #81a1c1
+
+            #                   border  background text
+            focused_workspace  #1f222d #1f222d    #81a1c1
+            active_workspace   #1f222d #252936    #5e81ac
+            inactive_workspace #1f222d #1f222d    #4c566a
+            urgent_workspace   #1f222d #1f222d    #ee829f
+            binding_mode       #1f222d #81a1c1    #2e3440
     }
 }
+# class                 border  backgr. text    indicator
+client.focused          #81a1c1 #81a1c1 #ffffff #81a1c1
+client.unfocused        #2e3440 #1f222d #888888 #1f222d
+client.focused_inactive #2e3440 #1f222d #888888 #1f222d
+client.placeholder      #2e3440 #1f222d #888888 #1f222d
+client.urgent           #900000 #900000 #ffffff #900000
 
-# class                 border|backgr|text|indicator|child_border
-client.focused          $lightgray $lightgray $bg $purple $darkgray
-client.focused_inactive $darkgray $darkgray $lightgray $purple $darkgray
-client.unfocused        $darkgray $darkgray $lightgray $purple $darkgray
-client.urgent           $red $red $white $red $red
+client.background       #242424
