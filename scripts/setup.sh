@@ -20,7 +20,6 @@ done
 setup_pre_common() {
     setup_xdg_config
     setup_zsh
-    setup_term
     setup_fzf
     setup_tmux
     setup_git
@@ -95,7 +94,6 @@ setup_mac() {
 setup_minimal() {
     title "Setting up minimal"
     setup_xdg_config
-    setup_term
     setup_fzf
     setup_zsh
     setup_tmux
