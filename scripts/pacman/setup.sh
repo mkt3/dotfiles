@@ -55,6 +55,8 @@ setup_pacman() {
                           noto-fonts-emoji \
                           noto-fonts-extra \
                           ttf-font-awesome \
+                          adapta-gtk-theme \
+                          papirus-icon-theme \
                           pacman-contrib \
                           fcitx5-skk \
                           fcitx5-im \
