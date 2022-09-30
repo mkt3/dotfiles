@@ -148,7 +148,7 @@ bindsym $mod+0 workspace number $ws_media
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws_main
-bindsym $mod+Shift+2 move container to workspace number $ws_chatt
+bindsym $mod+Shift+2 move container to workspace number $ws_chat
 bindsym $mod+Shift+3 move container to workspace number $ws_mail
 bindsym $mod+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
