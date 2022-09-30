@@ -1,7 +1,15 @@
 configuration {
   modes: "window,drun,combi,search:~/.config/rofi/scripts/rofi-web-search.py,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh";
   combi-modes: [window,drun,bookmark,vpn];
+  font: "cica 18";
   sidebar-mode: true;
+  show-icons: true;
+  drun-display-format: "{icon} {name}";
+  display-window: "  ";
+  display-drun: "󿔺  ";
+  display-search: "  ";
+  display-bookmark: "󿗂  ";
+  display-vpn: "󿪁  ";
 }
 
 @theme "nord"
