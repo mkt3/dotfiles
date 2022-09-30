@@ -52,6 +52,8 @@ set laststatus=2
 set wildmode=list:longest
 nnoremap j gj
 nnoremap k gk
+inoremap <silent> jj <ESC>
+inoremap <silent> <C-g> <ESC>
 
 set list listchars=tab:\▸\-
 set expandtab
