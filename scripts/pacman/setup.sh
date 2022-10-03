@@ -88,7 +88,8 @@ setup_pacman() {
                           sysstat \
                           xclip \
                           libreoffice-fresh \
-                          jupyterlab
+                          jupyterlab \
+                          hugo
                             )
     gui_aur_package_list=(xremap-x11-bin \
                               enpass-bin \
