@@ -7,6 +7,12 @@ return {
   color_scheme = "nord",
   hide_tab_bar_if_only_one_tab = true,
   adjust_window_size_when_changing_font_size = false,
+  window_padding = {
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
+  },
   keys = {
      {key="x",mods="SUPER",action=wezterm.action.SendKey { key="x", mods="ALT"}},
      {key="c",mods="SUPER",action=wezterm.action.SendKey { key="c", mods="ALT"}},
