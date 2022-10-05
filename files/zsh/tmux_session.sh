@@ -37,9 +37,8 @@ function set_session() {
     else
         repo_dir="$(ghq list --exact --full-path "$selected_source")"
     fi
-
-    local session_name="${selected_source//[:. ]/-}"
-    
+    local array=( `echo $selected_source | tr -s '/' ' '`)
+    local session_name=${array[`expr ${#array[@]}-1`]}
     if [[ -z "$TMUX" ]]; then
         tmux new-session -A -s "$session_name" -c $repo_dir 2>/dev/null
     elif [ "$(tmux display-message -p "#S")" != "$session_name" ]; then
