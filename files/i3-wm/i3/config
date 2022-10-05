@@ -243,7 +243,6 @@ exec --no-startup-id thunderbird
 assign [class="zoom"] workspace $ws_sub
 
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
-for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws_media
 
 bar {
     tray_output primary
