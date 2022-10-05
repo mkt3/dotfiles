@@ -30,6 +30,7 @@ setup_pacman() {
                           lazygit \
                           zsh \
                           tmux \
+                          pacman-contrib \
                           go \
                           duf \
                           htop \
@@ -57,7 +58,6 @@ setup_pacman() {
                           ttf-font-awesome \
                           adapta-gtk-theme \
                           papirus-icon-theme \
-                          pacman-contrib \
                           fcitx5-skk \
                           fcitx5-im \
                           fcitx5-configtool
