@@ -132,40 +132,12 @@ export FZF_TMUX_OPTS="-p 80%"
 
 # Tmux
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
-    SSH_CONFIG_FILE_LIST=`bash -c "ls ~/.ssh/*/config" 2> /dev/null`
-
-    host_list=""
-    for ssh_config in ${=SSH_CONFIG_FILE_LIST}
-    do
-        for i in `grep "^Host " $ssh_config | grep -v "*" | sed s/"^Host "// | sed s/","/\ /g`
-        do
-            host_list="${i} ${host_list}"
-            ssh_command_list="${ssh_command_list}ssh ${i}:\n"
-        done
-    done
-
-    ssh_command_list=""
-    for i in ${=host_list}
-    do
-        ssh_command_list="${ssh_command_list}ssh ${i}:\n"
-    done
-
-    ID="`tmux list-sessions`"
-    create_new_session="Create new session"
-    if [[ -z "$ID" ]]; then
-       ID="${create_new_session}:\n${ssh_command_list}"
+    main_session="main_session"
+    tmux_session="`tmux list-sessions`"
+    if [[ "$tmux_session" =~ "${main_session}" ]]; then
+        tmux attach-session -t "$main_session"
     else
-       ID="$ID\n${create_new_session}:\n${ssh_command_list}"
-    fi
-    ID="`echo $ID | fzf | cut -d: -f1`"
-    if [[ "$ID" = "${create_new_session}" ]]; then
-       tmux new-session -s "main_session"
-    elif [[ `echo $ID | grep ssh` ]]; then
-       eval $ID
-    elif [[ -n "$ID" ]]; then
-       tmux attach-session -t "$ID"
-    else
-       :  # Start terminal normally
+        tmux new-session -s "$main_session"
     fi
 fi
 
