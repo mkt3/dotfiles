@@ -6,7 +6,8 @@ function get_source_list() {
 
     candidate_list=($(ghq list | sort) "main_session")
     for repo in "${candidate_list[@]}"; do
-        session="${repo//[:. ]/-}"
+        array=( `echo $repo | tr -s '/' ' '`)
+        session=${array[`expr ${#array[@]}-1`]//[:. ]/-}
         color="$blue"
         icon="$unopened"
 
@@ -38,11 +39,12 @@ function set_session() {
         repo_dir="$(ghq list --exact --full-path "$selected_source")"
     fi
     local array=( `echo $selected_source | tr -s '/' ' '`)
-    local session_name=${array[`expr ${#array[@]}-1`]}
+    local session_name=${array[`expr ${#array[@]}-1`]//[:. ]/-}
     if [[ -z "$TMUX" ]]; then
-        tmux new-session -A -s "$session_name" -c $repo_dir 2>/dev/null
+        tmux new-session -A -s "$session_name" -c $repo_dir 2> /dev/null
     elif [ "$(tmux display-message -p "#S")" != "$session_name" ]; then
-        tmux new-session -d -s "$session_name" -c $repo_dir 2>/dev/null
+        echo $repo_dir
+        tmux new-session -d -s "$session_name" -c $repo_dir 2> /dev/null
         tmux switch-client -t "$session_name"
     fi
 }
