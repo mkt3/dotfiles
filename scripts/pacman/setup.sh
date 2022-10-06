@@ -97,7 +97,8 @@ setup_pacman() {
                               zoom \
                               slack-desktop \
                               google-chrome \
-                              anki-official-binary-bundle
+                              anki-official-binary-bundle \
+                              rofi-greenclip
                          )
 
     for package in ${cui_pacman_package_list[@]}; do

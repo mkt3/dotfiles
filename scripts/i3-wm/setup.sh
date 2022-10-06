@@ -14,4 +14,10 @@ setup_i3-wm() {
 
     info "Creating symlink for rofi"
     ln -sfn "${i3wm_file_dir}/rofi" "${XDG_CONFIG_HOME}"
+
+    info "Creating symlink for greenclip"
+    ln -sfn "${i3wm_file_dir}/greenclip/greenclip.toml" "${XDG_CONFIG_HOME}"
+    info "greenclip Start/Enable"
+    systemctl --user restart xremap
+    systemctl --user enable xremap
 }

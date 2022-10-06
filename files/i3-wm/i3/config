@@ -46,6 +46,9 @@ bindsym $super+Tab exec --no-startup-id "rofi -show window"
 # start rofi (a program launcher)
 bindsym $super+space exec --no-startup-id "rofi -show combi" 
 
+# clipboard
+bindsym Control+semicolon  exec --no-startup-id "rofi -modi 'clipboard:greenclip print' -show clipboard -run-command '{cmd}'"
+
 # mouse config
 focus_follows_mouse no
 bindsym button3 floating toggle
