@@ -58,9 +58,15 @@ setup_pacman() {
                           ttf-font-awesome \
                           adapta-gtk-theme \
                           papirus-icon-theme \
+                          fcitx5 \
+                          fcitx5-configtool \
+                          fcitx5-gtk \
+                          fcitx5-qt \
                           fcitx5-skk \
-                          fcitx5-im \
-                          fcitx5-configtool
+                          pipewire \
+                          wireplumber \
+                          pipewire-alsa \
+                          pipewire-pulse \
                           thunar \
                           gvfs \
                           gvfs-smb \
