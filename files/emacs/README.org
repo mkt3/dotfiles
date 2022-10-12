@@ -217,7 +217,6 @@
      (leaf *x
        :when (eq 'x window-system)
        :custom (x-super-keysym . 'meta)
-
        )
 
    #+end_src
@@ -783,6 +782,14 @@
                                                 (lsp-deferred)))
        )
    #+end_src
+** shell-script-mode
+  #+begin_src emacs-lisp
+    (leaf *shell-scirpt
+      :commands lsp-deferred
+      :hook (sh-mode-hook . (lambda ()
+                                  (lsp-deferred)))
+      )
+  #+end_src
 ** python-mode
    #+begin_src emacs-lisp
      (leaf *python
@@ -1100,7 +1107,7 @@
                 (web-mode-tag-auto-close-style . 2)
                 (indent-tabs-mode . nil)
                 (tab-width . 2))
-       :hook (web-mode-hook . (lambda ()jlj
+       :hook (web-mode-hook . (lambda ()
                                 (interactive)
                                 (when (string-equal "tsx" (file-name-extension buffer-file-name))
                                   (add-node-modules-path)
