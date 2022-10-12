@@ -130,6 +130,9 @@ export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --lin
 
 export FZF_TMUX_OPTS="-p 80%"
 
+# terminal title
+echo -ne "\x1b]0;$HOST\x1b\\"
+
 # Tmux
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     main_session="main_session"
