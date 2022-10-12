@@ -77,19 +77,6 @@ if [[ "$TERM" == "dumb" ]]; then
     PS1='$ '
 fi
 
-# Google Cloud SDK.
-if [ -f "/usr/share/google-cloud-sdk/completion.zsh.inc" ]; then . "/usr/share/google-cloud-sdk/completion.zsh.inc"; fi
-
-# config edit command
-get_config_file() {
-    local file
-    file=$(
-         rg --files --hidden --follow --glob "!**/.git/*" "$HOME/.config" | fzf-tmux -p 80% \
-            --preview 'bat  --color=always --style=header,grid {}' --preview-window=right:60%
-    ) 
-    printf "$file"
-}
-
 # Completion
 fpath+=$ZSH_COMPLETION_DIR
 autoload -Uz compinit && compinit
