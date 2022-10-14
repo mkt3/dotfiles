@@ -22,6 +22,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -90,6 +91,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -157,7 +159,8 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": [
+                                      "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -301,7 +304,8 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": [
+                                      "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -371,6 +375,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -440,6 +445,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$", 
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -509,7 +515,8 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^org\\.gnu\\.Emacs$",
+                                           "^com\\.github\\.wez\\.wezterm$",
+                                           "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp.conkeror$",
@@ -578,6 +585,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -772,7 +780,8 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": [
+                                      "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm",
                                             "^com\\.googlecode\\.iterm2",
                                             "^com\\.apple\\.Terminal"
                                         ],
