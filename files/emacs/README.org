@@ -803,11 +803,14 @@
                                      (lsp-deferred))))
        (leaf py-isort
          :ensure t
+         :hook (python-mode-hook . (lambda ()
+                                     (add-hook 'before-save-hook 'py-isort-before-save)))
          :custom (py-isort-options . '("--profile=black"))
          )
        (leaf blacken
          :ensure t
-         :custom ((blacken-line-length . 119)
+         :hook (python-mode-hook .  blacken-mode)
+         :custom ((blacken-line-length . 300)
                   (blacken-skip-string-normalization . t)))
        (leaf jupyter
          :ensure t
