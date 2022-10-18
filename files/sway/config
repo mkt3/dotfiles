@@ -71,6 +71,8 @@ bindsym button3 floating toggle
 #
 
 # change focus
+focus_on_window_activation focus
+
 bindsym $mod+$down focus down
 bindsym $mod+$up focus up
 bindsym $mod+$right focus right
