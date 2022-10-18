@@ -9,6 +9,6 @@ setup_xwindow() {
     info "Creating symlink for .xprofile"
     ln -sfn "${xwindow_file_dir}/xprofile" "${HOME}/.xprofile"
 
-    info "Creating symlink for .Xresources"
-    ln -sfn "${xwindow_file_dir}/Xresources" "${HOME}/.Xresources"
+    info "Creating symlink for .Xdefaults"
+    ln -sfn "${xwindow_file_dir}/Xdefaults" "${HOME}/.Xdefaults"
 }
