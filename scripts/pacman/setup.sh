@@ -35,6 +35,7 @@ setup_pacman() {
                           duf \
                           htop \
                           iotop \
+                          jq \
                           neofetch \
                           zip \
                           unzip \
@@ -44,11 +45,18 @@ setup_pacman() {
                           cmake
                      )
 
-    gui_pacman_package_list=(xorg-server \
+    gui_pacman_package_list=(sway \
+                          xorg-xwayland \
+                          qt5-wayland \ 
+                          swayidle \
+                          swaylock \
+                          swaybg \
+                          waybar \
+                          wl-clipboard \
+                          rofi \
+                          mako \
                           lightdm \
                           lightdm-gtk-greeter \
-                          light-locker \
-                          dex \
                           network-manager-applet \
                           networkmanager-openvpn \
                           noto-fonts \
@@ -56,7 +64,6 @@ setup_pacman() {
                           noto-fonts-emoji \
                           noto-fonts-extra \
                           ttf-font-awesome \
-                          adapta-gtk-theme \
                           papirus-icon-theme \
                           fcitx5 \
                           fcitx5-configtool \
@@ -67,6 +74,7 @@ setup_pacman() {
                           wireplumber \
                           pipewire-alsa \
                           pipewire-pulse \
+                          pavucontrol \
                           thunar \
                           gvfs \
                           gvfs-smb \
@@ -74,37 +82,30 @@ setup_pacman() {
                           emacs-nativecomp \
                           texlive-core \
                           wezterm \
-                          picom \
-                          dunst \
-                          i3-gaps \
-                          i3blocks \
-                          rofi \
                           nextcloud-client \
                           qtkeychain-qt5 \
                           libsecret \
                           gnome-keyring \
                           seahorse \
-                          volumeicon \
-                          autorandr \
-                          gnome-screenshot \
                           discord \
                           firefox \
                           thunderbird \
                           acpi \
                           sysstat \
-                          xclip \
                           libreoffice-fresh \
                           jupyterlab \
                           hugo
                             )
-    gui_aur_package_list=(xremap-x11-bin \
-                              enpass-bin \
+    gui_aur_package_list=(enpass-bin \
                               autotiling \
                               zoom \
                               slack-desktop \
                               google-chrome \
                               anki-official-binary-bundle \
-                              rofi-greenclip
+                              nwg-look \
+                              nordic-theme \
+                              ddcci-driver-linux-dkms \
+                              clipman
                          )
 
     for package in ${cui_pacman_package_list[@]}; do

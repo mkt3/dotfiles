@@ -28,4 +28,7 @@ setup_rust() {
         info "$package ..."
         "${CARGO_HOME}/bin/rustup" run stable cargo install $package
     done
+    
+    # xremap
+    "${CARGO_HOME}/bin/rustup" run stable cargo install xremap --features sway
 }
