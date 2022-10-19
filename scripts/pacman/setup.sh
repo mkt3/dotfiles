@@ -76,6 +76,7 @@ setup_pacman() {
                           pipewire-pulse \
                           pavucontrol \
                           thunar \
+                          tumbler \
                           gvfs \
                           gvfs-smb \
                           sshfs \
