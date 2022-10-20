@@ -37,7 +37,7 @@
     border: none;
     border-radius: 3px;
     min-height: 0;
-    margin: 0.2em 0.3em 0.2em 0.3em;
+    margin: 0.2em 0.2em 0.2em 0.2em;
 }
 
 
@@ -46,7 +46,7 @@
     background: @bg;
     color: @light;
     font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 
@@ -240,15 +240,15 @@
 }
 
 #pulseaudio {
-    background: @nord_bg_blue;
+    background: @nord_bge;
 }
 
 #pulseaudio.muted {
-    background: @nord_bg_blue;
+    background: @nord_bg;
 }
 #pulseaudio.source-muted {
-    background: @nord_bg_blue;
+    background: @nord_bg;
 }
 #tray {
-    background: #434C5E;
+    background: @nord_bg;
 }

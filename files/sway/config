@@ -2,8 +2,7 @@
 #
 # Read `man 5 sway` for a complete reference.
 
-### Variables
-#
+# Variables
 set $mod Mod1
 set $super Mod4
 
@@ -12,9 +11,7 @@ set $down j
 set $up k
 set $right l
 
-
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
+# font
 font pango:monospace 12
 
 # wallpaper
@@ -44,7 +41,7 @@ floating_modifier $mod normal
 bindsym $super+q kill
 
 # Window toggle
-bindsym $super+Tab exec --no-startup-id "rofi -show window"
+bindsym $super+Tab exec "rofi -show window"
 
 # start rofi (a program launcher)
 bindsym $super+space exec "rofi -show combi" 
@@ -187,8 +184,6 @@ workspace $ws_mail output primary
 workspace $ws_media output eDP-1
 workspace $ws_sub output eDP-1
 
-# screen lock
-#bindsym $mod+Shift+x exec --no-startup-id light-locker-command -l
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
@@ -233,9 +228,8 @@ gaps left 2
 gaps inner 2
 
 # auto tiling
-#exec --no-startup-id ~/.config/i3/scripts/column-layout.py
+#exec ~/.config/i3/scripts/column-layout.py
 
-#exec --no-startup-id "light-locker --lock-on-suspend"
 input type:keyboard {
     repeat_delay 300
     repeat_rate 50
@@ -253,9 +247,9 @@ exec mako
 exec xremap ~/.config/xremap/config.yml
 exec fcitx5 -d
 
+for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="thunar" title="ファイル操作進行中"] floating enable
-for_window [app_id="qt5ct" title="Qt5 設定ツール"] floating enable
-for_window [app_id="fcitx5" title="Fcitx の設定"] floating enable
+for_window [app_id="org.fcitx.fcitx5-config-qt"] floating enable
 
 for_window [class="Nextcloud"] floating enable
 exec nextcloud --background

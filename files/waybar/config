@@ -1,13 +1,10 @@
 {
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 36, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
+    "spacing": 2, // Gaps between modules (4px)
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["idle_inhibitor", "pulseaudio", "custom/vpn", "custom/pacman", "cpu", "memory", "temperature", "backlight", "battery", "clock", "tray"],
+    "modules-right": ["custom/vpn", "custom/pacman", "cpu", "memory", "pulseaudio", "backlight", "battery", "clock", "tray", "idle_inhibitor"],
     // Modules configuration
     "sway/workspaces": {
         "disable-scroll": true,
@@ -41,7 +38,8 @@
     "clock": {
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": "{:%Y-%m-%d(%a) %H:%M}"
+        "format": "{:%Y-%m-%d(%a) %H:%M}",
+        "format-alt": "{:%Y-%m-%d(%a) %H:%M}"
     },
     "cpu": {
         "format": " {usage}% LA:{load}",
@@ -103,17 +101,6 @@
         "signal": 8,
         "max-length": 5,
         "min-length": 3
-    },
-    "temperature": {
-        //"thermal-zone": 1,
-        "interval": "4",
-        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
-        "critical-threshold": 74,
-        "format-critical": "  {temperatureC}°C",
-        "format": "{icon}  {temperatureC}°C",
-        "format-icons": ["", "", ""],
-        "max-length": 7,
-        "min-length": 7
     },
 }
 
