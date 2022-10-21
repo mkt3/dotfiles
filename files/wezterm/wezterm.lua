@@ -16,6 +16,7 @@ return {
      {key="x",mods="SUPER",action=wezterm.action.SendKey { key="x", mods="ALT"}},
      {key="c",mods="SUPER",action=wezterm.action.SendKey { key="c", mods="ALT"}},
      {key="w",mods="SUPER",action=wezterm.action.SendKey { key="w", mods="ALT"}},
+     {key="y",mods="SUPER",action=wezterm.action.SendKey { key="y", mods="ALT"}},
      {key=",",mods="SUPER",action=wezterm.action.SendKey { key=",", mods="ALT"}},
      {key=".",mods="SUPER",action=wezterm.action.SendKey { key=".", mods="ALT"}},
      {key=";",mods="SUPER",action=wezterm.action.SendKey { key=";", mods="ALT"}},
