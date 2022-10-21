@@ -903,6 +903,7 @@
        :bind (("C-c c" . org-capture)
               ("C-c a" . org-agenda)
               ("C-c g" . gtd)
+              ("C-c i" . org-insert-structure-template)
               ("C-c C-'" . org-edit-special)
               (org-src-mode-map ("C-c C-'" . org-edit-src-exit))
               )
