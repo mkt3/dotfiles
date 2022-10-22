@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: python-org 
+# key: pyorg
+# --
+#+PROPERTY: header-args:python :kernel $0
+#+PROPERTY: header-args:python+ :async yes
+#+PROPERTY: header-args:python+ :session n001
