@@ -65,6 +65,9 @@ setup_pacman() {
                           noto-fonts-extra \
                           ttf-font-awesome \
                           papirus-icon-theme \
+                          bluez \
+                          bluez-utils \
+                          blueman \
                           fcitx5 \
                           fcitx5-configtool \
                           fcitx5-gtk \

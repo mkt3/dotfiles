@@ -62,14 +62,12 @@ bindsym $super+Shift+l exec swaylock -f
 # mouse config
 focus_follows_mouse no
 bindsym button3 floating toggle
-
-#
-# Moving around:
-#
+mouse_warping container
 
 # change focus
 focus_on_window_activation focus
 
+# moving around:
 bindsym $mod+$down focus down
 bindsym $mod+$up focus up
 bindsym $mod+$right focus right
@@ -248,7 +246,6 @@ exec xremap ~/.config/xremap/config.yml
 exec fcitx5 -d
 
 for_window [app_id="pavucontrol"] floating enable
-for_window [app_id="thunar" title="ファイル操作進行中"] floating enable
 for_window [app_id="org.fcitx.fcitx5-config-qt"] floating enable
 
 for_window [class="Nextcloud"] floating enable
@@ -269,6 +266,8 @@ exec emacs
 assign [app_id="thunderbird"] workspace $ws_mail
 exec thunderbird
 assign [class="zoom"] workspace $ws_sub
+exec blueman-applet
+for_window [app_id="blueman-manager"] floating enable
 
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
 
