@@ -98,7 +98,8 @@ setup_pacman() {
                           sysstat \
                           libreoffice-fresh \
                           jupyterlab \
-                          hugo
+                          hugo \
+                          vlc
                             )
     gui_aur_package_list=(enpass-bin \
                               autotiling \
