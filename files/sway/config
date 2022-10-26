@@ -53,11 +53,11 @@ bindsym Control+semicolon  exec clipman pick -t rofi
 
 # screenlocker
 exec swayidle -w \
-  timeout 300 'swaylock -f' \
+  timeout 300 'swaylock -f -C ~/.config/swaylock/config' \
   timeout 301 'swaymsg "output * dpms off"' \
   resume 'swaymsg "output * dpms on"' \
 
-bindsym $super+Shift+l exec swaylock -f
+bindsym $super+Shift+l exec swaylock -f -C ~/.config/swaylock/config
 
 # mouse config
 focus_follows_mouse no
