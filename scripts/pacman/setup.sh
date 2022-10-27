@@ -78,6 +78,7 @@ setup_pacman() {
                           pipewire-alsa \
                           pipewire-pulse \
                           pavucontrol \
+                          playerctl \
                           thunar \
                           tumbler \
                           gvfs \
