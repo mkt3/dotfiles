@@ -240,7 +240,7 @@
 }
 
 #pulseaudio {
-    background: @nord_bge;
+    background: @nord_bg;
 }
 
 #pulseaudio.muted {
