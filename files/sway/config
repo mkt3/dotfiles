@@ -245,7 +245,6 @@ input type:touchpad {
 
 exec nm-applet --indicator
 exec mako
-exec xremap ~/.config/xremap/config.yml
 exec fcitx5 -d
 
 for_window [app_id="pavucontrol"] floating enable

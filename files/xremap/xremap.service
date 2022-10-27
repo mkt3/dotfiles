@@ -3,7 +3,7 @@ Description=xremap
 
 [Service]
 KillMode=process
-ExecStart=/usr/bin/xremap %h/.config/xremap/config.yml
+ExecStart=%h/.local/share/cargo/bin/xremap %h/.config/xremap/config.yml
 ExecStop=/usr/bin/killall xremap
 Type=simple
 Restart=always
