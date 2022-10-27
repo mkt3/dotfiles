@@ -100,6 +100,12 @@ keymap:
       C-s: C-g
       Super-Enter: C-Enter
 
+  - name: Wezterm
+    application:
+      only: org.wezfurlong.wezterm
+    remap:
+      Super_R-v: C-Shift-v
+
   - name: Slack
     application:
       only: Slack
