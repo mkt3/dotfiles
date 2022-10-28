@@ -9,13 +9,13 @@
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
-        "format": "{name}: {icon}",
+        "format": "{index}:{name}{icon}",
         "format-icons": {
             "1: main": "",
-            "main": "",
-            "3": "",
-            "4": "",
+            "9: sub": "",
             "2: chat": "",
+            "3: mail": "",
+            "10: media": "",
             "urgent": "",
             "focused": "",
             "default": ""
