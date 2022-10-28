@@ -21,4 +21,9 @@ setup_sway() {
     info "Creating symlink for rofi"
     ln -sfn "${rofi_file_dir}" "${XDG_CONFIG_HOME}"
 
+    info "Adding systemd"
+    mkdir -p "${XDG_CONFIG_HOME}/systemd/user"
+    ln -sfn "${sway_file_dir}/sway-session.target" "${XDG_CONFIG_HOME}/systemd/user/"
+
+
 }

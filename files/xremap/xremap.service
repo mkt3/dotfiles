@@ -1,5 +1,6 @@
 [Unit]
 Description=xremap
+BindsTo=sway-session.target
 
 [Service]
 KillMode=process
@@ -9,4 +10,4 @@ Type=simple
 Restart=always
 
 [Install]
-WantedBy=default.target
+WantedBy=sway-session.target

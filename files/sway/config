@@ -243,6 +243,8 @@ input type:touchpad {
 }
 
 
+exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
+
 exec nm-applet --indicator
 exec mako
 exec fcitx5 -d

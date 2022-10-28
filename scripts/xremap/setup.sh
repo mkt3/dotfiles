@@ -14,9 +14,8 @@ setup_xremap() {
 
     info "Adding systemd"
     mkdir -p "${XDG_CONFIG_HOME}/systemd/user"
-    ln -sfn $xremap_file_dir/xremap.service "${XDG_CONFIG_HOME}/systemd/user/"
+    ln -sfn "${xremap_file_dir}/xremap.service" "${XDG_CONFIG_HOME}/systemd/user/"
 
-    info "Start/Enable"
-    systemctl --user restart xremap
-    systemctl --user enable xremap
+    info "Enable xremap.service"
+    systemctl --user enable xremap.service
 }
