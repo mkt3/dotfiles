@@ -95,6 +95,9 @@ setup_python() {
     info "Creating symlink for flake8"
     ln -sfn "${python_file_dir}/flake8" "${XDG_CONFIG_HOME}/flake8"
 
+    info "Creating symlink for matplotlib"
+    ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
+
     info "Creating symlink for jupyterlab.sh"
     mkdir -p "${HOME}/.local/bin"
     ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"

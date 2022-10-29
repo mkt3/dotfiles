@@ -184,20 +184,6 @@
        :config
        (load-theme 'doom-nord t))
    #+end_src
-** gruvbox
-   #+begin_src emacs-lisp
-     ;; (leaf gruvbox-theme
-     ;;  :ensure t
-     ;;  :config
-     ;;  (load-theme 'gruvbox-dark-medium t))
-   #+end_src
-** doracula-theme
-   #+begin_src emacs-lisp
-     ;; (leaf dracula-theme
-     ;;   :ensure t
-     ;;   :config
-     ;;   (load-theme 'dracula t))
-   #+end_src
 ** modus-theme
    #+begin_src emacs-lisp
      ;; (leaf *modus-themes
