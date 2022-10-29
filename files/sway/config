@@ -236,9 +236,11 @@ input type:keyboard {
 
 input type:touchpad {
     tap enabled
+    dwt enabled
     natural_scroll enabled
     pointer_accel 1
 }
+
 
 # sway-session
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
