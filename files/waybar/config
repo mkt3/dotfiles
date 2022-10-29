@@ -94,12 +94,11 @@
      },
     "custom/pacman": {
         "format": " {}",
-        "interval": 3600,                     // every hour
-        "exec": "checkupdates | wc -l",       // # of updates
-        "exec-if": "exit 0",                  // always run; consider advanced run conditions
-        "on-click": "yay; pkill -SIGRTMIN+8 waybar", // update system
+        "interval": 3600,
+        "exec": "checkupdates | wc -l | sed -E 's/^0$/g'",
+        "exec-if": "exit 0",
+        "on-click": "wezterm start -- yay; pkill -SIGRTMIN+8 waybar",
         "signal": 8,
         "min-length": 4
     },
 }
-
