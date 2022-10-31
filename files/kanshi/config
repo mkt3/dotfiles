@@ -1,0 +1,14 @@
+profile multi-DP-1 {
+        output DP-1 enable mode 3840x2160 position 0,0
+        output eDP-1 enable scale 1 position 640,2160
+}
+
+profile multi-DP-2 {
+        output DP-2 enable mode 3840x2160 position 0,0
+        output eDP-1 enable scale 1 position 640,2160
+}
+
+
+profile single {
+        output eDP-1 enable scale 1 position 0,0
+}

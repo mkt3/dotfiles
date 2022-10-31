@@ -12,5 +12,6 @@ export WINIT_UNIX_BACKEND=x11
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+export WLR_DRM_NO_MODIFIERS=1
 
 sleep 5
