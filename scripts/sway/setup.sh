@@ -9,7 +9,7 @@ setup_sway() {
     local waybar_file_dir="${CONFIGS_DIR}/waybar"
     local rofi_file_dir="${CONFIGS_DIR}/rofi"
     local kanshi_file_dir="${CONFIGS_DIR}/kanshi"
-    
+
     info "Creating symlink for sway"
     ln -sfn "${sway_file_dir}" "${XDG_CONFIG_HOME}"
 

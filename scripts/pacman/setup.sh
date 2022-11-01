@@ -35,10 +35,9 @@ setup_pacman() {
                           duf \
                           htop \
                           iotop \
+                          sysstat \
                           jq \
                           neofetch \
-                          zip \
-                          unzip \
                           rsync \
                           httpie \
                           unarchiver \
@@ -96,9 +95,7 @@ setup_pacman() {
                           firefox \
                           thunderbird \
                           acpi \
-                          sysstat \
                           libreoffice-fresh \
-                          jupyterlab \
                           hugo \
                           vlc
                             )
