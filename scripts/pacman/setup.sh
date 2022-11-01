@@ -100,7 +100,6 @@ setup_pacman() {
                           vlc
                             )
     gui_aur_package_list=(enpass-bin \
-                              autotiling \
                               zoom \
                               slack-desktop \
                               google-chrome \
