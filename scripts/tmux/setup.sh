@@ -17,6 +17,6 @@ setup_tmux() {
         git -C $tpm_install_dir pull
     else
         info "Clonening tpm repository"
-        git clone  $tpm_git_url $tpm_install_dir
+        git clone $tpm_git_url $tpm_install_dir
     fi
 }

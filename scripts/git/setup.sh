@@ -25,7 +25,7 @@ setup_git() {
     git config --global init.defaultBranch main
 
     # delta
-    git config --global delta.navigate true 
-    git config --global delta.light false 
-    git config --global delta.line-numbers true 
+    git config --global delta.navigate true
+    git config --global delta.light false
+    git config --global delta.line-numbers true
 }
