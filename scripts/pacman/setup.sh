@@ -52,7 +52,6 @@ setup_pacman() {
                           swaybg \
                           waybar \
                           wl-clipboard \
-                          rofi \
                           mako \
                           lightdm \
                           lightdm-gtk-greeter \
@@ -109,7 +108,7 @@ setup_pacman() {
                               ddcci-driver-linux-dkms \
                               clipman
                          )
-
+    
     for package in ${cui_pacman_package_list[@]}; do
         install_pacman_package $package
     done
@@ -121,5 +120,13 @@ setup_pacman() {
         for package in ${gui_aur_package_list[@]}; do
             install_aur_package $package
         done
+        # for rofi
+        package=rofi-lbonn-wayland
+        if [ "$(yay -Qs ${package} | grep "^local/${package} " )" ] ;then
+            info "${package}(aur) already installed"
+        else
+        info "Installing ${package}(aur)"
+        yay -S $package --noconfirm --mflags "--nocheck"
+     fi
     fi
 }

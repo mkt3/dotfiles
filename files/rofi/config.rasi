@@ -1,11 +1,11 @@
 configuration {
-  modes: "window-s:~/.config/rofi/scripts/window-select.sh,drun,combi,search:~/.config/rofi/scripts/rofi-web-search.py,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh,profile:~/.config/rofi/scripts/rofi-chrome-profile-launcher.sh";
-  combi-modes: [window-s,drun,bookmark,vpn,profile];
+  modes: "window:~/.config/rofi/scripts/window-select.sh,drun,combi,search:~/.config/rofi/scripts/rofi-web-search.py,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh,profile:~/.config/rofi/scripts/rofi-chrome-profile-launcher.sh";
+  combi-modes: [window,drun,bookmark,vpn,profile];
   font: "cica 18";
   sidebar-mode: true;
   show-icons: true;
   drun-display-format: "{icon} {name}";
-  display-window-s: "  ";
+  display-window: "  ";
   display-drun: "󿔺  ";
   display-search: "  ";
   display-bookmark: "󿗂  ";
