@@ -16,8 +16,8 @@ FILE
 
 IFS=$'\n'
 if [[ $# -ne 0 ]]; then
-   xdg-open "${BOOKMARK_DICT[$1]}" &> /dev/null
-   exit 0
+    xdg-open "${BOOKMARK_DICT[$1]}" &> /dev/null
+    exit 0
 else
-   echo "${!BOOKMARK_DICT[*]}"
+    echo "${!BOOKMARK_DICT[*]}"
 fi
