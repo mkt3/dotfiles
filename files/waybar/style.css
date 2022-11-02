@@ -225,18 +225,18 @@
 }
 
 #backlight {
-    background: @backlight;
+    background: @nord_bg;
 }
 
 #clock {
     background: @nord_bg;
 }
 #clock.date {
-    background: @date;
+    background: @nord_bg;
 }
 
 #clock.time {
-    background: @mode;
+    background: @nord_bg;
 }
 
 #pulseaudio {
