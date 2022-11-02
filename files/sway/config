@@ -250,6 +250,8 @@ exec fcitx5 -d
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="org.fcitx.fcitx5-config-qt"] floating enable
 for_window [class="Nextcloud"] floating enable
+for_window [app_id="thunar" title="File Operation Progress"] floating enable
+for_window [app_id="nm-connection-editor"] floating enable
 exec nextcloud --background
 for_window [class="Enpass"] {
     floating enable
