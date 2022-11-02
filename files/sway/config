@@ -268,7 +268,8 @@ assign [class="Emacs"] workspace $ws_main
 exec emacs
 assign [app_id="thunderbird"] workspace $ws_mail
 exec thunderbird
-assign [class="zoom"] workspace $ws_sub
+#assign [class="zoom"] workspace $ws_sub
+for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
 for_window [class="Steam"] floating enable
