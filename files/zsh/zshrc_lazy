@@ -1,7 +1,9 @@
 #!/bin/zsh
 # plugin
 zinit wait lucid blockf light-mode for \
-    @'zsh-users/zsh-autosuggestions' \
+    atinit"zstyle ':autocomplete:*' insert-unambiguous yes" \
+    atinit"zstyle ':autocomplete:*' fzf-completion yes" \
+    @'marlonrichert/zsh-autocomplete' \
     @'zsh-users/zsh-completions' \
     @'zsh-users/zsh-syntax-highlighting' \
     @'olets/zsh-abbr' \
