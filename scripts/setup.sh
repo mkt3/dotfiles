@@ -21,6 +21,7 @@ setup_pre_common() {
     setup_xdg_config
     setup_zsh
     setup_fzf
+    setup_zoxide
     setup_tmux
     setup_git
     setup_emacs
