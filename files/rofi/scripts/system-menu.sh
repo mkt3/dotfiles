@@ -2,7 +2,7 @@
 
 declare -A SYSTEM_DICT=(
     ["Reboot"]="systemctl reboot"
-    ["Suspend"]="systemctl suspend"
+    ["Sleep"]="systemctl suspend"
     ["Poweroff"]="systemctl poweroff"
 )
 
