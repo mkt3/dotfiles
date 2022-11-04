@@ -3,6 +3,12 @@
 zinit wait lucid blockf light-mode for \
     atinit"zstyle ':autocomplete:*' insert-unambiguous yes" \
     atinit"zstyle ':autocomplete:*' fzf-completion yes" \
+    atinit"zstyle ':autocomplete:recent-dirs' backend zoxide" \
+    atload"bindkey '^P' fzf-history-widget" \
+    atload"bindkey '^N' down-line-or-select" \
+    atload"bindkey -M menuselect '^P' vi-up-line-or-history" \
+    atload"bindkey -M menuselect '^N' vi-down-line-or-history" \
+    atload"bindkey -M menuselect '\r' accept-line" \
     @'marlonrichert/zsh-autocomplete' \
     @'zsh-users/zsh-completions' \
     @'zsh-users/zsh-syntax-highlighting' \
@@ -123,6 +129,8 @@ zle -N _navi_widget
 # for delta bat completion
 compdef _gnu_generic bat delta
 
+# zoxide
+eval "$(zoxide init zsh --cmd j)"
 
 function t()
 {
