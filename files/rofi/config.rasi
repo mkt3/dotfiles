@@ -1,6 +1,6 @@
 configuration {
-  modes: "window:~/.config/rofi/scripts/window-select.sh,drun,combi,search:~/.config/rofi/scripts/rofi-web-search.py,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh,profile:~/.config/rofi/scripts/rofi-chrome-profile-launcher.sh";
-  combi-modes: [window,drun,bookmark,vpn,profile];
+  modes: "window:~/.config/rofi/scripts/window-select.sh,drun,combi,search:~/.config/rofi/scripts/rofi-web-search.py,bookmark:~/.config/rofi/scripts/bookmark.sh,vpn:~/.config/rofi/scripts/vpn.sh,profile:~/.config/rofi/scripts/rofi-chrome-profile-launcher.sh,system:~/.config/rofi/scripts/system_menu.sh";
+  combi-modes: [window,drun,bookmark,vpn,profile,system];
   font: "cica 18";
   sidebar-mode: true;
   show-icons: true;
@@ -11,6 +11,9 @@ configuration {
   display-bookmark: "󿗂  ";
   display-vpn: "󿪁  ";
   display-profile: "  ";
+  display-system: "  ";
+  kb-mode-next: "Shift+Right,Control+i,Control+Tab";
+  kb-mode-previous: "Shift+Left,Control+Shift+i";
 }
 
 @theme "nord"
