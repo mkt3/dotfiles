@@ -1,7 +1,7 @@
 {
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
-    "spacing": 2, // Gaps between modules (4px)
+    "spacing": 0, // Gaps between modules (4px)
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
     "modules-right": ["custom/vpn", "custom/pacman", "cpu", "memory", "pulseaudio", "backlight", "battery", "clock", "tray", "idle_inhibitor"],
@@ -9,7 +9,7 @@
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
-        "format": "{index}:{name}{icon}",
+        "format": "{index}:{name} {icon}",
         "format-icons": {
             "1: main": "",
             "9: sub": "",
@@ -33,8 +33,8 @@
         }
     },
     "tray": {
-        //"icon-size": 21,
-        "spacing": 5
+        "icon-size": 24,
+        "spacing": 2
     },
     "clock": {
         // "timezone": "America/New_York",
