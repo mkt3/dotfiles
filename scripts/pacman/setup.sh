@@ -96,7 +96,9 @@ setup_pacman() {
                           acpi \
                           libreoffice-fresh \
                           hugo \
-                          vlc
+                          vlc \
+                          zathura \
+                          zathura-pdf-mupdf
                             )
     gui_aur_package_list=(enpass-bin \
                               zoom \
