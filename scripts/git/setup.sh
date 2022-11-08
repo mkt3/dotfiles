@@ -24,7 +24,7 @@ setup_git() {
         /bin/bash -c "$(cd $git_secrets_dir && PREFIX="${HOME}/.local" make install)"
 
         git secrets --register-aws --global
-        git secrets --install "${git_config_dir}/git-templates/git-secrets"
+        git secrets --install "${git_config_dir}/git-templates/git-secrets" || true
         git config --global init.templatedir "${git_config_dir}/git-templates/git-secrets"
     fi
 
