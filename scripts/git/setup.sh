@@ -23,7 +23,12 @@ setup_git() {
         git clone https://github.com/awslabs/git-secrets.git $git_secrets_dir 
         /bin/bash -c "$(cd $git_secrets_dir && PREFIX="${HOME}/.local" make install)"
 
+        # for AWS
         git secrets --register-aws --global
+        # for GCP  
+        git secrets --add 'private_key' --global
+        git secrets --add 'private_key_id' --global
+
         git secrets --install "${git_config_dir}/git-templates/git-secrets" || true
         git config --global init.templatedir "${git_config_dir}/git-templates/git-secrets"
     fi
