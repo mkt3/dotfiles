@@ -17,6 +17,17 @@ setup_git() {
 
     ln -sfn "${git_file_dir}/ignore" "${git_config_dir}/"
 
+    if !(type git-secrets > /dev/null 2>&1); then
+        local git_secrets_dir = "${HOME}/.local/src/git-secrets"
+        info "Installing git-secrets"
+        git clone https://github.com/awslabs/git-secrets.git $git_secrets_dir 
+        /bin/bash -c "$(cd $git_secrets_dir && PREFIX="${HOME}/.local" make install)"
+
+        git secrets --register-aws --global
+        git secrets --install "${git_config_dir/git-templates/git-secrets}"
+        git config --global init.templatedir "${git_config_dir/git-templates/git-secrets}"
+    fi
+
     info "Setting up git"
     git config --global pull.rebase false
 
