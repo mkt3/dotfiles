@@ -5,3 +5,6 @@ git config --global user.name "<name>"
 
 # Set global git user email
 git config --global user.email <email>
+
+# Enable git-secrets in repository
+git secrets --install
