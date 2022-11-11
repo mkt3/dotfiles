@@ -36,7 +36,6 @@ EOF
 IFS=$'\n'
 if [[ $# -ne 0 ]]; then
     IDX=`echo $1 | tr -d '" '`
-    echo $IDX > ~/a.txt
     swaymsg "[con_id=${WINDOW_LIST[$IDX]}]" focus  &> /dev/null
     exit 0
 else
