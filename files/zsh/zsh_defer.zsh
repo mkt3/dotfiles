@@ -1,15 +1,6 @@
 #!/bin/zsh
 # plugin
 zinit wait lucid blockf light-mode for \
-    atinit"zstyle ':autocomplete:*' insert-unambiguous yes" \
-    atinit"zstyle ':autocomplete:*' fzf-completion yes" \
-    atinit"zstyle ':autocomplete:recent-dirs' backend zoxide" \
-    atload"bindkey '^P' up-line-or-search" \
-    atload"bindkey '^N' down-line-or-select" \
-    atload"bindkey -M menuselect '^P' vi-up-line-or-history" \
-    atload"bindkey -M menuselect '^N' vi-down-line-or-history" \
-    atload"bindkey -M menuselect '\r' accept-line" \
-    @'marlonrichert/zsh-autocomplete' \
     @'zsh-users/zsh-completions' \
     @'zsh-users/zsh-autosuggestions' \
     @'zsh-users/zsh-syntax-highlighting' \

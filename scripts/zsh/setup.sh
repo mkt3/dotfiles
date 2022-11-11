@@ -8,7 +8,7 @@ setup_zsh() {
 
     info "Creating symlink for zsh"
 
-    ln -sfn "${zsh_file_dir}/.zshenv" "${HOME}/.zshenv"
+    ln -sfn "${zsh_file_dir}/zshenv.zsh" "${HOME}/.zshenv"
     ln -sfn $zsh_file_dir "${XDG_CONFIG_HOME}/zsh"
 
     info "Creating zsh history dir"

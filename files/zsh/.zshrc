@@ -101,11 +101,6 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
 
-zshaddhistory() {
-    local line="${1%%$'\n'}"
-    [[ ! "$line" =~ "^(cd|history|lazygit|la|ll|ls|rm|rmdir)($| )" ]]
-}
-
 # Keybind
 ## historical backward/forward search with linehead string bined to ^
 autoload history-search-end
@@ -147,5 +142,5 @@ fi
 
 # lazy load
 zinit wait lucid null for \
-    atinit'source "$ZDOTDIR/zshrc_lazy"' \
+    atinit'source "$ZDOTDIR/zsh_defer.zsh"' \
     @'zdharma-continuum/null'
