@@ -6,7 +6,7 @@ REPO_DIR="$(cd "$(dirname "$0")/.."; pwd)"
 CONFIGS_DIR="${REPO_DIR}/files"
 
 SETUP="TRUE"
-. "${CONFIGS_DIR}/zsh/.zshenv"
+. "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
 ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
 
