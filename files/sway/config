@@ -273,8 +273,6 @@ exec thunderbird
 for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
-for_window [class="Steam"] floating enable
-assign [class="Steam"] workspace $ws_game
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
 
 bar {
