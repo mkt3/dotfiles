@@ -178,3 +178,7 @@ if [[ $SETUP != "TRUE" ]];then
    [ -f "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc"
    [ -f "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc"
 fi
+
+if [[ ! -n $TMUX  ]]; then
+    bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
+fi
