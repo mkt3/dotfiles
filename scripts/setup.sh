@@ -117,18 +117,10 @@ case $os in
         dist=$(cat /etc/issue | tr '[A-Z]' '[a-z]')
         case $dist in
             arch*)
-                if systemctl get-default | grep 'graphical.target' > /dev/null 2>&1; then
-                    setup_arch gui
-                else
-                    setup_arch cui
-                fi
+                setup_arch "$@"
                 ;;
             ubuntu*)
-                if systemctl get-default | grep 'graphical.target' > /dev/null 2>&1; then
-                    setup_ubuntu gui
-                else
-                    setup_ubuntu cui
-                fi
+                setup_ubuntu "$@"
                 ;;
             *photon*)
                 setup_photon
