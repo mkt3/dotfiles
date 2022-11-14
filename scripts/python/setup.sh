@@ -55,12 +55,9 @@ setup_poetry() {
         $poetry_path self update || echo 'No update'
     fi
 
-    if  bash -lc "~/.local/bin/poetry config --list | grep 'virtualenvs.in-project = true' > /dev/null"; then
-        info "Global config already exists... Skipping."
-    else
-        info "Setting global config"
-        $poetry_path config virtualenvs.in-project true
-    fi
+    info "Setting global config"
+    $poetry_path config virtualenvs.in-project true
+    $poetry_path config virtualenvs.prefer-active-python true
 
     info "Enable completions"
     $poetry_path completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
