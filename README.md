@@ -10,8 +10,13 @@
 ## Install
 1. Sign in to App store manually (Only macOS)
 2. Run
+  - CUI environment only
     ```bash
     curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+    ```
+  - GUI & CUI environment
+    ```bash
+    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui
     ```
 ## Link
 [emacs conf](./files/emacs)
