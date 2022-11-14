@@ -75,8 +75,6 @@ export PYTHONUSERBASE="$HOME/.local"
 # Pyenv
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-[ -d $PYENV_ROOT ] && eval "$(pyenv init --path)"
-[ -d $PYENV_ROOT ] && eval "$(pyenv init -)"
 
 # Poety path
 export PATH="$HOME/.poetry/bin:$PATH"

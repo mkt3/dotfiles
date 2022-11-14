@@ -131,3 +131,6 @@ function t()
         cd $1
     fi
 }
+
+# pyenv init
+[ -d $PYENV_ROOT ] && eval "$(pyenv init -)"
