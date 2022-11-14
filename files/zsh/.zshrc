@@ -3,7 +3,7 @@ bindkey -e
 
 # zsh plugin
 . "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
-bindkey '^K' kill-line 
+bindkey '^K' kill-line
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -47,6 +47,7 @@ prompt_common_0="%{%(?.${fg[$host_color]}.${fg[red]})%}[${USER_FONT}%n${OS_FONT}
 prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
 
 setopt prompt_subst
+
 function _vcs_precmd {
     V_ENV="$VIRTUAL_ENV:h:t"
     if [[ "$V_ENV" == "." ]]; then
@@ -100,45 +101,6 @@ setopt extended_history
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
-
-# Keybind
-## historical backward/forward search with linehead string bined to ^
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
-
-# rehash
-zstyle ":completion:*:commands" rehash 1
-
-# comment
-setopt INTERACTIVE_COMMENTS
-
-# fzf
-[ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
-export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-#export FZF_DEFAULT_OPTS='--height 40% --reverse --border --ansi'
-export FZF_DEFAULT_OPTS='--reverse --border --ansi'
-
-export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --ignore-file=$XDG_CONFIG_HOME/ripgrep/ignore"
-export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
-
-export FZF_TMUX_OPTS="-p 80%"
-
-# terminal title
-echo -ne "\x1b]0;$HOST\x1b\\"
-
-# Tmux
-if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
-    main_session="main_session"
-    tmux_session="`tmux list-sessions`"
-    if [[ "$tmux_session" =~ "${main_session}" ]]; then
-        tmux attach-session -t "$main_session"
-    else
-        tmux new-session -s "$main_session"
-    fi
-fi
 
 # lazy load
 zinit wait lucid null for \

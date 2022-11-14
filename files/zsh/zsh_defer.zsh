@@ -1,11 +1,48 @@
 #!/bin/zsh
 # plugin
 zinit wait lucid blockf light-mode for \
+    atinit"zstyle ':autocomplete:*' insert-unambiguous yes" \
+    atinit"zstyle ':autocomplete:*' fzf-completion yes" \
+    atinit"zstyle ':autocomplete:recent-dirs' backend zoxide" \
+    atload"bindkey '^P' history-beginning-search-backward-end" \
+    atload"bindkey '^N' down-line-or-select" \
+    atload"bindkey -M menuselect '^P' vi-up-line-or-history" \
+    atload"bindkey -M menuselect '^N' vi-down-line-or-history" \
+    atload"bindkey -M menuselect '\r' accept-line" \
+    @'marlonrichert/zsh-autocomplete' \
     @'zsh-users/zsh-completions' \
     @'zsh-users/zsh-autosuggestions' \
     @'zsh-users/zsh-syntax-highlighting' \
     @'olets/zsh-abbr' \
     @'b4b4r07/enhancd'
+
+# Keybind
+## historical backward/forward search with linehead string bined to ^
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
+
+# rehash
+zstyle ":completion:*:commands" rehash 1
+
+# comment
+setopt INTERACTIVE_COMMENTS
+
+# fzf
+[ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+#export FZF_DEFAULT_OPTS='--height 40% --reverse --border --ansi'
+export FZF_DEFAULT_OPTS='--reverse --border --ansi'
+
+export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --ignore-file=$XDG_CONFIG_HOME/ripgrep/ignore"
+export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
+
+export FZF_TMUX_OPTS="-p 80%"
+
+# terminal title
+echo -ne "\x1b]0;$HOST\x1b\\"
 
 # Alias
 setopt complete_aliases
