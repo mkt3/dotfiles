@@ -171,3 +171,10 @@ function t()
 
 # pyenv init
 [ -d $PYENV_ROOT ] && eval "$(pyenv init -)"
+
+# gcp
+export CLOUDSDK_PYTHON=python3.8
+if [[ $SETUP != "TRUE" ]];then
+   [ -f "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc"
+   [ -f "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc"
+fi
