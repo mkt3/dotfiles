@@ -113,10 +113,10 @@ case $os in
         dist=$(cat /etc/issue | tr '[A-Z]' '[a-z]')
         case $dist in
             arch*)
-                setup_arch ${1:cui}
+                setup_arch ${1:-cui}
                 ;;
             ubuntu*)
-                setup_ubuntu ${1:cui}
+                setup_ubuntu ${1:-cui}
                 ;;
             *)
                 setup_minimal
