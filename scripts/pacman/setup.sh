@@ -46,7 +46,7 @@ setup_pacman() {
 
     gui_pacman_package_list=(sway \
                           xorg-xwayland \
-                          qt5-wayland \ 
+                          qt5-wayland \
                           swayidle \
                           swaylock \
                           swaybg \
@@ -110,7 +110,7 @@ setup_pacman() {
                               ddcci-driver-linux-dkms \
                               clipman
                          )
-    
+
     for package in ${cui_pacman_package_list[@]}; do
         install_pacman_package $package
     done

@@ -73,10 +73,6 @@ setup_ubuntu() {
     setup_post_common ubuntu
 }
 
-setup_photon() {
-    setup_minimal
-}
-
 setup_mac() {
     title "Setting up mac"
     setup_macos
@@ -117,13 +113,10 @@ case $os in
         dist=$(cat /etc/issue | tr '[A-Z]' '[a-z]')
         case $dist in
             arch*)
-                setup_arch "$@"
+                setup_arch ${1:cui}
                 ;;
             ubuntu*)
-                setup_ubuntu "$@"
-                ;;
-            *photon*)
-                setup_photon
+                setup_ubuntu ${1:cui}
                 ;;
             *)
                 setup_minimal
