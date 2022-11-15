@@ -27,7 +27,6 @@ setup_pacman() {
     cui_pacman_package_list=(python \
                           python-pip \
                           python-pipx \
-                          lazygit \
                           zsh \
                           tmux \
                           pacman-contrib \
