@@ -103,6 +103,7 @@ setup_pacman() {
                               zoom \
                               slack-desktop \
                               google-chrome \
+                              sidekick-browser-stable-bin \
                               anki-official-binary-bundle \
                               nwg-look \
                               nordic-theme \

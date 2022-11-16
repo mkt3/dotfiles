@@ -13,7 +13,7 @@ keymap:
       # SKK hack for Chrome
       #C-j: C-m
 
-  - name: Default (Nocturn, etc.)
+  - name: Default
     application:
       not: [Google-chrome, Slack, wezterm, Emacs]
     remap:
@@ -44,15 +44,12 @@ keymap:
       Super-t: C-t
       Super-l: C-l
 
-      # actually these are vim insert mode bindings, but compatible with shell
-      C-w: [C-Shift-left, delete]
-
       C-d: delete
       Super-d: C-delete
 
   - name: Chrome, Slack (modified from Default)
     application:
-      only: [Google-chrome, Slack]
+      only: [Google-chrome, Slack, Sidekick-browser]
     remap:
       # Emacs basic
       C-b: left
@@ -81,9 +78,6 @@ keymap:
       Super-w: C-w
       Super-t: C-t
 
-      # actually these are vim insert mode bindings, but compatible with shell
-      C-w: [C-Shift-left, delete]
-
       # Tabs
       Super-o: C-Shift-tab
       Super-p: C-tab
@@ -99,6 +93,25 @@ keymap:
       C-g: Esc
       C-s: C-g
       Super-Enter: C-Enter
+
+  - name: Sidekick
+    application:
+      only: Sidekick-browser
+    remap:
+      Super-s: C-f
+      C-g: Esc
+      Super-Enter: C-Enter
+      Super-f: C-1
+      
+      Super-1: C-1
+      Super-2: C-2
+      Super-3: C-3
+      Super-4: C-4
+      Super-5: C-5
+      Super-6: C-6
+      Super-7: C-7
+      Super-8: C-8
+      Super-9: C-9
 
   - name: Wezterm
     application:
