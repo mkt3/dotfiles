@@ -15,7 +15,7 @@ keymap:
 
   - name: Default
     application:
-      not: [Google-chrome, Slack, wezterm, Emacs]
+      not: [Google-chrome, Slack, wezterm, Emacs, Vivaldi-stable]
     remap:
       # Emacs basic
       C-b: left
@@ -49,15 +49,20 @@ keymap:
 
   - name: Chrome, Slack (modified from Default)
     application:
-      only: [Google-chrome, Slack, Sidekick-browser]
+      only: [Google-chrome, Slack, Sidekick-browser, Vivaldi-stable]
     remap:
       # Emacs basic
       C-b: left
       C-f: right
       C-p: up
       C-n: down
-      C-h: backspace
 
+      # delete
+      C-d: delete
+      Super-d: C-delete
+      C-h: backspace
+      
+      # enter
       C-m: enter
      
       # Emacs word
@@ -77,13 +82,7 @@ keymap:
       Super-v: C-v
       Super-w: C-w
       Super-t: C-t
-
-      # Tabs
-      Super-o: C-Shift-tab
-      Super-p: C-tab
-
-      C-d: delete
-      Super-d: C-delete
+      Super-l: C-l
 
   - name: Google Search
     application:
@@ -93,6 +92,14 @@ keymap:
       C-g: Esc
       C-s: C-g
       Super-Enter: C-Enter
+
+  - name: Vivaldi
+    application:
+      only: Vivaldi-stable
+    remap:
+
+      Super-s: C-f
+      C-g: Esc
 
   - name: Sidekick
     application:

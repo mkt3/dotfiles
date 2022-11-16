@@ -90,8 +90,8 @@ setup_pacman() {
                           gnome-keyring \
                           seahorse \
                           discord \
+                          vivaldi \
                           firefox \
-                          thunderbird \
                           acpi \
                           libreoffice-fresh \
                           hugo \
@@ -103,7 +103,6 @@ setup_pacman() {
                               zoom \
                               slack-desktop \
                               google-chrome \
-                              sidekick-browser-stable-bin \
                               anki-official-binary-bundle \
                               nwg-look \
                               nordic-theme \

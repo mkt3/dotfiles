@@ -261,14 +261,12 @@ for_window [class="Enpass"] {
 exec enpass -minimize
 assign [class="Slack"] workspace $ws_chat
 exec  slack
-assign [class="Google-chrome"] workspace $ws_main
-exec google-chrome-stable
+assign [class="Vivaldi-stable"] workspace $ws_main
+exec vivaldi-stable
 assign [app_id="org.wezfurlong.wezterm"] workspace $ws_main
 exec wezterm
 assign [class="Emacs"] workspace $ws_main
 exec emacs
-assign [app_id="thunderbird"] workspace $ws_mail
-exec thunderbird
 #assign [class="zoom"] workspace $ws_sub
 for_window [app_id="zoom"] floating enable
 exec blueman-applet
