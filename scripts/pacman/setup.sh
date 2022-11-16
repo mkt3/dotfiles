@@ -91,6 +91,7 @@ setup_pacman() {
                           seahorse \
                           discord \
                           vivaldi \
+                          vivaldi-ffmpeg-codecs \
                           firefox \
                           acpi \
                           libreoffice-fresh \
