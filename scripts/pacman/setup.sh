@@ -98,6 +98,7 @@ setup_pacman() {
                           libreoffice-fresh \
                           hugo \
                           vlc \
+                          borg \
                           zathura \
                           zathura-pdf-mupdf
                             )
