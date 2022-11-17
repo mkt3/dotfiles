@@ -70,6 +70,7 @@ setup_pacman() {
                           fcitx5-gtk \
                           fcitx5-qt \
                           fcitx5-skk \
+                          fcitx5-nord \
                           pipewire \
                           wireplumber \
                           pipewire-alsa \
