@@ -53,6 +53,7 @@ setup_arch() {
         setup_wezterm
         setup_xremap
         setup_skk
+        setup_borg
     fi
 
     setup_post_common arch

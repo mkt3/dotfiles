@@ -1,0 +1,9 @@
+[Unit]
+Description=Run daily
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1hour
+ 
+[Install]
+WantedBy=timers.target
