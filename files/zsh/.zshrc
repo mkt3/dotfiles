@@ -1,11 +1,22 @@
+# fzf
+[ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+#export FZF_DEFAULT_OPTS='--height 40% --reverse --border --ansi'
+export FZF_DEFAULT_OPTS='--reverse --border --ansi'
+
+export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --ignore-file=$XDG_CONFIG_HOME/ripgrep/ignore"
+export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
+
+export FZF_TMUX_OPTS="-p 80%"
+
 # Tmux
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     main_session="main_session"
     tmux_session="`tmux list-sessions`"
-    if $(tmux has-session -t  ${main_session} 2> /dev/null); then
-        tmux attach-session -t $main_session
+    if [[ "$tmux_session" =~ "${main_session}" ]]; then
+        tmux attach-session -t "$main_session"
     else
-        tmux new-session -s $main_session
+        tmux new-session -s "$main_session"
     fi
 fi
 

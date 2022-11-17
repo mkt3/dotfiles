@@ -26,7 +26,7 @@ function get_selected_source() {
 
 function set_session() {
     local selected_source="$(get_selected_source)"
-    
+
     if [ -z "$selected_source" ]; then
         return
     fi

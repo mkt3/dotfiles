@@ -6,6 +6,7 @@ return {
   font_size = 20.0,
   color_scheme = "nord",
   adjust_window_size_when_changing_font_size = false,
+  warn_about_missing_glyphs = false,
   window_padding = {
     left = 0,
     right = 0,
