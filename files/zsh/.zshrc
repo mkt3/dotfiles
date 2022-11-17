@@ -1,3 +1,14 @@
+# Tmux
+if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
+    main_session="main_session"
+    tmux_session="`tmux list-sessions`"
+    if $(tmux has-session -t  ${main_session} 2> /dev/null); then
+        tmux attach-session -t $main_session
+    else
+        tmux new-session -s $main_session
+    fi
+fi
+
 # Emacs keybind
 bindkey -e
 
