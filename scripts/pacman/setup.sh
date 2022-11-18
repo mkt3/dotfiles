@@ -82,6 +82,8 @@ setup_pacman() {
                           gvfs \
                           gvfs-smb \
                           sshfs \
+                          ristretto  \
+                          slurp \
                           emacs-nativecomp \
                           texlive-core \
                           wezterm \
