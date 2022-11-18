@@ -84,6 +84,7 @@ setup_pacman() {
                           sshfs \
                           ristretto  \
                           slurp \
+                          grim \
                           emacs-nativecomp \
                           texlive-core \
                           wezterm \
