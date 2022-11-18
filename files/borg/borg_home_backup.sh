@@ -11,7 +11,7 @@ username=`whoami`
 date=`/bin/date +"%Y%m%d_%H%M"`
 
 # バックアップディレクトリ
-backup_dir="earth-borg:/backup/${hostname}/${username}"
+backup_dir="borg:/backup/${hostname}/${username}"
 
 # 差分バックアップ世代数
 file_keep_days=7
