@@ -24,6 +24,7 @@ setup_pipx() {
     fi
 
     info "Installing/Updating pipx packages"
+    # package_list=(jupyterlab flake8 isort black pyright)
     package_list=(jupyterlab flake8 isort black pyright)
 
     installed_list=$(pipx list)
@@ -36,10 +37,10 @@ setup_pipx() {
             info "Installing $package"
             pipx install $package
 
-            if [ $package == "jupyterlab" ]; then
-                info "Installing jupyterlab template extention"
-                pipx inject jupyterlab jupyterlab_templates
-            fi
+            # if [ $package == "jupyterlab" ]; then
+            #     info "Installing jupyterlab template extention"
+            #    pipx inject jupyterlab jupyterlab_templates
+            # fi
         fi
     done
 
@@ -95,9 +96,9 @@ setup_python() {
     info "Creating symlink for matplotlib"
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
 
-    info "Creating symlink for jupyterlab.sh"
-    mkdir -p "${HOME}/.local/bin"
-    ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
+    # info "Creating symlink for jupyterlab.sh"
+    # mkdir -p "${HOME}/.local/bin"
+    # ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
 
     setup_pyenv
 
