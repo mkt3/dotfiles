@@ -25,7 +25,7 @@ setup_pipx() {
 
     info "Installing/Updating pipx packages"
     # package_list=(jupyterlab flake8 isort black pyright)
-    package_list=(jupyterlab flake8 isort black pyright)
+    package_list=(flake8 isort black pyright)
 
     installed_list=$(pipx list)
 
