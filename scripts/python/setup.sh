@@ -90,6 +90,8 @@ setup_python() {
     title "Setting up python"
     local python_file_dir="$CONFIGS_DIR/python"
 
+    pip3 install --user i3ipc
+
     info "Creating symlink for flake8"
     ln -sfn "${python_file_dir}/flake8" "${XDG_CONFIG_HOME}/flake8"
 

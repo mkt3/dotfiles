@@ -8,7 +8,7 @@ export QT_QPA_PLATFORM="wayland;xcb"
 export GDK_DPI_SCALE=1
 export QT_SCALE_FACTOR=1.5
 export MOZ_ENABLE_WAYLAND=1
-export WINIT_UNIX_BACKEND=x11
+#export WINIT_UNIX_BACKEND=x11
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx

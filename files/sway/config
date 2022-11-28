@@ -272,6 +272,7 @@ for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
+for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws_media
 
 bar {
     swaybar_command waybar
