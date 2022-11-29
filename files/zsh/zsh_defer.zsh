@@ -30,17 +30,6 @@ zstyle ":completion:*:commands" rehash 1
 # comment
 setopt INTERACTIVE_COMMENTS
 
-# # fzf
-# [ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
-# export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-# #export FZF_DEFAULT_OPTS='--height 40% --reverse --border --ansi'
-# export FZF_DEFAULT_OPTS='--reverse --border --ansi'
-
-# export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --ignore-file=$XDG_CONFIG_HOME/ripgrep/ignore"
-# export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
-
-# export FZF_TMUX_OPTS="-p 80%"
-
 # terminal title
 echo -ne "\x1b]0;$HOST\x1b\\"
 
