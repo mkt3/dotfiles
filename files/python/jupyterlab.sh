@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 WORKSPACE_DIR=$HOME/workspace/*/*/*/
 INSTALLE_DIR=$HOME/.local/share/jupyter/kernels

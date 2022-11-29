@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 declare -A SYSTEM_DICT=(
     ["Reboot"]="systemctl reboot"

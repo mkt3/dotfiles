@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 osascript -e "tell application \"$1\" to run" \
   -e "tell application \"System Events\"" \
