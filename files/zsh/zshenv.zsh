@@ -40,6 +40,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 # zsh
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
+export LISTMAX=1000
 
 # personal env
 [ -d "${HOME}/Nextcloud/personal_config/env" ] && . "${HOME}/Nextcloud/personal_config/env/zshenv"
