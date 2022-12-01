@@ -974,6 +974,8 @@
         ("C-c n l" . org-roam-buffer-toggle)
         ("C-c n c" . org-roam-capture)
         ("C-c n j" . org-roam-dailies-capture-today)
+        ("C-c n d" . org-roam-dailies-find-date)
+        ("C-c C-g t" . org-roam-dailies-find-today)
         )
        :init
        (setq org-roam-directory my:d:org-roam)
@@ -1002,11 +1004,11 @@
        (org-roam-dailies-capture-templates
         . '(
             ("j" "journal" entry
-             "** %<%H:%M> %^{title}\n%?"
+             "** %<%H:%M> %?"
              :target (file+head+olp "%<%Y-%m>.org"
                                     "#+title: %<%Y-%m>\n"
                                     ("%<%Y-%m-%d>"))
-             :immediate-finish t)
+             )
             ))
        :config
        (cl-defmethod org-roam-node-type ((node org-roam-node))
