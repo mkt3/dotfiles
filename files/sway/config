@@ -127,10 +127,10 @@ bindsym $mod+a focus parent
 
 
 # Make the currently focused window a scratchpad
-bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Shift+semicolon move scratchpad
 
 # Show the first scratchpad window
-bindsym $mod+minus scratchpad show
+bindsym $mod+semicolon scratchpad show
 
 
 # Workspaces:
