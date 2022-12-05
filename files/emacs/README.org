@@ -658,13 +658,13 @@
    #+end_src
 ** tree-sitter
    #+begin_src emacs-lisp
-     ;; (leaf tree-sitter
-     ;;   :ensure t
-     ;;   :init
-     ;;   (leaf tree-sitter-langs :ensure t)
-     ;;   (global-tree-sitter-mode)
-     ;;   :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-     ;;   )
+     (leaf tree-sitter
+       :ensure t
+       :init
+       (leaf tree-sitter-langs :ensure t)
+       (global-tree-sitter-mode)
+       :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+       )
    #+end_src
 ** node module path
    #+begin_src emacs-lisp
