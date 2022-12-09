@@ -49,6 +49,8 @@ setup_pacman() {
                           swayidle \
                           swaylock \
                           swaybg \
+                          xdg-desktop-portal-wlr \
+                          xdg-desktop-portal \
                           waybar \
                           wl-clipboard \
                           mako \
