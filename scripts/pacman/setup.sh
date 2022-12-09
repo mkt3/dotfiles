@@ -108,7 +108,6 @@ setup_pacman() {
                           zathura-pdf-mupdf
                             )
     gui_aur_package_list=(enpass-bin \
-                              zoom \
                               slack-desktop \
                               google-chrome \
                               anki-official-binary-bundle \
