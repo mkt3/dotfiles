@@ -262,7 +262,7 @@
    lsp-ui-sideline trauncate when font size is set to 20 or more.
    #+begin_src emacs-lisp
      (leaf *font
-       :when window-system
+       :when (display-graphic-p)
        :config (add-to-list 'default-frame-alist '(font . "Cica-16")))
    #+end_src
 * authentication
@@ -420,7 +420,7 @@
    #+begin_src emacs-lisp
      (leaf skk
        :ensure ddskk
-       :when window-system
+       :when (display-graphic-p)
        :defun (skk-get)
        :require t
        skk-study
