@@ -98,7 +98,8 @@
 ** default keybind
    #+begin_src emacs-lisp
      (leaf *default-keybind
-       :bind (("M-+"   . text-scale-increase)
+       :bind (("C-h"   . backward-delete-char)
+              ("M-+"   . text-scale-increase)
               ("M--"   . text-scale-decrease)
               ("C-c l" . toggle-truncate-lines)
               ("C-x |" . split-window-right)
@@ -106,6 +107,17 @@
               ("C-x x" . delete-window)))
    #+end_src
 
+** server
+   #+begin_src emacs-lisp
+     (leaf server
+      :commands (server-running-p)
+      :when (display-graphic-p)
+      :hook
+      (emacs-startup-hook . (lambda ()
+                             (unless (server-running-p)
+                              (server-start))))
+     )
+   #+end_src
 ** lisp
    #+begin_src emacs-lisp
      (leaf simple
