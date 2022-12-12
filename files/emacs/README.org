@@ -98,14 +98,14 @@
 ** default keybind
    #+begin_src emacs-lisp
      (leaf *default-keybind
-       :bind (("M-+"   . text-scale-increase)
+       :bind (("C-h"   . backward-delete-char)
+              ("M-+"   . text-scale-increase)
               ("M--"   . text-scale-decrease)
               ("C-c l" . toggle-truncate-lines)
               ("C-x |" . split-window-right)
               ("C-x -" . split-window-below)
               ("C-x x" . delete-window)))
    #+end_src
-
 ** lisp
    #+begin_src emacs-lisp
      (leaf simple
