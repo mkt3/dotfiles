@@ -25,74 +25,68 @@
 (setq skk-jisx0208-latin-mode-string "[Ａ]")
 (setq skk-jisx0201-mode-string "[_ｱ]")
 (setq skk-abbrev-mode-string "[aA]")
-(setq skk-indicator-use-cursor-color nil)
+
+;; カーソル付近にモード切り替えを表示する
+(setq skk-show-mode-show t); M-x skk-show-mode でトグル可。
+(set-face-background 'skk-show-mode-inline-face "#272C36")
 
 ;; 半角カナ
-;; (setq skk-use-jisx0201-input-method t)
+(setq skk-use-jisx0201-input-method t)
 
-;; インジケータに色を付けない
-(setq skk-indicator-use-cursor-color nil)
+;; インジケータに色を付ける
+(setq skk-use-color-cursor t)
+(setq skk-indicator-use-cursor-color t)
 
-;; 注釈の利用
-(setq skk-show-annotation t)
+;; 注釈は利用しない
+(setq skk-show-annotation nil)
 
 ;; 変換候補の表示位置
-;;(setq skk-show-tooltip nil)
+(setq skk-show-inline 'vertical)
+(when skk-show-inline
+  (setq skk-inline-show-face nil
+	      skk-inline-show-background-color "#272C36"
+        skk-inline-show-background-color-odd "#272C36"))
 (setq skk-show-candidates-always-pop-to-buffer t)
 
 ;; 候補表示件数を2列に
 (setq skk-henkan-show-candidates-rows 2)
-
+;; 候補一覧を表示するまでの `skk-start-henkan-char' を打鍵する回数
+(setq skk-show-candidates-nth-henkan-char 2)
 ;; 送り仮名が厳密に正しい候補を優先して表示
 (setq skk-henkan-strict-okuri-precedence t)
-
-(add-hook 'skk-load-hook ; 自動的に入力モードを切り替え
-          (lambda ()
-            (require 'context-skk)))
 
 ;; 動的候補表示
 (setq skk-dcomp-activate t) ; 動的補完
 (setq skk-dcomp-multiple-activate t) ; 動的補完の複数候補表示
 (setq skk-dcomp-multiple-rows 10) ; 動的補完の候補表示件数
 ;; 動的補完の複数表示群のフェイス
-(set-face-foreground 'skk-dcomp-multiple-face "Black")
-(set-face-background 'skk-dcomp-multiple-face "LightGoldenrodYellow")
+(set-face-foreground 'skk-dcomp-multiple-face "White")
+(set-face-background 'skk-dcomp-multiple-face "#272C36")
 (set-face-bold-p 'skk-dcomp-multiple-face nil)
 ;; 動的補完の複数表示郡の補完部分のフェイス
 (set-face-foreground 'skk-dcomp-multiple-trailing-face "dim gray")
 (set-face-bold-p 'skk-dcomp-multiple-trailing-face nil)
 ;; 動的補完の複数表示郡の選択対象のフェイス
 (set-face-foreground 'skk-dcomp-multiple-selected-face "White")
-(set-face-background 'skk-dcomp-multiple-selected-face "LightGoldenrod4")
+(set-face-background 'skk-dcomp-multiple-selected-face "#5E81AC")
 (set-face-bold-p 'skk-dcomp-multiple-selected-face nil)
-;; 動的補完時に下で次の補完へ
-(define-key skk-j-mode-map (kbd "<down>") 'skk-completion-wrapper)
 
-;; isearch
-(add-hook 'isearch-mode-hook 'skk-isearch-mode-setup)
-(add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup)
-(setq skk-isearch-start-mode 'latin)
+;; 変換の学習
+(require 'skk-study)
 
-(defun skk-mode-invoke-if-not-invoked ()
-  (interactive)
-
-  (if (not (boundp 'skk-mode))
-      (progn
-        (skk-mode)
-        (skk-latin-mode t)
-        )
-    (if (not skk-mode)
-        (skk-latin-mode t)
-      )))
-
-(add-hook 'find-file-hooks (lambda () (skk-mode-invoke-if-not-invoked)))
-(add-hook 'org-mode-hook (lambda () (skk-mode-invoke-if-not-invoked)))
-
+;; マーカーを変更する
+;; https://github.com/skk-dev/ddskk/issues/162
 (defun skk-set-display-table ()
   (walk-windows (lambda (w)
                   (let ((disptab (make-display-table)))
-                    (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
-                    (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
+                    (aset disptab ?\▼ (vector (make-glyph-code ?＃ 'escape-glyph)))
+                    (aset disptab ?\▽ (vector (make-glyph-code ?＠ 'escape-glyph)))
                     (set-window-display-table w disptab)))))
 (add-hook 'window-configuration-change-hook #'skk-set-display-table)
 (add-hook 'after-init-hook #'skk-set-display-table)
+
+;; 複数の Emacsen を起動して個人辞書を共有する
+(setq skk-share-private-jisyo t)
+
+;; 単語登録／単語削除のたびに個人辞書を保存する
+(setq skk-save-jisyo-instantly t)

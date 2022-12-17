@@ -423,7 +423,8 @@
        :defun (skk-get)
        :require t
        :bind (("C-x j" . skk-mode))
-       :custom ((default-input-method . "japanese-skk"))
+       :custom ((default-input-method . "japanese-skk")
+                (skk-byte-compile-init-file . t))
        :init
        (setq skk-user-directory (concat user-emacs-directory "ddskk.d"))
        (setq viper-mode nil)
