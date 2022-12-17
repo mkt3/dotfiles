@@ -420,17 +420,13 @@
    #+begin_src emacs-lisp
      (leaf skk
        :ensure ddskk
-       :when (display-graphic-p)
        :defun (skk-get)
        :require t
-       skk-study
-       :bind (("C-x j"  . skk-mode))
-       :custom ((skk-server-portnum . 1178)
-                (skk-server-host . "localhost")
-                (default-input-method . "japanese-skk"))
-       :init (setq skk-user-directory (concat user-emacs-directory "ddskk.d"))
+       :bind (("C-x j" . skk-mode))
+       :custom ((default-input-method . "japanese-skk"))
+       :init
+       (setq skk-user-directory (concat user-emacs-directory "ddskk.d"))
        (setq viper-mode nil)
-       (setq skk-sticky-key ";")
        :hook ((lisp-interaction-mode-hook . (lambda()
                                               (progn (eval-expression (skk-mode) nil)
                                                      (skk-latin-mode (point)))))))
@@ -798,18 +794,18 @@
          :hook (python-mode-hook .  blacken-mode)
          :custom ((blacken-line-length . 300)
                   (blacken-skip-string-normalization . t)))
-       (leaf jupyter
-         :ensure t
-         :config
-         (org-babel-do-load-languages
-          'org-babel-load-languages
-          '((emacs-lisp . t) ;; Other languages
-            (shell . t)
-            ;; Python & Jupyter
-            (python . t)
-            (jupyter . t)))
-         (org-babel-jupyter-override-src-block "python")
-         )
+       ;; (leaf jupyter
+       ;;   :ensure t
+       ;;   :config
+       ;;   (org-babel-do-load-languages
+       ;;    'org-babel-load-languages
+       ;;    '((emacs-lisp . t) ;; Other languages
+       ;;      (shell . t)
+       ;;      ;; Python & Jupyter
+       ;;      (python . t)
+       ;;      (jupyter . t)))
+       ;;   (org-babel-jupyter-override-src-block "python")
+       ;;   )
        )
    #+end_src
 ** yaml-mode

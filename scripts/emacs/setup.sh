@@ -12,7 +12,8 @@ setup_emacs() {
     ln -sfn "${emacs_file_dir}/README.org" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/init.el" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/snippets" "${XDG_CONFIG_HOME}/emacs/"
-
+    ln -sfn "${emacs_file_dir}/ddskk.d/init" "${XDG_CONFIG_HOME}/emacs/ddskk.d/"
+    
     if [ ! -e $skk_record_file ];then
         touch $skk_record_file
     fi
