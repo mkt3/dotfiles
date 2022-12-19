@@ -427,6 +427,7 @@
                 (skk-byte-compile-init-file . t))
        :init
        (setq skk-user-directory (concat user-emacs-directory "ddskk.d"))
+       (setq skk-init-file (concat user-emacs-directory "ddskk.d/init.el"))
        (setq viper-mode nil)
        :hook ((lisp-interaction-mode-hook . (lambda()
                                               (progn (eval-expression (skk-mode) nil)
