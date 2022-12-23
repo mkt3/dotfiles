@@ -429,7 +429,7 @@
        (setq skk-user-directory (expand-file-name "ddskk.d" user-emacs-directory))
        (setq skk-init-file (expand-file-name "init.el" skk-user-directory ))
        (when (file-directory-p my:d:nextcloud)
-         (setq skk-jisyo (cons (expand-file-name "personal_config/ddskk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
+         (setq skk-jisyo (cons (expand-file-name "personal_config/skk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
          )
        (setq viper-mode nil)
        :hook ((lisp-interaction-mode-hook . (lambda()
