@@ -19,6 +19,7 @@ done
 
 setup_pre_common() {
     setup_xdg_config
+    setup_gpg
     setup_zsh
     setup_fzf
     setup_zoxide

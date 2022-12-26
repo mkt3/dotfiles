@@ -40,7 +40,8 @@ setup_pacman() {
                           rsync \
                           httpie \
                           unarchiver \
-                          cmake
+                          cmake \
+                          gnupg
                      )
 
     gui_pacman_package_list=(sway \
