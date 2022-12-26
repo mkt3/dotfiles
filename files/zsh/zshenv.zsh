@@ -133,6 +133,7 @@ export PATH="${PATH}:/Library/TeX/texbin"
 
 # GnuPG
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+export GPG_TTY=$(tty)
 
 # zoom
 export SSB_HOME="${XDG_DATA_HOME}/zoom"
