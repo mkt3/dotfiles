@@ -4,6 +4,10 @@
 #+startup: nohideblocks
 
 * Initialize
+* header
+  #+begin_src emacs-lisp
+    ;;; README.el --- init file for Emacs -*- coding: utf-8 ; lexical-binding: t -*-
+  #+end_src
 ** leaf
    #+begin_src emacs-lisp
      (eval-and-compile
@@ -32,7 +36,7 @@
    #+begin_src emacs-lisp
      (leaf exec-path-from-shell
        :ensure t
-       :when (memq window-system '(mac ns x))
+       :when (display-graphic-p)
        :defun (exec-path-from-shell-initialize)
        :custom ((exec-path-from-shell-arguments . "") ; zshの.zshrcでinteractiveのUIにしているため
                 (exec-path-from-shell-variables . '("PATH" "GOPATH" "PLATFORM" "NAME" "ORG_HUGO")))
