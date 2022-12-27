@@ -96,6 +96,7 @@ setup_pacman() {
                           libsecret \
                           gnome-keyring \
                           seahorse \
+                          gtk2 \ # for pinentry-gtk-2
                           discord \
                           vivaldi \
                           vivaldi-ffmpeg-codecs \
