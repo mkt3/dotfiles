@@ -1,0 +1,8 @@
+% gpg
+
+# Import my public key
+curl -s https://github.com/mkt3.gpg | gpg --import
+
+# list gpg directory
+gpgconf --list-dir
+
