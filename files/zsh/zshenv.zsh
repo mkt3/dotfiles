@@ -132,7 +132,8 @@ export NAVI_CONFIG="${HOME}/.config/navi/config.yaml"
 export PATH="${PATH}:/Library/TeX/texbin"
 
 # GnuPG
-export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+## default value is ~/.gnupg.  If use non-default GnuPG #Home directory, need to edit all socket files.
+export GNUPGHOME="${HOME}/.gnupg"
 export GPG_TTY=$(tty)
 
 # zoom
