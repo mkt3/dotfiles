@@ -40,6 +40,8 @@ setup_git() {
 
     git config --global init.defaultBranch main
 
+    git config --global commit.gpgsign true
+
     # delta
     git config --global delta.navigate true
     git config --global delta.light false
