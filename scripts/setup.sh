@@ -19,7 +19,7 @@ done
 
 setup_pre_common() {
     setup_xdg_config
-    setup_gpg
+    setup_gpg $1
     setup_zsh
     setup_fzf
     setup_zoxide
@@ -43,7 +43,7 @@ setup_post_common() {
 
 setup_arch() {
     title "Setting up Archlinux"
-    setup_pre_common
+    setup_pre_common $1
     setup_pacman $1
 
     if [ $1 = "gui" ]; then
@@ -64,7 +64,7 @@ setup_ubuntu() {
     title "Setting up ubuntu"
     setup_apt $1
 
-    setup_pre_common
+    setup_pre_common $1
 
     if [ $1 = "gui" ]; then
         setup_font
@@ -80,7 +80,7 @@ setup_mac() {
     setup_macos
     setup_homebrew
     setup_wezterm
-    setup_pre_common
+    setup_pre_common $1
     setup_karabiner
     setup_yabai_skhd
     setup_aquaskk
