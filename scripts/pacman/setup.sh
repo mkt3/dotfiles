@@ -88,6 +88,7 @@ setup_pacman() {
                           ristretto  \
                           slurp \
                           grim \
+                          kanshi \
                           emacs-nativecomp \
                           texlive-core \
                           wezterm \

@@ -175,12 +175,12 @@ bindsym Mod4+Prior workspace prev
 bindsym Mod4+Next workspace next
 
 
-workspace $ws_main output DP-1 DP-2
-workspace $ws_chat output DP-1 DP-2
-workspace $ws_mail output DP-1 DP-2
-workspace $ws_game output DP-1 DP-2
-workspace $ws_media output eDP-1
-workspace $ws_sub output eDP-1
+workspace $ws_main output DP-1 DP-2 HDMI-A-2
+workspace $ws_chat output DP-1 DP-2 HDMI-A-2
+workspace $ws_mail output DP-1 DP-2 HDMI-A-2
+workspace $ws_game output DP-1 DP-2 HDMI-A-2
+workspace $ws_media output eDP-1 HDMI-A-3
+workspace $ws_sub output eDP-1 HDMI-A-3
 
 
 # reload the configuration file
@@ -268,7 +268,7 @@ exec wezterm
 assign [class="Emacs"] workspace $ws_main
 exec emacs
 #assign [class="zoom"] workspace $ws_sub
-for_window [app_id="zoom"] floating enable
+#for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
