@@ -97,7 +97,7 @@ setup_pacman() {
                           libsecret \
                           gnome-keyring \
                           seahorse \
-                          gtk2 \ # for pinentry-gtk-2
+                          gtk2 \
                           discord \
                           vivaldi \
                           vivaldi-ffmpeg-codecs \
@@ -109,7 +109,7 @@ setup_pacman() {
                           borg \
                           zathura \
                           zathura-pdf-mupdf \
-                          isync # for emacs mail
+                          isync
                             )
     gui_aur_package_list=(enpass-bin \
                               slack-desktop \
@@ -119,7 +119,7 @@ setup_pacman() {
                               nordic-theme \
                               ddcci-driver-linux-dkms \
                               clipman \
-                              mu # for emacs mail
+                              mu
                          )
 
     for package in ${cui_pacman_package_list[@]}; do
