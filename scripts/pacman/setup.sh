@@ -108,7 +108,8 @@ setup_pacman() {
                           vlc \
                           borg \
                           zathura \
-                          zathura-pdf-mupdf
+                          zathura-pdf-mupdf \
+                          isync # for emacs mail
                             )
     gui_aur_package_list=(enpass-bin \
                               slack-desktop \
@@ -117,7 +118,8 @@ setup_pacman() {
                               nwg-look \
                               nordic-theme \
                               ddcci-driver-linux-dkms \
-                              clipman
+                              clipman \
+                              mu # for emacs mail
                          )
 
     for package in ${cui_pacman_package_list[@]}; do
