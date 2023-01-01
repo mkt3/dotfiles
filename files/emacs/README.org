@@ -772,7 +772,9 @@
        :demand t
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
-                   ("C-j" . skk-kakutei))
+              ("C-j" . skk-kakutei)
+              :map mu4e-main-mode-map
+              ("r" . revert-buffer))
        :config
        (setq mu4e-context-policy 'pick-first)
        (setq mu4e-headers-auto-update t)
