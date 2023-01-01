@@ -14,9 +14,11 @@ setup_emacs() {
     ln -sfn "${emacs_file_dir}/snippets" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/ddskk.d/init.el" "${XDG_CONFIG_HOME}/emacs/ddskk.d/"
 
-    if [ ! -e $skk_record_file ];then
-       touch $skk_record_file
+    if [ ! -e $skk_record_file ]; then
+        touch $skk_record_file
     fi
 
     mkdir -p "${XDG_CONFIG_HOME}/msmtp"
     ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
+
+}
