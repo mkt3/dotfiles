@@ -771,7 +771,7 @@
        :load-path  "/usr/share/emacs/site-lisp/mu4e/"
        :demand t
        :bind (:map mu4e-minibuffer-search-query-map
-              ("C-j" . skk-kakutei))
+                   ("C-j" . skk-kakutei))
        :config
        (setq mu4e-headers-auto-update t)
        (setq mu4e-headers-skip-duplicates t)
@@ -795,6 +795,17 @@
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
        (load (expand-file-name "personal_config/emacs_mail/config.el" my:d:nextcloud)) ; mail server config
        )
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package mu4e-alert
+       :ensure t
+       :config
+       (mu4e-alert-set-default-style 'libnotify)
+       (mu4e-alert-enable-mode-line-display)
+       (mu4e-alert-enable-notifications)
+       )
+
    #+end_src
 ** grammarly
    #+begin_src emacs-lisp
