@@ -1199,6 +1199,7 @@
    #+begin_src emacs-lisp
      (use-package atomic-chrome
        :ensure t
+       :if (display-graphic-p)
        :config
        (atomic-chrome-start-server)
        )
