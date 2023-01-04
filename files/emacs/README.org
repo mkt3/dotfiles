@@ -804,6 +804,7 @@
    #+begin_src emacs-lisp
      (use-package mu4e-alert
        :ensure t
+       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (eq system-type 'gnu/linux))
        :config
        (mu4e-alert-set-default-style 'libnotify)
        (mu4e-alert-enable-mode-line-display)
@@ -853,7 +854,8 @@
          :ensure t
          :hook (python-mode-hook .  blacken-mode)
          :custom ((blacken-line-length . 300)
-                  (blacken-skip-string-normalization . t)))
+                  ;; (blacken-skip-string-normalization . t)
+                  ))
        ;; (leaf jupyter
        ;;   :ensure t
        ;;   :config
