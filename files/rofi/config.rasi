@@ -1,6 +1,6 @@
 configuration {
-  modes: "window:~/.config/rofi/scripts/window-select.sh,drun,combi,vpn:~/.config/rofi/scripts/vpn.sh,system:~/.config/rofi/scripts/system-menu.sh";
-  combi-modes: [window,drun,vpn,system];
+  modes: "window:~/.config/rofi/scripts/window-select.sh,drun,combi,vpn:~/.config/rofi/scripts/vpn.sh,system:~/.config/rofi/scripts/system-menu.sh,bluetooth:~/.config/rofi/scripts/bluetooth-ctl.sh";
+  combi-modes: [window,drun,vpn,system,bluetooth];
   font: "cica 18";
   sidebar-mode: true;
   show-icons: true;
@@ -12,6 +12,7 @@ configuration {
   display-vpn: "󿪁  ";
   display-profile: "  ";
   display-system: "  ";
+  display-bluetooth: " ";
   kb-mode-next: "Shift+Right,Control+i,Control+Tab";
   kb-mode-previous: "Shift+Left,Control+Shift+i";
 }

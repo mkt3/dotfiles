@@ -8,7 +8,7 @@ declare -A SYSTEM_DICT=(
 
 IFS=$'\n'
 if [[ $# -ne 0 ]]; then
-    eval "${SYSTEM_DICT[$1]}" &> /dev/null
+    eval "${SYSTEM_DICT[$1]}" &> /dev/null &
     exit 0
 else
     echo "${!SYSTEM_DICT[*]}"

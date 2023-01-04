@@ -300,6 +300,7 @@
        (define-key my:ctrl-o-map (kbd "C-k") 'tab-close)
        (define-key my:ctrl-o-map (kbd "n")   'tab-next)
        (define-key my:ctrl-o-map (kbd "C-n") 'tab-next)
+       (define-key my:ctrl-o-map (kbd "TAB") 'tab-next)
        (define-key my:ctrl-o-map (kbd "p")   'tab-previous)
        (define-key my:ctrl-o-map (kbd "C-p") 'tab-previous)
        ;;
@@ -322,7 +323,8 @@
                 (tab-bar-tab-name-function      . 'my:tab-bar-tab-name-truncated)
                 (tab-bar-tab-name-truncated-max . 12)
                 (tab-bar-separator              . ""))
-       :config (tab-bar-mode +1))
+       :config
+       (tab-bar-mode +1))
    #+end_src
 ** dimmer
    #+begin_src emacs-lisp
