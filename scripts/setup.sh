@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=/dev/null
 
 set -eu
 
@@ -14,12 +15,12 @@ ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
 
 setup_files="${REPO_DIR}/scripts/**/setup.sh"
 for filepath in $setup_files; do
-    . $filepath
+    . "$filepath"
 done
 
 setup_pre_common() {
     setup_xdg_config
-    setup_gpg $1
+    setup_gpg "$1"
     setup_zsh
     setup_fzf
     setup_zoxide
@@ -35,7 +36,7 @@ setup_pre_common() {
 setup_post_common() {
     setup_nodejs
     # setup_textlint
-    setup_python $1
+    setup_python "$1"
     setup_ghq
     setup_navi
     setup_lazygit
@@ -43,10 +44,10 @@ setup_post_common() {
 
 setup_arch() {
     title "Setting up Archlinux"
-    setup_pre_common $1
-    setup_pacman $1
+    setup_pre_common "$1"
+    setup_pacman "$1"
 
-    if [ $1 = "gui" ]; then
+    if [ "$1" = "gui" ]; then
         setup_font
         setup_xwindow
         setup_sway
@@ -62,11 +63,11 @@ setup_arch() {
 
 setup_ubuntu() {
     title "Setting up ubuntu"
-    setup_apt $1
+    setup_apt "$1"
 
-    setup_pre_common $1
+    setup_pre_common "$1"
 
-    if [ $1 = "gui" ]; then
+    if [ "$1" = "gui" ]; then
         setup_font
         setup_gnome
         setup_skk
@@ -80,7 +81,7 @@ setup_mac() {
     setup_macos
     setup_homebrew
     setup_wezterm
-    setup_pre_common $1
+    setup_pre_common "$1"
     setup_karabiner
     setup_yabai_skhd
     setup_aquaskk
@@ -101,24 +102,24 @@ setup_minimal() {
     setup_ripgrep
 }
 
-os=$(uname -s | tr '[A-Z]' '[a-z]')
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-if [ $# -eq 1 ] && [ $1 = "minimal" ]; then
+if [ $# -eq 1 ] && [ "$1" = "minimal" ]; then
     os="minimal"
 fi
 
 case $os in
     darwin)
-        setup_mac
+        setup_mac "gui"
         ;;
     linux)
-        dist=$(cat /etc/issue | tr '[A-Z]' '[a-z]')
+        dist=$(tr '[:upper:]' '[:lower:]' < /etc/issue)
         case $dist in
             arch*)
-                setup_arch ${1:-cui}
+                setup_arch "${1:-cui}"
                 ;;
             ubuntu*)
-                setup_ubuntu ${1:-cui}
+                setup_ubuntu "${1:-cui}"
                 ;;
             *)
                 setup_minimal

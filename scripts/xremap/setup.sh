@@ -10,7 +10,7 @@ setup_xremap() {
     "${CARGO_HOME}/bin/rustup" run stable cargo install xremap --features sway
 
     info "Creating symlink for xremap"
-    ln -sfn $xremap_file_dir $XDG_CONFIG_HOME
+    ln -sfn "$xremap_file_dir" "$XDG_CONFIG_HOME"
 
     info "Adding systemd"
     mkdir -p "${XDG_CONFIG_HOME}/systemd/user"

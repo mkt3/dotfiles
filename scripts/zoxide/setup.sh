@@ -13,10 +13,8 @@ setup_zoxide() {
     else
         install_dir="${XDG_DATA_HOME}/zoxide"
     fi
-   
 
-
-    if [ -d $install_dir ]; then
+    if [ -d "$install_dir" ]; then
         info "zoxide is already installed."
     else
         info "Installing zoxide"

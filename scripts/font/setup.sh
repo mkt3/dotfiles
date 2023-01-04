@@ -21,7 +21,7 @@ setup_font() {
     local cica_download_path="/tmp/Cica.zip"
     sudo curl -fL -o $cica_download_path https://github.com/miiton/Cica/releases/download/v5.0.3/Cica_v5.0.3.zip
 
-    unar $cica_download_path -D -o $cica_font_dir
+    unar $cica_download_path -D -o "$cica_font_dir"
 
     fc-cache -vf
 }

@@ -36,7 +36,7 @@ setup_apt() {
                   tk-dev)
 
     info "Installing packages"
-    sudo apt -y install ${package_list[@]}
+    sudo apt -y install "${package_list[@]}"
 
     info "Creating locale"
     sudo locale-gen en_US.UTF-8

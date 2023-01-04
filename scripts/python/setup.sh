@@ -7,19 +7,19 @@ setup_pyenv() {
     local pyenv_git_url="https://github.com/pyenv/pyenv.git"
     local install_dir="${XDG_DATA_HOME}/pyenv"
 
-    if [ -d $install_dir ]; then
+    if [ -d "$install_dir" ]; then
         info "Updating pyenv repository"
-        git -C $install_dir pull
+        git -C "$install_dir" pull
     else
         info "Clonening pyenv repository"
-        git clone --depth 1 $pyenv_git_url $install_dir
+        git clone --depth 1 $pyenv_git_url "$install_dir"
     fi
 }
 
 setup_pipx() {
     info "Setting up pipx"
 
-    if [ $1 != "mac" ] && !(type pipx > /dev/null 2>&1); then
+    if [ "$1" != "mac" ] && ! (type pipx > /dev/null 2>&1); then
         pip3 install --user pipx
     fi
 
@@ -29,13 +29,13 @@ setup_pipx() {
 
     installed_list=$(pipx list)
 
-    for package in ${package_list[@]}; do
+    for package in "${package_list[@]}"; do
         if [[ $installed_list =~ "package $package" ]]; then
             info "Updating $package"
-            pipx upgrade --include-injected $package
+            pipx upgrade --include-injected "$package"
         else
             info "Installing $package"
-            pipx install $package
+            pipx install "$package"
 
             # if [ $package == "jupyterlab" ]; then
             #     info "Installing jupyterlab template extention"

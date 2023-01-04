@@ -6,7 +6,7 @@ setup_rust() {
     title "Setting up rust"
 
     info "Linking corgo config"
-    mkdir -p ${CARGO_HOME}
+    mkdir -p "$CARGO_HOME"
     ln -sfn "${CONFIGS_DIR}/rust/cargo/config" "${CARGO_HOME}/config"
 
     if (type rustup > /dev/null 2>&1); then
@@ -24,8 +24,8 @@ setup_rust() {
 
     info "Installing common packages"
     package_list=(bat fd-find ripgrep git-delta grex lsd bottom du-dust csview)
-    for package in ${package_list[@]}; do
+    for package in "${package_list[@]}"; do
         info "$package ..."
-        "${CARGO_HOME}/bin/rustup" run stable cargo install $package
+        "${CARGO_HOME}/bin/rustup" run stable cargo install "$package"
     done
 }

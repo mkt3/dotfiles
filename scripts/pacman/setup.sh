@@ -3,21 +3,21 @@
 set -eu
 install_pacman_package() {
     package=$1
-    if [ "$(sudo pacman -Qs ${package} | grep "^local/${package} " )" ] ;then
+    if sudo pacman -Qs "$package" | grep -q "^local/${package} " ;then
         info "${package}(pacman) already installed"
     else
         info "Installing ${package}(pacman)"
-        sudo pacman -S $package --noconfirm
+        sudo pacman -S "$package" --noconfirm
      fi
 }
 
 install_aur_package() {
     package=$1
-    if [ "$(yay -Qs ${package} | grep "^local/${package} " )" ] ;then
+    if yay -Qs "$package" | grep -q "^local/${package} " ;then
         info "${package}(aur) already installed"
     else
         info "Installing ${package}(aur)"
-        yay -S $package --noconfirm
+        yay -S "$package" --noconfirm
      fi
 }
 
@@ -41,7 +41,8 @@ setup_pacman() {
                           httpie \
                           unarchiver \
                           cmake \
-                          gnupg
+                          gnupg \
+                          shellcheck
                      )
 
     gui_pacman_package_list=(sway \
@@ -122,20 +123,20 @@ setup_pacman() {
                               mu
                          )
 
-    for package in ${cui_pacman_package_list[@]}; do
-        install_pacman_package $package
+    for package in "${cui_pacman_package_list[@]}"; do
+        install_pacman_package "$package"
     done
 
-    if [ $1 = "gui" ]; then
-        for package in ${gui_pacman_package_list[@]}; do
-            install_pacman_package $package
+    if [ "$1" = "gui" ]; then
+        for package in "${gui_pacman_package_list[@]}"; do
+            install_pacman_package "$package"
         done
-        for package in ${gui_aur_package_list[@]}; do
-            install_aur_package $package
+        for package in "${gui_aur_package_list[@]}"; do
+            install_aur_package "$package"
         done
         # for rofi
         package=rofi-lbonn-wayland
-        if [ "$(yay -Qs ${package} | grep "^local/${package} " )" ] ;then
+        if yay -Qs "$package" | grep -q "^local/${package} "; then
             info "${package}(aur) already installed"
         else
         info "Installing ${package}(aur)"
