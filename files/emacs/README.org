@@ -42,7 +42,7 @@
        :when (display-graphic-p)
        :defun (exec-path-from-shell-initialize)
        :custom ((exec-path-from-shell-arguments . "") ; zshの.zshrcでinteractiveのUIにしているため
-                (exec-path-from-shell-variables . '("PATH" "GOPATH" "PLATFORM" "NAME" "ORG_HUGO")))
+                (exec-path-from-shell-variables . '("PATH" "GOPATH" "NAME" "ORG_HUGO")))
        :config (exec-path-from-shell-initialize))
    #+end_src
 ** Const
@@ -112,7 +112,8 @@
               ("C-x |" . split-window-right)
               ("C-x -" . split-window-below)
               ("C-x x" . delete-window)
-              ("C-j"   . skk-kakutei)))
+              ("C-j"   . skk-kakutei)
+              ("C-x j" . eval-print-last-sexp)))
    #+end_src
 ** lisp
    #+begin_src emacs-lisp
@@ -430,6 +431,7 @@
    #+begin_src emacs-lisp
      (leaf skk
        :ensure ddskk
+       :when (display-graphic-p)
        :defun (skk-get)
        :require t
        :bind (("C-x j" . skk-mode))
@@ -769,8 +771,8 @@
 ** mu4e
    #+begin_src emacs-lisp
      (use-package mu4e
-       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (eq system-type 'gnu/linux))
-       :load-path  "/usr/share/emacs/site-lisp/mu4e/"
+       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud))
+       :load-path (lambda () (if (eq system-type 'darwin) "/usr/local/share/emacs/site-lisp/mu/mu4e/" "/usr/share/emacs/site-lisp/mu4e/"))
        :demand t
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
@@ -806,7 +808,7 @@
    #+begin_src emacs-lisp
      (use-package mu4e-alert
        :ensure t
-       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (eq system-type 'gnu/linux))
+       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud))
        :config
        (mu4e-alert-set-default-style 'libnotify)
        (mu4e-alert-enable-mode-line-display)
@@ -817,14 +819,14 @@
 ** grammarly
    #+begin_src emacs-lisp
      (leaf lsp-grammarly
-       :when (or (string= "osx" (getenv "PLATFORM"))
-                 (string= "linux" (getenv "PLATFORM"))
-                 )
+       :when (or (eq system-type 'darwin)
+                 (eq system-type 'gnu/linux)
+              )
        :ensure t
        :hook
        ((markdown-mode-hook) . (lambda ()
-                                                (require 'lsp-grammarly)
-                                                (lsp-deferred)))
+                                 (require 'lsp-grammarly)
+                                 (lsp-deferred)))
        )
    #+end_src
 ** shell-script-mode
