@@ -36,6 +36,7 @@ brew "cmake"
 brew "shellcheck"
 brew "isync"
 brew "mu"
+brew "terminal-notifier"
 tap "d12frosted/emacs-plus"
 brew "emacs-plus@28", args: ["with-native-comp"]
 tap "koekeishiya/formulae"

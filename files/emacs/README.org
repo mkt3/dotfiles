@@ -268,11 +268,13 @@
                                                                                             toggle-frame-maximized)))
    #+end_src
 ** font
-   lsp-ui-sideline trauncate when font size is set to 20 or more.
    #+begin_src emacs-lisp
      (leaf *font
        :when (display-graphic-p)
-       :config (add-to-list 'default-frame-alist '(font . "Cica-16")))
+       :config
+       (if (eq system-type 'darwin)
+           (add-to-list 'default-frame-alist '(font . "Cica-22"))
+         (add-to-list 'default-frame-alist '(font . "Cica-16"))))
    #+end_src
 * authentication
   #+begin_src emacs-lisp
@@ -810,7 +812,7 @@
        :ensure t
        :if (and (executable-find "mu") (file-directory-p my:d:nextcloud))
        :config
-       (mu4e-alert-set-default-style 'libnotify)
+       (if (eq system-type 'darwin) (mu4e-alert-set-default-style 'notifier) (mu4e-alert-set-default-style 'libnotify))
        (mu4e-alert-enable-mode-line-display)
        (mu4e-alert-enable-notifications)
        )
