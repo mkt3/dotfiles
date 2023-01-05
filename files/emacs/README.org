@@ -296,7 +296,7 @@
        :init (defvar my:ctrl-o-map (make-sparse-keymap)
                "My original keymap binded to C-o.")
        (defalias 'my:ctrl-o-prefix my:ctrl-o-map)
-       (define-key global-map (kbd "C-o") 'my:ctrl-o-prefix)
+       (define-key global-map (kbd "C-q") 'my:ctrl-o-prefix)
        (define-key my:ctrl-o-map (kbd "c")   'tab-new)
        (define-key my:ctrl-o-map (kbd "C-c") 'tab-new)
        (define-key my:ctrl-o-map (kbd "k")   'tab-close)
@@ -327,7 +327,10 @@
                 (tab-bar-tab-name-truncated-max . 12)
                 (tab-bar-separator              . ""))
        :config
-       (tab-bar-mode +1))
+       (setq tab-bar-select-tab-modifiers '(meta))
+       (setq tab-bar-tab-hints t)
+       (tab-bar-mode +1)
+       )
    #+end_src
 ** dimmer
    #+begin_src emacs-lisp
