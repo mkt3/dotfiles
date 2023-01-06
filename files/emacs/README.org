@@ -3,12 +3,18 @@
 #+startup: content
 #+startup: nohideblocks
 
-* Initialize
-* header
-  #+begin_src emacs-lisp
-    ;;; README.el --- init file for Emacs -*- coding: utf-8 ; lexical-binding: t -*-
-  #+end_src
-** leaf
+* Header
+ #+begin_src emacs-lisp
+   ;;; README.el --- init file for Emacs -*- coding: utf-8 ; lexical-binding: t -*-
+
+   ;; Copyright (C) 2023 Makoto Morinaga
+
+   ;; Author: Makoto Morinaga <makoto@mkt3.me>
+
+   ;;; Code:
+ #+end_src
+* Packages
+** Package manager
    #+begin_src emacs-lisp
      (eval-and-compile
        (customize-set-variable
@@ -16,12 +22,17 @@
                             ("melpa" . "https://melpa.org/packages/")
                             ("gnu" . "https://elpa.gnu.org/packages/")))
        (package-initialize)
-       (unless (package-installed-p 'leaf)
-         (package-refresh-contents)
-         (package-install 'leaf))
+
        (unless (package-installed-p 'use-package)
          (package-refresh-contents)
          (package-install 'use-package))
+       (setq use-package-hook-name-suffix nil)
+
+       (use-package delight :ensure t)
+
+       (unless (package-installed-p 'leaf)
+         (package-refresh-contents)
+         (package-install 'leaf))
 
        (leaf leaf-keywords
          :ensure t
@@ -35,15 +46,25 @@
          ;; initialize leaf-keywords.el
          (leaf-keywords-init)))
    #+end_src
-** load Path
+** Auto packae update
    #+begin_src emacs-lisp
-     (leaf exec-path-from-shell
+     (use-package auto-package-update
        :ensure t
-       :when (display-graphic-p)
-       :defun (exec-path-from-shell-initialize)
-       :custom ((exec-path-from-shell-arguments . "") ; zshの.zshrcでinteractiveのUIにしているため
-                (exec-path-from-shell-variables . '("PATH" "GOPATH" "NAME" "ORG_HUGO")))
-       :config (exec-path-from-shell-initialize))
+       :config
+       (setq auto-package-update-delete-old-versions t)
+       (setq auto-package-update-hide-results t)
+       (auto-package-update-maybe))
+   #+end_src
+* Initialize
+** Load Path
+   #+begin_src emacs-lisp
+     (use-package exec-path-from-shell
+       :ensure t
+       :if (display-graphic-p)
+       :config
+       (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
+       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO"))
+       (exec-path-from-shell-initialize))
    #+end_src
 ** Const
    #+begin_src emacs-lisp
@@ -54,224 +75,224 @@
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
      (defconst my:d:password-store (expand-file-name "password-store" my:d:nextcloud))
    #+end_src
-** custom.el path
+** Custom
    #+begin_src emacs-lisp
-     (leaf cus-edit
-       :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+     (setq custom-file (locate-user-emacs-file "custom.el"))
    #+end_src
-
-* buildin config
-** customization propeties of buildins
+* Builtin config
+** scroll
    #+begin_src emacs-lisp
-     (leaf cus-start
-       :doc "define customization properties of builtins"
-       :custom `((garbage-collection-messages     . t)
-                 (fill-column                     . 65)
-                 (tab-width                       . 4)
-                 (create-lockfiles                . nil)
-                 (make-backup-files               . nil)
-                 (auto-save-default               . nil)
-                 (use-dialog-box                  . nil)
-                 (column-number-mode              . t)
-                 (use-file-dialog                 . nil)
-                 (frame-resize-pixelwise          . t)
-                 (enable-recursive-minibuffers    . t)
-                 (history-length                  . 1000)
-                 (history-delete-duplicates       . t)
-                 (scroll-preserve-screen-position . t)
-                 (scroll-margin                   . 5)
-                 (scroll-conservatively           . 1)
-                 (next-screen-context-lines       . 5)
-                 (mouse-wheel-scroll-amount       . '(1 ((control) . 5)))
-                 (ring-bell-function              . 'ignore)
-                 (text-quoting-style              . 'straight)
-                 (truncate-lines                  . nil)
-                 (truncate-partial-width-windows  . nil)
-                 (menu-bar-mode                   . nil)
-                 (tool-bar-mode                   . nil)
-                 (scroll-bar-mode                 . nil)
-                 (fringe-mode                     . 10)
-                 (indent-tabs-mode                . nil)
-                 (inhibit-startup-message         . t)
-                 (inhibit-startup-screen          . t)
-                 (read-process-output-max         . ,(* 1024 1024)))
+     (setq scroll-preserve-screen-position t
+           scroll-margin 5
+           scroll-conservatively 1
+           next-screen-context-lines 5)
+   #+end_src
+** symlink
+   Automatically visit symlink sources
+   #+begin_src emacs-lisp
+     (use-package vc-hooks :custom (vc-follow-symlinks t))
+     (setq-default find-file-visit-truename t)
+     #+end_src
+** tab
+   #+begin_src emacs-lisp
+     (setq-default
+      indent-tabs-mode nil
+      tab-width 4)
+   #+end_src
+** Trancate line
+   #+begin_src emacs-lisp
+     (setq truncate-lines nil
+           truncate-partial-width-windows nil)
+     (bind-key* "C-c l" 'toggle-truncate-lines)
+   #+end_src
+** Delete
+   #+begin_src emacs-lisp
+     (bind-key* "C-h" 'delete-backward-char)
+     (use-package delsel
+       :custom
+       (delete-selection-mode t))
+   #+end_src
+** Assigning directory name to the same buffer name
+   #+begin_src emacs-lisp
+     (use-package uniquify
+       :custom
+       (uniquify-buffer-name-style  'post-forward-angle-brackets)
+       (uniquify-min-dir-content  1)
+       (funiquify-ignore-buffers-re  "*[^*]+*"))
+   #+end_src
+** Save various history
+   #+begin_src emacs-lisp
+     (use-package savehist
+       :custom
+       (savehist-autosave-interval 60)
+       (history-delete-duplicates t)
+       (history-length 1000)
+       (savehist-additional-variables '(kill-ring
+                                        search-ring
+                                        regexp-search-ring
+                                        file-name-history
+                                        read-expression-history
+                                        command-history
+                                        extended-command-history))
        :config
-       (defalias 'yes-or-no-p 'y-or-n-p)
-       (keyboard-translate ?\C-h ?\C-?)
-       (setq user-full-name (getenv "NAME"))
-     )
+       (savehist-mode))
    #+end_src
-
-** default keybind
+** Line number
    #+begin_src emacs-lisp
-     (leaf *default-keybind
-       :bind (("C-h"   . backward-delete-char)
-              ("M-+"   . text-scale-increase)
-              ("M--"   . text-scale-decrease)
-              ("C-c l" . toggle-truncate-lines)
-              ("C-x |" . split-window-right)
-              ("C-x -" . split-window-below)
-              ("C-x x" . delete-window)
-              ("C-j"   . skk-kakutei)
-              ("C-x j" . eval-print-last-sexp)))
+     (use-package display-line-numbers
+       :config
+       (global-display-line-numbers-mode))
    #+end_src
-** lisp
+** Disable auto generate file
    #+begin_src emacs-lisp
-     (leaf simple
-       :custom ((kill-ring-max                . 100)
-                (kill-read-only-ok            . t)
-                (kill-whole-line              . t)
-                (eval-expression-print-length . nil)
-                (eval-expression-print-lepvel . nil)))
-     (leaf elisp-format
-       :ensure t)
-     (leaf abbrev
-       :blackout (abbrev-mode . " Abv"))
-     (leaf files
-       :setq-default ((find-file-visit-truename . t)))
-     (leaf display-line-numbers
-       :config (global-display-line-numbers-mode)) ;; 行番号を常に表示
-     (leaf delsel
-       :custom ((delete-selection-mode . t)))
-     (leaf uniquify
-       :custom ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
-                (uniquify-min-dir-content . 1)
-                (funiquify-ignore-buffers-re . "*[^*]+*")))
-     (leaf time
-       :custom ((display-time-string-forms . '(month "/" day "(" dayname ") " 24-hours ":" minutes))
-                (display-time-mode . t)))
-     (leaf autorevert
-       :doc "revert buffers when files on disk change"
-       :tag "builtin"
-       :custom ((auto-revert-interval . 0.1))
-       :global-minor-mode global-auto-revert-mode)
-     (leaf autoinsert
-       :doc "automatic mode-dependent insertion of text into new files"
-       :custom ((auto-insert-mode . t)))
-     (leaf paren
+     (use-package files
+       :custom ((make-backup-files nil)
+                (auto-save-default nil)))
+   #+end_src
+** Time
+   #+begin_src emacs-lisp
+     (use-package time
+       :custom
+       (display-time-string-forms  '(month "/" day "(" dayname ") " 24-hours ":" minutes))
+       (display-time-mode t))
+   #+end_src
+** Auto revert
+   #+begin_src emacs-lisp
+     (use-package autorevert
+       :delight auto-revert-mode
+       :custom
+       (auto-revert-interval 0.1)
+       :config
+       (global-auto-revert-mode))
+   #+end_src
+** Parentheses
+   #+begin_src emacs-lisp
+     (use-package paren
        :custom-face (show-paren-match . '((t
                                            (:weight regular
                                                     :background "#44475a"
                                                     :underline "$ffff00"))))
-       :custom ((show-paren-delay . 0.0)
-                (show-paren-mode  . t)))
-     (leaf save-place-mode
-       :doc "automatically save place in files"
-       :custom ((save-place-mode . t)))
-     (leaf windmove
-       :custom (windmove-wrap-around . t)
+       :custom
+       (show-paren-delay 0.0)
+       (show-paren-mode t))
+   #+end_src
+** Window
+   #+begin_src emacs-lisp
+     (bind-key* "C-x |" 'split-window-right)
+     (bind-key* "C-x -" 'split-window-below)
+     (bind-key* "C-x x" 'delete-window)
+
+     (use-package windmove
+       :custom
+       (windmove-wrap-around  t)
        :bind (("C-M-h" . windmove-left)
               ("C-M-k" . windmove-up)
               ("C-M-j" . windmove-down)
               ("C-M-l" . windmove-right)))
-     (leaf gcmh
-       :ensure t
-       :blackout gcmh
-       :custom ((gcmh-verbose . t)
-                (gcmh-high-cons-threshold . 100000000)
-                )
-       :config (gcmh-mode 1))
-     (leaf recentf
-       :ensure t
-       :custom
-       (recentf-exclude . '(".recentf"
-                            "^/tmp\\.*"
-                            "bookmarks"
-                            "\\.*.calendar.ics")))
    #+end_src
-** lisp/vc
+** Save file browsing history
    #+begin_src emacs-lisp
-     (leaf vc-hooks
-       :custom ((vc-follow-symlinks . t)))
+     (use-package recentf
+       :init
+       (setq recentf-exclude '(".recentf"
+                               "^/tmp\\.*"
+                               "bookmarks"
+                               "\\.*.calendar.ics"))
+       :config
+       (recentf-mode))
+   #+end_src
+** Save last cursor position
+   #+begin_src emacs-lisp
+     (use-package saveplace
+       :custom
+       (save-place-mode t))
+
+   #+end_src
+** Misc
+   #+begin_src emacs-lisp
+     (defalias 'yes-or-no-p 'y-or-n-p)
+     (setq
+      create-lockfiles nil
+      enable-recursive-minibuffers t
+      ring-bell-function 'ignore
+      text-quoting-style 'straight
+      user-full-name (getenv "NAME"))
+     (use-package simple
+       :custom
+       (kill-ring-max                100)
+       (kill-read-only-ok            t)
+       (eval-expression-print-length nil)
+       (eval-expression-print-level  nil)
+       :bind ("C-x j" . eval-print-last-sexp))
    #+end_src
 
-* color-theme
+* Color theme
 ** doom-nord
    #+begin_src emacs-lisp
-     (leaf doom-themes
+     (use-package doom-themes
        :ensure t
        :config
        (load-theme 'doom-nord t))
    #+end_src
 ** modus-theme
    #+begin_src emacs-lisp
-     ;; (leaf *modus-themes
-     ;;   :custom
-     ;;   ((modus-themes-italic-constructs . t)
-     ;;    (modus-themes-bold-constructs   . t)
-     ;;    (modus-themes-region            . '(bg-only no-extend))
-     ;;    (modus-themes-syntax            . '(faint))
-     ;;    (modus-themes-diffs             . 'deuteranopia)
-     ;;    )
-     ;;   :config
-     ;;   (load-theme 'modus-vivendi))
+     (use-package modus-themes
+       :disabled
+       :custom
+       ((modus-themes-italic-constructs . t)
+        (modus-themes-bold-constructs   . t)
+        (modus-themes-region            . '(bg-only no-extend))
+        (modus-themes-syntax            . '(faint))
+        (modus-themes-diffs             . 'deuteranopia)
+        )
+       :config
+       (load-theme 'modus-vivendi))
    #+end_src
 * UI
-** x
+** X11
    #+begin_src emacs-lisp
-     (leaf *x
-       :when (eq 'x window-system)
-       :custom (x-super-keysym . 'meta)
-       )
-
+     (when (eq 'x window-system)
+       (setq x-super-keysym 'meta))
    #+end_src
 ** mac
    #+begin_src emacs-lisp
-     (leaf mac
-       :doc "implementation of gui terminal on macos"
-       :doc "each symbol can be `control', `meta', `alt', `hyper', or `super'"
-       :doc "`left' meens same value setting its left key"
+     (use-package mac
        :when (eq 'mac window-system)
-       :custom ((mac-control-modifier       . 'control)
-                (mac-option-modifier        . 'super)
-                (mac-command-modifier       . 'meta)
-                (mac-right-control-modifier . 'control)
-                (mac-right-option-modifier  . 'hyper)
-                (mac-right-command-modifier . 'meta)))
+       :custom
+       (mac-control-modifier 'control)
+       (mac-option-modifier 'super)
+       (mac-command-modifier 'meta)
+       (mac-right-control-modifier. 'control)
+       (mac-right-option-modifier 'hyper)
+       (mac-right-command-modifier'meta))
    #+end_src
 ** ns
    #+begin_src emacs-lisp
-     (leaf ns
-       :doc "next/open/gnustep / macos communication module"
-       :when (eq 'ns window-system)
-       :custom ((ns-control-modifier       . 'control)
-                (ns-option-modifier        . 'super)
-                (ns-command-modifier       . 'meta)
-                (ns-right-control-modifier . 'control)
-                (ns-right-option-modifier  . 'hyper)
-                (ns-right-command-modifier . 'meta)
-                ;; use fn key as normal way.
-                (ns-function-modifier      . 'super))
-       :config (setq default-frame-alist (append '((inhibit-double-buffering . t)
-                                                   (ns-appearance            . dark)
-                                                   (ns-transparent-titlebar  . t))
-                                                 default-frame-alist)))
+     (use-package ns
+       :if (eq 'ns window-system)
+       :custom
+       (ns-control-modifier 'control)
+       (ns-option-modifier 'super)
+       (ns-command-modifier 'meta)
+       (ns-right-control-modifier 'control)
+       (ns-right-option-modifier 'hyper)
+       (ns-right-command-modifier 'meta)
+       (ns-function-modifier 'super)
+       :config
+       (setq default-frame-alist (append '((ns-appearance            . dark)
+                                           (ns-transparent-titlebar  . t))
+                                         default-frame-alist)))
    #+end_src
 ** language
    #+begin_src emacs-lisp
-     (leaf *language
-       :config (set-language-environment 'Japanese)
+     (use-package mule
+       :init
+       (set-language-environment "Japanese")
        (prefer-coding-system 'utf-8))
-   #+end_src
-** frame
-   #+begin_src emacs-lisp
-     (leaf *frame
-       :init (setq default-frame-alist (append '((line-spacing         . 0  ) ; 文字間隔
-                                                 (left-fringe          . 10 ) ; 左フリンジ幅
-                                                 (right-fringe         . 11 ) ; 右フリンジ幅
-                                                 (scroll-bar-width     . 17 ) ; スクロールバー幅
-                                                 (cursor-type          . box) ; カーソル種別
-                                                 ;; (alpha                . 95 ) ; 透明度
-                                                 ) default-frame-alist))
-       :custom (initial-frame-alist . default-frame-alist)
-       (frame-title-format . '("emacs " emacs-version (buffer-file-name " - %f"))) :bind(("C-c C-f" .
-                                                                                            toggle-frame-maximized)))
    #+end_src
 ** font
    #+begin_src emacs-lisp
-     (leaf *font
-       :when (display-graphic-p)
-       :config
+     (when (display-graphic-p)
        (if (eq system-type 'darwin)
            (add-to-list 'default-frame-alist '(font . "Cica-22"))
          (add-to-list 'default-frame-alist '(font . "Cica-16"))))
@@ -290,6 +311,17 @@
       )
   #+end_src
 * minor-mode
+#+begin_src emacs-lisp
+       (leaf gcmh
+       :ensure t
+       :blackout gcmh
+       :custom ((gcmh-verbose . t)
+                (gcmh-high-cons-threshold . 100000000)
+                (garbage-collection-messages . t)
+                )
+       :config (gcmh-mode 1))
+
+#+end_src
 ** tab-bar-mode
    #+begin_src emacs-lisp
      (leaf tab-bar-mode
@@ -439,7 +471,7 @@
        :when (display-graphic-p)
        :defun (skk-get)
        :require t
-       :bind (("C-x j" . skk-mode))
+       :bind (("C-j" . skk-kakutei))
        :custom ((default-input-method . "japanese-skk")
                 (skk-byte-compile-init-file . t))
        :init
@@ -696,6 +728,8 @@
        :ensure t
        :init
        ;; Disable version control on tramp buffers to avoid freezes.
+       (setq tramp-remote-path '(tramp-default-remote-path
+                                 "~/.local/bin/"))
        (setq vc-ignore-dir-regexp
              (format "\\(%s\\)\\|\\(%s\\)"
                      vc-ignore-dir-regexp
@@ -724,11 +758,26 @@
 * major-mode
 ** eglot
    #+begin_src emacs-lisp
-     ;; (leaf eglot
+     ;; (use-package eglot
      ;;   :ensure t
      ;;   :config
      ;;   (add-hook 'python-mode-hook 'eglot-ensure)
      ;;   )
+   #+end_src
+** flymake
+   #+begin_src emacs-lisp
+     ;; (leaf flymake-diagnostic-at-point
+     ;;   :ensure t
+     ;;   :after flymake
+     ;;   :config
+     ;;   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+     ;; (leaf poetry
+     ;;   :ensure t
+     ;;   :config
+     ;;   ;; Checks for the correct virtualenv. Better strategy IMO because the default
+     ;;   ;; one is quite slow.
+     ;;   (setq poetry-tracking-strategy 'switch-buffer)
+     ;;   :hook ((python-mode-hook . poetry-tracking-mode)))
    #+end_src
 ** lsp-mode
    #+begin_src emacs-lisp
@@ -744,7 +793,9 @@
                 (lsp-document-sync-method           . 2)
                 (lsp-response-timeout               . 5)
                 (lsp-headerline-breadcrumb-icons-enable . nil)
+                (read-process-output-max            . 1048576)
                 (lsp-enable-file-watchers           . nil))
+                ;; )
        :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode)
        :init (leaf lsp-ui
                :ensure t

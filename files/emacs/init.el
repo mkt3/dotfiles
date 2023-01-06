@@ -1,15 +1,21 @@
-(defconst my-saved-file-name-handler-alist file-name-handler-alist)
+;;; init.el --- Emacs init -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2023  Makoto Morinaga
+
+;; Author: Makoto Morinaga <makoto@mkt3.me>
+
+;;; Commentary:
+;; It's an Emacs init file.
+
+;;; Code:
+
+;; Disable Magic File Name
+(defconst tmp-saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
-
-(setq vc-follow-symlinks t)
-
-;; Silence compiler warnings
-(setq native-comp-async-report-warnings-errors 'silent)
-
-(native-compile-async "~/.config/emacs/ddskk.d/init.el")
 
 (require 'org)
 (org-babel-load-file
  (expand-file-name "README.org" user-emacs-directory))
 
-(setq file-name-handler-alist my-saved-file-name-handler-alist)
+;; Enable Magic File Name
+(setq file-name-handler-alist tmp-saved-file-name-handler-alist)
