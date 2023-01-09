@@ -208,6 +208,14 @@
        (save-place-mode t))
 
    #+end_src
+** Authentication
+   #+begin_src emacs-lisp
+     (use-package plstore
+       :if (file-directory-p my:d:password-store)
+       :init
+       (setq epa-pinentry-mode 'loopback))
+   #+end_src
+
 ** Misc
    #+begin_src emacs-lisp
      (defalias 'yes-or-no-p 'y-or-n-p)
@@ -226,102 +234,61 @@
        :bind ("C-x j" . eval-print-last-sexp))
    #+end_src
 
-* Color theme
-** doom-nord
-   #+begin_src emacs-lisp
-     (use-package doom-themes
-       :ensure t
-       :config
-       (load-theme 'doom-nord t))
-   #+end_src
-** modus-theme
-   #+begin_src emacs-lisp
-     (use-package modus-themes
-       :disabled
-       :custom
-       ((modus-themes-italic-constructs . t)
-        (modus-themes-bold-constructs   . t)
-        (modus-themes-region            . '(bg-only no-extend))
-        (modus-themes-syntax            . '(faint))
-        (modus-themes-diffs             . 'deuteranopia)
-        )
-       :config
-       (load-theme 'modus-vivendi))
-   #+end_src
-* UI
-** X11
-   #+begin_src emacs-lisp
-     (when (eq 'x window-system)
-       (setq x-super-keysym 'meta))
-   #+end_src
-** mac
-   #+begin_src emacs-lisp
-     (use-package mac
-       :when (eq 'mac window-system)
-       :custom
-       (mac-control-modifier 'control)
-       (mac-option-modifier 'super)
-       (mac-command-modifier 'meta)
-       (mac-right-control-modifier. 'control)
-       (mac-right-option-modifier 'hyper)
-       (mac-right-command-modifier'meta))
-   #+end_src
-** ns
-   #+begin_src emacs-lisp
-     (use-package ns
-       :if (eq 'ns window-system)
-       :custom
-       (ns-control-modifier 'control)
-       (ns-option-modifier 'super)
-       (ns-command-modifier 'meta)
-       (ns-right-control-modifier 'control)
-       (ns-right-option-modifier 'hyper)
-       (ns-right-command-modifier 'meta)
-       (ns-function-modifier 'super)
-       :config
-       (setq default-frame-alist (append '((ns-appearance            . dark)
-                                           (ns-transparent-titlebar  . t))
-                                         default-frame-alist)))
-   #+end_src
-** language
-   #+begin_src emacs-lisp
-     (use-package mule
-       :init
-       (set-language-environment "Japanese")
-       (prefer-coding-system 'utf-8))
-   #+end_src
-** font
+* Appearance
+** Color theme
+*** doom-nord
+    #+begin_src emacs-lisp
+      (use-package doom-themes
+        :ensure t
+        :config
+        (load-theme 'doom-nord t))
+    #+end_src
+*** modus-theme
+    #+begin_src emacs-lisp
+      (use-package modus-themes
+        :disabled
+        :custom
+        ((modus-themes-italic-constructs . t)
+         (modus-themes-bold-constructs   . t)
+         (modus-themes-region            . '(bg-only no-extend))
+         (modus-themes-syntax            . '(faint))
+         (modus-themes-diffs             . 'deuteranopia)
+         )
+        :config
+        (load-theme 'modus-vivendi))
+    #+end_src
+** Font
    #+begin_src emacs-lisp
      (when (display-graphic-p)
        (if (eq system-type 'darwin)
            (add-to-list 'default-frame-alist '(font . "Cica-22"))
          (add-to-list 'default-frame-alist '(font . "Cica-16"))))
    #+end_src
-* authentication
-  #+begin_src emacs-lisp
-    (leaf *authentication
-      :if (file-directory-p my:d:password-store)
-      :init
-      (setq leaf-default-plstore (plstore-open (expand-file-name "plstore.plist" my:d:password-store)))
-      (leaf plstore
-        :custom
-        :init
-        (setq epa-pinentry-mode 'loopback)
-        )
-      )
-  #+end_src
-* minor-mode
-#+begin_src emacs-lisp
-       (leaf gcmh
+** Highlight-indent-gide
+   #+begin_src emacs-lisp
+     (use-package highlight-indent-guides
        :ensure t
-       :blackout gcmh
-       :custom ((gcmh-verbose . t)
-                (gcmh-high-cons-threshold . 100000000)
-                (garbage-collection-messages . t)
-                )
-       :config (gcmh-mode 1))
-
-#+end_src
+       :delight
+       :hook ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
+       :custom
+       (highlight-indent-guides-method  'character)
+       (highlight-indent-guides-auto-enabled t)
+       (highlight-indent-guides-responsive t)
+       (highlight-indent-guides-character ?\|))
+   #+end_src
+** rainbow-delimiters
+   #+begin_src emacs-lisp
+     (leaf rainbow-delimiters
+       :ensure t
+       :hook ((prog-mode-hook . rainbow-delimiters-mode)))
+   #+end_src
+** nyan-mode
+   #+begin_src emacs-lisp
+     (leaf nyan-mode
+       :ensure t
+       :init
+       (nyan-mode 1))
+   #+end_src
 ** tab-bar-mode
    #+begin_src emacs-lisp
      (leaf tab-bar-mode
@@ -365,87 +332,37 @@
        )
    #+end_src
 ** dimmer
+   Visually highlight the selected buffer.
    #+begin_src emacs-lisp
-     (leaf dimmer
+     (use-package dimmer
        :ensure t
-       :custom ((dimmer-fraction . 0.5)
-                (dimmer-exclusion-regexp-list . '(".*Minibuf.*" ".*which-key.*" ".*NeoTree.*"
-                                                  ".*Messages.*" ".*Async.*" ".*Warnings.*" ".*LV.*"
-                                                  ".*Ilist.*"))
-                (dimmer-mode . t)))
-   #+end_src
-** which-key
-   #+begin_src emacs-lisp
-     (leaf which-key
-       :ensure t
-       :custom ((which-key-idle-delay . 1)
-                (which-key-replacement-alist . '(((nil . "Prefix Command") . (nil . "prefix"))
-                                                 ((nil . "\\`\\?\\?\\'") . (nil . "lambda"))
-                                                 (("<left>") . ("←"))
-                                                 (("<right>") . ("→"))
-                                                 (("<\\([[:alnum:]-]+\\)>") . ("\\1"))))
-                (which-key-mode . t)))
-   #+end_src
-** smartparens
-   #+begin_src emacs-lisp
-     (leaf smartparens
-       :ensure t
-       :hook (after-init-hook . smartparens-global-strict-mode)
-       :require smartparens-config
-       :custom ((electric-pair-mode . nil)))
-      #+end_src
-** ace-window
-   #+begin_src emacs-lisp
-     (leaf ace-window
-       :ensure t
-       :bind (("C-x o" . ace-window))
-       :custom ((aw-keys . '(?j ?k ?l ?i ?o ?h ?y ?u ?p)))
-       :custom-face ((aw-leading-char-face . '((t
-                                                (:height 4.0
-                                                         :foreground "#f1fa8c"))))))
-   #+end_src
-** popwin
-   #+begin_src emacs-lisp
-     (leaf popwin
-       :ensure t)
-   #+end_src
-** amx
-   #+begin_src emacs-lisp
-     (leaf amx
-       :ensure t)
-   #+end_src
-** undo-tree
-   #+begin_src emacs-lisp
-     (leaf undo-tree
-       :ensure t
-       :leaf-defer nil
-       :global-minor-mode global-undo-tree-mode
-       :bind (  ("M-/" . undo-tree-redo))
-       :custom (
-                ;; (undo-tree-auto-save-history . t)
-                (undo-tree-history-directory-alist . `(("." . ,(concat user-emacs-directory
-                                                                       ".cache/undo-tree-hist/")))))
-       )
+       :custom
+       (dimmer-fraction  0.5)
+       (dimmer-exclusion-regexp-list  '(".*Minibuf.*" ".*which-key.*" ".*NeoTree.*"
+                                        ".*Messages.*" ".*Async.*" ".*Warnings.*" ".*LV.*"
+                                        ".*Ilist.*"))
+       (dimmer-mode t))
    #+end_src
 ** whitespace
    #+begin_src emacs-lisp
-     (leaf whitespace
+     (use-package whitespace
        :ensure t
-       :commands whitespace-mode
        :bind ("C-c W" . whitespace-cleanup)
-       :custom ((whitespace-style . '(face trailing tabs spaces empty space-mark tab-mark))
-                (whitespace-display-mappings . '((space-mark ?\u3000 [?\u25a1])
-                                                 (tab-mark ?\t [?\u00BB ?\t]
-                                                           [?\\ ?\t])))
-                (whitespace-space-regexp . "\\(\u3000+\\)")
-                (whitespace-global-modes . '(emacs-lisp-mode shell-script-mode sh-mode python-mode
-                                                             org-mode markdown-mode rjsx-mode
-                                                             css-mode))
-                (global-whitespace-mode . t))
-       :config (set-face-attribute 'whitespace-trailing nil
-                                   :background "Black"
-                                   :foreground "DeepPink"
-                                   :underline t)
+       :custom
+       (whitespace-style '(face trailing tabs spaces empty space-mark tab-mark))
+       (whitespace-display-mappings '((space-mark ?\u3000 [?\u25a1])
+                                      (tab-mark ?\t [?\u00BB ?\t]
+                                                [?\\ ?\t])))
+       (whitespace-space-regexp  "\\(\u3000+\\)")
+       (whitespace-global-modes  '(emacs-lisp-mode shell-script-mode sh-mode python-mode
+                                                   org-mode markdown-mode rjsx-mode
+                                                   css-mode))
+       (global-whitespace-mode t)
+       :config
+       (set-face-attribute 'whitespace-trailing nil
+                           :background "Black"
+                           :foreground "DeepPink"
+                           :underline t)
        (set-face-attribute 'whitespace-tab nil
                            :background "Black"
                            :foreground "LightSkyBlue"
@@ -457,102 +374,518 @@
        (set-face-attribute 'whitespace-empty nil
                            :background "Black"))
    #+end_src
-** mwim
+* UI
+** X11
    #+begin_src emacs-lisp
-     (leaf mwim
-       :ensure t
-       :bind (("C-a" . mwim-beginning-of-code-or-line)
-              ("C-e" . mwim-end-of-code-or-line)))
+     (when (eq 'x window-system)
+       (setq x-super-keysym 'meta))
+   #+end_src
+** mac
+   #+begin_src emacs-lisp
+     (use-package mac
+       :when (eq 'mac window-system)
+       :custom
+       (mac-control-modifier 'control)
+       (mac-option-modifier 'super)
+       (mac-command-modifier 'meta)
+       (mac-right-control-modifier. 'control)
+       (mac-right-option-modifier 'hyper)
+       (mac-right-command-modifier'meta))
+   #+end_src
+** ns
+   #+begin_src emacs-lisp
+     (use-package ns
+       :if (eq 'ns window-system)
+       :custom
+       (ns-control-modifier 'control)
+       (ns-option-modifier 'super)
+       (ns-command-modifier 'meta)
+       (ns-right-control-modifier 'control)
+       (ns-right-option-modifier 'hyper)
+       (ns-right-command-modifier 'meta)
+       (ns-function-modifier 'super)
+       :config
+       (setq default-frame-alist (append '((ns-appearance            . dark)
+                                           (ns-transparent-titlebar  . t))
+                                         default-frame-alist)))
+   #+end_src
+** language
+   #+begin_src emacs-lisp
+     (use-package mule
+       :init
+       (set-language-environment "Japanese")
+       (prefer-coding-system 'utf-8))
    #+end_src
 ** skk
    #+begin_src emacs-lisp
-     (leaf skk
-       :ensure ddskk
-       :when (display-graphic-p)
-       :defun (skk-get)
-       :require t
+     (use-package ddskk
+       :if (display-graphic-p)
        :bind (("C-j" . skk-kakutei))
-       :custom ((default-input-method . "japanese-skk")
-                (skk-byte-compile-init-file . t))
+       :custom
+       (default-input-method "japanese-skk")
+       (skk-byte-compile-init-file t)
        :init
        (setq skk-user-directory (expand-file-name "ddskk.d" user-emacs-directory))
        (setq skk-init-file (expand-file-name "init.el" skk-user-directory ))
        (when (file-directory-p my:d:nextcloud)
          (setq skk-jisyo (cons (expand-file-name "personal_config/skk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
          )
-       (setq viper-mode nil)
-       :hook ((lisp-interaction-mode-hook . (lambda()
-                                              (progn (eval-expression (skk-mode) nil)
-                                                     (skk-latin-mode (point)))))))
+       (setq viper-mode nil))
    #+end_src
+** smartparens
+   #+begin_src emacs-lisp
+     (use-package smartparens
+       :ensure t
+       :hook (after-init-hook . smartparens-global-strict-mode)
+       :bind
+       :custom
+       (electric-pair-mode nil)
+       :config
+       (require 'smartparens-config))
+      #+end_src
 ** Complementaly UI
 *** vertico
      #+begin_src emacs-lisp
-       (leaf vertico
+       (use-package vertico
          :ensure t
-         :global-minor-mode t
-         :preface (defun my:filename-upto-parent ()
-                    "Move to parent directory like \"cd ..\" in find-file."
-                    (interactive)
-                    (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
-                      (save-excursion (left-char 1)
-                                      (when (looking-at-p sep)
-                                        (delete-char 1)))
-                      (save-match-data (when (search-backward-regexp sep nil t)
-                                         (right-char 1)
-                                         (filter-buffer-substring (point)
-                                                                  (save-excursion (end-of-line)
-                                                                                  (point)) #'delete)))))
-         :custom ((vertico-count . 20)
-                  (enable-recursive-minibuffers .t)
-                  (vertico-cycle . t))
-         :bind ((vertico-map ("C-r" . vertico-previous)
-                             ("C-s" . vertico-next)
-                             ("C-l" . my:filename-upto-parent)))
-         :init (savehist-mode))
+         :init
+         (defun my:filename-upto-parent ()
+           "Move to parent directory like \"cd ..\" in find-file."
+           (interactive)
+           (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
+             (save-excursion (left-char 1)
+                             (when (looking-at-p sep)
+                               (delete-char 1)))
+             (save-match-data (when (search-backward-regexp sep nil t)
+                                (right-char 1)
+                                (filter-buffer-substring (point)
+                                                         (save-excursion (end-of-line)
+                                                                         (point)) #'delete)))))
+         (vertico-mode)
+         :custom
+         (vertico-count 20)
+         (enable-recursive-minibufferst)
+         (vertico-cycle t)
+         :bind (:map vertico-map
+                  ("C-r" . vertico-previous)
+                  ("C-s" . vertico-next)
+                  ("C-l" . my:filename-upto-parent)))
      #+end_src
 *** consult
     #+begin_src emacs-lisp
-      (leaf consult
+      (use-package consult
         :ensure t
-        :preface (defun my:consult-line
-                     (&optional
-                      at-point)
-                   (interactive "P")
-                   (if at-point (consult-line (thing-at-point 'symbol))
-                     (consult-line)))
-        :custom (recentf-mode . t)
+        :init
+        (defun my:consult-line
+            (&optional
+             at-point)
+          (interactive "P")
+          (if at-point (consult-line (thing-at-point 'symbol))
+            (consult-line)))
+        :custom
+        (recentf-mode t)
         :bind* (("C-s" . my:consult-line)
                 ("C-c C-a" . consult-buffer)
+                ("C-z" . consult-imenu)
                 ([remap goto-line] . consult-goto-line)
                 ([remap yank-pop] . consult-yank-pop)))
     #+end_src
-*** consult-lsp
-    #+begin_src emacs-lisp
-      (leaf consult-lsp
-        :ensure t
-        :bind (lsp-mode-map ([remap xref-apropos] . consult-lsp-symbols)))
-    #+end_src
 *** marginalia
     #+begin_src emacs-lisp
-      (leaf marginalia
+      (use-package marginalia
         :ensure t
-        :global-minor-mode t)
+        :init
+        (marginalia-mode))
     #+end_src
 *** orderless
     #+begin_src emacs-lisp
-      (leaf orderless
+      (use-package orderless
         :ensure t
-        :custom (completion-styles . '(orderless)))
+        :custom
+        (completion-styles '(orderless)))
     #+end_src
 *** embark
     #+begin_src emacs-lisp
-      (leaf embark
+      (use-package embark :ensure t)
+      (use-package embark-consult
         :ensure t
-        :config (leaf embark-consult
-                  :ensure t
-                  :after (embark consult)))
+        :hook
+        (embark-collect-mode . consult-preview-at-point-mode))
     #+end_src
+** which-key
+   #+begin_src emacs-lisp
+     (use-package which-key
+       :ensure t
+       :custom
+       ((which-key-idle-delay  1)
+        (which-key-replacement-alist  '(((nil . "Prefix Command") . (nil . "prefix"))
+                                        ((nil . "\\`\\?\\?\\'") . (nil . "lambda"))
+                                        (("<left>") . ("←"))
+                                        (("<right>") . ("→"))
+                                        (("<\\([[:alnum:]-]+\\)>") . ("\\1"))))
+        (which-key-mode t)))
+   #+end_src
+** ace-window
+   #+begin_src emacs-lisp
+     (use-package ace-window
+       :ensure t
+       :bind ("C-x o" . ace-window)
+       :custom
+       (aw-keys '(?j ?k ?l ?i ?o ?h ?y ?u ?p))
+       :custom-face
+       (aw-leading-char-face . '((t
+                                   (:height 4.0
+                                            :foreground "#f1fa8c")))))
+   #+end_src
+
+** undo-tree
+   #+begin_src emacs-lisp
+     (use-package undo-tree
+       :ensure t
+       :bind (  ("M-/" . undo-tree-redo))
+       ;; :custom
+       ;; (undo-tree-auto-save-history  t)
+       ;; (undo-tree-history-directory-alist  `(("." . ,(concat user-emacs-directory
+       ;;                                                        ".cache/undo-tree-hist/"))))
+       :config
+       (global-undo-tree-mode))
+   #+end_src
+** mwim
+   #+begin_src emacs-lisp
+     (use-package mwim
+       :ensure t
+       :bind (("C-a" . mwim-beginning-of-code-or-line)
+              ("C-e" . mwim-end-of-code-or-line)))
+   #+end_src
+* Gabage collection
+  #+begin_src emacs-lisp
+    (use-package gcmh
+      :ensure t
+      :delight
+      :custom
+      (gcmh-verbose t)
+      (gcmh-high-cons-threshold 100000000)
+      (garbage-collection-messages t)
+      :config
+      (gcmh-mode 1))
+  #+end_src
+* LSP
+** lsp-mode
+   #+begin_src emacs-lisp
+     (leaf lsp-mode
+       :ensure t
+       :commands (lsp lsp-deferred)
+       :config
+       :custom ((lsp-completion-provider            . :none)
+                (lsp-keymap-prefix                  . "C-c l")
+                (lsp-log-io                         . t)
+                (lsp-eldoc-render-all               . t)
+                (lsp-keep-workspace-alive           . nil)
+                (lsp-document-sync-method           . 2)
+                (lsp-response-timeout               . 5)
+                (lsp-headerline-breadcrumb-icons-enable . nil)
+                (read-process-output-max            . 1048576)
+                (lsp-enable-file-watchers           . nil))
+                ;; )
+       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode)
+       :init (leaf lsp-ui
+               :ensure t
+               :after lsp-mode
+               :custom ((lsp-ui-doc-enable            . nil)
+                        (lsp-ui-doc-position          . 'at-point)
+                        (lsp-ui-doc-header            . t)
+                        (lsp-ui-doc-include-signature . t)
+                        (lsp-ui-doc-max-width         . 150)
+                        (lsp-ui-doc-max-height        . 30)
+                        (lsp-ui-doc-show-with-cursor  . t)
+                        (lsp-ui-peek-enable           . t)
+                        (lsp-ui-peek-peek-height      . 20)
+                        (lsp-ui-peek-list-width       . 50)
+                        (lsp-ui-sideline-enable       . t)
+                        (lsp-ui-sideline-show-code-actions . nil)
+                        (lsp-ui-sideline-show-diagnostics . t)
+                        (lsp-ui-sideline-diagnostic-max-lines . 200)
+                        (lsp-ui-sideline-show-hover . nil)
+                        )
+               :bind ((lsp-ui-mode-map ([remap xref-find-definitions] .
+                                        lsp-ui-peek-find-definitions)
+                                       ([remap xref-find-references] .
+                                        lsp-ui-peek-find-references))
+                      (lsp-mode-map ("C-c s" . lsp-ui-sideline-mode)
+                                    ("C-c d" . lsp-ui-doc-mode)))
+               :hook ((lsp-mode-hook . lsp-ui-mode))))
+   #+end_src
+** consult-lsp
+    #+begin_src emacs-lisp
+      (use-package consult-lsp
+        :ensure t
+        :bind (:map lsp-mode-map
+                    ([remap xref-apropos] . consult-lsp-symbols)))
+    #+end_src
+
+** eglot
+   #+begin_src emacs-lisp
+     ;; (use-package eglot
+     ;;   :ensure t
+     ;;   :config
+     ;;   (add-hook 'python-mode-hook 'eglot-ensure)
+     ;;   )
+   #+end_src
+** flymake
+   #+begin_src emacs-lisp
+     ;; (leaf flymake-diagnostic-at-point
+     ;;   :ensure t
+     ;;   :after flymake
+     ;;   :config
+     ;;   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+     ;; (leaf poetry
+     ;;   :ensure t
+     ;;   :config
+     ;;   ;; Checks for the correct virtualenv. Better strategy IMO because the default
+     ;;   ;; one is quite slow.
+     ;;   (setq poetry-tracking-strategy 'switch-buffer)
+     ;;   :hook ((python-mode-hook . poetry-tracking-mode)))
+   #+end_src
+* Programing
+** General
+*** tree-sitter
+    #+begin_src emacs-lisp
+      (leaf tree-sitter
+        :ensure t
+        :init
+        (leaf tree-sitter-langs :ensure t)
+        (global-tree-sitter-mode)
+        :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+        )
+    #+end_src
+*** flycheck
+    #+begin_src emacs-lisp
+      (leaf flycheck
+        :ensure t
+        :hook (prog-mode-hook . flycheck-mode)
+        :custom ((flycheck-display-errors-delay . 0.3)
+                 (flycheck-indication-mode . 'left-margin)
+                 )
+        :config
+        (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
+        ;; (leaf flycheck-inline
+        ;;   :ensure t
+        ;;   :hook (flycheck-mode-hook . flycheck-inline-mode))
+        )
+      ;; (flycheck-define-checker textlint
+      ;;   "A linter for Markdown."
+      ;;   :command ("textlint.sh" source)
+      ;;   :error-patterns
+      ;;   ((warning line-start (file-name) ":" line ":" column ": "
+      ;;             (id (one-or-more (not (any " "))))
+      ;;             (message (one-or-more not-newline)
+      ;;                      (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+      ;;             line-end))
+      ;;   :modes (text-mode markdown-mode gfm-mode org-mode))
+    #+end_src
+*** projectile
+    #+begin_src emacs-lisp
+      (leaf projectile
+        :ensure t
+        :init
+        :config (setq projectile-mode-line-prefix " Prj")
+        (projectile-mode +1)
+        :custom ((projectile-mode-line-prefix . " Prj"))
+        :bind (projectile-mode-map ("C-c p" . projectile-command-map)))
+    #+end_src
+*** docker-mode
+    #+begin_src emacs-lisp
+      (leaf *docker-mode
+        :config
+        (leaf docker
+          :ensure t)
+        (leaf dockerfile-mode
+          :ensure t)
+        (leaf docker-compose-mode
+          :ensure t)
+        (leaf docker-tramp
+          :ensure t))
+    #+end_src
+*** git
+    #+begin_src emacs-lisp
+      (leaf *git-tools
+        :config
+        (leaf git-modes
+          :ensure t)
+        (leaf magit
+          :ensure t
+          :preface (defun c/git-add ()
+                     "Add anything."
+                     (interactive)
+                     (shell-command "git add ."))
+          (defun c/git-commit-a ()
+            "Commit after add anything."
+            (interactive)
+            (c/git-add)
+            (magit-commit-create))
+          :bind (("C-x g" . magit-status)
+                 ("C-x M-g" . magit-dispatch-popup))))
+    #+end_src
+** Languages
+*** Shell Script
+   #+begin_src emacs-lisp
+     (leaf *shell-scirpt
+       :commands lsp-deferred
+       :hook (sh-mode-hook . (lambda ()
+                                   (lsp-deferred))))
+   #+end_src
+*** Python
+    #+begin_src emacs-lisp
+      (leaf *python
+        :custom (python-indent-guess-indent-offset-verbose . nil)
+        :config
+        (leaf lsp-pyright
+          :ensure t
+          ;; :init (setq lsp-pyright-typechecking-mode "strict")
+          :hook (python-mode-hook . (lambda ()
+                                      (require 'lsp-pyright)
+                                      (lsp-deferred))))
+        (leaf py-isort
+          :ensure t
+          :hook (python-mode-hook . (lambda ()
+                                      (add-hook 'before-save-hook 'py-isort-before-save)))
+          :custom (py-isort-options . '("--profile=black"))
+          )
+        (leaf blacken
+          :ensure t
+          :hook (python-mode-hook .  blacken-mode)
+          :custom ((blacken-line-length . 300)
+                   ;; (blacken-skip-string-normalization . t)
+                   ))
+        ;; (leaf jupyter
+        ;;   :ensure t
+        ;;   :config
+        ;;   (org-babel-do-load-languages
+        ;;    'org-babel-load-languages
+        ;;    '((emacs-lisp . t) ;; Other languages
+        ;;      (shell . t)
+        ;;      ;; Python & Jupyter
+        ;;      (python . t)
+        ;;      (jupyter . t)))
+        ;;   (org-babel-jupyter-override-src-block "python")
+        ;;   )
+        )
+    #+end_src
+*** markdown
+    #+begin_src emacs-lisp
+      (leaf markdown-mode
+        :ensure t
+        :mode (("\\.md\\'" "\\.markdown\\'")
+               (("README\\.md\\'" . gfm-mode)))
+        :custom ((markdown-fontify-code-blocks-natively . t))
+        :hook ((markdown-mode-hook . (lambda ()
+                                       (setq tab-width 2)
+                                       ;; (setq flycheck-checker 'textlint)
+                                       ;; (flycheck-mode 1)
+                                                     ))))
+    #+end_src
+*** Yaml
+    #+begin_src emacs-lisp
+      (leaf yaml-mode
+        :ensure t)
+    #+end_src
+*** Toml
+    #+begin_src emacs-lisp
+      (leaf toml-mode
+        :ensure t)
+    #+end_src
+*** Json
+    #+begin_src emacs-lisp
+      (leaf json-reformat
+        :ensure t)
+    #+end_src
+*** web
+*** typescript / javascript
+**** scss-mode
+     #+begin_src emacs-lisp
+       (leaf scss-mode
+         :ensure t
+         :hook ((scss-mode-hook . (lambda ()
+                                    (and
+                                     (set (make-local-variable 'css-indent-offset) 2)
+                                     (set (make-local-variable 'scss-compile-at-save) nil))))))
+     #+end_src
+**** node module path
+     #+begin_src emacs-lisp
+       (use-package  add-node-modules-path
+         :ensure t
+         :commands add-node-modules-path)
+     #+end_src
+**** rjsx-mode
+     #+begin_src emacs-lisp
+            (leaf rjsx-mode
+              :ensure t
+              :mode ("\\.jsx\\'" "\\.js\\'")
+              :custom ((indent-tabs-mode . nil)
+                       (js-indent-level . 2)
+                       (js2-strict-missing-semi-waring . nil)
+                       (js2-mode-show-strict-warnings . nil))
+              :config
+              :hook (rjsx-mode-hook . (lambda ()
+                                        (add-node-modules-path)
+                                        (flycheck-mode t))))
+     #+end_src
+**** tide
+     #+begin_src emacs-lisp
+       (leaf tide
+         :ensure t
+         :commands tide-setup)
+     #+end_src
+**** typescript-mode
+     #+begin_src emacs-lisp
+       (leaf typescript-mode
+         :ensure t
+         :defun flycheck-add-mode
+         :custom ((typescript-indent-level . 2))
+         :config (flycheck-add-mode 'javascript-eslint 'web-mode)
+         :hook (typescript-mode-hook . (lambda ()
+                                         (interactive)
+                                         (add-node-modules-path)
+                                         (flycheck-mode +1)
+                                         (tide-setup)
+                                         (eldoc-mode +1)
+                                         (tide-hl-identifier +1)
+                                         (company-mode +1)
+                                         (setq flycheck-checker 'javascript-eslint))))
+     #+end_src
+**** web-mode
+     #+begin_src emacs-lisp
+       (leaf web-mode
+         :ensure t
+         :after flycheck
+         :defun flycheck-add-mode
+         :mode ("\\.tsx\\'" "\\.css\\'" "\\.json\\'" "\\.p?html?\\'")
+         :config (flycheck-add-mode 'javascript-eslint 'web-mode)
+         :custom ((web-mode-markup-indent-offset . 2)
+                  (web-mode-css-indent-offset . 2)
+                  (web-mode-code-indent-offset . 2)
+                  (web-mode-comment-style . 2)
+                  (web-mode-style-padding . 1)
+                  (web-mode-script-padding . 1)
+                  (web-mode-enable-auto-closing . t)
+                  (web-mode-enable-auto-pairing . t)
+                  (web-mode-auto-close-style . 2)
+                  (web-mode-tag-auto-close-style . 2)
+                  (indent-tabs-mode . nil)
+                  (tab-width . 2))
+         :hook (web-mode-hook . (lambda ()
+                                  (interactive)
+                                  (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                                    (add-node-modules-path)
+                                    (tide-setup)
+                                    (flycheck-mode +1)
+                                    (setq flycheck-checker 'javascript-eslint)
+                                    (eldoc-mode +1)
+                                    (tide-hl-identifier-mode +1)
+                                    (company-mode +1)))))
+     #+end_src
+
+* Writing
 ** company
    #+begin_src emacs-lisp
      (leaf company
@@ -637,91 +970,20 @@
          (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
        :hook ((company-mode-hook . set-yas-as-company-backend)))
    #+end_src
-** highlight-indent-gide
+** grammarly
    #+begin_src emacs-lisp
-     (leaf highlight-indent-guides
+     (leaf lsp-grammarly
+       :when (or (eq system-type 'darwin)
+                 (eq system-type 'gnu/linux)
+              )
        :ensure t
-       :blackout t
-       :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
-       :custom ((highlight-indent-guides-method       . 'character) ;; fill,column,character
-                (highlight-indent-guides-auto-enabled . t) ;; automatically calculate faces.
-                (highlight-indent-guides-responsive   . t)
-                (highlight-indent-guides-character    . ?\|)))
-   #+end_src
-** imenu-list
-   #+begin_src emacs-lisp
-     (leaf imenu-list
-       :ensure t
-       :bind (("C-z" . imenu-list-smart-toggle))
-       :custom-face (imenu-list-entry-face-1 . '((t
-                                                  (:foreground "white"))))
-       :custom ((imenu-list-focus-after-activation . t)
-                (imenu-list-auto-resize            . t)))
-   #+end_src
-** rainbow-delimiters
-   #+begin_src emacs-lisp
-     (leaf rainbow-delimiters
-       :ensure t
-       :hook ((prog-mode-hook . rainbow-delimiters-mode)))
-   #+end_src
-** nyan-mode
-   #+begin_src emacs-lisp
-     (leaf nyan-mode
-       :ensure t
-       :init
-       (nyan-mode 1))
-   #+end_src
-** projectile
-   #+begin_src emacs-lisp
-     (leaf projectile
-       :ensure t
-       :init
-       :config (setq projectile-mode-line-prefix " Prj")
-       (projectile-mode +1)
-       :custom ((projectile-mode-line-prefix . " Prj"))
-       :bind (projectile-mode-map ("C-c p" . projectile-command-map)))
-   #+end_src
-** flycheck
-   #+begin_src emacs-lisp
-     (leaf flycheck
-       :ensure t
-       :hook (prog-mode-hook . flycheck-mode)
-       :custom ((flycheck-display-errors-delay . 0.3)
-                (flycheck-indication-mode . 'left-margin)
-                )
-       :config
-       (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
-       ;; (leaf flycheck-inline
-       ;;   :ensure t
-       ;;   :hook (flycheck-mode-hook . flycheck-inline-mode))
-       )
-     ;; (flycheck-define-checker textlint
-     ;;   "A linter for Markdown."
-     ;;   :command ("textlint.sh" source)
-     ;;   :error-patterns
-     ;;   ((warning line-start (file-name) ":" line ":" column ": "
-     ;;             (id (one-or-more (not (any " "))))
-     ;;             (message (one-or-more not-newline)
-     ;;                      (zero-or-more "\n" (any " ") (one-or-more not-newline)))
-     ;;             line-end))
-     ;;   :modes (text-mode markdown-mode gfm-mode org-mode))
-   #+end_src
-** tree-sitter
-   #+begin_src emacs-lisp
-     (leaf tree-sitter
-       :ensure t
-       :init
-       (leaf tree-sitter-langs :ensure t)
-       (global-tree-sitter-mode)
-       :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+       :hook
+       ((markdown-mode-hook) . (lambda ()
+                                 (require 'lsp-grammarly)
+                                 (lsp-deferred)))
        )
    #+end_src
-** node module path
-   #+begin_src emacs-lisp
-     (leaf add-node-modules-path
-       :ensure t
-       :commands add-node-modules-path)
-   #+end_src
+* Server
 ** tramp
    #+begin_src emacs-lisp
      (leaf tramp
@@ -755,75 +1017,7 @@
          )
        )
    #+end_src
-* major-mode
-** eglot
-   #+begin_src emacs-lisp
-     ;; (use-package eglot
-     ;;   :ensure t
-     ;;   :config
-     ;;   (add-hook 'python-mode-hook 'eglot-ensure)
-     ;;   )
-   #+end_src
-** flymake
-   #+begin_src emacs-lisp
-     ;; (leaf flymake-diagnostic-at-point
-     ;;   :ensure t
-     ;;   :after flymake
-     ;;   :config
-     ;;   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
-     ;; (leaf poetry
-     ;;   :ensure t
-     ;;   :config
-     ;;   ;; Checks for the correct virtualenv. Better strategy IMO because the default
-     ;;   ;; one is quite slow.
-     ;;   (setq poetry-tracking-strategy 'switch-buffer)
-     ;;   :hook ((python-mode-hook . poetry-tracking-mode)))
-   #+end_src
-** lsp-mode
-   #+begin_src emacs-lisp
-     (leaf lsp-mode
-       :ensure t
-       :commands (lsp lsp-deferred)
-       :config
-       :custom ((lsp-completion-provider            . :none)
-                (lsp-keymap-prefix                  . "C-c l")
-                (lsp-log-io                         . t)
-                (lsp-eldoc-render-all               . t)
-                (lsp-keep-workspace-alive           . nil)
-                (lsp-document-sync-method           . 2)
-                (lsp-response-timeout               . 5)
-                (lsp-headerline-breadcrumb-icons-enable . nil)
-                (read-process-output-max            . 1048576)
-                (lsp-enable-file-watchers           . nil))
-                ;; )
-       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode)
-       :init (leaf lsp-ui
-               :ensure t
-               :after lsp-mode
-               :custom ((lsp-ui-doc-enable            . nil)
-                        (lsp-ui-doc-position          . 'at-point)
-                        (lsp-ui-doc-header            . t)
-                        (lsp-ui-doc-include-signature . t)
-                        (lsp-ui-doc-max-width         . 150)
-                        (lsp-ui-doc-max-height        . 30)
-                        (lsp-ui-doc-show-with-cursor  . t)
-                        (lsp-ui-peek-enable           . t)
-                        (lsp-ui-peek-peek-height      . 20)
-                        (lsp-ui-peek-list-width       . 50)
-                        (lsp-ui-sideline-enable       . t)
-                        (lsp-ui-sideline-show-code-actions . nil)
-                        (lsp-ui-sideline-show-diagnostics . t)
-                        (lsp-ui-sideline-diagnostic-max-lines . 200)
-                        (lsp-ui-sideline-show-hover . nil)
-                        )
-               :bind ((lsp-ui-mode-map ([remap xref-find-definitions] .
-                                        lsp-ui-peek-find-definitions)
-                                       ([remap xref-find-references] .
-                                        lsp-ui-peek-find-references))
-                      (lsp-mode-map ("C-c s" . lsp-ui-sideline-mode)
-                                    ("C-c d" . lsp-ui-doc-mode)))
-               :hook ((lsp-mode-hook . lsp-ui-mode))))
-   #+end_src
+* Mail
 ** mu4e
    #+begin_src emacs-lisp
      (use-package mu4e
@@ -872,125 +1066,8 @@
        )
 
    #+end_src
-** grammarly
-   #+begin_src emacs-lisp
-     (leaf lsp-grammarly
-       :when (or (eq system-type 'darwin)
-                 (eq system-type 'gnu/linux)
-              )
-       :ensure t
-       :hook
-       ((markdown-mode-hook) . (lambda ()
-                                 (require 'lsp-grammarly)
-                                 (lsp-deferred)))
-       )
-   #+end_src
-** shell-script-mode
-  #+begin_src emacs-lisp
-    (leaf *shell-scirpt
-      :commands lsp-deferred
-      :hook (sh-mode-hook . (lambda ()
-                                  (lsp-deferred)))
-      )
-  #+end_src
-** python-mode
-   #+begin_src emacs-lisp
-     (leaf *python
-       :custom (python-indent-guess-indent-offset-verbose . nil)
-       :config
-       (leaf lsp-pyright
-         :ensure t
-         ;; :init (setq lsp-pyright-typechecking-mode "strict")
-         :hook (python-mode-hook . (lambda ()
-                                     (require 'lsp-pyright)
-                                     (lsp-deferred))))
-       (leaf py-isort
-         :ensure t
-         :hook (python-mode-hook . (lambda ()
-                                     (add-hook 'before-save-hook 'py-isort-before-save)))
-         :custom (py-isort-options . '("--profile=black"))
-         )
-       (leaf blacken
-         :ensure t
-         :hook (python-mode-hook .  blacken-mode)
-         :custom ((blacken-line-length . 300)
-                  ;; (blacken-skip-string-normalization . t)
-                  ))
-       ;; (leaf jupyter
-       ;;   :ensure t
-       ;;   :config
-       ;;   (org-babel-do-load-languages
-       ;;    'org-babel-load-languages
-       ;;    '((emacs-lisp . t) ;; Other languages
-       ;;      (shell . t)
-       ;;      ;; Python & Jupyter
-       ;;      (python . t)
-       ;;      (jupyter . t)))
-       ;;   (org-babel-jupyter-override-src-block "python")
-       ;;   )
-       )
-   #+end_src
-** yaml-mode
-   #+begin_src emacs-lisp
-     (leaf yaml-mode
-       :ensure t)
-   #+end_src
-** toml-mode
-   #+begin_src emacs-lisp
-     (leaf toml-mode
-       :ensure t)
-   #+end_src
-** json-reformat
-   #+begin_src emacs-lisp
-     (leaf json-reformat
-       :ensure t)
-   #+end_src
-** scss-mode
-   #+begin_src emacs-lisp
-     (leaf scss-mode
-       :ensure t
-       :hook ((scss-mode-hook . (lambda ()
-                                  (and
-                                   (set (make-local-variable 'css-indent-offset) 2)
-                                   (set (make-local-variable 'scss-compile-at-save) nil))))))
-   #+end_src
-** rjsx-mode
-   #+begin_src emacs-lisp
-          (leaf rjsx-mode
-            :ensure t
-            :mode ("\\.jsx\\'" "\\.js\\'")
-            :custom ((indent-tabs-mode . nil)
-                     (js-indent-level . 2)
-                     (js2-strict-missing-semi-waring . nil)
-                     (js2-mode-show-strict-warnings . nil))
-            :config
-            :hook (rjsx-mode-hook . (lambda ()
-                                      (add-node-modules-path)
-                                      (flycheck-mode t))))
-   #+end_src
-** tide
-   #+begin_src emacs-lisp
-     (leaf tide
-       :ensure t
-       :commands tide-setup)
-   #+end_src
-** typescript-mode
-   #+begin_src emacs-lisp
-     (leaf typescript-mode
-       :ensure t
-       :defun flycheck-add-mode
-       :custom ((typescript-indent-level . 2))
-       :config (flycheck-add-mode 'javascript-eslint 'web-mode)
-       :hook (typescript-mode-hook . (lambda ()
-                                       (interactive)
-                                       (add-node-modules-path)
-                                       (flycheck-mode +1)
-                                       (tide-setup)
-                                       (eldoc-mode +1)
-                                       (tide-hl-identifier +1)
-                                       (company-mode +1)
-                                       (setq flycheck-checker 'javascript-eslint))))
-   #+end_src
+
+* org
 ** org-mode
    #+begin_src emacs-lisp
      (leaf org
@@ -1197,63 +1274,7 @@
        (org-hugo-base-dir . my:d:org-hugo)
        (org-hugo-default-section-directory . "notes"))
    #+end_src
-** web-mode
-   #+begin_src emacs-lisp
-     (leaf web-mode
-       :ensure t
-       :after flycheck
-       :defun flycheck-add-mode
-       :mode ("\\.tsx\\'" "\\.css\\'" "\\.json\\'" "\\.p?html?\\'" "\\.php\\'")
-       :config (flycheck-add-mode 'javascript-eslint 'web-mode)
-       :custom ((web-mode-markup-indent-offset . 2)
-                (web-mode-css-indent-offset . 2)
-                (web-mode-code-indent-offset . 2)
-                (web-mode-comment-style . 2)
-                (web-mode-style-padding . 1)
-                (web-mode-script-padding . 1)
-                (web-mode-enable-auto-closing . t)
-                (web-mode-enable-auto-pairing . t)
-                (web-mode-auto-close-style . 2)
-                (web-mode-tag-auto-close-style . 2)
-                (indent-tabs-mode . nil)
-                (tab-width . 2))
-       :hook (web-mode-hook . (lambda ()
-                                (interactive)
-                                (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                                  (add-node-modules-path)
-                                  (tide-setup)
-                                  (flycheck-mode +1)
-                                  (setq flycheck-checker 'javascript-eslint)
-                                  (eldoc-mode +1)
-                                  (tide-hl-identifier-mode +1)
-                                  (company-mode +1)))))
-   #+end_src
-** markdown-mode
-   #+begin_src emacs-lisp
-     (leaf markdown-mode
-       :ensure t
-       :mode (("\\.md\\'" "\\.markdown\\'")
-              (("README\\.md\\'" . gfm-mode)))
-       :custom ((markdown-fontify-code-blocks-natively . t))
-       :hook ((markdown-mode-hook . (lambda ()
-                                      (setq tab-width 2)
-                                      ;; (setq flycheck-checker 'textlint)
-                                      ;; (flycheck-mode 1)
-                                                    ))))
-   #+end_src
-** docker-mode
-   #+begin_src emacs-lisp
-     (leaf *docker-mode
-       :config
-       (leaf docker
-         :ensure t)
-       (leaf dockerfile-mode
-         :ensure t)
-       (leaf docker-compose-mode
-         :ensure t)
-       (leaf docker-tramp
-         :ensure t))
-   #+end_src
+
 * misc-tools
 ** atomic-chrome
    #+begin_src emacs-lisp
@@ -1263,26 +1284,6 @@
        :config
        (atomic-chrome-start-server)
        )
-   #+end_src
-** git
-   #+begin_src emacs-lisp
-     (leaf *git-tools
-       :config
-       (leaf git-modes
-         :ensure t)
-       (leaf magit
-         :ensure t
-         :preface (defun c/git-add ()
-                    "Add anything."
-                    (interactive)
-                    (shell-command "git add ."))
-         (defun c/git-commit-a ()
-           "Commit after add anything."
-           (interactive)
-           (c/git-add)
-           (magit-commit-create))
-         :bind (("C-x g" . magit-status)
-                ("C-x M-g" . magit-dispatch-popup))))
    #+end_src
 ** shell-pop
    #+begin_src emacs-lisp
@@ -1302,4 +1303,23 @@
            (when (processp proc)
              (set-process-query-on-exit-flag proc nil))))
        (add-hook 'term-exec-hook 'set-no-process-query-on-exit))
+   #+end_src
+
+
+
+
+* delete?
+** popwin
+   #+begin_src emacs-lisp
+     (use-package popwin
+       :ensure t
+       :disabled
+       )
+   #+end_src
+
+** amx
+   #+begin_src emacs-lisp
+     (use-package amx
+       :ensure t
+       :disabled)
    #+end_src
