@@ -40,8 +40,6 @@
 
 ;; Silence native compiler warnings
 (setq native-comp-async-report-warnings-errors 'silent)
-;; Native compilation for ddskk
-(native-compile-async (expand-file-name "ddskk.d/init.el" user-emacs-directory))
 
 ;; Frame title
 (setq-default frame-title-format '("emacs " emacs-version (buffer-file-name " - %f")))

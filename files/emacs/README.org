@@ -16,35 +16,18 @@
 * Packages
 ** Package manager
    #+begin_src emacs-lisp
-     (eval-and-compile
-       (customize-set-variable
-        'package-archives '(("org" . "https://orgmode.org/elpa/")
-                            ("melpa" . "https://melpa.org/packages/")
-                            ("gnu" . "https://elpa.gnu.org/packages/")))
-       (package-initialize)
+          (eval-and-compile
+            (customize-set-variable
+             'package-archives '(("org" . "https://orgmode.org/elpa/")
+                                 ("melpa" . "https://melpa.org/packages/")
+                                 ("gnu" . "https://elpa.gnu.org/packages/")))
+            (package-initialize)
 
-       (unless (package-installed-p 'use-package)
-         (package-refresh-contents)
-         (package-install 'use-package))
-       (setq use-package-hook-name-suffix nil)
-
-       (use-package delight :ensure t)
-
-       (unless (package-installed-p 'leaf)
-         (package-refresh-contents)
-         (package-install 'leaf))
-
-       (leaf leaf-keywords
-         :ensure t
-         :init
-         ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-         (leaf hydra :ensure t)
-         (leaf el-get :ensure t)
-         (leaf blackout :ensure t)
-
-         :config
-         ;; initialize leaf-keywords.el
-         (leaf-keywords-init)))
+            (unless (package-installed-p 'use-package)
+              (package-refresh-contents)
+              (package-install 'use-package))
+            (setq use-package-hook-name-suffix nil)
+            (use-package delight :ensure t))
    #+end_src
 ** Auto packae update
    #+begin_src emacs-lisp
@@ -106,8 +89,9 @@
      (bind-key* "C-c l" 'toggle-truncate-lines)
    #+end_src
 ** Delete
+   Delete selection if you insert.
    #+begin_src emacs-lisp
-     (bind-key* "C-h" 'delete-backward-char)
+     (bind-key "C-h" 'delete-backward-char)
      (use-package delsel
        :custom
        (delete-selection-mode t))
@@ -181,7 +165,6 @@
      (bind-key* "C-x |" 'split-window-right)
      (bind-key* "C-x -" 'split-window-below)
      (bind-key* "C-x x" 'delete-window)
-
      (use-package windmove
        :custom
        (windmove-wrap-around  t)
@@ -226,14 +209,15 @@
       text-quoting-style 'straight
       user-full-name (getenv "NAME"))
      (use-package simple
+       :demand t
        :custom
        (kill-ring-max                100)
        (kill-read-only-ok            t)
        (eval-expression-print-length nil)
        (eval-expression-print-level  nil)
+       (column-number-mode            t)
        :bind ("C-x j" . eval-print-last-sexp))
    #+end_src
-
 * Appearance
 ** Color theme
 *** doom-nord
@@ -262,7 +246,7 @@
      (when (display-graphic-p)
        (if (eq system-type 'darwin)
            (add-to-list 'default-frame-alist '(font . "Cica-22"))
-         (add-to-list 'default-frame-alist '(font . "Cica-16"))))
+         (add-to-list 'default-frame-alist '(font . "PlemolJP Console NFJ 14"))))
    #+end_src
 ** Highlight-indent-gide
    #+begin_src emacs-lisp
@@ -278,20 +262,20 @@
    #+end_src
 ** rainbow-delimiters
    #+begin_src emacs-lisp
-     (leaf rainbow-delimiters
+     (use-package rainbow-delimiters
        :ensure t
        :hook ((prog-mode-hook . rainbow-delimiters-mode)))
    #+end_src
 ** nyan-mode
    #+begin_src emacs-lisp
-     (leaf nyan-mode
+     (use-package nyan-mode
        :ensure t
        :init
        (nyan-mode 1))
    #+end_src
 ** tab-bar-mode
    #+begin_src emacs-lisp
-     (leaf tab-bar-mode
+     (use-package tab-bar
        :init (defvar my:ctrl-o-map (make-sparse-keymap)
                "My original keymap binded to C-o.")
        (defalias 'my:ctrl-o-prefix my:ctrl-o-map)
@@ -316,20 +300,20 @@
                (format "%-12s" tab-name)
              (propertize (truncate-string-to-width tab-name tab-bar-tab-name-truncated-max nil
                                                    nil ellipsis) 'help-echo tab-name))))
-       :custom ((tab-bar-close-button-show      . nil)
-                (tab-bar-close-last-tab-choice  . nil)
-                (tab-bar-close-tab-select       . 'left)
-                (tab-bar-history-mode           . nil)
-                (tab-bar-new-tab-choice         . "*scratch*")
-                (tab-bar-new-button-show        . nil)
-                (tab-bar-tab-name-function      . 'my:tab-bar-tab-name-truncated)
-                (tab-bar-tab-name-truncated-max . 12)
-                (tab-bar-separator              . ""))
+       :custom
+       (tab-bar-close-button-show      nil)
+       (tab-bar-close-last-tab-choice  nil)
+       (tab-bar-close-tab-select       'left)
+       (tab-bar-history-mode           nil)
+       (tab-bar-new-tab-choice         "*scratch*")
+       (tab-bar-new-button-show        nil)
+       (tab-bar-tab-name-function      'my:tab-bar-tab-name-truncated)
+       (tab-bar-tab-name-truncated-max 12)
+       (tab-bar-separator              "")
        :config
        (setq tab-bar-select-tab-modifiers '(meta))
        (setq tab-bar-tab-hints t)
-       (tab-bar-mode +1)
-       )
+       (tab-bar-mode +1))
    #+end_src
 ** dimmer
    Visually highlight the selected buffer.
@@ -419,8 +403,9 @@
 ** skk
    #+begin_src emacs-lisp
      (use-package ddskk
+       :ensure t
        :if (display-graphic-p)
-       :bind (("C-j" . skk-kakutei))
+       :bind* (("C-j" . skk-kakutei))
        :custom
        (default-input-method "japanese-skk")
        (skk-byte-compile-init-file t)
@@ -449,27 +434,21 @@
        (use-package vertico
          :ensure t
          :init
-         (defun my:filename-upto-parent ()
-           "Move to parent directory like \"cd ..\" in find-file."
-           (interactive)
-           (let ((sep (eval-when-compile (regexp-opt '("/" "\\")))))
-             (save-excursion (left-char 1)
-                             (when (looking-at-p sep)
-                               (delete-char 1)))
-             (save-match-data (when (search-backward-regexp sep nil t)
-                                (right-char 1)
-                                (filter-buffer-substring (point)
-                                                         (save-excursion (end-of-line)
-                                                                         (point)) #'delete)))))
          (vertico-mode)
          :custom
          (vertico-count 20)
          (enable-recursive-minibufferst)
          (vertico-cycle t)
          :bind (:map vertico-map
-                  ("C-r" . vertico-previous)
-                  ("C-s" . vertico-next)
-                  ("C-l" . my:filename-upto-parent)))
+                     ("C-r" . vertico-previous)
+                     ("C-s" . vertico-next)))
+       (use-package vertico-directory
+         :ensure nil ;; part of vertico
+         :after vertico
+         :commands (vertico-directory-tidy)
+         :bind (:map vertico-map
+                     ("RET" . vertico-directory-enter)
+                     ("C-l" . vertico-directory-up)))
      #+end_src
 *** consult
     #+begin_src emacs-lisp
@@ -512,6 +491,140 @@
         :hook
         (embark-collect-mode . consult-preview-at-point-mode))
     #+end_src
+*** corfu
+    #+begin_src emacs-lisp
+      (use-package corfu-terminal
+        :ensure t
+        :if (not (display-graphic-p))
+        :config
+        (corfu-terminal-mode +1))
+      (use-package corfu
+        :ensure t
+        :custom ((corfu-auto t)
+                 (corfu-auto-prefix 1)
+                 (corfu-auto-delay 0)
+                 (corfu-cycle t)
+                 (tab-always-indent 'complete))
+        :init
+        (global-corfu-mode))
+
+      (use-package cape
+        :ensure t
+        :init
+        ;; Add `completion-at-point-functions', used by `completion-at-point'.
+        (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-yasnippet) t)
+        (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+        (add-to-list 'completion-at-point-functions #'cape-file)
+        ;;(add-to-list 'completion-at-point-functions #'cape-history)
+        (add-to-list 'completion-at-point-functions #'cape-keyword)
+        ;; (add-to-list 'completion-at-point-functions #'cape-tex)
+        ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+        ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+        ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+        ;;(add-to-list 'completion-at-point-functions #'cape-ispell)
+        ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+        ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+        ;;(add-to-list 'completion-at-point-functions #'cape-line)
+        )
+    #+end_src
+
+
+*** company
+    #+begin_src emacs-lisp
+      (use-package company
+        :ensure t
+        :disabled
+        :delight company-mode
+        :bind (:map company-active-map
+                    ("M-n" . nil)
+                    ("M-p" . nil)
+                    ("C-s" . company-filter-candidates)
+                    ("C-n" . company-select-next)
+                    ("C-p" . company-select-previous)
+                    ("C-i" . company-complete-common-or-cycle)
+                    :map company-search-map
+                    ("C-n" . company-select-next)
+                    ("C-p" . company-select-previous))
+        :custom
+        (company-tooltip-limit             12)
+        (company-idle-delay                0)
+        (company-minimum-prefix-length     1)
+        (company-transformers              '(company-sort-by-occurrence))
+        (global-company-mode               t)
+        (company-selection-wrap-around     t)
+        (vompany-tooltip-align-annotations t)
+        (company-backends '(company-files
+                            company-capf
+                            (company-dabbrev-code
+                             company-gtags
+                             company-etags
+                             company-keywords)
+                            company-dabbrev)))
+      (use-package company-prescient
+        :ensure t
+        :after company
+        :custom
+        (company-prescient-mode t))
+      (use-package all-the-icons :ensure t)
+      (use-package company-box
+        :after (all-the-icons company)
+        :ensure t
+        :hook ((company-mode-hook . company-box-mode))
+        :custom
+        (company-box-icons-alist 'company-box-icons-all-the-icons))
+      ;; (use-package company-quickhelp
+      ;;   :if (display-graphic-p)
+      ;;   :ensure t
+      ;;   :custom
+      ;;   (company-quickhelp-delay 0.8)
+      ;;   (company-quickhelp-mode t)
+      ;;   :bind (company-active-map ("M-h" . company-quickhelp-manual-begin))
+      ;;   :hook ((company-mode-hook . company-quickhelp-mode)))
+      ;; (use-package company-math
+      ;;   :ensure t
+      ;;   :defvar (company-backends)
+      ;;   :preface (defun c/latex-mode-setup ()
+      ;;              (setq-local company-backends (append '((company-math-symbols-latex
+      ;;                                                      company-math-symbols-unicode
+      ;;                                                      company-latex-commands)) company-backends)))
+      ;;   :hook ((org-mode-hook . c/latex-mode-setup)
+      ;;          (tex-mode-hook . c/latex-mode-setup)))
+    #+end_src
+*** yasnippet
+    #+begin_src emacs-lisp
+      (use-package yasnippet
+        :ensure t
+        :delight yas-minor-mode
+        :custom
+        (yas-indent-line 'fixed)
+        (yas-global-mode t)
+        :bind (:map yas-keymap
+                    ("<tab>" . nil)
+               :map yas-minor-mode-map
+                    ("C-c y i" . yas-insert-snippet)
+                    ("C-c y n" . yas-new-snippet)
+                    ("C-c y v" . yas-visit-snippet-file)
+                    ("C-c y l" . yas-describe-tables)
+                    ("C-c y g" . yas-reload-all))
+        ;; :config
+        ;; (defvar company-mode/enable-yas t
+        ;;   "Enable yasnippet for all backends.")
+        ;; (defun company-mode/backend-with-yas (backend)
+        ;;   (if (or (not company-mode/enable-yas)
+        ;;           (and (listp backend)
+        ;;                (member 'company-yasnippet backend))) backend (append (if (consp backend) backend (list backend))
+        ;;           '(:with company-yasnippet ))))
+        ;; (defun set-yas-as-company-backend ()
+        ;;   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
+        ;; :hook ((company-mode-hook . set-yas-as-company-backend))
+        )
+
+      (use-package yasnippet-snippets :ensure t)
+      (use-package yatemplate
+        :ensure t
+        :config
+        (yatemplate-fill-alist))
+    #+end_src
 ** which-key
    #+begin_src emacs-lisp
      (use-package which-key
@@ -537,16 +650,16 @@
                                    (:height 4.0
                                             :foreground "#f1fa8c")))))
    #+end_src
-
 ** undo-tree
    #+begin_src emacs-lisp
      (use-package undo-tree
        :ensure t
-       :bind (  ("M-/" . undo-tree-redo))
-       ;; :custom
-       ;; (undo-tree-auto-save-history  t)
-       ;; (undo-tree-history-directory-alist  `(("." . ,(concat user-emacs-directory
-       ;;                                                        ".cache/undo-tree-hist/"))))
+       :demand t
+       :bind (("M-/" . undo-tree-redo))
+       :custom
+       (undo-tree-auto-save-history  t)
+       (undo-tree-history-directory-alist  `(("." . ,(concat user-emacs-directory
+                                                              ".cache/undo-tree-hist/"))))
        :config
        (global-undo-tree-mode))
    #+end_src
@@ -572,57 +685,59 @@
 * LSP
 ** lsp-mode
    #+begin_src emacs-lisp
-     (leaf lsp-mode
+     (use-package lsp-mode
        :ensure t
        :commands (lsp lsp-deferred)
        :config
-       :custom ((lsp-completion-provider            . :none)
-                (lsp-keymap-prefix                  . "C-c l")
-                (lsp-log-io                         . t)
-                (lsp-eldoc-render-all               . t)
-                (lsp-keep-workspace-alive           . nil)
-                (lsp-document-sync-method           . 2)
-                (lsp-response-timeout               . 5)
-                (lsp-headerline-breadcrumb-icons-enable . nil)
-                (read-process-output-max            . 1048576)
-                (lsp-enable-file-watchers           . nil))
-                ;; )
-       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode)
-       :init (leaf lsp-ui
-               :ensure t
-               :after lsp-mode
-               :custom ((lsp-ui-doc-enable            . nil)
-                        (lsp-ui-doc-position          . 'at-point)
-                        (lsp-ui-doc-header            . t)
-                        (lsp-ui-doc-include-signature . t)
-                        (lsp-ui-doc-max-width         . 150)
-                        (lsp-ui-doc-max-height        . 30)
-                        (lsp-ui-doc-show-with-cursor  . t)
-                        (lsp-ui-peek-enable           . t)
-                        (lsp-ui-peek-peek-height      . 20)
-                        (lsp-ui-peek-list-width       . 50)
-                        (lsp-ui-sideline-enable       . t)
-                        (lsp-ui-sideline-show-code-actions . nil)
-                        (lsp-ui-sideline-show-diagnostics . t)
-                        (lsp-ui-sideline-diagnostic-max-lines . 200)
-                        (lsp-ui-sideline-show-hover . nil)
-                        )
-               :bind ((lsp-ui-mode-map ([remap xref-find-definitions] .
-                                        lsp-ui-peek-find-definitions)
-                                       ([remap xref-find-references] .
-                                        lsp-ui-peek-find-references))
-                      (lsp-mode-map ("C-c s" . lsp-ui-sideline-mode)
-                                    ("C-c d" . lsp-ui-doc-mode)))
-               :hook ((lsp-mode-hook . lsp-ui-mode))))
+       :custom
+       ((lsp-completion-provider            :none)
+        (lsp-keymap-prefix                  "C-c l")
+        (lsp-log-io                         t)
+        (lsp-eldoc-render-all               t)
+        (lsp-keep-workspace-alive           nil)
+        (lsp-document-sync-method           2)
+        (lsp-response-timeout               5)
+        (lsp-headerline-breadcrumb-icons-enable nil)
+        (read-process-output-max            1048576)
+        (lsp-enable-file-watchers           nil))
+       ;; )
+       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
+
+     (use-package lsp-ui
+       :ensure t
+       :after lsp-mode
+       :custom
+       (lsp-ui-doc-enable            nil)
+       (lsp-ui-doc-position          'at-point)
+       (lsp-ui-doc-header            t)
+       (lsp-ui-doc-include-signature t)
+       (lsp-ui-doc-max-width         150)
+       (lsp-ui-doc-max-height        30)
+       (lsp-ui-doc-show-with-cursor  t)
+       (lsp-ui-peek-enable           t)
+       (lsp-ui-peek-peek-height      20)
+       (lsp-ui-peek-list-width       50)
+       (lsp-ui-sideline-enable       t)
+       (lsp-ui-sideline-show-code-actions nil)
+       (lsp-ui-sideline-show-diagnostics t)
+       (lsp-ui-sideline-diagnostic-max-lines 200)
+       (lsp-ui-sideline-show-hover nil)
+       :bind
+       (:map lsp-mode-map
+             ("C-c s" . lsp-ui-sideline-mode)
+             ("C-c d" . lsp-ui-doc-mode)
+             :map lsp-ui-mode-map
+             ("M-." . lsp-ui-peek-find-definitions)
+             ("M-?" . lsp-ui-peek-find-references))
+       :hook ((lsp-mode-hook . lsp-ui-mode)))
    #+end_src
 ** consult-lsp
-    #+begin_src emacs-lisp
-      (use-package consult-lsp
-        :ensure t
-        :bind (:map lsp-mode-map
-                    ([remap xref-apropos] . consult-lsp-symbols)))
-    #+end_src
-
+   #+begin_src emacs-lisp
+     (use-package consult-lsp
+       :ensure t
+       :bind (:map lsp-mode-map
+                   ([remap xref-apropos] . consult-lsp-symbols)))
+   #+end_src
 ** eglot
    #+begin_src emacs-lisp
      ;; (use-package eglot
@@ -633,12 +748,12 @@
    #+end_src
 ** flymake
    #+begin_src emacs-lisp
-     ;; (leaf flymake-diagnostic-at-point
+     ;; (use-package flymake-diagnostic-at-point
      ;;   :ensure t
      ;;   :after flymake
      ;;   :config
      ;;   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
-     ;; (leaf poetry
+     ;; (use-package poetry
      ;;   :ensure t
      ;;   :config
      ;;   ;; Checks for the correct virtualenv. Better strategy IMO because the default
@@ -646,29 +761,29 @@
      ;;   (setq poetry-tracking-strategy 'switch-buffer)
      ;;   :hook ((python-mode-hook . poetry-tracking-mode)))
    #+end_src
-* Programing
+* Programing Langs
 ** General
 *** tree-sitter
     #+begin_src emacs-lisp
-      (leaf tree-sitter
+      (use-package tree-sitter
         :ensure t
         :init
-        (leaf tree-sitter-langs :ensure t)
         (global-tree-sitter-mode)
         :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
         )
+      (use-package tree-sitter-langs :ensure t)
     #+end_src
 *** flycheck
     #+begin_src emacs-lisp
-      (leaf flycheck
+      (use-package flycheck
         :ensure t
         :hook (prog-mode-hook . flycheck-mode)
-        :custom ((flycheck-display-errors-delay . 0.3)
-                 (flycheck-indication-mode . 'left-margin)
-                 )
+        :custom
+        ((flycheck-display-errors-delay 0.3)
+         (flycheck-indication-mode 'left-margin))
         :config
         (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
-        ;; (leaf flycheck-inline
+        ;; (use-package flycheck-inline
         ;;   :ensure t
         ;;   :hook (flycheck-mode-hook . flycheck-inline-mode))
         )
@@ -683,133 +798,109 @@
       ;;             line-end))
       ;;   :modes (text-mode markdown-mode gfm-mode org-mode))
     #+end_src
-*** projectile
-    #+begin_src emacs-lisp
-      (leaf projectile
-        :ensure t
-        :init
-        :config (setq projectile-mode-line-prefix " Prj")
-        (projectile-mode +1)
-        :custom ((projectile-mode-line-prefix . " Prj"))
-        :bind (projectile-mode-map ("C-c p" . projectile-command-map)))
-    #+end_src
 *** docker-mode
     #+begin_src emacs-lisp
-      (leaf *docker-mode
-        :config
-        (leaf docker
-          :ensure t)
-        (leaf dockerfile-mode
-          :ensure t)
-        (leaf docker-compose-mode
-          :ensure t)
-        (leaf docker-tramp
-          :ensure t))
+      (use-package docker :ensure t)
+      (use-package dockerfile-mode :ensure t)
+      (use-package  docker-compose-mode :ensure t)
+      (use-package docker-tramp :ensure t)
     #+end_src
 *** git
     #+begin_src emacs-lisp
-      (leaf *git-tools
-        :config
-        (leaf git-modes
-          :ensure t)
-        (leaf magit
-          :ensure t
-          :preface (defun c/git-add ()
-                     "Add anything."
-                     (interactive)
-                     (shell-command "git add ."))
-          (defun c/git-commit-a ()
-            "Commit after add anything."
-            (interactive)
-            (c/git-add)
-            (magit-commit-create))
-          :bind (("C-x g" . magit-status)
-                 ("C-x M-g" . magit-dispatch-popup))))
+      (use-package git-modes :ensure t)
+
+      (use-package magit
+        :ensure t
+        :init
+        (defun c/git-add ()
+          "Add anything."
+          (interactive)
+          (shell-command "git add ."))
+        (defun c/git-commit-a ()
+          "Commit after add anything."
+          (interactive)
+          (c/git-add)
+          (magit-commit-create))
+        :bind (("C-x g" . magit-status)
+               ("C-x M-g" . magit-dispatch-popup)))
     #+end_src
 ** Languages
 *** Shell Script
-   #+begin_src emacs-lisp
-     (leaf *shell-scirpt
-       :commands lsp-deferred
-       :hook (sh-mode-hook . (lambda ()
-                                   (lsp-deferred))))
-   #+end_src
+    #+begin_src emacs-lisp
+      (use-package sh-mode
+        :commands lsp-deferred
+        :hook (sh-mode-hook . (lambda ()
+                                (lsp-deferred))))
+    #+end_src
 *** Python
     #+begin_src emacs-lisp
-      (leaf *python
-        :custom (python-indent-guess-indent-offset-verbose . nil)
-        :config
-        (leaf lsp-pyright
-          :ensure t
-          ;; :init (setq lsp-pyright-typechecking-mode "strict")
-          :hook (python-mode-hook . (lambda ()
-                                      (require 'lsp-pyright)
-                                      (lsp-deferred))))
-        (leaf py-isort
-          :ensure t
-          :hook (python-mode-hook . (lambda ()
-                                      (add-hook 'before-save-hook 'py-isort-before-save)))
-          :custom (py-isort-options . '("--profile=black"))
-          )
-        (leaf blacken
-          :ensure t
-          :hook (python-mode-hook .  blacken-mode)
-          :custom ((blacken-line-length . 300)
-                   ;; (blacken-skip-string-normalization . t)
-                   ))
-        ;; (leaf jupyter
-        ;;   :ensure t
-        ;;   :config
-        ;;   (org-babel-do-load-languages
-        ;;    'org-babel-load-languages
-        ;;    '((emacs-lisp . t) ;; Other languages
-        ;;      (shell . t)
-        ;;      ;; Python & Jupyter
-        ;;      (python . t)
-        ;;      (jupyter . t)))
-        ;;   (org-babel-jupyter-override-src-block "python")
-        ;;   )
-        )
-    #+end_src
-*** markdown
-    #+begin_src emacs-lisp
-      (leaf markdown-mode
+      (use-package python
+        :custom (python-indent-guess-indent-offset-verbose . nil))
+
+      (use-package lsp-pyright
         :ensure t
-        :mode (("\\.md\\'" "\\.markdown\\'")
-               (("README\\.md\\'" . gfm-mode)))
-        :custom ((markdown-fontify-code-blocks-natively . t))
-        :hook ((markdown-mode-hook . (lambda ()
-                                       (setq tab-width 2)
-                                       ;; (setq flycheck-checker 'textlint)
-                                       ;; (flycheck-mode 1)
-                                                     ))))
-    #+end_src
-*** Yaml
-    #+begin_src emacs-lisp
-      (leaf yaml-mode
-        :ensure t)
-    #+end_src
-*** Toml
-    #+begin_src emacs-lisp
-      (leaf toml-mode
-        :ensure t)
-    #+end_src
-*** Json
-    #+begin_src emacs-lisp
-      (leaf json-reformat
-        :ensure t)
+        ;; :init (setq lsp-pyright-typechecking-mode "strict")
+        :hook (python-mode-hook . (lambda ()
+                                    (require 'lsp-pyright)
+                                    (lsp-deferred))))
+      (use-package py-isort
+        :ensure t
+        :hook (python-mode-hook . (lambda ()
+                                    (add-hook 'before-save-hook 'py-isort-before-save)))
+        :custom
+        (py-isort-options '("--profile=black")))
+
+      (use-package blacken
+        :ensure t
+        :hook (python-mode-hook .  blacken-mode)
+        :custom
+        (blacken-line-length 300)
+        ;; (blacken-skip-string-normalization t)
+        )
+
     #+end_src
 *** web
-*** typescript / javascript
+**** web-mode
+     #+begin_src emacs-lisp
+       (use-package web-mode
+         :ensure t
+         :after flycheck
+         :mode ("\\.tsx\\'" "\\.css\\'" "\\.p?html?\\'")
+         :custom
+         (web-mode-markup-indent-offset 2)
+         (web-mode-css-indent-offset 2)
+         (web-mode-code-indent-offset 2)
+         (web-mode-comment-style 2)
+         (web-mode-style-padding 1)
+         (web-mode-script-padding 1)
+         (web-mode-enable-auto-closing t)
+         (web-mode-enable-auto-pairing t)
+         (web-mode-auto-close-style 2)
+         (web-mode-tag-auto-close-style 2)
+         (indent-tabs-mode nil)
+         (tab-width 2)
+         :hook (web-mode-hook . (lambda ()
+                                  (interactive)
+                                  (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                                    (add-node-modules-path)
+                                    (tide-setup)
+                                    (flycheck-mode +1)
+                                    (flycheck-add-mode 'javascript-eslint 'web-mode)
+                                    (setq flycheck-checker 'javascript-eslint)
+                                    (eldoc-mode +1)
+                                    (tide-hl-identifier-mode +1)
+                                    (company-mode +1)))))
+     #+end_src
 **** scss-mode
      #+begin_src emacs-lisp
-       (leaf scss-mode
+       (use-package scss-mode
          :ensure t
          :hook ((scss-mode-hook . (lambda ()
                                     (and
                                      (set (make-local-variable 'css-indent-offset) 2)
                                      (set (make-local-variable 'scss-compile-at-save) nil))))))
      #+end_src
+*** typescript / javascript
 **** node module path
      #+begin_src emacs-lisp
        (use-package  add-node-modules-path
@@ -818,31 +909,31 @@
      #+end_src
 **** rjsx-mode
      #+begin_src emacs-lisp
-            (leaf rjsx-mode
-              :ensure t
-              :mode ("\\.jsx\\'" "\\.js\\'")
-              :custom ((indent-tabs-mode . nil)
-                       (js-indent-level . 2)
-                       (js2-strict-missing-semi-waring . nil)
-                       (js2-mode-show-strict-warnings . nil))
-              :config
-              :hook (rjsx-mode-hook . (lambda ()
-                                        (add-node-modules-path)
-                                        (flycheck-mode t))))
+       (use-package rjsx-mode
+         :ensure t
+         :mode ("\\.jsx\\'" "\\.js\\'")
+         :custom
+         (indent-tabs-mode nil)
+         (js-indent-level 2)
+         (js2-strict-missing-semi-waring nil)
+         (js2-mode-show-strict-warnings nil)
+         :config
+         :hook (rjsx-mode-hook . (lambda ()
+                                   (add-node-modules-path)
+                                   (flycheck-mode t))))
      #+end_src
 **** tide
      #+begin_src emacs-lisp
-       (leaf tide
+       (use-package tide
          :ensure t
          :commands tide-setup)
      #+end_src
 **** typescript-mode
      #+begin_src emacs-lisp
-       (leaf typescript-mode
+       (use-package typescript-mode
          :ensure t
-         :defun flycheck-add-mode
-         :custom ((typescript-indent-level . 2))
-         :config (flycheck-add-mode 'javascript-eslint 'web-mode)
+         :custom
+         (typescript-indent-level 2)
          :hook (typescript-mode-hook . (lambda ()
                                          (interactive)
                                          (add-node-modules-path)
@@ -851,131 +942,254 @@
                                          (eldoc-mode +1)
                                          (tide-hl-identifier +1)
                                          (company-mode +1)
+                                         (flycheck-add-mode 'javascript-eslint 'web-mode)
                                          (setq flycheck-checker 'javascript-eslint))))
      #+end_src
-**** web-mode
+** Markup Languages
+*** Org
+**** org-mode
      #+begin_src emacs-lisp
-       (leaf web-mode
+       (use-package org
          :ensure t
-         :after flycheck
-         :defun flycheck-add-mode
-         :mode ("\\.tsx\\'" "\\.css\\'" "\\.json\\'" "\\.p?html?\\'")
-         :config (flycheck-add-mode 'javascript-eslint 'web-mode)
-         :custom ((web-mode-markup-indent-offset . 2)
-                  (web-mode-css-indent-offset . 2)
-                  (web-mode-code-indent-offset . 2)
-                  (web-mode-comment-style . 2)
-                  (web-mode-style-padding . 1)
-                  (web-mode-script-padding . 1)
-                  (web-mode-enable-auto-closing . t)
-                  (web-mode-enable-auto-pairing . t)
-                  (web-mode-auto-close-style . 2)
-                  (web-mode-tag-auto-close-style . 2)
-                  (indent-tabs-mode . nil)
-                  (tab-width . 2))
-         :hook (web-mode-hook . (lambda ()
-                                  (interactive)
-                                  (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                                    (add-node-modules-path)
-                                    (tide-setup)
-                                    (flycheck-mode +1)
-                                    (setq flycheck-checker 'javascript-eslint)
-                                    (eldoc-mode +1)
-                                    (tide-hl-identifier-mode +1)
-                                    (company-mode +1)))))
-     #+end_src
+         ;; :hook ((org-mode-hook . (lambda ()
+         ;;                           (setq flycheck-checker 'textlint)
+         ;;                           (flycheck-mode 1))))
+         :bind (("C-c c" . org-capture)
+                ("C-c a" . org-agenda)
+                ("C-c g" . gtd)
+                ("C-c i" . org-insert-structure-template)
+                ("C-c C-'" . org-edit-special)
+                :map org-src-mode-map
+                ("C-c C-'" . org-edit-src-exit)
+                )
+         :init
+         (defvar org-gtd-file (expand-file-name "gtd.org" my:d:gtd))
+         (defun gtd ()
+           (interactive)
+           (find-file org-gtd-file))
+         (setq org-directory my:d:gtd)
+         (setq org-agenda-files (list org-directory))
+         (setq org-latex-create-formula-image-program 'dvisvgm)
+         :custom
+         (org-refile-targets  '((org-agenda-files :maxlevel . 1)))
+         (org-agenda-current-time-string "now ============")
+         (org-startup-indent nil)
+         (org-hide-leading-stars t)
+         (org-return-follows-link t)
+         (org-startup-truncated nil)
+         (org-use-speed-commands t)
+         (org-log-done t)
+         (org-adapt-indentation t)
+         (org-confirm-babel-evaluate nil)
+         (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
+                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
+         (org-todo-keyword-faces '(("TODO" :foreground "red"
+                                    :weight bold)
+                                   ("STARTED" :foreground "cornflower blue"
+                                    :weight bold)
+                                   ("DONE" :foreground "green"
+                                    :weight bold)
+                                   ("WAITING" :foreground "orange"
+                                    :weight bold)
+                                   ("CANCELLED" :foreground "green"
+                                    :weight bold)))
+         :config
+         (add-hook 'org-mode-hook (lambda ()
+                                    (setq-local time-stamp-active t
+                                                time-stamp-line-limit 18
+                                                time-stamp-start "^#\\+last_modified: [ \t]*"
+                                                time-stamp-end "$"
+                                                time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
+                                    (add-hook 'before-save-hook 'time-stamp nil 'local))))
+       (use-package org-capture
+         :after org
+         :if (file-directory-p my:d:gtd)
+         :commands (org-capture)
+         :config
+         (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+                                        "** %^{Brief Description}"))))
+       (use-package org-appear
+         :ensure t
+         :hook (org-mode-hook . org-appear-mode)
+         :custom
+         (org-hide-emphasis-markers t)
+         (org-appear-inside-latex   t)
+         (org-appear-autosubmarkers t))
 
+     #+end_src
+**** org-pomodoro
+     #+begin_src emacs-lisp
+       (use-package org-pomodoro
+         :ensure t
+         :after org
+         :if (file-directory-p my:d:gtd)
+         :custom
+         (org-pomodoro-length 50)
+         (org-promodoro-short-break-length 10))
+     #+end_src
+**** org-roam
+     #+begin_src emacs-lisp
+       (use-package org-roam
+         :ensure t
+         :after org
+         :if (file-directory-p my:d:org-roam)
+         :bind
+         (("C-c n a" . org-roam-alias-add)
+          ("C-c n f" . org-roam-node-find)
+          ("C-c n i" . org-roam-node-insert)
+          ("C-c n o" . org-id-get-create)
+          ("C-c n t" . org-roam-tag-add)
+          ("C-c n r" . org-roam-ref-add)
+          ("C-c n l" . org-roam-buffer-toggle)
+          ("C-c n c" . org-roam-capture)
+          ("C-c n j" . org-roam-dailies-capture-today)
+          ("C-c n d" . org-roam-dailies-find-date)
+          ("C-c C-g t" . org-roam-dailies-find-today)
+          )
+         :init
+         (setq org-roam-directory my:d:org-roam)
+         (setq org-roam-dailies-directory "daily_notes/")
+         (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+         :custom
+         ;; (org-roam-node-display-template . (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+         (org-roam-capture-templates  '(("s" "seed" plain "%?"
+                                         :if-new (file+head "seed/${slug}.org"
+                                                            "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
+                                         :immediate-finish t
+                                         :unnarrowed t)
+                                        ("r" "reference" plain "%?"
+                                         :if-new
+                                         (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
+                                         :immediate-finish t
+                                         :unnarrowed t)
+                                        ("e" "evergreen" plain "%?"
+                                         :if-new
+                                         (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n#+filetags: :envergreen:\n")
+                                         :immediate-finish t
+                                         :unnarrowed t)))
+         (org-roam-dailies-capture-templates  '(("j" "journal" entry
+                                                 "** %<%H:%M> %?"
+                                                 :target (file+head+olp "%<%Y-%m>.org"
+                                                                        "#+title: %<%Y-%m>\n"
+                                                                        ("%<%Y-%m-%d>")))))
+         :config
+         (cl-defmethod org-roam-node-type ((node org-roam-node))
+           "Return the TYPE of NODE."
+           (condition-case nil
+               (file-name-nondirectory
+                (directory-file-name
+                 (file-name-directory
+                  (file-relative-name (org-roam-node-file node) org-roam-directory))))
+             (error "")))
+         (setq org-roam-node-display-template
+               (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+         (defun my:tag-new-node-as-draft ()
+           (org-roam-tag-add '("draft")))
+         (add-hook 'org-roam-capture-new-node-hook #'my:tag-new-node-as-draft)
+         (org-roam-db-autosync-enable))
+
+       (use-package org-roam-ui
+         :ensure t
+         :after org-roam
+         :config
+         (setq org-roam-ui-sync-theme t
+               org-roam-ui-follow t
+               org-roam-ui-update-on-save t
+               org-roam-ui-open-on-start t))
+
+       (use-package consult-org-roam
+         :ensure t
+         :after (consult org-roam)
+         :init
+         (consult-org-roam-mode 1)
+         :custom
+         (consult-org-roam-grep-func #'consult-ripgrep)
+         :bind
+         ("C-c n e" . consult-org-roam-file-find)
+         ("C-c n b" . consult-org-roam-backlinks)
+         ("C-c n s" . consult-org-roam-search))
+
+       (use-package citar
+         :ensure t
+         :if (file-exists-p my:f:bib)
+         :custom
+         (citar-bibliography  my:f:bib)
+         :config
+         (defun my:org-roam-node-from-cite (keys-entries)
+           (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
+           (let ((title (citar--format-entry-no-widths (cdr keys-entries)
+                                                       "${author editor} :: ${title}")))
+             (org-roam-capture- :templates
+                                '(("r" "reference" plain "%?" :if-new
+                                   (file+head "reference/${citekey}.org"
+                                              ":PROPERTIES:
+       :ROAM_REFS: [cite:@${citekey}]
+       :END:
+       ,#+title: ${title}\n")
+                                   :immediate-finish t
+                                   :unnarrowed t))
+                                :info (list :citekey (car keys-entries))
+                                :node (org-roam-node-create :title title)
+                                :props '(:finalize find-file)))))
+     #+end_src
+**** ox-hugo
+     #+begin_src emacs-lisp
+       (use-package ox-hugo
+         :ensure t
+         :after org
+         :if (and (file-directory-p my:d:org-roam)
+                  (file-directory-p my:d:org-hugo))
+         :custom
+         (org-hugo-base-dir my:d:org-hugo)
+         (org-hugo-default-section-directory "notes"))
+     #+end_src
+*** Markdown
+    #+begin_src emacs-lisp
+      (use-package markdown-mode
+        :ensure t
+        :mode (("\\.md\\'" . markdown-mode)
+               ("\\.markdown\\'" . markdown-mode)
+               (("README\\.md\\'" . gfm-mode)))
+        :custom
+        (markdown-fontify-code-blocks-natively t)
+        :hook ((markdown-mode-hook . (lambda ()
+                                       (setq tab-width 2)
+                                       ;; (setq flycheck-checker 'textlint)
+                                       ;; (flycheck-mode 1)
+                                       ))))
+    #+end_src
+*** YAML
+    #+begin_src emacs-lisp
+      (use-package yaml-mode
+        :ensure t
+        :mode (("\\.yml\\'" . yaml-mode)
+               ("\\.yaml\\'" . yaml-mode))
+        :commands (yaml-mode))
+    #+end_src
+*** TOML
+    #+begin_src emacs-lisp
+      (use-package toml-mode
+        :ensure t
+        :mode (("\\.toml\\'" . toml-mode))
+        :commands (toml-mode))
+    #+end_src
+*** JSON
+    #+begin_src emacs-lisp
+      (use-package json-mode
+        :ensure t
+        :mode (("\\.json\\'" . json-mode))
+        :commands (json-mode))
+      (use-package json-reformat
+        :ensure t
+        :after (json-mode))
+    #+end_src
 * Writing
-** company
-   #+begin_src emacs-lisp
-     (leaf company
-       :ensure t
-       :leaf-defer nil
-       :blackout company-mode
-       :bind ((company-active-map ("M-n" . nil)
-                                  ("M-p" . nil)
-                                  ("C-s" . company-filter-candidates)
-                                  ("C-n" . company-select-next)
-                                  ("C-p" . company-select-previous)
-                                  ("C-i" . company-complete-common-or-cycle))
-              (company-search-map ("C-n" . company-select-next)
-                                  ("C-p" . company-select-previous)))
-       :custom ((company-tooltip-limit             . 12)
-                (company-idle-delay                . 0)
-                (company-minimum-prefix-length     . 1)
-                (company-transformers              . '(company-sort-by-occurrence))
-                (global-company-mode               . t)
-                (company-selection-wrap-around     . t)
-                (vompany-tooltip-align-annotations . t)
-                (company-backends . '(company-files
-                                      company-capf
-                                      (company-dabbrev-code
-                                       company-gtags
-                                       company-etags
-                                       company-keywords)
-                                      company-dabbrev)))
-       :config (leaf company-prescient
-                 :ensure t
-                 :custom ((company-prescient-mode . t)))
-       (leaf all-the-icons :ensure t)
-       (leaf company-box
-         :after all-the-icons
-         :ensure t
-         :hook ((company-mode-hook . company-box-mode))
-         :custom (company-box-icons-alist    . 'company-box-icons-all-the-icons)
-         )
-       (leaf company-quickhelp
-         :when (display-graphic-p)
-         :ensure t
-         :custom ((company-quickhelp-delay . 0.8)
-                  (company-quickhelp-mode  . t))
-         :bind (company-active-map ("M-h" . company-quickhelp-manual-begin))
-         :hook ((company-mode-hook . company-quickhelp-mode)))
-       (leaf company-math
-         :ensure t
-         :defvar (company-backends)
-         :preface (defun c/latex-mode-setup ()
-                    (setq-local company-backends (append '((company-math-symbols-latex
-                                                            company-math-symbols-unicode
-                                                            company-latex-commands)) company-backends)))
-         :hook ((org-mode-hook . c/latex-mode-setup)
-                (tex-mode-hook . c/latex-mode-setup))))
-   #+end_src
-** yasnippet
-   #+begin_src emacs-lisp
-     (leaf yasnippet
-       :ensure t
-       :blackout yas-minor-mode
-       :custom ((yas-indent-line . 'fixed)
-                (yas-global-mode . t))
-       :bind ((yas-keymap ("<tab>" . nil)) ; conflict with company
-              (yas-minor-mode-map ("C-c y i" . yas-insert-snippet)
-                                  ("C-c y n" . yas-new-snippet)
-                                  ("C-c y v" . yas-visit-snippet-file)
-                                  ("C-c y l" . yas-describe-tables)
-                                  ("C-c y g" . yas-reload-all)))
-       :config (leaf yasnippet-snippets
-                 :ensure t)
-       (leaf yatemplate
-         :ensure t
-         :config (yatemplate-fill-alist))
-       (defvar company-mode/enable-yas t
-         "Enable yasnippet for all backends.")
-       (defun company-mode/backend-with-yas (backend)
-         (if (or (not company-mode/enable-yas)
-                 (and (listp backend)
-                      (member 'company-yasnippet backend))) backend (append (if (consp backend) backend (list backend))
-                                                                            '(:with company-yasnippet ))))
-       (defun set-yas-as-company-backend ()
-         (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
-       :hook ((company-mode-hook . set-yas-as-company-backend)))
-   #+end_src
 ** grammarly
    #+begin_src emacs-lisp
-     (leaf lsp-grammarly
+     (use-package lsp-grammarly
        :when (or (eq system-type 'darwin)
                  (eq system-type 'gnu/linux)
-              )
+                 )
        :ensure t
        :hook
        ((markdown-mode-hook) . (lambda ()
@@ -983,40 +1197,38 @@
                                  (lsp-deferred)))
        )
    #+end_src
-* Server
-** tramp
-   #+begin_src emacs-lisp
-     (leaf tramp
-       :ensure t
-       :init
-       ;; Disable version control on tramp buffers to avoid freezes.
-       (setq tramp-remote-path '(tramp-default-remote-path
-                                 "~/.local/bin/"))
-       (setq vc-ignore-dir-regexp
-             (format "\\(%s\\)\\|\\(%s\\)"
-                     vc-ignore-dir-regexp
-                     tramp-file-name-regexp))
-       (setq tramp-default-method "ssh")
-       (setq tramp-auto-save-directory
-             (expand-file-name "tramp-auto-save" user-emacs-directory))
-       (setq tramp-persistency-file-name
-             (expand-file-name "tramp-connection-history" user-emacs-directory))
-       (setq password-cache-expiry nil)
-       (setq tramp-use-ssh-controlmaster-options nil)
-       :config
-       (customize-set-variable 'tramp-ssh-controlmaster-options
-                               (concat
-                                "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
-                                "-o ControlMaster=auto -o ControlPersist=yes"))
-       (with-eval-after-load 'lsp-mode
-         (lsp-register-client
-          (make-lsp-client :new-connection (lsp-tramp-connection "pyright")
-                           :major-modes '(python-mode)
-                           :remote? t
-                           :server-id 'pyright-remote))
-         )
-       )
-   #+end_src
+* Tramp
+  #+begin_src emacs-lisp
+    (use-package tramp
+      :init
+      ;; Disable version control on tramp buffers to avoid freezes.
+      (setq tramp-remote-path '(tramp-default-remote-path
+                                "~/.local/bin/"))
+      (setq vc-ignore-dir-regexp
+            (format "\\(%s\\)\\|\\(%s\\)"
+                    vc-ignore-dir-regexp
+                    tramp-file-name-regexp))
+      (setq tramp-default-method "ssh")
+      (setq tramp-auto-save-directory
+            (expand-file-name "tramp-auto-save" user-emacs-directory))
+      (setq tramp-persistency-file-name
+            (expand-file-name "tramp-connection-history" user-emacs-directory))
+      (setq password-cache-expiry nil)
+      (setq tramp-use-ssh-controlmaster-options nil)
+      :config
+      (customize-set-variable 'tramp-ssh-controlmaster-options
+                              (concat
+                               "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
+                               "-o ControlMaster=auto -o ControlPersist=yes"))
+      (with-eval-after-load 'lsp-mode
+        (lsp-register-client
+         (make-lsp-client :new-connection (lsp-tramp-connection "pyright")
+                          :major-modes '(python-mode)
+                          :remote? t
+                          :server-id 'pyright-remote))
+        )
+      )
+  #+end_src
 * Mail
 ** mu4e
    #+begin_src emacs-lisp
@@ -1067,215 +1279,32 @@
 
    #+end_src
 
-* org
-** org-mode
-   #+begin_src emacs-lisp
-     (leaf org
-       :ensure t
-       :preface
-       (defvar org-gtd-file (expand-file-name "gtd.org" my:d:gtd))
-       (defun gtd ()
-         (interactive)
-         (find-file org-gtd-file))
-       ;; :if (file-directory-p my:d:gtd)
-       ;; :hook ((org-mode-hook . (lambda ()
-       ;;                           (setq flycheck-checker 'textlint)
-       ;;                           (flycheck-mode 1))))
-       :bind (("C-c c" . org-capture)
-              ("C-c a" . org-agenda)
-              ("C-c g" . gtd)
-              ("C-c i" . org-insert-structure-template)
-              ("C-c C-'" . org-edit-special)
-              (org-src-mode-map ("C-c C-'" . org-edit-src-exit))
-              )
-       :advice (:before org-calendar-holiday
-                        (lambda ()
-                          (require 'japanese-holidays)))
-       :init
-       (setq org-directory my:d:gtd)
-       (setq org-agenda-files (list org-directory))
-       (setq org-latex-create-formula-image-program 'dvisvgm)
-       :custom ((org-refile-targets . '((org-agenda-files :maxlevel . 1)))
-                (org-agenda-current-time-string . "now ============")
-                (org-startup-indent . nil)
-                (org-hide-leading-stars . t)
-                (org-return-follows-link . t)
-                (org-startup-truncated . nil)
-                (org-use-speed-commands . t)
-                (org-log-done . t)
-                (org-adapt-indentation . t)
-                (org-confirm-babel-evaluate . nil)
-                (org-todo-keywords . '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
-                                       (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
-                (org-todo-keyword-faces . '(("TODO" :foreground "red"
-                                             :weight bold)
-                                            ("STARTED" :foreground "cornflower blue"
-                                             :weight bold)
-                                            ("DONE" :foreground "green"
-                                             :weight bold)
-                                            ("WAITING" :foreground "orange"
-                                             :weight bold)
-                                            ("CANCELLED" :foreground "green"
-                                             :weight bold))))
-       :config
-       (add-hook 'org-mode-hook (lambda ()
-                                  (setq-local time-stamp-active t
-                                              time-stamp-line-limit 18
-                                              time-stamp-start "^#\\+last_modified: [ \t]*"
-                                              time-stamp-end "$"
-                                              time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
-                                  (add-hook 'before-save-hook 'time-stamp nil 'local)))
-       (leaf org-capture
-       :leaf-defer t
-       :if (file-directory-p my:d:gtd)
-       :commands (org-capture)
-       :config
-       (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
-                                      "** %^{Brief Description}"))))
-       (leaf org-appear
-         :ensure t
-         :hook (org-mode-hook . org-appear-mode)
-         :custom
-         (org-hide-emphasis-markers . t)
-         (org-appear-inside-latex   . t)
-         (org-appear-autosubmarkers . t)
-         )
-       )
-   #+end_src
-** org-pomodoro
-   #+begin_src emacs-lisp
-     (leaf org-pomodoro
-       :ensure t
-       :after org
-       :if (file-directory-p my:d:gtd)
-       :custom
-       (org-pomodoro-length . 50)
-       (org-promodoro-short-break-length . 10)
-       )
-   #+end_src
-** org-roam
-   #+begin_src emacs-lisp
-     (leaf org-roam
-       :ensure t
-       :after org
-       :if (file-directory-p my:d:org-roam)
-       :bind
-       (("C-c n a" . org-roam-alias-add)
-        ("C-c n f" . org-roam-node-find)
-        ("C-c n i" . org-roam-node-insert)
-        ("C-c n o" . org-id-get-create)
-        ("C-c n t" . org-roam-tag-add)
-        ("C-c n r" . org-roam-ref-add)
-        ("C-c n l" . org-roam-buffer-toggle)
-        ("C-c n c" . org-roam-capture)
-        ("C-c n j" . org-roam-dailies-capture-today)
-        ("C-c n d" . org-roam-dailies-find-date)
-        ("C-c C-g t" . org-roam-dailies-find-today)
-        )
-       :init
-       (setq org-roam-directory my:d:org-roam)
-       (setq org-roam-dailies-directory "daily_notes/")
-       (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-       :defer-config
-       (org-roam-db-autosync-enable)
-       :custom
-       ;; (org-roam-node-display-template . (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-       (org-roam-capture-templates
-        . '(("s" "seed" plain "%?"
-             :if-new (file+head "seed/${slug}.org"
-                                "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
-             :immediate-finish t
-             :unnarrowed t)
-            ("r" "reference" plain "%?"
-             :if-new
-             (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
-             :immediate-finish t
-             :unnarrowed t)
-            ("e" "evergreen" plain "%?"
-             :if-new
-             (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n#+filetags: :envergreen:\n")
-             :immediate-finish t
-             :unnarrowed t)))
-       (org-roam-dailies-capture-templates
-        . '(
-            ("j" "journal" entry
-             "** %<%H:%M> %?"
-             :target (file+head+olp "%<%Y-%m>.org"
-                                    "#+title: %<%Y-%m>\n"
-                                    ("%<%Y-%m-%d>"))
-             )
-            ))
-       :config
-       (cl-defmethod org-roam-node-type ((node org-roam-node))
-         "Return the TYPE of NODE."
-         (condition-case nil
-             (file-name-nondirectory
-              (directory-file-name
-               (file-name-directory
-                (file-relative-name (org-roam-node-file node) org-roam-directory))))
-           (error "")))
-       (setq org-roam-node-display-template
-             (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-       (defun my:tag-new-node-as-draft ()
-         (org-roam-tag-add '("draft")))
-       (add-hook 'org-roam-capture-new-node-hook #'my:tag-new-node-as-draft)
-       )
-     (leaf org-roam-ui
-       :ensure t
-       :if (file-directory-p my:d:org-roam)
-       :config
-       (setq org-roam-ui-sync-theme t
-             org-roam-ui-follow t
-             org-roam-ui-update-on-save t
-             org-roam-ui-open-on-start t))
-     (leaf consult-org-roam
-       :ensure t
-       :init
-       (consult-org-roam-mode 1)
-       :custom
-       (consult-org-roam-grep-func . #'consult-ripgrep)
-       :bind
-       ("C-c n e" . consult-org-roam-file-find)
-       ("C-c n b" . consult-org-roam-backlinks)
-       ("C-c n s" . consult-org-roam-search))
-     (leaf citar
-       :ensure t
-       :if (file-exists-p my:f:bib)
-       :require t
-       :custom
-       (citar-bibliography . my:f:bib)
-       :config
-       (defun my:org-roam-node-from-cite (keys-entries)
-         (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
-         (let ((title (citar--format-entry-no-widths (cdr keys-entries)
-                                                     "${author editor} :: ${title}")))
-           (org-roam-capture- :templates
-                              '(("r" "reference" plain "%?" :if-new
-                                 (file+head "reference/${citekey}.org"
-                                            ":PROPERTIES:
-     :ROAM_REFS: [cite:@${citekey}]
-     :END:
-     ,#+title: ${title}\n")
-                                 :immediate-finish t
-                                 :unnarrowed t))
-                              :info (list :citekey (car keys-entries))
-                              :node (org-roam-node-create :title title)
-                              :props '(:finalize find-file))))
-       )
-   #+end_src
-** ox-hugo
-   #+begin_src emacs-lisp
-     (leaf ox-hugo
-       :ensure t
-       :after org
-       :if (and (file-directory-p my:d:org-roam)
-                (file-directory-p my:d:org-hugo))
-       :custom
-       (org-hugo-base-dir . my:d:org-hugo)
-       (org-hugo-default-section-directory . "notes"))
-   #+end_src
-
-* misc-tools
+* Shell
+  #+begin_src emacs-lisp
+    (use-package vterm
+      :ensure t
+      :custom
+      (vterm-keymap-exceptions  '("C-c" "C-x" "C-u" "C-t" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
+      :bind (:map vterm-mode-map
+                  ("C-h" . vterm-send-backspace)))
+    (use-package vterm-toggle
+      :ensure t
+      :config
+      (setq vterm-toggle-fullscreen-p nil)
+      (add-to-list 'display-buffer-alist
+                   '((lambda (buffer-or-name _)
+                       (let ((buffer (get-buffer buffer-or-name)))
+                         (with-current-buffer buffer
+                           (or (equal major-mode 'vterm-mode)
+                               (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                     (display-buffer-reuse-window display-buffer-in-side-window)
+                     (side . bottom)
+                     ;;(dedicated . t) ;dedicated is supported in emacs27
+                     (reusable-frames . visible)
+                     (window-height . 0.3)))
+      :bind ("C-t" . vterm-toggle))
+  #+end_src
+* External Collaboration
 ** atomic-chrome
    #+begin_src emacs-lisp
      (use-package atomic-chrome
@@ -1284,42 +1313,4 @@
        :config
        (atomic-chrome-start-server)
        )
-   #+end_src
-** shell-pop
-   #+begin_src emacs-lisp
-     (leaf shell-pop
-       :ensure t
-       :bind* (("C-t" . shell-pop))
-       :config (custom-set-variables '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda
-                                                                                                nil
-                                                                                                (ansi-term
-                                                                                                 shell-pop-term-shell)))))
-                                     '(shell-pop-window-size 30)
-                                     '(shell-pop-full-span t)
-                                     '(shell-pop-window-position "bottom"))
-       ;; 終了時のプロセス確認を無効化
-       (defun set-no-process-query-on-exit ()
-         (let ((proc (get-buffer-process (current-buffer))))
-           (when (processp proc)
-             (set-process-query-on-exit-flag proc nil))))
-       (add-hook 'term-exec-hook 'set-no-process-query-on-exit))
-   #+end_src
-
-
-
-
-* delete?
-** popwin
-   #+begin_src emacs-lisp
-     (use-package popwin
-       :ensure t
-       :disabled
-       )
-   #+end_src
-
-** amx
-   #+begin_src emacs-lisp
-     (use-package amx
-       :ensure t
-       :disabled)
    #+end_src
