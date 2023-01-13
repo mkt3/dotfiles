@@ -751,6 +751,14 @@
    #+end_src
 ** flymake
    #+begin_src emacs-lisp
+     (use-package flymake
+       :ensure t
+       :bind (("C-c p" . flymake-goto-prev-error)
+              ("C-c n" . flymake-goto-next-error))
+       :config
+       (set-face-background 'flymake-errline "red")
+       (set-face-background 'flymake-warnline "yellow"))
+
      (use-package flymake-diagnostic-at-point
        :ensure t
        :after flymake
@@ -773,6 +781,7 @@
     #+begin_src emacs-lisp
       (use-package flycheck
         :ensure t
+        :disabled
         :hook (prog-mode-hook . flycheck-mode)
         :custom
         ((flycheck-display-errors-delay 0.3)
