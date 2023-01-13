@@ -16,18 +16,18 @@
 * Packages
 ** Package manager
    #+begin_src emacs-lisp
-          (eval-and-compile
-            (customize-set-variable
-             'package-archives '(("org" . "https://orgmode.org/elpa/")
-                                 ("melpa" . "https://melpa.org/packages/")
-                                 ("gnu" . "https://elpa.gnu.org/packages/")))
-            (package-initialize)
+     (eval-and-compile
+       (customize-set-variable
+        'package-archives '(("org" . "https://orgmode.org/elpa/")
+                            ("melpa" . "https://melpa.org/packages/")
+                            ("gnu" . "https://elpa.gnu.org/packages/")))
+       (package-initialize)
 
-            (unless (package-installed-p 'use-package)
-              (package-refresh-contents)
-              (package-install 'use-package))
-            (setq use-package-hook-name-suffix nil)
-            (use-package delight :ensure t))
+       (unless (package-installed-p 'use-package)
+         (package-refresh-contents)
+         (package-install 'use-package))
+       (setq use-package-hook-name-suffix nil)
+       (use-package delight :ensure t))
    #+end_src
 ** Auto packae update
    #+begin_src emacs-lisp
@@ -289,7 +289,7 @@
        (define-key my:ctrl-o-map (kbd "TAB") 'tab-next)
        (define-key my:ctrl-o-map (kbd "p")   'tab-previous)
        (define-key my:ctrl-o-map (kbd "C-p") 'tab-previous)
-       ;;
+
        (defun my:tab-bar-tab-name-truncated ()
          "Custom: Generate tab name from the buffer of the selected window."
          (let ((tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
@@ -747,7 +747,7 @@
        :ensure t
        :config
        (add-hook 'python-mode-hook 'eglot-ensure)
-       )
+       (add-to-list 'eglot-stay-out-of 'company))
    #+end_src
 ** flymake
    #+begin_src emacs-lisp

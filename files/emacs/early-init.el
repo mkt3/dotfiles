@@ -44,7 +44,8 @@
 ;; Frame title
 (setq-default frame-title-format '("emacs " emacs-version (buffer-file-name " - %f")))
 ;; Avoids the white screen flash on startup.
-(custom-set-faces '(default ((t (:background "#2E3440")))))
+
+;(custom-set-faces '(default ((t (:background "#2E3440")))))
 
 ;; Hide the startup screen
 (setq inhibit-startup-screen t)
