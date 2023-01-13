@@ -684,7 +684,7 @@
       (gcmh-mode 1))
   #+end_src
 * LSP
-** lsp-mode
+** COMMENT lsp-mode
    #+begin_src emacs-lisp
      (use-package lsp-mode
        :ensure t
@@ -733,7 +733,7 @@
              ("M-?" . lsp-ui-peek-find-references))
        :hook ((lsp-mode-hook . lsp-ui-mode)))
    #+end_src
-** consult-lsp
+** COMMENT consult-lsp
    #+begin_src emacs-lisp
      (use-package consult-lsp
        :ensure t
@@ -747,6 +747,7 @@
        :ensure t
        :config
        (add-hook 'python-mode-hook 'eglot-ensure)
+       (add-hook 'sh-mode-hook 'eglot-ensure)
        (add-to-list 'eglot-stay-out-of 'company))
    #+end_src
 ** flymake
@@ -779,9 +780,9 @@
         )
       (use-package tree-sitter-langs :ensure t)
     #+end_src
-*** flycheck
+*** COMMENT flycheck
     #+begin_src emacs-lisp
-      (use-package flycheck
+      (use-package flycheck                   ;
         :ensure t
         :disabled
         :hook (prog-mode-hook . flycheck-mode)
@@ -834,10 +835,11 @@
 ** Languages
 *** Shell Script
     #+begin_src emacs-lisp
-      (use-package sh-mode
-        :commands lsp-deferred
-        :hook (sh-mode-hook . (lambda ()
-                                (lsp-deferred))))
+      (use-package flymake-shellcheck
+        :ensure t
+        :commands flymake-shellcheck-load
+        :init
+        (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
@@ -1196,7 +1198,7 @@
         :after (json-mode))
     #+end_src
 * Writing
-** grammarly
+** COMMENT grammarly
    #+begin_src emacs-lisp
      (use-package lsp-grammarly
        :when (or (eq system-type 'darwin)
@@ -1207,7 +1209,7 @@
        ((markdown-mode-hook) . (lambda ()
                                  (require 'lsp-grammarly)
                                  (lsp-deferred)))
-       )
+       )                                     ;
    #+end_src
 * Tramp
   #+begin_src emacs-lisp
