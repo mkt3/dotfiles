@@ -753,7 +753,9 @@
    #+begin_src emacs-lisp
      (use-package flymake
        :ensure t
-       :bind (("C-c p" . flymake-goto-prev-error)
+       :bind (nil
+              :map flymake-mode-map
+              ("C-c p" . flymake-goto-prev-error)
               ("C-c n" . flymake-goto-next-error))
        :config
        (set-face-background 'flymake-errline "red")
