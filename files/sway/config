@@ -268,7 +268,7 @@ exec wezterm
 assign [class="Emacs"] workspace $ws_sub
 exec emacs
 #assign [class="zoom"] workspace $ws_sub
-#for_window [app_id="zoom"] floating enable
+for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws_media
