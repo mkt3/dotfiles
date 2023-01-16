@@ -23,4 +23,13 @@ setup_nodejs() {
     info "Creating symlink for npm"
     ln -sfn "${CONFIGS_DIR}/npm" "${XDG_CONFIG_HOME}/npm"
 
+    installed_package=$(npm ls --location=global)
+    package="bash-language-server"
+    if echo "$installed_package" | grep -q "$package"; then
+        info "$package updating..."
+        npm update --location=global "$package"
+    else
+        info "$package installting..."
+        npm install --location=global "$package"
+    fi
 }

@@ -49,7 +49,7 @@ keymap:
 
   - name: Chrome, Slack (modified from Default)
     application:
-      only: [Google-chrome, Slack, Sidekick-browser, Vivaldi-stable]
+      only: [Google-chrome, Slack, Vivaldi-stable]
     remap:
       # Emacs basic
       C-b: left

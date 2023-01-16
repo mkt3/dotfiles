@@ -10,6 +10,7 @@ setup_emacs() {
     mkdir -p "${XDG_CONFIG_HOME}/emacs/ddskk.d"
     info "Creating symlink for emacs"
     ln -sfn "${emacs_file_dir}/README.org" "${XDG_CONFIG_HOME}/emacs/"
+    ln -sfn "${emacs_file_dir}/early-init.el" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/init.el" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/snippets" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/ddskk.d/init.el" "${XDG_CONFIG_HOME}/emacs/ddskk.d/"
