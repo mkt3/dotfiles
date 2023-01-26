@@ -20,7 +20,9 @@
        (customize-set-variable
         'package-archives '(("org" . "https://orgmode.org/elpa/")
                             ("melpa" . "https://melpa.org/packages/")
-                            ("gnu" . "https://elpa.gnu.org/packages/")))
+                            ("gnu" . "https://elpa.gnu.org/packages/")
+                            ("nongnu" . "https://elpa.nongnu.org/nongnu/"))
+        )
        (package-initialize)
 
        (unless (package-installed-p 'use-package)
@@ -481,7 +483,11 @@
       (use-package orderless
         :ensure t
         :custom
-        (completion-styles '(orderless)))
+        (completion-styles '(orderless basic))
+        (completion-category-overrides '((file (styles . (partial-completion)))
+                                         ;; (eglot (styles orderless+initialism))
+                                         )))
+
     #+end_src
 *** embark
     #+begin_src emacs-lisp
@@ -491,12 +497,8 @@
         :hook
         (embark-collect-mode . consult-preview-at-point-mode))
     #+end_src
-*** corfu
+*** tempel
     #+begin_src emacs-lisp
-      ;; (use-package tempel-collection
-      ;;   :ensure t
-      ;;   :after tempel
-      ;;   )
       (use-package tempel
         :ensure t
         :init
@@ -504,22 +506,17 @@
           (setq-local completion-at-point-functions
                       (cons #'tempel-complete
                             completion-at-point-functions)))
-
         (add-hook 'prog-mode-hook 'tempel-setup-capf)
         (add-hook 'text-mode-hook 'tempel-setup-capf)
-        (add-hook 'org-mode-hook 'tempel-setup-capf)
-
-        ;; Optionally make the Tempel templates available to Abbrev,
-        ;; either locally or globally. `expand-abbrev' is bound to C-x '.
-        ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-        ;; (global-tempel-abbrev-mode)
-        )
-      ;; (use-package corfu-terminal
-      ;;   :ensure t
-      ;;   :disalbed
-      ;;   :if (not (display-graphic-p))
-      ;;   :config
-      ;;   (corfu-terminal-mode +1))
+        (add-hook 'org-mode-hook 'tempel-setup-capf))
+    #+end_src
+*** corfu
+    #+begin_src emacs-lisp
+      (use-package corfu-terminal
+        :ensure t
+        :if (not (display-graphic-p))
+        :config
+        (corfu-terminal-mode +1))
       (use-package corfu
         :ensure t
         :custom ((corfu-auto t)
@@ -528,8 +525,17 @@
                  (corfu-cycle t)
                  (tab-always-indent 'complete))
         :init
-        (global-corfu-mode))
-
+        (global-corfu-mode)
+        (corfu-popupinfo-mode))
+      (use-package kind-icon
+        :ensure t
+        :after corfu
+        :custom (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+        :config
+        (custom-set-variables
+         '(kind-icon-default-style
+           '(:padding 0 :stroke 0 :margin 0 :radius 0 :height 0.6 :scale 1.0)))
+        (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
       (use-package cape
         :ensure t
         :init
@@ -547,7 +553,6 @@
         ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
         ;;(add-to-list 'completion-at-point-functions #'cape-line)
         )
-
     #+end_src
 ** which-key
    #+begin_src emacs-lisp
