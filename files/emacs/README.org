@@ -493,138 +493,61 @@
     #+end_src
 *** corfu
     #+begin_src emacs-lisp
+      ;; (use-package tempel-collection
+      ;;   :ensure t
+      ;;   :after tempel
+      ;;   )
+      (use-package tempel
+        :ensure t
+        :init
+        (defun tempel-setup-capf ()
+          (setq-local completion-at-point-functions
+                      (cons #'tempel-complete
+                            completion-at-point-functions)))
+
+        (add-hook 'prog-mode-hook 'tempel-setup-capf)
+        (add-hook 'text-mode-hook 'tempel-setup-capf)
+        (add-hook 'org-mode-hook 'tempel-setup-capf)
+
+        ;; Optionally make the Tempel templates available to Abbrev,
+        ;; either locally or globally. `expand-abbrev' is bound to C-x '.
+        ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+        ;; (global-tempel-abbrev-mode)
+        )
       ;; (use-package corfu-terminal
       ;;   :ensure t
       ;;   :disalbed
       ;;   :if (not (display-graphic-p))
       ;;   :config
       ;;   (corfu-terminal-mode +1))
-      ;; (use-package corfu
-      ;;   :ensure t
-      ;;   :disabled
-      ;;   :custom ((corfu-auto t)
-      ;;            (corfu-auto-prefix 1)
-      ;;            (corfu-auto-delay 0)
-      ;;            (corfu-cycle t)
-      ;;            (tab-always-indent 'complete))
-      ;;   :init
-      ;;   (global-corfu-mode))
+      (use-package corfu
+        :ensure t
+        :custom ((corfu-auto t)
+                 (corfu-auto-prefix 1)
+                 (corfu-auto-delay 0)
+                 (corfu-cycle t)
+                 (tab-always-indent 'complete))
+        :init
+        (global-corfu-mode))
 
-      ;; (use-package cape
-      ;;   :ensure t
-      ;;   :init
-      ;;   ;; Add `completion-at-point-functions', used by `completion-at-point'.
-      ;;   (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-yasnippet) t)
-      ;;   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-      ;;   (add-to-list 'completion-at-point-functions #'cape-file)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-history)
-      ;;   (add-to-list 'completion-at-point-functions #'cape-keyword)
-      ;;   ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-ispell)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-      ;;   ;;(add-to-list 'completion-at-point-functions #'cape-line)
-      ;;   )
-    #+end_src
-*** company
-    #+begin_src emacs-lisp
-      (use-package company
+      (use-package cape
         :ensure t
-        :delight company-mode
-        :bind (:map company-active-map
-                    ("M-n" . nil)
-                    ("M-p" . nil)
-                    ("C-h" . nil)
-                    ("C-s" . company-filter-candidates)
-                    ("C-n" . company-select-next)
-                    ("C-p" . company-select-previous)
-                    ("C-i" . company-complete-common-or-cycle)
-                    :map company-search-map
-                    ("C-n" . company-select-next)
-                    ("C-p" . company-select-previous))
-        :custom
-        (company-tooltip-limit             12)
-        (company-idle-delay                0)
-        (company-minimum-prefix-length     1)
-        (company-transformers              '(company-sort-by-occurrence))
-        (global-company-mode               t)
-        (company-selection-wrap-around     t)
-        (vompany-tooltip-align-annotations t)
-        (company-backends '(company-files
-                            company-capf
-                            (company-dabbrev-code
-                             company-gtags
-                             company-etags
-                             company-keywords)
-                            company-dabbrev)))
-      (use-package company-prescient
-        :ensure t
-        :after company
-        :custom
-        (company-prescient-mode t))
-      (use-package all-the-icons :ensure t)
-      (use-package company-box
-        :after (all-the-icons company)
-        :ensure t
-        :hook ((company-mode-hook . company-box-mode))
-        :custom
-        (company-box-icons-alist 'company-box-icons-all-the-icons))
-      (use-package company-quickhelp
-        :if (display-graphic-p)
-        :ensure t
-        :custom
-        (company-quickhelp-delay 0.8)
-        (company-quickhelp-mode t)
-        :bind (:map company-active-map
-                    ("M-h" . company-quickhelp-manual-begin))
-        :hook ((company-mode-hook . company-quickhelp-mode)))
-      ;; (use-package company-math
-      ;;   :ensure t
-      ;;   :defvar (company-backends)
-      ;;   :preface (defun c/latex-mode-setup ()
-      ;;              (setq-local company-backends (append '((company-math-symbols-latex
-      ;;                                                      company-math-symbols-unicode
-      ;;                                                      company-latex-commands)) company-backends)))
-      ;;   :hook ((org-mode-hook . c/latex-mode-setup)
-      ;;          (tex-mode-hook . c/latex-mode-setup)))
-    #+end_src
-*** yasnippet
-    #+begin_src emacs-lisp
-      (use-package yasnippet
-        :ensure t
-        :delight yas-minor-mode
-        :custom
-        (yas-indent-line 'fixed)
-        (yas-global-mode t)
-        :bind (:map yas-keymap
-                    ("<tab>" . nil)
-               :map yas-minor-mode-map
-                    ("C-c y i" . yas-insert-snippet)
-                    ("C-c y n" . yas-new-snippet)
-                    ("C-c y v" . yas-visit-snippet-file)
-                    ("C-c y l" . yas-describe-tables)
-                    ("C-c y g" . yas-reload-all))
-        :config
-        (defvar company-mode/enable-yas t
-          "Enable yasnippet for all backends.")
-        (defun company-mode/backend-with-yas (backend)
-          (if (or (not company-mode/enable-yas)
-                  (and (listp backend)
-                       (member 'company-yasnippet backend))) backend (append (if (consp backend) backend (list backend))
-                  '(:with company-yasnippet ))))
-        (defun set-yas-as-company-backend ()
-          (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
-        :hook ((company-mode-hook . set-yas-as-company-backend))
+        :init
+        ;; Add `completion-at-point-functions', used by `completion-at-point'.
+        (add-to-list 'completion-at-point-functions #'cape-file)
+        (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+        ;;(add-to-list 'completion-at-point-functions #'cape-history)
+        (add-to-list 'completion-at-point-functions #'cape-keyword)
+        ;; (add-to-list 'completion-at-point-functions #'cape-tex)
+        ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+        ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+        ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+        ;;(add-to-list 'completion-at-point-functions #'cape-ispell)
+        ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+        ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+        ;;(add-to-list 'completion-at-point-functions #'cape-line)
         )
 
-      (use-package yasnippet-snippets :ensure t)
-      (use-package yatemplate
-        :ensure t
-        :config
-        (yatemplate-fill-alist))
     #+end_src
 ** which-key
    #+begin_src emacs-lisp
@@ -748,7 +671,8 @@
        :config
        (add-hook 'python-mode-hook 'eglot-ensure)
        (add-hook 'sh-mode-hook 'eglot-ensure)
-       (add-to-list 'eglot-stay-out-of 'company))
+       ;; (add-to-list 'eglot-stay-out-of 'company)
+       )
    #+end_src
 ** flymake
    #+begin_src emacs-lisp
@@ -780,32 +704,6 @@
         )
       (use-package tree-sitter-langs :ensure t)
     #+end_src
-*** COMMENT flycheck
-    #+begin_src emacs-lisp
-      (use-package flycheck                   ;
-        :ensure t
-        :disabled
-        :hook (prog-mode-hook . flycheck-mode)
-        :custom
-        ((flycheck-display-errors-delay 0.3)
-         (flycheck-indication-mode 'left-margin))
-        :config
-        (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
-        ;; (use-package flycheck-inline
-        ;;   :ensure t
-        ;;   :hook (flycheck-mode-hook . flycheck-inline-mode))
-        )
-      ;; (flycheck-define-checker textlint
-      ;;   "A linter for Markdown."
-      ;;   :command ("textlint.sh" source)
-      ;;   :error-patterns
-      ;;   ((warning line-start (file-name) ":" line ":" column ": "
-      ;;             (id (one-or-more (not (any " "))))
-      ;;             (message (one-or-more not-newline)
-      ;;                      (zero-or-more "\n" (any " ") (one-or-more not-newline)))
-      ;;             line-end))
-      ;;   :modes (text-mode markdown-mode gfm-mode org-mode))
-    #+end_src
 *** docker-mode
     #+begin_src emacs-lisp
       (use-package docker :ensure t)
@@ -832,7 +730,7 @@
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup)))
     #+end_src
-** Languages
+** languages
 *** Shell Script
     #+begin_src emacs-lisp
       (use-package flymake-shellcheck
@@ -902,8 +800,7 @@
                                     (flycheck-add-mode 'javascript-eslint 'web-mode)
                                     (setq flycheck-checker 'javascript-eslint)
                                     (eldoc-mode +1)
-                                    (tide-hl-identifier-mode +1)
-                                    (company-mode +1)))))
+                                    (tide-hl-identifier-mode +1)))))
      #+end_src
 **** scss-mode
      #+begin_src emacs-lisp
@@ -955,7 +852,6 @@
                                          (tide-setup)
                                          (eldoc-mode +1)
                                          (tide-hl-identifier +1)
-                                         (company-mode +1)
                                          (flycheck-add-mode 'javascript-eslint 'web-mode)
                                          (setq flycheck-checker 'javascript-eslint))))
      #+end_src
@@ -1197,20 +1093,6 @@
         :ensure t
         :after (json-mode))
     #+end_src
-* Writing
-** COMMENT grammarly
-   #+begin_src emacs-lisp
-     (use-package lsp-grammarly
-       :when (or (eq system-type 'darwin)
-                 (eq system-type 'gnu/linux)
-                 )
-       :ensure t
-       :hook
-       ((markdown-mode-hook) . (lambda ()
-                                 (require 'lsp-grammarly)
-                                 (lsp-deferred)))
-       )                                     ;
-   #+end_src
 * Tramp
   #+begin_src emacs-lisp
     (use-package tramp
