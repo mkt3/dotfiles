@@ -612,63 +612,6 @@
       (gcmh-mode 1))
   #+end_src
 * LSP
-** COMMENT lsp-mode
-   #+begin_src emacs-lisp
-     (use-package lsp-mode
-       :ensure t
-       :disabled
-       :commands (lsp lsp-deferred)
-       :config
-       :custom
-       ((lsp-completion-provider            :none)
-        (lsp-keymap-prefix                  "C-c l")
-        (lsp-log-io                         t)
-        (lsp-eldoc-render-all               t)
-        (lsp-keep-workspace-alive           nil)
-        (lsp-document-sync-method           2)
-        (lsp-response-timeout               5)
-        (lsp-headerline-breadcrumb-icons-enable nil)
-        (read-process-output-max            1048576)
-        (lsp-enable-file-watchers           nil))
-       ;; )
-       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
-
-     (use-package lsp-ui
-       :ensure t
-       :after lsp-mode
-       :custom
-       (lsp-ui-doc-enable            nil)
-       (lsp-ui-doc-position          'at-point)
-       (lsp-ui-doc-header            t)
-       (lsp-ui-doc-include-signature t)
-       (lsp-ui-doc-max-width         150)
-       (lsp-ui-doc-max-height        30)
-       (lsp-ui-doc-show-with-cursor  t)
-       (lsp-ui-peek-enable           t)
-       (lsp-ui-peek-peek-height      20)
-       (lsp-ui-peek-list-width       50)
-       (lsp-ui-sideline-enable       t)
-       (lsp-ui-sideline-show-code-actions nil)
-       (lsp-ui-sideline-show-diagnostics t)
-       (lsp-ui-sideline-diagnostic-max-lines 200)
-       (lsp-ui-sideline-show-hover nil)
-       :bind
-       (:map lsp-mode-map
-             ("C-c s" . lsp-ui-sideline-mode)
-             ("C-c d" . lsp-ui-doc-mode)
-             :map lsp-ui-mode-map
-             ("M-." . lsp-ui-peek-find-definitions)
-             ("M-?" . lsp-ui-peek-find-references))
-       :hook ((lsp-mode-hook . lsp-ui-mode)))
-   #+end_src
-** COMMENT consult-lsp
-   #+begin_src emacs-lisp
-     (use-package consult-lsp
-       :ensure t
-       :disabled
-       :bind (:map lsp-mode-map
-                   ([remap xref-apropos] . consult-lsp-symbols)))
-   #+end_src
 ** eglot
    #+begin_src emacs-lisp
      (use-package eglot
@@ -690,7 +633,6 @@
        :config
        (set-face-background 'flymake-errline "red")
        (set-face-background 'flymake-warnline "yellow"))
-
      (use-package flymake-diagnostic-at-point
        :ensure t
        :after flymake
@@ -713,13 +655,12 @@
     #+begin_src emacs-lisp
       (use-package docker :ensure t)
       (use-package dockerfile-mode :ensure t)
-      (use-package  docker-compose-mode :ensure t)
+      (use-package docker-compose-mode :ensure t)
       (use-package docker-tramp :ensure t)
     #+end_src
 *** git
     #+begin_src emacs-lisp
       (use-package git-modes :ensure t)
-
       (use-package magit
         :ensure t
         :init
@@ -748,12 +689,6 @@
     #+begin_src emacs-lisp
       (use-package python
         :custom (python-indent-guess-indent-offset-verbose . nil))
-      ;; (use-package lsp-pyright
-      ;;   :ensure t
-      ;;   ;; :init (setq lsp-pyright-typechecking-mode "strict")
-      ;;   :hook (python-mode-hook . (lambda ()
-      ;;                               (require 'lsp-pyright)
-      ;;                               (lsp-deferred))))
       (use-package py-isort
         :ensure t
         :hook (python-mode-hook . (lambda ()
@@ -767,7 +702,6 @@
         (blacken-line-length 300)
         ;; (blacken-skip-string-normalization t)
         )
-
       (use-package poetry
         :ensure t
         :config
@@ -1069,8 +1003,6 @@
         (markdown-fontify-code-blocks-natively t)
         :hook ((markdown-mode-hook . (lambda ()
                                        (setq tab-width 2)
-                                       ;; (setq flycheck-checker 'textlint)
-                                       ;; (flycheck-mode 1)
                                        ))))
     #+end_src
 *** YAML
