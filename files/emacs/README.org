@@ -48,7 +48,7 @@
        :if (display-graphic-p)
        :config
        (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
-       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO"))
+       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME"))
        (exec-path-from-shell-initialize))
    #+end_src
 ** Const
