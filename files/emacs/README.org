@@ -618,6 +618,7 @@
        :ensure t
        :config
        (add-hook 'python-mode-hook 'eglot-ensure)
+       (add-hook 'rust-mode-hook 'eglot-ensure)
        (add-hook 'sh-mode-hook 'eglot-ensure)
        ;; (add-to-list 'eglot-stay-out-of 'company)
        )
@@ -710,6 +711,18 @@
         (setq poetry-tracking-strategy 'switch-buffer)
         :hook ((python-mode-hook . poetry-tracking-mode)))
     #+end_src
+*** Rust
+    #+begin_src emacs-lisp
+      (use-package rust-mode
+        :ensure t
+        :custom rust-format-on-save t)
+
+      (use-package cargo
+        :ensure t
+        :hook (rust-mode . cargo-minor-mode))
+
+      
+#+end_src
 *** web
 **** web-mode
      #+begin_src emacs-lisp
