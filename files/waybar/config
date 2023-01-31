@@ -2,27 +2,26 @@
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
     "spacing": 0, // Gaps between modules (4px)
-    "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
+    "modules-left": ["wlr/workspaces", "hyprland/submap"],
+    "modules-center": ["hyprland/window"],
     "modules-right": ["custom/vpn", "custom/pacman", "cpu", "memory", "pulseaudio", "backlight", "battery", "clock", "tray", "idle_inhibitor"],
     // Modules configuration
-    "sway/workspaces": {
-        "disable-scroll": true,
+    "wlr/workspaces": {
         "all-outputs": true,
-        "format": "{index}:{name} {icon}",
+        "format": "{name} {icon}",
         "format-icons": {
-            "1: main": "",
-            "9: sub": "",
-            "2: chat": "",
-            "3: mail": "",
-            "8: game": "",
-            "10: media": "",
+            "1:main": "",
+            "2:slack": "",
+            "3:discord": "",           
+            "8:game": "",
+            "9:sub": "",
+            "10:media": "",
             "urgent": "",
-            "focused": "",
+            "active": "",
             "default": ""
         }
     },
-    "sway/mode": {
+    "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>"
     },
     "idle_inhibitor": {

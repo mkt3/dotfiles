@@ -48,12 +48,11 @@ setup_pacman() {
     gui_pacman_package_list=(sway \
                           xorg-xwayland \
                           qt5-wayland \
+                          qt6-wayland \
                           swayidle \
                           swaylock \
                           swaybg \
-                          xdg-desktop-portal-wlr \
                           xdg-desktop-portal \
-                          waybar \
                           wl-clipboard \
                           mako \
                           lightdm \
@@ -113,6 +112,8 @@ setup_pacman() {
                           isync
                             )
     gui_aur_package_list=(enpass-bin \
+                              xdg-desktop-portal-hyprland-git \
+                              waybar-hyprland-git \
                               slack-desktop \
                               google-chrome \
                               anki-official-binary-bundle \
