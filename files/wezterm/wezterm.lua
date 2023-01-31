@@ -27,13 +27,7 @@ return {
      {key="<",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="<", mods="ALT"}},
      {key=">",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key=">", mods="ALT"}},
      {key="?",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="?", mods="ALT"}},
-     {
-      key = 'o',
-      mods = 'CMD',
-      action = wezterm.action.SpawnCommandInNewTab {
-        args = {'.config/wezterm/ssh.sh' },
-        cwd = '~'
-      },
-     },
+     {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
+     {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
   },
 }
