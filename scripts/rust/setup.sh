@@ -28,4 +28,11 @@ setup_rust() {
         info "$package ..."
         "${CARGO_HOME}/bin/rustup" run stable cargo install "$package"
     done
+
+    info "Installing rust-analyzer"
+    curl -sL https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | zcat > ~/.local/bin/rust-analyzer
+
+    chmod +x ~/.local/bin/rust-analyzer
+
+    "${CARGO_HOME}/bin/rustup" run stable cargo install cargo-edit
 }
