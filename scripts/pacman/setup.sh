@@ -48,6 +48,7 @@ setup_pacman() {
     gui_pacman_package_list=(sway \
                           xorg-xwayland \
                           qt5-wayland \
+                          qt6-wayland \
                           swayidle \
                           swaylock \
                           swaybg \
