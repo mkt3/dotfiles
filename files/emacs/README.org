@@ -501,6 +501,10 @@
     #+begin_src emacs-lisp
       (use-package tempel
         :ensure t
+        :bind (nil
+               :map tempel-map
+               ("M-i" . tempel-next)
+               )
         :init
         (defun tempel-setup-capf ()
           (setq-local completion-at-point-functions
@@ -552,6 +556,13 @@
         ;;(add-to-list 'completion-at-point-functions #'cape-dict)
         ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
         ;;(add-to-list 'completion-at-point-functions #'cape-line)
+        :config
+        (defun my/eglot-capf ()
+          (setq-local completion-at-point-functions
+                      (list (cape-super-capf
+                             #'eglot-completion-at-point
+                             #'tempel-complete))))
+        (add-hook 'eglot-managed-mode-hook #'my/eglot-capf)
         )
     #+end_src
 ** which-key
