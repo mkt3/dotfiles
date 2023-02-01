@@ -13,8 +13,8 @@
         "format-icons": {
             "1: main": "",
             "9: sub": "",
-            "2: chat": "",
-            "3: mail": "",
+            "2: slack": "",
+            "3: disco": "",
             "8: game": "",
             "10: media": "",
             "urgent": "",
