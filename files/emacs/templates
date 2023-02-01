@@ -76,6 +76,9 @@ sh-mode
 
 (fr "for " p " in " p n "do" n> q n "done")
 
+python-mode
+
+(ifm "if __name__ == '__main__':" n> p)
 ;; Local Variables:
 ;; mode: lisp-data
 ;; outline-regexp: "[a-z]"
