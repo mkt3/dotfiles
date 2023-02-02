@@ -561,7 +561,11 @@
           (setq-local completion-at-point-functions
                       (list (cape-super-capf
                              #'eglot-completion-at-point
-                             #'tempel-complete))))
+                             #'tempel-complete)
+                            #'cape-keyword
+                            #'cape-dabbrev
+                            #'cape-file)
+                      ))
         (add-hook 'eglot-managed-mode-hook #'my/eglot-capf)
         )
     #+end_src
@@ -732,7 +736,7 @@
         :ensure t
         :hook (rust-mode . cargo-minor-mode))
 
-      
+
 #+end_src
 *** web
 **** web-mode
