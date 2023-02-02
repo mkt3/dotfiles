@@ -20,6 +20,7 @@ return {
      {key="v",mods="SUPER",action=wezterm.action.SendKey{key="v", mods="ALT"}},
      {key="w",mods="SUPER",action=wezterm.action.SendKey{key="w", mods="ALT"}},
      {key="y",mods="SUPER",action=wezterm.action.SendKey{key="y", mods="ALT"}},
+     {key="i",mods="SUPER",action=wezterm.action.SendKey{key="i", mods="ALT"}},
      {key=",",mods="SUPER",action=wezterm.action.SendKey{key=",", mods="ALT"}},
      {key=".",mods="SUPER",action=wezterm.action.SendKey{key=".", mods="ALT"}},
      {key=";",mods="SUPER",action=wezterm.action.SendKey{key=";", mods="ALT"}},

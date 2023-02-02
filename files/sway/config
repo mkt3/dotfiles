@@ -29,10 +29,13 @@ bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
-# screen shot
+# Screen shot
 bindsym $super+Shift+2 exec /usr/share/sway/scripts/grimshot --notify save window $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 bindsym $super+Shift+3 exec /usr/share/sway/scripts/grimshot --notify save output  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 bindsym $super+Shift+4 exec /usr/share/sway/scripts/grimshot --notify save area  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+
+# Filer
+bindsym $super+e exec thunar
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod normal
@@ -124,7 +127,6 @@ bindsym $mod+t floating toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
-
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+semicolon move scratchpad
