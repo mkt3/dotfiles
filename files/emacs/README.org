@@ -503,7 +503,7 @@
         :ensure t
         :bind (nil
                :map tempel-map
-               ("M-i" . tempel-next)
+               ("C-i" . tempel-next)
                )
         :init
         (defun tempel-setup-capf ()
