@@ -87,7 +87,7 @@ setup_pacman() {
                           gvfs \
                           gvfs-smb \
                           sshfs \
-                          ristretto  \
+                          ristretto \
                           slurp \
                           grim \
                           kanshi \
@@ -111,7 +111,8 @@ setup_pacman() {
                           borg \
                           zathura \
                           zathura-pdf-mupdf \
-                          isync
+                          isync \
+                          kdeconnect
                             )
     gui_aur_package_list=(enpass-bin \
                               slack-desktop \

@@ -251,6 +251,8 @@ exec_always autotiling -o DP-1 HDMI-A-2
 exec nm-applet --indicator
 exec mako
 exec fcitx5 -d
+exec /usr/lib64/kdeconnectd
+exec kdeconnect-indicator
 
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="org.fcitx.fcitx5-config-qt"] floating enable
