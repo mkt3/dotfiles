@@ -28,7 +28,7 @@ return {
      {key="<",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="<", mods="ALT"}},
      {key=">",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key=">", mods="ALT"}},
      {key="?",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="?", mods="ALT"}},
-     {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
+     {key="w",mods="ALT",action=wezterm.action.CloseCurrentTab{confirm=false}},
      {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
   },
 }
