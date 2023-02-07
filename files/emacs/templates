@@ -79,6 +79,8 @@ sh-mode
 python-mode
 
 (ifm "if __name__ == '__main__':" n> p)
+(init "def __init__(self" p "):" n> p)
+
 ;; Local Variables:
 ;; mode: lisp-data
 ;; outline-regexp: "[a-z]"
