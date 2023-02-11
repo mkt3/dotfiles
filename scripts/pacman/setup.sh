@@ -39,6 +39,7 @@ setup_pacman() {
                           neofetch \
                           rsync \
                           httpie \
+                          axel \
                           unarchiver \
                           cmake \
                           gnupg \
