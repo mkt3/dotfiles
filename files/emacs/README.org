@@ -624,6 +624,16 @@
        :bind (("C-a" . mwim-beginning-of-code-or-line)
               ("C-e" . mwim-end-of-code-or-line)))
    #+end_src
+** dmacro
+   #+begin_src emacs-lisp
+     (use-package dmacro
+       :ensure t
+       :custom
+       (dmacro-key (kbd "C-t"))
+       :config
+       (global-dmacro-mode)
+       )
+   #+end_src
 * Gabage collection
   #+begin_src emacs-lisp
     (use-package gcmh
@@ -1166,7 +1176,8 @@
                      ;;(dedicated . t) ;dedicated is supported in emacs27
                      (reusable-frames . visible)
                      (window-height . 0.3)))
-      :bind ("C-t" . vterm-toggle))
+      ;; :bind ("C-t" . vterm-toggle))
+      )
   #+end_src
 * External Collaboration
 ** atomic-chrome
