@@ -109,6 +109,9 @@ setup_pacman() {
                           libreoffice-fresh \
                           hugo \
                           vlc \
+                          libdvdread \
+                          libdvdnav \
+                          libdvdcss \
                           borg \
                           zathura \
                           zathura-pdf-mupdf \
