@@ -56,6 +56,7 @@ setup_arch() {
         setup_xremap
         setup_skk
         setup_borg
+        setup_zathura
     fi
 
     setup_post_common arch
