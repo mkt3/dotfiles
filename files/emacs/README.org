@@ -343,6 +343,7 @@
    #+begin_src emacs-lisp
      (use-package whitespace
        :ensure t
+       :delight
        :bind ("C-c W" . whitespace-cleanup)
        :custom
        (whitespace-style '(face trailing tabs spaces empty space-mark tab-mark))
@@ -433,6 +434,7 @@
    #+begin_src emacs-lisp
      (use-package smartparens
        :ensure t
+       :delight
        :hook (after-init-hook . smartparens-global-strict-mode)
        :bind
        :custom
@@ -583,6 +585,7 @@
    #+begin_src emacs-lisp
      (use-package which-key
        :ensure t
+       :delight
        :custom
        ((which-key-idle-delay  1)
         (which-key-replacement-alist  '(((nil . "Prefix Command") . (nil . "prefix"))
@@ -609,6 +612,7 @@
      (use-package undo-tree
        :ensure t
        :demand t
+       :delight
        :bind (("M-/" . undo-tree-redo))
        :custom
        (undo-tree-auto-save-history  t)
@@ -628,6 +632,7 @@
    #+begin_src emacs-lisp
      (use-package dmacro
        :ensure t
+       :delight
        :custom
        (dmacro-key (kbd "C-t"))
        :config
@@ -681,6 +686,7 @@
     #+begin_src emacs-lisp
       (use-package tree-sitter
         :ensure t
+        :delight
         :init
         (global-tree-sitter-mode)
         :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
@@ -733,6 +739,7 @@
         (py-isort-options '("--profile=black")))
       (use-package blacken
         :ensure t
+        :delight
         :hook (python-mode-hook .  blacken-mode)
         :custom
         (blacken-line-length 300)
