@@ -8,3 +8,12 @@ git config --global user.email <email>
 
 # Enable git-secrets in repository
 git secrets --install
+
+# Commit with "fixup!" in the HEAD commit Meddage
+git commit --fixup HEAD
+
+# Rebase fixup
+git rebase -i --autosquash HEAD~2
+
+# Modify the last commit
+git commit --amend
