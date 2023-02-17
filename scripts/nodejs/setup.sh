@@ -4,7 +4,7 @@
 set -eu
 
 setup_nvm() {
-    NVM_VERSION="v18.12.1"
+    NVM_VERSION="v18.14.1"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
     . "${XDG_CONFIG_HOME}/nvm/nvm.sh" && nvm install --lts --latest-npm $NVM_VERSION && nvm alias default $NVM_VERSION
 
