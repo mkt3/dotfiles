@@ -13,6 +13,7 @@ setup_apt() {
                   zsh \
                   tmux \
                   locales \
+                  cmake \
                   jq \
                   xsel \
                   vim \
