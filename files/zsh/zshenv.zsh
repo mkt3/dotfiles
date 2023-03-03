@@ -139,7 +139,11 @@ export GPG_TTY=$(tty)
 
 # ssh
 export SSH_AGENT_PID=""
-export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+if [[ "$PLATFORM" == 'linux' ]];then
+    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+elif [[ "$PLATFORM" == 'osx' ]];then
+    export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
+fi
 
 # zoom
 export SSB_HOME="${XDG_DATA_HOME}/zoom"

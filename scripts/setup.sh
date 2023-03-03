@@ -20,7 +20,7 @@ done
 
 setup_pre_common() {
     setup_xdg_config
-    setup_gpg "$1"
+    setup_gpg "$@"
     setup_zsh
     setup_fzf
     setup_zoxide
@@ -82,7 +82,7 @@ setup_mac() {
     setup_macos
     setup_homebrew
     setup_wezterm
-    setup_pre_common "$1"
+    setup_pre_common "$1" mac
     setup_karabiner
     setup_yabai_skhd
     setup_aquaskk

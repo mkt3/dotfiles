@@ -15,4 +15,8 @@ setup_gpg() {
         ln -sfn "${gpg_file_dir}/gpg.conf" "${GNUPGHOME}/gpg.conf"
     fi
 
+    if [ "$2" = "mac" ]; then
+        ln -sfn "${gpg_file_dir}/gpg-agent_for_macos.conf" "${GNUPGHOME}/gpg-agent.conf"
+    fi
+
 }

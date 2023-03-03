@@ -13,5 +13,9 @@ if [[ "$ssh_host" = "" ]]; then
     :
 else
     echo -ne "\x1b]0;$ssh_host\x1b\\"
-    eval "SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh ssh $ssh_host"
+    if [[ "$XDG_RUNTIME_DIR" = "" ]]; then
+        eval "SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh ssh $ssh_host"
+    else
+        eval "SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh ssh $ssh_host"
+    fi
 fi
