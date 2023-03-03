@@ -44,7 +44,7 @@ setup_post_common() {
 
 setup_arch() {
     title "Setting up Archlinux"
-    setup_pre_common "$1"
+    setup_pre_common "$1" linux
     setup_pacman "$1"
 
     if [ "$1" = "gui" ]; then
@@ -66,7 +66,7 @@ setup_ubuntu() {
     title "Setting up ubuntu"
     setup_apt "$1"
 
-    setup_pre_common "$1"
+    setup_pre_common "$1" linux
 
     if [ "$1" = "gui" ]; then
         setup_font

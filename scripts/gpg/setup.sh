@@ -15,8 +15,12 @@ setup_gpg() {
         ln -sfn "${gpg_file_dir}/gpg.conf" "${GNUPGHOME}/gpg.conf"
     fi
 
-    if [ "$#" -eq 2 ] &&  [ "$2" = "mac" ]; then
-        ln -sfn "${gpg_file_dir}/gpg-agent_for_macos.conf" "${GNUPGHOME}/gpg-agent.conf"
+    if [ "$#" -eq 2 ]; then
+        if [ "$2" = "mac" ]; then
+            ln -sfn "${gpg_file_dir}/gpg-agent_for_macos.conf" "${GNUPGHOME}/gpg-agent.conf"
+        elif [ "$2" = "linux" ]; then
+            ln -sfn "${gpg_file_dir}/gpg-agent_for_linux.conf" "${GNUPGHOME}/gpg-agent.conf"
+        fi
     fi
 
 }
