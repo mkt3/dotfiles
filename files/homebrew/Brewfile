@@ -48,27 +48,23 @@ cask "alfred"
 cask "discord"
 cask "notion"
 cask "zoom"
+cask "vivaldi"
 cask "google-chrome"
 cask "google-drive"
 cask "vlc"
 cask "stats"
 cask "anki"
 cask "font-cica"
-cask "iterm2"
 cask "appcleaner"
 cask "aquaskk"
 cask "karabiner-elements"
 cask "tunnelblick"
 cask "nextcloud"
-cask "visual-studio-code"
 mas "Kindle", id: 405399194
-mas "Spark", id: 1176895641
 mas "Slack", id: 803453959
 mas "The Unarchiver", id: 425424353
 mas "Enpass", id: 732710998
-mas "RunCat", id: 1429033973
 mas "Sequel Ace", id: 1518036000
 mas "GoodNotes", id: 1444383602
 mas "Dictonaries", id: 1380563956
-mas "Reeder 5", id: 1529448980
 mas "MeetingBar", id: 1532419400
