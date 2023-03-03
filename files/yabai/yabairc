@@ -33,7 +33,9 @@ yabai -m config window_gap                   6
 # Rules
 yabai -m rule --add app="^Dictionaries$"       manage=off
 yabai -m rule --add app="^Disk Utility$"       manage=off
-yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^Enpass$" manage=off
+yabai -m rule --add app="^Karabiner-Elements$" manage=off
+yabai -m rule --add app="^Karabiner-MultitouchExtension$" manage=off
 
 echo "yabai configuration loaded.."
