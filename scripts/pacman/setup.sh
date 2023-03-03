@@ -116,7 +116,8 @@ setup_pacman() {
                           zathura \
                           zathura-pdf-mupdf \
                           isync \
-                          kdeconnect
+                          kdeconnect \
+                          dvd+rw-tools
                             )
     gui_aur_package_list=(enpass-bin \
                               slack-desktop \
