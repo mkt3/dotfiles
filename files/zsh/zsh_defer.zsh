@@ -171,3 +171,8 @@ fi
 if [[ ! -n $TMUX  ]]; then
     bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
 fi
+
+# gpg-agent
+if [[ "$PLATFORM" == 'osx' ]]; then
+   gpgconf --launch gpg-agent
+fi
