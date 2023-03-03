@@ -251,6 +251,7 @@ exec_always autotiling -o DP-1 HDMI-A-2
 exec nm-applet --indicator
 exec mako
 exec fcitx5 -d
+exec thunar --daemon
 exec /usr/lib64/kdeconnectd
 exec kdeconnect-indicator
 
