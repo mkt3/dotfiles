@@ -2,7 +2,7 @@ local wezterm = require 'wezterm';
 
 return {
   font = wezterm.font("Cica"),
-  use_ime = false,
+  use_ime = true,
   font_size = 20.0,
   color_scheme = "nord",
   adjust_window_size_when_changing_font_size = false,

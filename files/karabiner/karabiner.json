@@ -781,6 +781,7 @@
                                 "conditions": [
                                     {
                                       "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^com\\.googlecode\\.iterm2",
                                             "^com\\.apple\\.Terminal"
                                         ],
