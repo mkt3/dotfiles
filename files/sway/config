@@ -144,7 +144,8 @@ set $ws7 "7"
 set $ws_main    "1: main"
 set $ws_slack   "2: slack"
 set $ws_discord "3: disco"
-set $ws_game    "8: game"
+set $ws_game    "7: game"
+set $ws_gpt     "8: gpt"
 set $ws_sub     "9: sub"
 set $ws_media   "10: media"
 
@@ -155,8 +156,8 @@ bindsym $mod+3 workspace number $ws_discord
 bindsym $mod+4 workspace number $ws4
 bindsym $mod+5 workspace number $ws5
 bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws_game
+bindsym $mod+7 workspace number $ws_game
+bindsym $mod+8 workspace number $ws_gpt
 bindsym $mod+9 workspace number $ws_sub
 bindsym $mod+0 workspace number $ws_media
 
@@ -167,8 +168,8 @@ bindsym $mod+Shift+3 move container to workspace number $ws_discord
 bindsym $mod+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
 bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws_game
+bindsym $mod+Shift+7 move container to workspace number $ws_game
+bindsym $mod+Shift+8 move container to workspace number $ws_gpt
 bindsym $mod+Shift+9 move container to workspace number $ws_sub
 bindsym $mod+Shift+0 move container to workspace number $ws_media
 
@@ -180,6 +181,7 @@ bindsym Mod4+Next workspace next
 workspace $ws_main output DP-1 DP-2 HDMI-A-2
 workspace $ws_chat output DP-1 DP-2 HDMI-A-2
 workspace $ws_mail output DP-1 DP-2 HDMI-A-2
+workspace $ws_gpt output DP-1 DP-2 HDMI-A-2
 workspace $ws_game output DP-1 DP-2 HDMI-A-2
 workspace $ws_media output eDP-1 HDMI-A-3
 workspace $ws_sub output eDP-1 HDMI-A-3
