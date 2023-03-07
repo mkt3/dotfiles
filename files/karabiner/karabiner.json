@@ -775,7 +775,30 @@
                         ]
                     },
                     {
-                        "description": "AquaSKK for Terminal/iTerm2",
+                        "description": "元に戻す undo (ctrl + /)",
+                        "manipulators": [{
+                                "conditions": [
+                                    {
+                                      "bundle_identifiers": [
+                                            "^org\\.gnu\\.Emacs$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "slash",
+                                    "modifiers": {"mandatory": ["control"]}
+                                },
+                                "to":[{
+                                    "key_code": "z",
+                                    "modifiers": ["command"]
+                                }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "AquaSKK for Terminal/iTerm2/wezterm",
                         "manipulators": [
                             {
                                 "conditions": [
