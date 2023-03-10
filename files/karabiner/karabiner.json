@@ -780,6 +780,7 @@
                                 "conditions": [
                                     {
                                       "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$"
                                         ],
                                         "type": "frontmost_application_unless"
