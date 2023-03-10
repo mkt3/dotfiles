@@ -124,17 +124,6 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
 
-zinit wait lucid blockf light-mode for \
-    atinit"zstyle ':autocomplete:*' insert-unambiguous yes" \
-    atinit"zstyle ':autocomplete:*' fzf-completion yes" \
-    atinit"zstyle ':autocomplete:recent-dirs' backend zoxide" \
-    atload"bindkey '^P' history-beginning-search-backward-end" \
-    atload"bindkey '^N' down-line-or-select" \
-    atload"bindkey -M menuselect '^P' vi-up-line-or-history" \
-    atload"bindkey -M menuselect '^N' vi-down-line-or-history" \
-    atload"bindkey -M menuselect '\r' accept-line" \
-    @'marlonrichert/zsh-autocomplete' \
-
 # lazy load
 zinit wait lucid null for \
     atinit'source "$ZDOTDIR/zsh_defer.zsh"' \
