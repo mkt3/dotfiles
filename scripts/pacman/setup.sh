@@ -27,6 +27,10 @@ setup_pacman() {
     cui_pacman_package_list=(python \
                           python-pip \
                           python-pipx \
+                          openssl \
+                          zlib \
+                          xz \
+                          tk \
                           zsh \
                           tmux \
                           pacman-contrib \

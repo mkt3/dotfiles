@@ -15,10 +15,11 @@ brew "less"
 brew "nkf"
 brew "rsync"
 brew "openssl"
-brew "readline"
-brew "sqlite3"
-brew "xz"
-brew "zlib"
+brew "readline" # python dependencies
+brew "sqlite3"  # python dependencies
+brew "xz"       # python dependencies
+brew "zlib"     # python dependencies
+brew "tcl-tk"   # python dependencied
 brew "git"
 brew "neofetch"
 brew "axel"
@@ -70,3 +71,4 @@ mas "Sequel Ace", id: 1518036000
 mas "GoodNotes", id: 1444383602
 mas "Dictonaries", id: 1380563956
 mas "MeetingBar", id: 1532419400
+mas "WireGuard", id: 1451685025
