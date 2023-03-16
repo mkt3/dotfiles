@@ -174,17 +174,17 @@ bindsym $mod+Shift+9 move container to workspace number $ws_sub
 bindsym $mod+Shift+0 move container to workspace number $ws_media
 
 # move to worspace
-bindsym Mod4+Prior workspace prev
-bindsym Mod4+Next workspace next
+bindsym $mod+Prior workspace prev
+bindsym $mod+Next workspace next
 
 
-workspace $ws_main output DP-1 DP-2 HDMI-A-2
-workspace $ws_chat output DP-1 DP-2 HDMI-A-2
-workspace $ws_mail output DP-1 DP-2 HDMI-A-2
-workspace $ws_gpt output DP-1 DP-2 HDMI-A-2
-workspace $ws_game output DP-1 DP-2 HDMI-A-2
+workspace $ws_main  output DP-1 DP-2 HDMI-A-2
+workspace $ws_chat  output DP-1 DP-2 HDMI-A-2
+workspace $ws_mail  output DP-1 DP-2 HDMI-A-2
+workspace $ws_game  output DP-1 DP-2 HDMI-A-2
+workspace $ws_gpt   output eDP-1 HDMI-A-3
 workspace $ws_media output eDP-1 HDMI-A-3
-workspace $ws_sub output eDP-1 HDMI-A-3
+workspace $ws_sub   output eDP-1 HDMI-A-3
 
 
 # reload the configuration file
