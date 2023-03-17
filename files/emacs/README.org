@@ -752,6 +752,9 @@
         ;; one is quite slow.
         (setq poetry-tracking-strategy 'switch-buffer)
         :hook ((python-mode-hook . poetry-tracking-mode)))
+
+      (use-package ein
+        :ensure t)
     #+end_src
 *** Rust
     #+begin_src emacs-lisp
