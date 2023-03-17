@@ -11,7 +11,6 @@ zinit wait lucid blockf light-mode for \
     atload"bindkey -M menuselect '^N' vi-down-line-or-history" \
     atload"bindkey -M menuselect '\r' accept-line" \
     @'marlonrichert/zsh-autocomplete' \
-    @'zsh-users/zsh-completions' \
     @'zsh-users/zsh-autosuggestions' \
     @'zsh-users/zsh-syntax-highlighting' \
     @'olets/zsh-abbr' \
