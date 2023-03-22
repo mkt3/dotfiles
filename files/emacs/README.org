@@ -88,7 +88,6 @@
    #+begin_src emacs-lisp
      (setq truncate-lines nil
            truncate-partial-width-windows nil)
-     (bind-key* "C-c l" 'toggle-truncate-lines)
    #+end_src
 ** Delete
    Delete selection if you insert.
@@ -888,11 +887,18 @@
          (org-log-done t)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
-         (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
-                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
-         (org-todo-keyword-faces '(("TODO" :foreground "red"
+         (org-agenda-todo-ignore-scheduled 'feature)
+         (org-todo-keywords '((sequence "MEMO(m)" "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
+                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")
+                              (type "Project" "Sub-Project" "|" "DONE(d)")
+                              ))
+         (org-todo-keyword-faces '(("Project" :foreground "royal blue"
                                     :weight bold)
-                                   ("STARTED" :foreground "cornflower blue"
+                                   ("Sub-Project" :foreground "royal blue"
+                                    :weight bold)
+                                   ("TODO" :foreground "red"
+                                    :weight bold)
+                                   ("IN PROGRESS" :foreground "cornflower blue"
                                     :weight bold)
                                    ("DONE" :foreground "green"
                                     :weight bold)
@@ -922,7 +928,6 @@
          (org-hide-emphasis-markers t)
          (org-appear-inside-latex   t)
          (org-appear-autosubmarkers t))
-
      #+end_src
 **** org-pomodoro
      #+begin_src emacs-lisp
