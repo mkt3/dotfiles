@@ -888,8 +888,8 @@
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
          (org-agenda-todo-ignore-scheduled 'feature)
-         (org-todo-keywords '((sequence "MEMO(m)" "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
-                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")
+         (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
+                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "MEMO(m)" "SOMEDAY(s)")
                               (type "Project" "Sub-Project" "|" "DONE(d)")
                               ))
          (org-todo-keyword-faces '(("Project" :foreground "royal blue"
