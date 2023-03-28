@@ -106,6 +106,7 @@ export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 # cuda path
 if [[ "$PLATFORM" == 'linux' ]];then
     export PATH="$PATH:/opt/cuda/bin:/usr/local/cuda-11.3/bin"
+    export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
 fi
 
 # docker
@@ -153,3 +154,6 @@ export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
 
 # mu
 export XAPIAN_CJK_NGRAM=1
+
+# sqlite
+export SQLITE_HISTORY="${XDG_DATA_HOME}/sqlite_history"
