@@ -47,7 +47,8 @@ setup_pacman() {
                           unarchiver \
                           cmake \
                           gnupg \
-                          shellcheck
+                          shellcheck \
+                          trash-cli
                      )
 
     gui_pacman_package_list=(sway \
