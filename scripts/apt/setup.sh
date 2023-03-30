@@ -34,6 +34,7 @@ setup_apt() {
                   python3-dev \
                   python3-venv \
                   python3-pip \
+                  trash-cli \
                   tk-dev)
 
     info "Installing packages"
