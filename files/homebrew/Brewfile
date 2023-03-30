@@ -20,6 +20,7 @@ brew "sqlite3"  # python dependencies
 brew "xz"       # python dependencies
 brew "zlib"     # python dependencies
 brew "tcl-tk"   # python dependencied
+brew "trash-cli"
 brew "git"
 brew "neofetch"
 brew "axel"
