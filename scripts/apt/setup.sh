@@ -5,10 +5,6 @@ set -eu
 setup_apt() {
     title "Setting up apt"
 
-    info "apt update & upgrade"
-    sudo apt update
-    sudo apt -y upgrade
-
     package_list=(build-essential \
                   zsh \
                   tmux \
