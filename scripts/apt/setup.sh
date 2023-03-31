@@ -35,6 +35,7 @@ setup_apt() {
                   python3-venv \
                   python3-pip \
                   trash-cli \
+                  axel \
                   tk-dev)
 
     info "Installing packages"
