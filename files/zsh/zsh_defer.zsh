@@ -53,7 +53,6 @@ case "${PLATFORM}" in
         (( ${+commands[gfind]} )) && alias find='gfind'
         (( ${+commands[gdirname]} )) && alias dirname='gdirname'
         (( ${+commands[gxargs]} )) && alias xargs='gxargs'
-        alias ssh="~/.ssh/bin/ssh_change.sh"
         ;;
     linux)
         alias open="xdg-open"
