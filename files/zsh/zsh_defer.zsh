@@ -175,3 +175,6 @@ fi
 if [[ "$PLATFORM" == 'osx' ]]; then
    gpgconf --launch gpg-agent
 fi
+
+# Remove only the files that have been deleted more than 30 days ago:
+yes y | trash-empty 30
