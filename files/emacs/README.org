@@ -752,8 +752,17 @@
         (setq poetry-tracking-strategy 'switch-buffer)
         :hook ((python-mode-hook . poetry-tracking-mode)))
 
-      (use-package ein
-        :ensure t)
+       (use-package jupyter
+         :ensure t
+         :config
+         (org-babel-do-load-languages
+          'org-babel-load-languages
+          '((emacs-lisp . t)
+            (shell      . t)
+            (python     . t)
+            (jupyter    . t)))
+         (setq org-babel-default-header-args:python '((:async . "yes")))
+         (org-babel-jupyter-override-src-block "python"))
     #+end_src
 *** Rust
     #+begin_src emacs-lisp
