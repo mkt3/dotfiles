@@ -773,9 +773,13 @@
       (use-package cargo
         :ensure t
         :hook (rust-mode . cargo-minor-mode))
-
-
-#+end_src
+    #+end_src
+*** Lua
+    #+begin_src emacs-lisp
+      (use-package lua-mode
+        :ensure t  
+        :custom (lua-indent-level 2))
+    #+end_src
 *** web
 **** web-mode
      #+begin_src emacs-lisp
