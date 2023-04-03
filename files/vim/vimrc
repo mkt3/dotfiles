@@ -57,3 +57,5 @@ set incsearch
 set wrapscan
 set hlsearch
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
+
+cmap w!! w !sudo tee > /dev/null %

@@ -1,5 +1,27 @@
 local wezterm = require 'wezterm';
 
+local keys = {
+  {key="x",mods="SUPER",action=wezterm.action.SendKey{key="x", mods="ALT"}}, -- for emacs
+  {key="c",mods="SUPER",action=wezterm.action.SendKey{key="c", mods="ALT"}}, -- for emacs
+  {key="w",mods="SUPER",action=wezterm.action.SendKey{key="w", mods="ALT"}}, -- for emacs
+  {key="y",mods="SUPER",action=wezterm.action.SendKey{key="y", mods="ALT"}}, -- for emacs
+  {key="i",mods="SUPER",action=wezterm.action.SendKey{key="i", mods="ALT"}}, -- for emacs
+  {key=",",mods="SUPER",action=wezterm.action.SendKey{key=",", mods="ALT"}}, -- for emacs
+  {key=".",mods="SUPER",action=wezterm.action.SendKey{key=".", mods="ALT"}}, -- for emacs
+  {key=";",mods="SUPER",action=wezterm.action.SendKey{key=";", mods="ALT"}}, -- for emacs
+  {key="/",mods="SUPER",action=wezterm.action.SendKey{key="/", mods="ALT"}}, -- for emacs
+  {key="<",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="<", mods="ALT"}}, -- for emacs
+  {key=">",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key=">", mods="ALT"}}, -- for emacs
+  {key="?",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="?", mods="ALT"}}, -- for emacs
+  {key="v",mods="SUPER",action=wezterm.action.PasteFrom 'Clipboard'},
+  {key="w",mods="ALT",action=wezterm.action.CloseCurrentTab{confirm=false}},
+  {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
+}
+
+if wezterm.target_triple == 'x86_64-apple-darwin' then
+  table.insert(keys, {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}})
+end
+
 return {
   font = wezterm.font("Cica"),
   use_ime = true,
@@ -13,22 +35,5 @@ return {
     top = 0,
     bottom = 0,
   },
-  keys = {
-     {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}}, -- for macOS
-     {key="x",mods="SUPER",action=wezterm.action.SendKey{key="x", mods="ALT"}},
-     {key="c",mods="SUPER",action=wezterm.action.SendKey{key="c", mods="ALT"}},
-     {key="v",mods="SUPER",action=wezterm.action.SendKey{key="v", mods="ALT"}},
-     {key="w",mods="SUPER",action=wezterm.action.SendKey{key="w", mods="ALT"}},
-     {key="y",mods="SUPER",action=wezterm.action.SendKey{key="y", mods="ALT"}},
-     {key="i",mods="SUPER",action=wezterm.action.SendKey{key="i", mods="ALT"}},
-     {key=",",mods="SUPER",action=wezterm.action.SendKey{key=",", mods="ALT"}},
-     {key=".",mods="SUPER",action=wezterm.action.SendKey{key=".", mods="ALT"}},
-     {key=";",mods="SUPER",action=wezterm.action.SendKey{key=";", mods="ALT"}},
-     {key="/",mods="SUPER",action=wezterm.action.SendKey{key="/", mods="ALT"}},
-     {key="<",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="<", mods="ALT"}},
-     {key=">",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key=">", mods="ALT"}},
-     {key="?",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="?", mods="ALT"}},
-     {key="w",mods="ALT",action=wezterm.action.CloseCurrentTab{confirm=false}},
-     {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
-  },
+  keys=keys,
 }
