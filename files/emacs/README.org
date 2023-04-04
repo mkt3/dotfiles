@@ -752,17 +752,20 @@
         (setq poetry-tracking-strategy 'switch-buffer)
         :hook ((python-mode-hook . poetry-tracking-mode)))
 
-       (use-package jupyter
-         :ensure t
-         :config
-         (org-babel-do-load-languages
-          'org-babel-load-languages
-          '((emacs-lisp . t)
-            (shell      . t)
-            (python     . t)
-            (jupyter    . t)))
-         (setq org-babel-default-header-args:python '((:async . "yes")))
-         (org-babel-jupyter-override-src-block "python"))
+      (use-package ein :ensure t)
+
+      ;; It's defficult to display tqdm jupyter
+      ;; (use-package jupyter
+      ;;   :ensure t
+      ;;   :config
+      ;;   (org-babel-do-load-languages
+      ;;    'org-babel-load-languages
+      ;;    '((emacs-lisp . t)
+      ;;      (shell . t)
+      ;;      (python  . t)
+      ;;      (jupyter . t)))
+      ;;   (setq org-babel-default-header-args:python '((:async . "yes")))
+      ;;   (org-babel-jupyter-override-src-block "python"))
     #+end_src
 *** Rust
     #+begin_src emacs-lisp
@@ -777,7 +780,7 @@
 *** Lua
     #+begin_src emacs-lisp
       (use-package lua-mode
-        :ensure t  
+        :ensure t
         :custom (lua-indent-level 2))
     #+end_src
 *** web

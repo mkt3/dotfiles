@@ -81,6 +81,7 @@ python-mode
 
 (ifm "if __name__ == '__main__':" n> p)
 (init "def __init__(self" p "):" n> p)
+(defaultdict "from collections import defaultdict")
 
 ;; Local Variables:
 ;; mode: lisp-data
