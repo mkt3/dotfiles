@@ -12,7 +12,7 @@
 2. Run
   - CUI environment only
     ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui
     ```
   - GUI & CUI environment
     ```bash

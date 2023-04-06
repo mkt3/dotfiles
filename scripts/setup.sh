@@ -105,7 +105,18 @@ setup_minimal() {
 
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-if [ $# -eq 1 ] && [ "$1" = "minimal" ]; then
+if [ $# -ne 1 ]; then
+  echo "Please enter one argument: 'gui' or 'cui' or 'minimal'."
+  exit 1
+fi
+
+if [ "$1" != "gui" ] && [ "$1" != "cui" ] && [ "$1" != "minimal" ]; then
+  echo "Invalid argument. Please enter 'gui' or 'cui'o 'minimal'."
+  exit 1
+fi
+
+
+if [ "$1" = "minimal" ]; then
     os="minimal"
 fi
 
@@ -117,10 +128,10 @@ case $os in
         dist=$(tr '[:upper:]' '[:lower:]' < /etc/issue)
         case $dist in
             arch*)
-                setup_arch "${1:-cui}"
+                setup_arch "$1"
                 ;;
             ubuntu*)
-                setup_ubuntu "${1:-cui}"
+                setup_ubuntu "$1"
                 ;;
             *)
                 setup_minimal
