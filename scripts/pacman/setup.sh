@@ -38,6 +38,7 @@ setup_pacman() {
                           duf \
                           htop \
                           iotop \
+                          nvtop \
                           sysstat \
                           jq \
                           neofetch \
