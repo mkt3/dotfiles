@@ -14,6 +14,9 @@ setup_apt() {
                   xsel \
                   vim \
                   duf \
+                  htop \
+                  iotop \
+                  nvtop \
                   neofetch \
                   golang \
                   libbz2-dev \
