@@ -666,30 +666,30 @@
                 (lsp-response-timeout                5)
                 (lsp-headerline-breadcrumb-icons-enable  nil)
                 (lsp-enable-file-watchers           nil))
-       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode)
-       :init (use-package lsp-ui
-               :ensure t
-               :after lsp-mode
-               :custom ((lsp-ui-doc-enable             t)
-                        (lsp-ui-doc-position           'at-point)
-                        (lsp-ui-doc-header             t)
-                        (lsp-ui-doc-include-signature  t)
-                        (lsp-ui-doc-max-width          150)
-                        (lsp-ui-doc-max-height         30)
-                        (lsp-ui-doc-use-childframe     nil)
-                        (lsp-ui-doc-use-webkit         nil)
-                        (lsp-ui-peek-enable            t)
-                        (lsp-ui-peek-peek-height       20)
-                        (lsp-ui-peek-list-width        50))
-               :bind (nil
-                      :map lsp-ui-mode-map
-                           ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-                           ([remap xref-find-references] . lsp-ui-peek-find-references)
-                      :map lsp-mode-map
-                           ("C-c s" . lsp-ui-sideline-mode)
-                           ("C-c d" . lsp-ui-doc-mode)
-                           )
-               :hook ((lsp-mode-hook . lsp-ui-mode))))
+       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
+     (use-package lsp-ui
+       :ensure t
+       :after lsp-mode
+       :custom ((lsp-ui-doc-enable             t)
+                (lsp-ui-doc-position           'at-point)
+                (lsp-ui-doc-header             t)
+                (lsp-ui-doc-include-signature  t)
+                (lsp-ui-doc-max-width          150)
+                (lsp-ui-doc-max-height         30)
+                (lsp-ui-doc-use-childframe     nil)
+                (lsp-ui-doc-use-webkit         nil)
+                (lsp-ui-peek-enable            t)
+                (lsp-ui-peek-peek-height       20)
+                (lsp-ui-peek-list-width        50))
+       :bind (nil
+              :map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references)
+              :map lsp-mode-map
+              ("C-c s" . lsp-ui-sideline-mode)
+              ("C-c d" . lsp-ui-doc-mode)
+              )
+       :hook ((lsp-mode-hook . lsp-ui-mode)))
 #+end_src
 ** eglot
    #+begin_src emacs-lisp
@@ -1278,10 +1278,10 @@
        (unless (file-exists-p ltex-ls-install-dir)
          (let ((ltex-ls-url (format "https://github.com/valentjn/ltex-ls/releases/download/%s/ltex-ls-%s-%s-x64.tar.gz"
                                     ltex-ls-version ltex-ls-version my-os-type)))
+           (make-directory ltex-ls-install-dir t)           
            (message "Downloading ltex-ls...")
            (url-copy-file ltex-ls-url ltex-ls-tar-file)
            (message "Extracting ltex-ls...")
-           (make-directory ltex-ls-install-dir)
            (let ((default-directory ltex-ls-install-dir))
              (shell-command (format "tar xvfz %s" ltex-ls-tar-file)))
            (make-symbolic-link (concat ltex-ls-install-dir (format "ltex-ls-%s"  ltex-ls-version)) (concat ltex-ls-install-dir "latest") t)))
