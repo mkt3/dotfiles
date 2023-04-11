@@ -31,7 +31,7 @@
        (setq use-package-hook-name-suffix nil)
        (use-package delight :ensure t))
    #+end_src
-** Auto packae update
+** Auto package update
    #+begin_src emacs-lisp
      (use-package auto-package-update
        :ensure t
@@ -84,7 +84,7 @@
       indent-tabs-mode nil
       tab-width 4)
    #+end_src
-** Trancate line
+** Truncate line
    #+begin_src emacs-lisp
      (setq truncate-lines nil
            truncate-partial-width-windows nil)
@@ -221,14 +221,14 @@
    #+end_src
 * Appearance
 ** Color theme
-*** doom-nord
+*** Doom nord
     #+begin_src emacs-lisp
       (use-package doom-themes
         :ensure t
         :config
         (load-theme 'doom-nord t))
     #+end_src
-*** modus-theme
+*** Modus-theme
     #+begin_src emacs-lisp
       (use-package modus-themes
         :disabled
@@ -657,16 +657,21 @@
        :ensure t
        :commands (lsp lsp-deferred)
        :config
-       :custom ((lsp-completion-provider             :none)
-                (lsp-keymap-prefix                   "C-c l")
-                (lsp-log-io                          t)
-                ;; (lsp-eldoc-render-all               . t)
-                (lsp-keep-workspace-alive            nil)
-                (lsp-document-sync-method            2)
-                (lsp-response-timeout                5)
-                (lsp-headerline-breadcrumb-icons-enable  nil)
-                (lsp-enable-file-watchers           nil))
-       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
+       (defun my/lsp-ui-sideline--align (&rest lengths)
+         "Align sideline string by LENGTHS from the right of the window."
+         (+ (apply '+ lengths)
+            (if (display-graphic-p) 6 2)))
+     (advice-add 'lsp-ui-sideline--align :override #'my/lsp-ui-sideline--align)
+     :custom ((lsp-completion-provider             :none)
+              (lsp-keymap-prefix                   "C-c l")
+              (lsp-log-io                          t)
+              ;; (lsp-eldoc-render-all               . t)
+              (lsp-keep-workspace-alive            nil)
+              (lsp-document-sync-method            2)
+              (lsp-response-timeout                5)
+              (lsp-headerline-breadcrumb-icons-enable  nil)
+              (lsp-enable-file-watchers           nil))
+     :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
      (use-package lsp-ui
        :ensure t
        :after lsp-mode
