@@ -1259,8 +1259,7 @@
        :ensure t
        :if (display-graphic-p)
        :config
-       (atomic-chrome-start-server)
-       )
+       (atomic-chrome-start-server))
    #+end_src
 
    #+begin_src emacs-lisp
@@ -1278,15 +1277,16 @@
        (unless (file-exists-p ltex-ls-install-dir)
          (let ((ltex-ls-url (format "https://github.com/valentjn/ltex-ls/releases/download/%s/ltex-ls-%s-%s-x64.tar.gz"
                                     ltex-ls-version ltex-ls-version my-os-type)))
-           (make-directory ltex-ls-install-dir t)           
+           (make-directory ltex-ls-install-dir t)
            (message "Downloading ltex-ls...")
            (url-copy-file ltex-ls-url ltex-ls-tar-file)
            (message "Extracting ltex-ls...")
            (let ((default-directory ltex-ls-install-dir))
              (shell-command (format "tar xvfz %s" ltex-ls-tar-file)))
            (make-symbolic-link (concat ltex-ls-install-dir (format "ltex-ls-%s"  ltex-ls-version)) (concat ltex-ls-install-dir "latest") t)))
-       :hook (org-mode . (lambda ()
-                           (require 'lsp-ltex)
-                           (lsp-deferred)))  ; or lsp-deferred
+       :hook (org-mode-hook . (lambda ()
+                                (setq-local lsp-completion-enable nil)
+                                (require 'lsp-ltex)
+                                (lsp-deferred)))  ; or lsp-deferred
        )
    #+end_src
