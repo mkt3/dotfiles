@@ -249,7 +249,7 @@
            (add-to-list 'default-frame-alist '(font . "Cica-22"))
          (add-to-list 'default-frame-alist '(font . "Cica-16"))))
    #+end_src
-** Highlight-indent-gide
+** Highlight-indent-guide
    #+begin_src emacs-lisp
      (use-package highlight-indent-guides
        :ensure t
@@ -666,6 +666,7 @@
               (lsp-keymap-prefix                   "C-c l")
               (lsp-log-io                          t)
               ;; (lsp-eldoc-render-all               . t)
+              (lsp-enable-snippet                  nil)
               (lsp-keep-workspace-alive            nil)
               (lsp-document-sync-method            2)
               (lsp-response-timeout                5)
@@ -726,7 +727,7 @@
        (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
        )
    #+end_src
-* Programing Langs
+* Programming Langs
 ** General
 *** tree-sitter
     #+begin_src emacs-lisp

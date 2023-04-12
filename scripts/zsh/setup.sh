@@ -20,8 +20,8 @@ setup_zsh() {
     local ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
     if [ -d "$ZINIT_HOME" ]; then
-        info "Updating zinit repository"
-        git -C "$ZINIT_HOME" pull
+        info "Updating zinit and plugins"
+        zsh -c 'source "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh" && zinit update'
     else
        info "Clonening zinit repository"
        git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
