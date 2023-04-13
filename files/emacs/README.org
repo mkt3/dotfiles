@@ -51,7 +51,7 @@
        (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME"))
        (exec-path-from-shell-initialize))
    #+end_src
-** Const
+** Constant
    #+begin_src emacs-lisp
      (defconst my:f:bib (expand-file-name "GoogleDrive/paperpile.bib" (getenv "HOME")))
      (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
@@ -228,7 +228,7 @@
         :config
         (load-theme 'doom-nord t))
     #+end_src
-*** Modus-theme
+*** Modus theme
     #+begin_src emacs-lisp
       (use-package modus-themes
         :disabled
@@ -267,7 +267,7 @@
        :ensure t
        :hook ((prog-mode-hook . rainbow-delimiters-mode)))
    #+end_src
-** nyan-mode
+** Nyan mode
    #+begin_src emacs-lisp
      (use-package nyan-mode
        :ensure t
@@ -441,7 +441,7 @@
        :config
        (require 'smartparens-config))
       #+end_src
-** Complementaly UI
+** Completion UI
 *** vertico
      #+begin_src emacs-lisp
        (use-package vertico
@@ -638,7 +638,7 @@
        (global-dmacro-mode)
        )
    #+end_src
-* Gabage collection
+* Garbage collection
   #+begin_src emacs-lisp
     (use-package gcmh
       :ensure t
@@ -663,7 +663,7 @@
             (if (display-graphic-p) 6 2)))
      (advice-add 'lsp-ui-sideline--align :override #'my/lsp-ui-sideline--align)
      :custom ((lsp-completion-provider             :none)
-              (lsp-keymap-prefix                   "C-c l")
+              ;; (lsp-keymap-prefix                   "C-c l")
               (lsp-log-io                          t)
               ;; (lsp-eldoc-render-all               . t)
               (lsp-enable-snippet                  nil)
@@ -727,7 +727,7 @@
        (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
        )
    #+end_src
-* Programming Langs
+* Programming Languages
 ** General
 *** tree-sitter
     #+begin_src emacs-lisp
@@ -927,8 +927,11 @@
          :bind (("C-c c" . org-capture)
                 ("C-c a" . org-agenda)
                 ("C-c g" . gtd)
+                :map org-mode-map
+                ("C-c l" . org-store-link)
                 ("C-c i" . org-insert-structure-template)
                 ("C-c C-'" . org-edit-special)
+                ("C-c C-SPC" . my-pop-global-mark-and-delete-window)
                 :map org-src-mode-map
                 ("C-c C-'" . org-edit-src-exit)
                 )
@@ -937,6 +940,11 @@
          (defun gtd ()
            (interactive)
            (find-file org-gtd-file))
+         (defun my-pop-global-mark-and-delete-window ()
+           "Pop back to the previous mark and delete the current window."
+           (interactive)
+           (pop-global-mark)
+           (delete-window))
          (setq org-directory my:d:gtd)
          (setq org-agenda-files (list org-directory))
          (setq org-latex-create-formula-image-program 'dvisvgm)
@@ -982,9 +990,17 @@
          :after org
          :if (file-directory-p my:d:gtd)
          :commands (org-capture)
+         :init
+         (defun my-format-project-filename (project-name)
+           "Convert PROJECT-NAME to the desired format for a filename."
+           (let* ((sanitized-name (replace-regexp-in-string "[[:space:]]+" "_" (downcase project-name)))
+                  (date-prefix (format-time-string "%Y%m_")))
+             (expand-file-name (concat date-prefix sanitized-name ".org") my:d:gtd) ))
          :config
          (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
-                                        "** %^{Brief Description}"))))
+                                        "** %^{Brief Description}")
+                                       ("p" "Project" plain (file (lambda () (my-format-project-filename (read-string "Project name: "))))
+                "#+STARTUP: show3levels\n\n* Project %?\n\n* Link\n* Log\n"))))
        (use-package org-appear
          :ensure t
          :hook (org-mode-hook . org-appear-mode)
@@ -1018,19 +1034,15 @@
           ("C-c n r" . org-roam-ref-add)
           ("C-c n l" . org-roam-buffer-toggle)
           ("C-c n c" . org-roam-capture)
-          ("C-c n j" . org-roam-dailies-capture-today)
-          ("C-c n d" . org-roam-dailies-find-date)
-          ("C-c C-g t" . org-roam-dailies-find-today)
           )
          :init
          (setq org-roam-directory my:d:org-roam)
-         (setq org-roam-dailies-directory "daily_notes/")
          (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          :custom
-         ;; (org-roam-node-display-template . (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-         (org-roam-capture-templates  '(("s" "seed" plain "%?"
-                                         :if-new (file+head "seed/${slug}.org"
-                                                            "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
+         (org-roam-capture-templates  '(("n" "notes" plain "%?"
+                                         :if-new
+                                         (file+head "notes/${slug}.org"
+                                                    "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n#+filetags: :draft:\n")
                                          :immediate-finish t
                                          :unnarrowed t)
                                         ("r" "reference" plain "%?"
@@ -1038,16 +1050,7 @@
                                          (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
                                          :immediate-finish t
                                          :unnarrowed t)
-                                        ("e" "evergreen" plain "%?"
-                                         :if-new
-                                         (file+head "evergreen/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n#+filetags: :envergreen:\n")
-                                         :immediate-finish t
-                                         :unnarrowed t)))
-         (org-roam-dailies-capture-templates  '(("j" "journal" entry
-                                                 "** %<%H:%M> %?"
-                                                 :target (file+head+olp "%<%Y-%m>.org"
-                                                                        "#+title: %<%Y-%m>\n"
-                                                                        ("%<%Y-%m-%d>")))))
+                                        ))
          :config
          (cl-defmethod org-roam-node-type ((node org-roam-node))
            "Return the TYPE of NODE."
@@ -1059,9 +1062,6 @@
              (error "")))
          (setq org-roam-node-display-template
                (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-         (defun my:tag-new-node-as-draft ()
-           (org-roam-tag-add '("draft")))
-         (add-hook 'org-roam-capture-new-node-hook #'my:tag-new-node-as-draft)
          (org-roam-db-autosync-enable))
 
        (use-package org-roam-ui
@@ -1099,9 +1099,9 @@
                                 '(("r" "reference" plain "%?" :if-new
                                    (file+head "reference/${citekey}.org"
                                               ":PROPERTIES:
-       :ROAM_REFS: [cite:@${citekey}]
-       :END:
-       ,#+title: ${title}\n")
+             :ROAM_REFS: [cite:@${citekey}]
+             :END:
+             ,#+title: ${title}\n")
                                    :immediate-finish t
                                    :unnarrowed t))
                                 :info (list :citekey (car keys-entries))
