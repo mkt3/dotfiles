@@ -204,6 +204,7 @@
    #+begin_src emacs-lisp
      (defalias 'yes-or-no-p 'y-or-n-p)
      (setq
+      debug-on-error t
       create-lockfiles nil
       enable-recursive-minibuffers t
       ring-bell-function 'ignore
@@ -417,7 +418,7 @@
      (use-package ddskk
        :ensure t
        :if (display-graphic-p)
-       :bind* (("C-j" . skk-kakutei))
+       :bind* ("C-j" . skk-kakutei)
        :custom
        (default-input-method "japanese-skk")
        (skk-byte-compile-init-file t)
@@ -435,7 +436,6 @@
        :ensure t
        :delight
        :hook (after-init-hook . smartparens-global-strict-mode)
-       :bind
        :custom
        (electric-pair-mode nil)
        :config
@@ -452,16 +452,18 @@
          (vertico-count 20)
          (enable-recursive-minibufferst)
          (vertico-cycle t)
-         :bind (:map vertico-map
-                     ("C-r" . vertico-previous)
-                     ("C-s" . vertico-next)))
+         :bind (nil
+                :map vertico-map
+                ("C-r" . vertico-previous)
+                ("C-s" . vertico-next)))
        (use-package vertico-directory
          :ensure nil ;; part of vertico
          :after vertico
          :commands (vertico-directory-tidy)
-         :bind (:map vertico-map
-                     ("RET" . vertico-directory-enter)
-                     ("C-l" . vertico-directory-up)))
+         :bind (nil
+                :map vertico-map
+                ("RET" . vertico-directory-enter)
+                ("C-l" . vertico-directory-up)))
      #+end_src
 *** consult
     #+begin_src emacs-lisp
@@ -612,11 +614,11 @@
        :ensure t
        :demand t
        :delight
-       :bind (("M-/" . undo-tree-redo))
+       :bind ("M-/" . undo-tree-redo)
        :custom
        (undo-tree-auto-save-history  t)
        (undo-tree-history-directory-alist  `(("." . ,(concat user-emacs-directory
-                                                              ".cache/undo-tree-hist/"))))
+                                                             ".cache/undo-tree-hist/"))))
        :config
        (global-undo-tree-mode))
    #+end_src
@@ -1025,18 +1027,20 @@
          :ensure t
          :after org
          :if (file-directory-p my:d:org-roam)
-         :bind
-         (("C-c n a" . org-roam-alias-add)
-          ("C-c n f" . org-roam-node-find)
-          ("C-c n i" . org-roam-node-insert)
-          ("C-c n o" . org-id-get-create)
-          ("C-c n t" . org-roam-tag-add)
-          ("C-c n r" . org-roam-ref-add)
-          ("C-c n l" . org-roam-buffer-toggle)
-          ("C-c n c" . org-roam-capture)
-          )
+         :bind (("C-c n a" . org-roam-alias-add)
+                ("C-c n f" . org-roam-node-find)
+                ("C-c n i" . org-roam-node-insert)
+                ("C-c n o" . org-id-get-create)
+                ("C-c n t" . org-roam-tag-add)
+                ("C-c n r" . org-roam-ref-add)
+                ("C-c n l" . org-roam-buffer-toggle)
+                ("C-c n c" . org-roam-capture)
+                ("C-c n j" . org-roam-dailies-capture-today)
+                ("C-c n d" . org-roam-dailies-find-date)
+                ("C-c C-g t" . org-roam-dailies-find-today))
          :init
          (setq org-roam-directory my:d:org-roam)
+         (setq org-roam-dailies-directory "daily_notes/")
          (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          :custom
          (org-roam-capture-templates  '(("n" "notes" plain "%?"
@@ -1045,12 +1049,22 @@
                                                     "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n#+filetags: :draft:\n")
                                          :immediate-finish t
                                          :unnarrowed t)
+                                        ("p" "paper" plain "%?"
+                                         :if-new
+                                         (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
+                                         :immediate-finish t
+                                         :unnarrowed t)
                                         ("r" "reference" plain "%?"
                                          :if-new
                                          (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
                                          :immediate-finish t
                                          :unnarrowed t)
                                         ))
+         (org-roam-dailies-capture-templates  '(("j" "journal" entry
+                                                 "** %<%H:%M> %?"
+                                                 :target (file+head+olp "%<%Y-%m>.org"
+                                                                        "#+title: %<%Y-%m>\n"
+                                                                        ("%<%Y-%m-%d>")))))
          :config
          (cl-defmethod org-roam-node-type ((node org-roam-node))
            "Return the TYPE of NODE."
@@ -1075,16 +1089,15 @@
 
        (use-package consult-org-roam
          :ensure t
-         :after (consult org-roam)
+         ;; :after (consult org-roam)
          :init
          (consult-org-roam-mode 1)
          :custom
          (consult-org-roam-grep-func #'consult-ripgrep)
-         :bind
-         ("C-c n e" . consult-org-roam-file-find)
-         ("C-c n b" . consult-org-roam-backlinks)
-         ("C-c n s" . consult-org-roam-search))
-
+         :bind (("C-c n e" . consult-org-roam-file-find)
+                ("C-c n b" . consult-org-roam-backlinks)
+                ("C-c n s" . consult-org-roam-search))
+         )
        (use-package citar
          :ensure t
          :if (file-exists-p my:f:bib)
@@ -1193,7 +1206,9 @@
               :map mu4e-minibuffer-search-query-map
               ("C-j" . skk-kakutei)
               :map mu4e-main-mode-map
-              ("r" . revert-buffer))
+              ("r" . revert-buffer)
+              :map mu4e-view-mode-map
+              ("C-m" . browse-url-at-point))
        :config
        (setq mu4e-context-policy 'pick-first)
        (setq mu4e-headers-auto-update t)
@@ -1224,6 +1239,8 @@
      (use-package mu4e-alert
        :ensure t
        :if (and (executable-find "mu") (file-directory-p my:d:nextcloud))
+       :custom
+       (mu4e-alert-email-notification-types '(subjects))
        :config
        (if (eq system-type 'darwin) (mu4e-alert-set-default-style 'notifier) (mu4e-alert-set-default-style 'libnotify))
        (mu4e-alert-enable-mode-line-display)
@@ -1238,8 +1255,9 @@
       :ensure t
       :custom
       (vterm-keymap-exceptions  '("C-c" "C-x" "C-u" "C-t" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
-      :bind (:map vterm-mode-map
-                  ("C-h" . vterm-send-backspace)))
+      :bind (nil
+             :map vterm-mode-map
+             ("C-h" . vterm-send-backspace)))
     (use-package vterm-toggle
       :ensure t
       :config
