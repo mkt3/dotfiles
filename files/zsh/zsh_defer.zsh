@@ -178,3 +178,9 @@ fi
 
 # Remove only the files that have been deleted more than 30 days ago:
 yes y | trash-empty 30
+
+# Mount Google Drive (Arch Linux desktop environment only)
+local GOOGLE_DRIVE="${HOME}/GoogleDrive"
+if [ -x "$(command -v google-drive-ocamlfuse)" ] && ! mountpoint -q "$GOOGLE_DRIVE"; then
+    google-drive-ocamlfuse "$GOOGLE_DRIVE"
+fi
