@@ -63,7 +63,6 @@ cask "font-cica"
 cask "appcleaner"
 cask "aquaskk"
 cask "karabiner-elements"
-cask "tunnelblick"
 cask "nextcloud"
 cask "libreoffice"
 mas "Kindle", id: 405399194
