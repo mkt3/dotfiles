@@ -23,6 +23,9 @@ fi
 # Emacs keybind
 bindkey -e
 
+# rtx
+eval "$(rtx activate zsh)"
+
 # zsh plugin
 . "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
 bindkey '^K' kill-line

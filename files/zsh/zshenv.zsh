@@ -73,10 +73,6 @@ fi
 
 export PYTHONUSERBASE="${HOME}/.local"
 
-# Pyenv
-export PYENV_ROOT="${XDG_DATA_HOME}/pyenv"
-export PATH="${PYENV_ROOT}/bin:${PATH}"
-
 # Poety path
 export PATH="${HOME}/.poetry/bin:${PATH}"
 
@@ -95,10 +91,6 @@ export JUPYTER_DATA_DIR="${XDG_DATA_HOME}/jupyter"
 export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 [ -d "$CARGO_HOME" ] && . "${CARGO_HOME}/env"
-
-# nvm path
-export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
-export PATH="${XDG_CONFIG_HOME}/nvm/versions/node/default/bin:${PATH}"
 
 # npm path
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
