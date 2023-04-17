@@ -68,13 +68,6 @@ alias mv="mv -i"
 alias rm="rm -i"
 alias history="history -i"
 
-if [ -e "$NVM_DIR/nvm.sh" ]; then
-    alias nvm='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && nvm'
-    alias node='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && node'
-    alias npm='unalias nvm node npm && . "$NVM_DIR"/nvm.sh && npm'
-fi
-
-
 # Ls colors
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 zstyle ':completion:*' list-colors "${LS_COLORS}"
@@ -156,9 +149,6 @@ function t()
         cd $1
     fi
 }
-
-# pyenv init
-[ -d $PYENV_ROOT ] && eval "$(pyenv init -)"
 
 # gcp
 export CLOUDSDK_PYTHON=python3.8

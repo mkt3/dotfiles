@@ -23,6 +23,9 @@ fi
 # Emacs keybind
 bindkey -e
 
+# rtx
+eval "$(rtx activate zsh)"
+
 # zsh plugin
 . "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
 bindkey '^K' kill-line
@@ -71,6 +74,10 @@ prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
 setopt prompt_subst
 
 function _vcs_precmd {
+    if [[ "$?" -ne 0 ]]; then
+        sed -i -e '$d' "$HISTFILE"
+    fi
+    
     V_ENV="$VIRTUAL_ENV:h:t"
     if [[ "$V_ENV" == "." ]]; then
         V_ENV=""
@@ -123,6 +130,11 @@ setopt extended_history
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
+
+zshaddhistory() {
+    local line="${1%%$'\n'}"
+    [[ ! "$line" =~ "^(cd|emulate|ls|rm)($| )" ]]
+}
 
 # lazy load
 zinit wait lucid null for \

@@ -2,20 +2,6 @@
 
 set -eu
 
-setup_pyenv() {
-    info "Setting up pyenv"
-    local pyenv_git_url="https://github.com/pyenv/pyenv.git"
-    local install_dir="${XDG_DATA_HOME}/pyenv"
-
-    if [ -d "$install_dir" ]; then
-        info "Updating pyenv repository"
-        git -C "$install_dir" pull
-    else
-        info "Clonening pyenv repository"
-        git clone --depth 1 $pyenv_git_url "$install_dir"
-    fi
-}
-
 setup_pipx() {
     info "Setting up pipx"
 
@@ -24,8 +10,7 @@ setup_pipx() {
     fi
 
     info "Installing/Updating pipx packages"
-    # package_list=(jupyterlab flake8 isort black pyright)
-    package_list=(flake8 isort black pyright)
+    package_list=(jupyterlab flake8 isort black pyright)
 
     installed_list=$(pipx list)
 
@@ -37,10 +22,10 @@ setup_pipx() {
             info "Installing $package"
             pipx install "$package"
 
-            # if [ $package == "jupyterlab" ]; then
-            #     info "Installing jupyterlab template extention"
-            #    pipx inject jupyterlab jupyterlab_templates
-            # fi
+            if [ $package == "jupyterlab" ]; then
+                info "Installing jupyterlab template extention"
+               pipx inject jupyterlab jupyterlab_templates
+            fi
         fi
     done
 
@@ -62,11 +47,6 @@ setup_poetry() {
 
     info "Enable completions"
     $poetry_path completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
-
-    info "Creating symlink for poetry"
-    mkdir -p "${HOME}/.local/bin"
-    ln -sfn "${python_file_dir}/peu" "${HOME}/.local/bin/peu"
-    ln -sfn "${python_file_dir}/_peu" "${XDG_DATA_HOME}/zsh/completion/_peu"
 }
 
 
@@ -98,15 +78,14 @@ setup_python() {
     info "Creating symlink for matplotlib"
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
 
-    # info "Creating symlink for jupyterlab.sh"
-    # mkdir -p "${HOME}/.local/bin"
-    # ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
+    info "Creating symlink for jupyterlab.sh"
+    mkdir -p "${HOME}/.local/bin"
+    ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
 
-    setup_pyenv
 
     setup_pipx $1
 
     setup_poetry
 
-    # setup_jupyterlab
+    setup_jupyterlab
 }

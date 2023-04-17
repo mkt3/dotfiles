@@ -30,6 +30,7 @@ setup_pre_common() {
     setup_vim
     setup_docker
     setup_rust
+    setup_rtx
     setup_ripgrep
 }
 
@@ -41,6 +42,21 @@ setup_post_common() {
     setup_navi
     setup_lazygit
 }
+
+setup_minimal() {
+    title "Setting up minimal"
+    setup_xdg_config
+    setup_gpg "$@"
+    setup_zsh
+    setup_fzf
+    setup_zoxide
+    setup_tmux
+    setup_git
+    setup_vim
+    setup_rust
+    setup_ripgrep
+}
+
 
 setup_arch() {
     title "Setting up Archlinux"
@@ -91,17 +107,6 @@ setup_mac() {
 
 }
 
-setup_minimal() {
-    title "Setting up minimal"
-    setup_xdg_config
-    setup_fzf
-    setup_zsh
-    setup_tmux
-    setup_git
-    setup_vim
-    setup_docker
-    setup_ripgrep
-}
 
 os=$(uname -s | tr '[:upper:]' '[:lower:]')
 
@@ -133,6 +138,10 @@ case $os in
             ubuntu*)
                 setup_ubuntu "$1"
                 ;;
+            raspbian*)
+                setup_ubuntu "$1"
+                ;;
+
             *)
                 setup_minimal
         esac

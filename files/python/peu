@@ -1,9 +1,0 @@
-#!/bin/sh
-
-if [ $# != 1 ]; then
-    echo "arg error. ex.) peu 3.9.12"
-    exit 1 
-fi
-
-pyenv local $1
-poetry env use $1
