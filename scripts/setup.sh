@@ -138,6 +138,10 @@ case $os in
             ubuntu*)
                 setup_ubuntu "$1"
                 ;;
+            raspbian*)
+                setup_ubuntu "$1"
+                ;;
+
             *)
                 setup_minimal
         esac
