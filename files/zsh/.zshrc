@@ -24,6 +24,7 @@ fi
 bindkey -e
 
 # rtx
+export RTX_USE_TOML=1
 eval "$(rtx activate zsh)"
 
 # zsh plugin
