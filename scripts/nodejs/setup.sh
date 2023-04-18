@@ -7,8 +7,9 @@ setup_nodejs() {
     title "Setting up nodejs"
 
     info "Installing nodejs"
-    "${CARGO_HOME}/bin/rtx" install nodejs@18
-    "${CARGO_HOME}/bin/rtx" global nodejs@18
+    local nodejs_version="nodejs@18.15.0"
+    "${CARGO_HOME}/bin/rtx" install "$node_js_version"
+    "${CARGO_HOME}/bin/rtx" global "$node_js_version"
 
     info "Creating symlink for npm"
     ln -sfn "${CONFIGS_DIR}/npm" "${XDG_CONFIG_HOME}/npm"
