@@ -53,6 +53,7 @@ bindsym $super+space exec "rofi -show combi"
 # watched the clipboard and sends any new item to 'myclipman'
 exec wl-paste -t text --watch ~/.config/sway/scripts/myclipman
 bindsym Control+semicolon  exec clipman pick -t rofi
+bindsym $super+Control+c exec clipman pick -t rofi
 
 # screenlocker
 exec swayidle -w \

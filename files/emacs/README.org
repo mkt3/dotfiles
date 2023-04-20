@@ -204,7 +204,7 @@
    #+begin_src emacs-lisp
      (defalias 'yes-or-no-p 'y-or-n-p)
      (setq
-      debug-on-error t
+      debug-on-error nil
       create-lockfiles nil
       enable-recursive-minibuffers t
       ring-bell-function 'ignore
@@ -1051,7 +1051,7 @@
                                          :unnarrowed t)
                                         ("p" "paper" plain "%?"
                                          :if-new
-                                         (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
+                                         (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n* Title\n  - Clear and concise title of the paper.\n** Authors and Affiliations\n   - List the authors and their affiliations.\n** Objective and Background\n   - Briefly explain the objective and background of the research, helping readers understand why the research was conducted.\n** Methods\n   - Describe the methods or approach used in the research briefly. You can direct the reader to the main paper for more details.\n** Results\n   - Clearly present the main results of the research. Use graphs or tables to make the information visually clear and easy to understand.\n** Discussion and Conclusion\n   - Show the discussion and conclusions based on the results, and emphasize the significance and impact of the research.\n** References\n   - List important references related to the research, making it easier for readers to track related studies.")
                                          :immediate-finish t
                                          :unnarrowed t)
                                         ("r" "reference" plain "%?"
