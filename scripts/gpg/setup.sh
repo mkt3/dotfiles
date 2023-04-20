@@ -10,17 +10,15 @@ setup_gpg() {
 
     local gpg_file_dir="${CONFIGS_DIR}/gpg"
 
-    if [ "$1" = "cui" ]; then
+    if [ "$UI" = "cui" ]; then
         systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket
         ln -sfn "${gpg_file_dir}/gpg.conf" "${GNUPGHOME}/gpg.conf"
     fi
 
-    if [ "$#" -eq 2 ]; then
-        if [ "$2" = "mac" ]; then
-            ln -sfn "${gpg_file_dir}/gpg-agent_for_macos.conf" "${GNUPGHOME}/gpg-agent.conf"
-        elif [ "$2" = "linux" ]; then
-            ln -sfn "${gpg_file_dir}/gpg-agent_for_linux.conf" "${GNUPGHOME}/gpg-agent.conf"
-        fi
+    if [ "$OS" = "darwin" ]; then
+        ln -sfn "${gpg_file_dir}/gpg-agent_for_macos.conf" "${GNUPGHOME}/gpg-agent.conf"
+    elif [ "$OS" = "linux" ]; then
+        ln -sfn "${gpg_file_dir}/gpg-agent_for_linux.conf" "${GNUPGHOME}/gpg-agent.conf"
     fi
 
 }

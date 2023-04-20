@@ -5,7 +5,7 @@ set -eu
 setup_pipx() {
     info "Setting up pipx"
 
-    if [ "$1" != "mac" ] && ! (type pipx > /dev/null 2>&1); then
+    if [ "$OS" != "darwin" ] && ! (type pipx > /dev/null 2>&1); then
         pip3 install --user pipx
     fi
 
@@ -82,8 +82,7 @@ setup_python() {
     mkdir -p "${HOME}/.local/bin"
     ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
 
-
-    setup_pipx $1
+    setup_pipx
 
     setup_poetry
 

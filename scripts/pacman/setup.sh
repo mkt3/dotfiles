@@ -127,6 +127,7 @@ setup_pacman() {
                           dvd+rw-tools
                             )
     gui_aur_package_list=(enpass-bin \
+                              rofi-lbonn-wayland-git \
                               slack-desktop \
                               google-chrome \
                               anki-official-binary-bundle \
@@ -142,20 +143,12 @@ setup_pacman() {
         install_pacman_package "$package"
     done
 
-    if [ "$1" = "gui" ]; then
+    if [ "$UI" = "gui" ]; then
         for package in "${gui_pacman_package_list[@]}"; do
             install_pacman_package "$package"
         done
         for package in "${gui_aur_package_list[@]}"; do
             install_aur_package "$package"
         done
-        # for rofi
-        package=rofi-lbonn-wayland
-        if yay -Qs "$package" | grep -q "^local/${package} "; then
-            info "${package}(aur) already installed"
-        else
-        info "Installing ${package}(aur)"
-        yay -S $package --noconfirm --mflags "--nocheck"
-     fi
     fi
 }
