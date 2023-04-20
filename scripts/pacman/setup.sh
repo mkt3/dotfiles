@@ -99,7 +99,6 @@ setup_pacman() {
                           slurp \
                           grim \
                           kanshi \
-                          emacs-nativecomp \
                           texlive-core \
                           wezterm \
                           nextcloud-client \
@@ -136,6 +135,7 @@ setup_pacman() {
                               nordic-theme \
                               ddcci-driver-linux-dkms \
                               clipman \
+                              emacs29-git \
                               mu
                          )
 
