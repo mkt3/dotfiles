@@ -1,0 +1,7 @@
+% sshfs
+
+# mount a remote workspace directory
+sshfs <host>:workspace ~/remote_workspace
+
+# unmount a remote workspace directory
+fusermount3 -u ~/remote_workspace
