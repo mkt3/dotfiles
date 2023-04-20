@@ -25,9 +25,6 @@
         )
        (package-initialize)
 
-       (unless (package-installed-p 'use-package)
-         (package-refresh-contents)
-         (package-install 'use-package))
        (setq use-package-hook-name-suffix nil)
        (use-package delight :ensure t))
    #+end_src
@@ -48,7 +45,7 @@
        :if (display-graphic-p)
        :config
        (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
-       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME"))
+       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK"))
        (exec-path-from-shell-initialize))
    #+end_src
 ** Constant
@@ -248,7 +245,7 @@
      (when (display-graphic-p)
        (if (eq system-type 'darwin)
            (add-to-list 'default-frame-alist '(font . "Cica-22"))
-         (add-to-list 'default-frame-alist '(font . "Cica-16"))))
+         (add-to-list 'default-frame-alist '(font . "Cica-22"))))
    #+end_src
 ** Highlight-indent-guide
    #+begin_src emacs-lisp
@@ -351,7 +348,7 @@
                                       (tab-mark ?\t [?\u00BB ?\t]
                                                 [?\\ ?\t])))
        (whitespace-space-regexp  "\\(\u3000+\\)")
-       (whitespace-global-modes  '(emacs-lisp-mode shell-script-mode sh-mode python-mode
+       (whitespace-global-modes  '(emacs-lisp-mode shell-script-mode bash-ts-mode python-ts-mode
                                                    org-mode markdown-mode rjsx-mode
                                                    css-mode))
        (global-whitespace-mode t)
@@ -372,9 +369,9 @@
                            :background "Black"))
    #+end_src
 * UI
-** X11
+** wayland / x11
    #+begin_src emacs-lisp
-     (when (eq 'x window-system)
+     (when (memq  window-system '(pgtk x))
        (setq x-super-keysym 'meta))
    #+end_src
 ** mac
@@ -702,11 +699,11 @@
 ** eglot
    #+begin_src emacs-lisp
      (use-package eglot
-       :ensure t
+      ; :ensure t
        :config
-       (add-hook 'python-mode-hook 'eglot-ensure)
+       (add-hook 'python-ts-mode-hook 'eglot-ensure)
        (add-hook 'rust-mode-hook 'eglot-ensure)
-       (add-hook 'sh-mode-hook 'eglot-ensure)
+       (add-hook 'bash-ts-mode-hook 'eglot-ensure)
        ;; (add-to-list 'eglot-stay-out-of 'company)
        )
    #+end_src
@@ -733,21 +730,19 @@
 ** General
 *** tree-sitter
     #+begin_src emacs-lisp
-      (use-package tree-sitter
+      (use-package treesit-auto
+        :demand t
         :ensure t
-        :delight
-        :init
-        (global-tree-sitter-mode)
-        :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-        )
-      (use-package tree-sitter-langs :ensure t)
+        :config
+        (setq treesit-auto-install 'prompt)
+        (global-treesit-auto-mode))
     #+end_src
 *** docker-mode
     #+begin_src emacs-lisp
-      (use-package docker :ensure t)
-      (use-package dockerfile-mode :ensure t)
-      (use-package docker-compose-mode :ensure t)
-      (use-package docker-tramp :ensure t)
+      ;; (use-package docker :ensure t)
+      ;; (use-package dockerfile-mode :ensure t)
+      ;; (use-package docker-compose-mode :ensure t)
+      ;; (use-package docker-tramp :ensure t)
     #+end_src
 *** git
     #+begin_src emacs-lisp
@@ -774,7 +769,7 @@
         :ensure t
         :commands flymake-shellcheck-load
         :init
-        (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
+        (add-hook 'bash-ts-mode-hook 'flymake-shellcheck-load))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
@@ -782,14 +777,14 @@
         :custom (python-indent-guess-indent-offset-verbose . nil))
       (use-package py-isort
         :ensure t
-        :hook (python-mode-hook . (lambda ()
+        :hook (python-ts-mode-hook . (lambda ()
                                     (add-hook 'before-save-hook 'py-isort-before-save)))
         :custom
         (py-isort-options '("--profile=black")))
       (use-package blacken
         :ensure t
         :delight
-        :hook (python-mode-hook .  blacken-mode)
+        :hook (python-ts-mode-hook .  blacken-mode)
         :custom
         (blacken-line-length 300)
         ;; (blacken-skip-string-normalization t)
@@ -800,7 +795,7 @@
         ;; Checks for the correct virtualenv. Better strategy IMO because the default
         ;; one is quite slow.
         (setq poetry-tracking-strategy 'switch-buffer)
-        :hook ((python-mode-hook . poetry-tracking-mode)))
+        :hook ((python-ts-mode-hook . poetry-tracking-mode)))
 
       (use-package ein :ensure t)
 

@@ -35,7 +35,7 @@ bindsym $super+Shift+3 exec /usr/share/sway/scripts/grimshot --notify save outpu
 bindsym $super+Shift+4 exec /usr/share/sway/scripts/grimshot --notify save area  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 
 # Filer
-bindsym $super+e exec thunar
+bindsym $mod+e exec thunar
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod normal
@@ -271,7 +271,7 @@ assign [class="Vivaldi-stable"] workspace $ws1
 exec vivaldi-stable
 assign [app_id="org.wezfurlong.wezterm"] workspace $ws1
 exec wezterm
-assign [class="Emacs"] workspace $ws9
+assign [app_id="emacs"] workspace $ws9
 exec emacs
 assign [class="discord"] workspace $ws3
 for_window [app_id="zoom"] floating enable

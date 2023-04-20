@@ -15,7 +15,7 @@ keymap:
 
   - name: Default
     application:
-      not: [Google-chrome, Slack, wezterm, Emacs, Vivaldi-stable]
+      not: [Google-chrome, Slack, wezterm, emacs, Vivaldi-stable]
     remap:
       # Emacs basic
       C-b: left
