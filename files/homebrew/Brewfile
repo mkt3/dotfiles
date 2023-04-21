@@ -44,7 +44,7 @@ brew "terminal-notifier"
 tap "wez/wezterm"
 cask "wez/wezterm/wezterm"
 tap "d12frosted/emacs-plus"
-brew "emacs-plus@28", args: ["with-native-comp"]
+brew "emacs-plus@29", args: ["with-native-comp"]
 tap "koekeishiya/formulae"
 brew "yabai"
 brew "skhd"
