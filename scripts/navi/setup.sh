@@ -11,9 +11,8 @@ setup_navi() {
     info "Creating symlink for navi"
     ln -sfn "$navi_dir" "${XDG_CONFIG_HOME}/navi"
 
-    local mac_config_dir="${HOME}/Library/Application Support"
-    if [ -e "${mac_config_dir}" ]; then
-        eval "ln -sfn ${navi_dir} \"${mac_config_dir}/navi\""
+    if [ "$OS" = "darwin" ]; then
+        eval "ln -sfn ${navi_dir} \"${HOME}/Library/Application Support/navi\""
     fi
 
 }

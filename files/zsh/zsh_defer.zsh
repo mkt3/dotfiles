@@ -1,7 +1,6 @@
 #!/bin/zsh
 # plugin
 zinit wait lucid blockf light-mode for \
-    atinit"zstyle ':autocomplete:*' insert-unambiguous yes" \
     atinit"zstyle ':autocomplete:*' fzf-completion yes" \
     atinit"zstyle ':autocomplete:recent-dirs' backend zoxide"\
     atinit"zstyle ':autocomplete:*' widget-style menu-complete" \
@@ -10,6 +9,8 @@ zinit wait lucid blockf light-mode for \
     atload"bindkey -M menuselect '^P' vi-up-line-or-history" \
     atload"bindkey -M menuselect '^N' vi-down-line-or-history" \
     atload"bindkey -M menuselect '\r' accept-line" \
+    atload"bindkey '\t' menu-select \"$terminfo[kcbt]\" menu-select" \
+    atload"bindkey -M menuselect '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete" \
     @'marlonrichert/zsh-autocomplete' \
     @'zsh-users/zsh-autosuggestions' \
     @'zsh-users/zsh-syntax-highlighting' \
@@ -149,13 +150,6 @@ function t()
         cd $1
     fi
 }
-
-# gcp
-export CLOUDSDK_PYTHON=python3.8
-if [[ $SETUP != "TRUE" ]];then
-   [ -f "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc"
-   [ -f "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc"
-fi
 
 if [[ ! -n $TMUX  ]]; then
     bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
