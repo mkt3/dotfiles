@@ -50,7 +50,8 @@ setup_pacman() {
                           gnupg \
                           shellcheck \
                           trash-cli \
-                          bc
+                          bc \
+                          tree-sitter
                      )
 
     gui_pacman_package_list=(sway \
