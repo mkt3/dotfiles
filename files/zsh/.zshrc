@@ -29,12 +29,18 @@ eval "$(rtx activate zsh)"
 
 # zsh plugin
 . "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
-bindkey '^K' kill-line
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 zinit ice atload'!_zsh_git_prompt_precmd_hook' lucid
 zinit light woefe/git-prompt.zsh
+
+zinit ice lucid atload"bindkey '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete; bindkey '^N' menu-select"
+zinit light marlonrichert/zsh-autocomplete
+
++autocomplete:recent-directories() {
+   reply=( aaaa bbbbbbbbbb )
+}
 
 # Prompt
 autoload -U colors

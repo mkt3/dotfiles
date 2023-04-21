@@ -1,155 +1,140 @@
 #!/usr/bin/env bash
 
 set -eu
-install_pacman_package() {
-    package=$1
-    if sudo pacman -Qs "$package" | grep -q "^local/${package} " ;then
-        info "${package}(pacman) already installed"
-    else
-        info "Installing ${package}(pacman)"
-        sudo pacman -S "$package" --noconfirm
-     fi
-}
-
-install_aur_package() {
-    package=$1
-    if yay -Qs "$package" | grep -q "^local/${package} " ;then
-        info "${package}(aur) already installed"
-    else
-        info "Installing ${package}(aur)"
-        yay -S "$package" --noconfirm
-     fi
-}
 
 setup_pacman() {
     title "Setting up pacman"
+    local cui_pacman_package_list=(python
+                                   python-pip
+                                   python-pipx
+                                   openssl
+                                   zlib
+                                   xz
+                                   tk
+                                   zsh
+                                   tmux
+                                   pacman-contrib
+                                   go
+                                   duf
+                                   htop
+                                   iotop
+                                   nvtop
+                                   sysstat
+                                   jq
+                                   neofetch
+                                   rsync
+                                   httpie
+                                   axel
+                                   unarchiver
+                                   cmake
+                                   gnupg
+                                   shellcheck
+                                   trash-cli
+                                   bc
+                                   tree-sitter
+                                  )
 
-    cui_pacman_package_list=(python \
-                          python-pip \
-                          python-pipx \
-                          openssl \
-                          zlib \
-                          xz \
-                          tk \
-                          zsh \
-                          tmux \
-                          pacman-contrib \
-                          go \
-                          duf \
-                          htop \
-                          iotop \
-                          nvtop \
-                          sysstat \
-                          jq \
-                          neofetch \
-                          rsync \
-                          httpie \
-                          axel \
-                          unarchiver \
-                          cmake \
-                          gnupg \
-                          shellcheck \
-                          trash-cli \
-                          bc \
-                          tree-sitter
-                     )
+    local gui_pacman_package_list=(sway
+                                   xorg-xwayland
+                                   qt5-wayland
+                                   qt6-wayland
+                                   swayidle
+                                   swaylock
+                                   swaybg
+                                   xdg-desktop-portal-wlr
+                                   xdg-desktop-portal
+                                   waybar
+                                   wl-clipboard
+                                   mako
+                                   lightdm
+                                   lightdm-gtk-greeter
+                                   network-manager-applet
+                                   networkmanager-openvpn
+                                   noto-fonts
+                                   noto-fonts-cjk
+                                   noto-fonts-emoji
+                                   noto-fonts-extra
+                                   ttf-font-awesome
+                                   papirus-icon-theme
+                                   bluez
+                                   bluez-utils
+                                   blueman
+                                   fcitx5
+                                   fcitx5-configtool
+                                   fcitx5-gtk
+                                   fcitx5-qt
+                                   fcitx5-skk
+                                   fcitx5-nord
+                                   pipewire
+                                   wireplumber
+                                   pipewire-alsa
+                                   pipewire-pulse
+                                   pavucontrol
+                                   playerctl
+                                   thunar
+                                   tumbler
+                                   gvfs
+                                   gvfs-smb
+                                   sshfs
+                                   ristretto
+                                   slurp
+                                   grim
+                                   kanshi
+                                   texlive-core
+                                   wezterm
+                                   nextcloud-client
+                                   qtkeychain-qt5
+                                   libsecret
+                                   gnome-keyring
+                                   seahorse
+                                   gtk2
+                                   discord
+                                   vivaldi
+                                   vivaldi-ffmpeg-codecs
+                                   firefox
+                                   acpi
+                                   libreoffice-fresh
+                                   hugo
+                                   vlc
+                                   libdvdread
+                                   libdvdnav
+                                   libdvdcss
+                                   borg
+                                   zathura
+                                   zathura-pdf-mupdf
+                                   isync
+                                   kdeconnect
+                                   dvd+rw-tools
+                                  )
 
-    gui_pacman_package_list=(sway \
-                          xorg-xwayland \
-                          qt5-wayland \
-                          qt6-wayland \
-                          swayidle \
-                          swaylock \
-                          swaybg \
-                          xdg-desktop-portal-wlr \
-                          xdg-desktop-portal \
-                          waybar \
-                          wl-clipboard \
-                          mako \
-                          lightdm \
-                          lightdm-gtk-greeter \
-                          network-manager-applet \
-                          networkmanager-openvpn \
-                          noto-fonts \
-                          noto-fonts-cjk \
-                          noto-fonts-emoji \
-                          noto-fonts-extra \
-                          ttf-font-awesome \
-                          papirus-icon-theme \
-                          bluez \
-                          bluez-utils \
-                          blueman \
-                          fcitx5 \
-                          fcitx5-configtool \
-                          fcitx5-gtk \
-                          fcitx5-qt \
-                          fcitx5-skk \
-                          fcitx5-nord \
-                          pipewire \
-                          wireplumber \
-                          pipewire-alsa \
-                          pipewire-pulse \
-                          pavucontrol \
-                          playerctl \
-                          thunar \
-                          tumbler \
-                          gvfs \
-                          gvfs-smb \
-                          sshfs \
-                          ristretto \
-                          slurp \
-                          grim \
-                          kanshi \
-                          texlive-core \
-                          wezterm \
-                          nextcloud-client \
-                          qtkeychain-qt5 \
-                          libsecret \
-                          gnome-keyring \
-                          seahorse \
-                          gtk2 \
-                          discord \
-                          vivaldi \
-                          vivaldi-ffmpeg-codecs \
-                          firefox \
-                          acpi \
-                          libreoffice-fresh \
-                          hugo \
-                          vlc \
-                          libdvdread \
-                          libdvdnav \
-                          libdvdcss \
-                          borg \
-                          zathura \
-                          zathura-pdf-mupdf \
-                          isync \
-                          kdeconnect \
-                          dvd+rw-tools
-                            )
-    gui_aur_package_list=(enpass-bin \
-                              rofi-lbonn-wayland-git \
-                              slack-desktop \
-                              google-chrome \
-                              anki-official-binary-bundle \
-                              autotiling \
-                              nwg-look \
-                              nordic-theme \
-                              ddcci-driver-linux-dkms \
-                              clipman \
-                              emacs29-git \
-                              mu
-                         )
+    # local cui_aur_package_list=""
 
-    for package in "${cui_pacman_package_list[@]}"; do
-        install_pacman_package "$package"
-    done
+    local gui_aur_package_list=(enpass-bin
+                                rofi-lbonn-wayland-git
+                                slack-desktop
+                                google-chrome
+                                anki-official-binary-bundle
+                                autotiling
+                                nwg-look
+                                nordic-theme
+                                ddcci-driver-linux-dkms
+                                clipman
+                                emacs29-git
+                                mu
+                               )
+
 
     if [ "$UI" = "gui" ]; then
-        for package in "${gui_pacman_package_list[@]}"; do
-            install_pacman_package "$package"
-        done
-        for package in "${gui_aur_package_list[@]}"; do
-            install_aur_package "$package"
-        done
+        info "Installing packages(pacman)"
+        sudo pacman -S --needed --noconfirm  "${cui_pacman_package_list[@]}" "${gui_pacman_package_list[@]}"
+        info "Installing packages(aur)"
+        yay -S --needed --noconfirm "${gui_aur_package_list[@]}"
+        #yay -S --needed --noconfirm "${cui_aur_package_list[@]}" "${gui_aur_package_list[@]}"
+    else
+        info "Installing packages(pacman)"
+        sudo pacman -S --needed --noconfirm  "${cui_pacman_package_list[@]}"
+        info "Installing packages(aur)"
+        # yay -S --needed --noconfirm "${cui_aur_package_list[@]}"
+
     fi
 }

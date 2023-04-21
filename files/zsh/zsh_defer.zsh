@@ -1,28 +1,8 @@
 #!/bin/zsh
 # plugin
 zinit wait lucid blockf light-mode for \
-    atinit"zstyle ':autocomplete:*' insert-unambiguous yes" \
-    atinit"zstyle ':autocomplete:*' fzf-completion yes" \
-    atinit"zstyle ':autocomplete:recent-dirs' backend zoxide"\
-    atinit"zstyle ':autocomplete:*' widget-style menu-complete" \
-    atload"bindkey '^P' history-beginning-search-backward-end" \
-    atload"bindkey '^N' down-line-or-select" \
-    atload"bindkey -M menuselect '^P' vi-up-line-or-history" \
-    atload"bindkey -M menuselect '^N' vi-down-line-or-history" \
-    atload"bindkey -M menuselect '\r' accept-line" \
-    @'marlonrichert/zsh-autocomplete' \
-    @'zsh-users/zsh-autosuggestions' \
     @'zsh-users/zsh-syntax-highlighting' \
-    @'olets/zsh-abbr' \
-    @'b4b4r07/enhancd'
-
-# Keybind
-## historical backward/forward search with linehead string bined to ^
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
+    @'olets/zsh-abbr'
 
 # rehash
 zstyle ":completion:*:commands" rehash 1
@@ -149,13 +129,6 @@ function t()
         cd $1
     fi
 }
-
-# gcp
-export CLOUDSDK_PYTHON=python3.8
-if [[ $SETUP != "TRUE" ]];then
-   [ -f "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/path.zsh.inc"
-   [ -f "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc" ] && . "${HOME}/.local/src/google-cloud-sdk/completion.zsh.inc"
-fi
 
 if [[ ! -n $TMUX  ]]; then
     bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'

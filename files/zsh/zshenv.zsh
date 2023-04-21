@@ -159,3 +159,6 @@ export WGETRC="${XDG_CONFIG_HOME}/wgetr"
 # opam
 export OPAMROOT="${XDG_DATA_HOME}/opam"
 export PATH="${PATH}:${OPAMROOT}/default/bin:"
+
+# zoxide
+export _ZO_DATA_DIR=$XDG_DATA_HOME

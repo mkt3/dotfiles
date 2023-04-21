@@ -29,7 +29,6 @@ setup_pre_common() {
     setup_gpg
     setup_zsh
     setup_fzf
-    setup_zoxide
     setup_tmux
     setup_git
     setup_emacs
@@ -55,7 +54,6 @@ setup_minimal() {
     setup_gpg
     setup_zsh
     setup_fzf
-    setup_zoxide
     setup_tmux
     setup_git
     setup_vim
