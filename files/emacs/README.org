@@ -27,6 +27,10 @@
 
        (setq use-package-hook-name-suffix nil)
        (use-package delight :ensure t))
+
+     (unless (package-installed-p 'vc-use-package)
+       (package-vc-install "https://github.com/slotThe/vc-use-package"))
+     (require 'vc-use-package)
    #+end_src
 ** Auto package update
    #+begin_src emacs-lisp
@@ -723,8 +727,7 @@
        :after flymake
        :config
        (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
-       (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-       )
+       (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
    #+end_src
 * Programming Languages
 ** General
@@ -778,7 +781,7 @@
       (use-package py-isort
         :ensure t
         :hook (python-ts-mode-hook . (lambda ()
-                                    (add-hook 'before-save-hook 'py-isort-before-save)))
+                                       (add-hook 'before-save-hook 'py-isort-before-save)))
         :custom
         (py-isort-options '("--profile=black")))
       (use-package blacken
@@ -796,6 +799,13 @@
         ;; one is quite slow.
         (setq poetry-tracking-strategy 'switch-buffer)
         :hook ((python-ts-mode-hook . poetry-tracking-mode)))
+
+      (use-package flymake-ruff
+        :vc (:fetcher github :repo mkt3/flymake-ruff)
+        :hook (python-ts-mode-hook . (lambda ()
+                                       (flymake-ruff-load)
+                                       (flymake-mode t)
+                                       (add-to-list 'eglot-stay-out-of 'flymake))))
 
       (use-package ein :ensure t)
 
