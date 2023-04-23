@@ -799,16 +799,17 @@
         ;; one is quite slow.
         (setq poetry-tracking-strategy 'switch-buffer)
         :hook ((python-ts-mode-hook . poetry-tracking-mode)))
-
       (use-package flymake-ruff
-        :vc (:fetcher github :repo mkt3/flymake-ruff)
-        :hook (python-ts-mode-hook . (lambda ()
-                                       (flymake-ruff-load)
-                                       (flymake-mode t)
-                                       (add-to-list 'eglot-stay-out-of 'flymake))))
-
+        :ensure t
+        :hook ((python-ts-mode-hook . (lambda ()
+                                        (flymake-ruff-load)
+                                        (flymake-mode t)
+                                        (add-to-list 'eglot-stay-out-of 'flymake)))))
+      (use-package ruff-fix
+        :vc (:fetcher github :repo mkt3/ruff-fix.el)
+        :hook
+        (before-save-hook . ruff-fix-before-save))
       (use-package ein :ensure t)
-
       ;; It's defficult to display tqdm jupyter
       ;; (use-package jupyter
       ;;   :ensure t
