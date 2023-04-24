@@ -34,23 +34,11 @@ autoload -Uz _zinit
 zinit ice atload'!_zsh_git_prompt_precmd_hook' lucid
 zinit light woefe/git-prompt.zsh
 
-zinit ice lucid atload"bindkey '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete; bindkey '^N' menu-select"
+zinit ice lucid atload"bindkey '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete; bindkey '^N' history-beginning-search-forward; bindkey '^P' history-beginning-search-backward"
 zinit light marlonrichert/zsh-autocomplete
 
 +autocomplete:recent-directories() {
-   reply=( aaaa bbbbbbbbbb )
-}
-
-() {
-   local -a prefix=( '\e'{\[,O} )
-   local -a up=( ${^prefix}A ) down=( ${^prefix}B )
-   local key=
-   for key in $up[@]; do
-      bindkey "$key" up-line-or-history
-   done
-   for key in $down[@]; do
-      bindkey "$key" down-line-or-history
-   done
+   reply=("${(@f)$(zoxide query -l)}")
 }
 
 # Prompt
