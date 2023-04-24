@@ -1,6 +1,7 @@
 #!/bin/zsh
 # plugin
 zinit wait lucid blockf light-mode for \
+    @'zsh-users/zsh-autosuggestions' \
     @'zsh-users/zsh-syntax-highlighting' \
     @'olets/zsh-abbr'
 
