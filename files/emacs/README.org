@@ -778,12 +778,6 @@
     #+begin_src emacs-lisp
       (use-package python
         :custom (python-indent-guess-indent-offset-verbose . nil))
-      (use-package py-isort
-        :ensure t
-        :hook (python-ts-mode-hook . (lambda ()
-                                       (add-hook 'before-save-hook 'py-isort-before-save)))
-        :custom
-        (py-isort-options '("--profile=black")))
       (use-package blacken
         :ensure t
         :delight

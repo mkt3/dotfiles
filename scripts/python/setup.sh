@@ -10,7 +10,7 @@ setup_pipx() {
     fi
 
     info "Installing/Updating pipx packages"
-    local package_list=(jupyterlab flake8 isort black pyright ruff)
+    local package_list=(jupyterlab black pyright ruff)
 
     local installed_list=$(pipx list)
 
@@ -71,9 +71,6 @@ setup_python() {
     local python_file_dir="$CONFIGS_DIR/python"
 
     pip3 install --user i3ipc
-
-    info "Creating symlink for flake8"
-    ln -sfn "${python_file_dir}/flake8" "${XDG_CONFIG_HOME}/flake8"
 
     info "Creating symlink for matplotlib"
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
