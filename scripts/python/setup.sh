@@ -10,7 +10,7 @@ setup_pipx() {
     fi
 
     info "Installing/Updating pipx packages"
-    local package_list=(jupyterlab flake8 isort black pyright)
+    local package_list=(jupyterlab flake8 isort black pyright ruff)
 
     local installed_list=$(pipx list)
 
