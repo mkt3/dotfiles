@@ -41,6 +41,18 @@ zinit light marlonrichert/zsh-autocomplete
    reply=("${(@f)$(zoxide query -l)}")
 }
 
+() {
+   local -a prefix=( '\e'{\[,O} )
+   local -a up=( ${^prefix}A ) down=( ${^prefix}B )
+   local key=
+   for key in $up[@]; do
+      bindkey "$key" history-beginning-search-backward
+   done
+   for key in $down[@]; do
+      bindkey "$key" history-beginning-search-forward
+   done
+}
+
 # Prompt
 autoload -U colors
 colors
