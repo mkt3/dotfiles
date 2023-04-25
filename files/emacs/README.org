@@ -13,6 +13,10 @@
 
    ;;; Code:
  #+end_src
+* Custom
+  #+begin_src emacs-lisp
+    (setq custom-file (locate-user-emacs-file "custom.el"))
+  #+end_src
 * Packages
 ** Package manager
    #+begin_src emacs-lisp
@@ -60,10 +64,6 @@
      (defconst my:d:org-roam (expand-file-name "org-roam" my:d:nextcloud))
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
      (defconst my:d:password-store (expand-file-name "password-store" my:d:nextcloud))
-   #+end_src
-** Custom
-   #+begin_src emacs-lisp
-     (setq custom-file (locate-user-emacs-file "custom.el"))
    #+end_src
 * Builtin config
 ** scroll
