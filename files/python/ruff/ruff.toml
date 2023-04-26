@@ -1,7 +1,7 @@
 select = ["ALL"]
 ignore = ["E501", "D"]
 
-fixable = ["I"]
+fixable = ["I", "SIM118"]
 unfixable = ["I002"]
 
 # Exclude a variety of commonly ignored directories.
