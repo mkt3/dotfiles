@@ -705,10 +705,8 @@
      (use-package eglot
       ; :ensure t
        :config
-       (add-hook 'python-ts-mode-hook 'eglot-ensure)
        (add-hook 'rust-mode-hook 'eglot-ensure)
        (add-hook 'bash-ts-mode-hook 'eglot-ensure)
-       ;; (add-to-list 'eglot-stay-out-of 'company)
        )
    #+end_src
 ** flymake
@@ -796,9 +794,10 @@
       (use-package flymake-ruff
         :ensure t
         :hook ((python-ts-mode-hook . (lambda ()
-                                        (flymake-ruff-load)
-                                        (flymake-mode t)
-                                        (add-to-list 'eglot-stay-out-of 'flymake)))))
+                                        (advice-add 'eglot-flymake-backend :after
+                                                    (lambda (report-fn &rest args)
+                                                      (flymake-ruff--run-checker report-fn)))
+                                        (eglot-ensure)))))
       (use-package ruff-fix
         :vc (:fetcher github :repo mkt3/ruff-fix.el)
         :hook
