@@ -76,7 +76,11 @@ setup_python() {
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
 
     info "Creating symlink for ruff"
-    ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
+    if [ "$OS" = "darwin" ]; then
+        eval "ln -sfn ${python_file_dir}/ruff \"${HOME}/Library/Application Support/\""
+    else
+        ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
+    fi
 
     info "Creating symlink for jupyterlab.sh"
     mkdir -p "${HOME}/.local/bin"
