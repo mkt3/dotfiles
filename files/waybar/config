@@ -8,7 +8,7 @@
     // Modules configuration
     "sway/workspaces": {
         "disable-scroll": true,
-        "all-outputs": true,
+        "all-outputs": false,
         "format": "{index}:{name} {icon}",
         "format-icons": {
             "1: main": "",
