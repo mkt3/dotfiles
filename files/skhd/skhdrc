@@ -1,12 +1,12 @@
 alt - f : yabai -m space --layout float
+
+# restart
+alt + shift - r : yabai --restart-service
+
 # Toggle between bsp and stack
 alt + shift - space : [ "$(yabai -m query --spaces --space | jq -r '.type')" = bsp ] \
     && yabai -m space --layout stack \
     || yabai -m space --layout bsp
-
-ctrl + cmd - e : ~/.config/skhd/toggle.sh Emacs
-ctrl + cmd - o : ~/.config/skhd/toggle.sh iTerm2
-ctrl + cmd - b : ~/.config/skhd/toggle.sh "Google Chrome"
 
 # close
 alt - c : yabai -m window --close
@@ -24,6 +24,13 @@ alt + shift - h : yabai -m window --warp west || (yabai -m window --display east
 alt + shift - j : yabai -m window --warp south || (yabai -m window --display south && yabai -m display --focus south)
 alt + shift - k : yabai -m window --warp north || (yabai -m window --display north && yabai -m display --focus north)
 alt + shift - l : yabai -m window --warp east || (yabai -m window --display east && yabai -m display --focus east)
+
+# move window to space
+alt + shift - 1 : yabai -m window --space 1
+alt + shift - 2 : yabai -m window --space 2
+alt + shift - 3 : yabai -m window --space 3
+alt + shift - 4 : yabai -m window --space 4
+alt + shift - 0 : yabai -m window --space 5
 
 # move window frame
 shift + ctrl - a : yabai -m window --move rel:-20:0

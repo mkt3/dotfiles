@@ -59,6 +59,10 @@ defaults write com.apple.finder SidebarShowingSignedIntoiCloud -bool false
 defaults write com.apple.finder SidebarDevicesSectionDisclosedState -bool true
 defaults write com.apple.finder SidebarPlacesSectionDisclosedState -bool true
 
+## Disable animation for yabai
+## https://github.com/koekeishiya/yabai/wiki/Tips-and-tricks#fix-folders-opened-from-desktop-not-tiling
+defaults write com.apple.finder DisableAllAnimations -bool true
+
 killall Finder
 
 # コントロール間のフォーカス移動をキーボードで
