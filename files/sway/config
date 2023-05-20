@@ -277,6 +277,7 @@ assign [class="discord"] workspace $ws3
 for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
+for_window [app_id="Bitwarden"] floating enable
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws0
 for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws0
 

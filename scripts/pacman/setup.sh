@@ -105,6 +105,7 @@ setup_pacman() {
                                    isync
                                    kdeconnect
                                    dvd+rw-tools
+                                   bitwarden
                                   )
 
     # local cui_aur_package_list=""
