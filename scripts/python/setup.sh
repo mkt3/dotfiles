@@ -36,9 +36,6 @@ setup_poetry() {
     if [ ! -L $poetry_path ]; then
         info "Downloading poetry"
         pipx install poetry
-    else
-        info "Updateing poetry"
-        $poetry_path self update || echo 'No update'
     fi
 
     info "Setting global config"
