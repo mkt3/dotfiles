@@ -34,8 +34,12 @@ setup_pipx() {
 setup_poetry() {
     local poetry_path="${HOME}/.local/bin/poetry"
     if [ ! -L $poetry_path ]; then
-        info "Downloading poetry"
+        info "Installing poetry"
         pipx install poetry
+    else
+        info "Updating poetry"
+        pipx upgrade --include-injected poetry
+
     fi
 
     info "Setting global config"
