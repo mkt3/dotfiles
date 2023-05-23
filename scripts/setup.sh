@@ -44,9 +44,9 @@ setup_pre_common() {
 }
 
 setup_post_common() {
-    setup_nodejs
     # setup_textlint
     if [ "$DEV" = "dev" ]; then
+        setup_nodejs
         setup_python
     fi
     setup_ghq
