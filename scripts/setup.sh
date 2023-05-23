@@ -14,7 +14,7 @@ ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
 
 UI=$1
 
-DEV=${1:-"nodev"}
+DEV=${2:-"nodev"}
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
