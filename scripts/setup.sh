@@ -14,6 +14,8 @@ ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
 
 UI=$1
 
+DEV=${1:-"nodev"}
+
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 . "${REPO_DIR}/scripts/common.sh"
@@ -35,14 +37,18 @@ setup_pre_common() {
     setup_vim
     setup_docker
     setup_rust
-    setup_rtx
+    if [ "$DEV" = "dev" ]; then
+        setup_rtx
+    fi
     setup_ripgrep
 }
 
 setup_post_common() {
     setup_nodejs
     # setup_textlint
-    setup_python
+    if [ "$DEV" = "dev" ]; then
+        setup_python
+    fi
     setup_ghq
     setup_navi
     setup_lazygit
@@ -138,13 +144,15 @@ execute_setup() {
 }
 
 check_argument() {
-    if [ $# -ne 1 ]; then
-        echo "Please enter one argument: 'gui' or 'cui' or 'minimal'."
+    if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+        echo "Please enter least one argument: 'gui' or 'cui' or 'minimal'."
+        echo "And, please add the 'dev' argument when in the development environment."
         exit 1
     fi
 
     if [ "$UI" != "gui" ] && [ "$UI" != "cui" ]; then
-        echo "Invalid argument. Please enter 'gui' or 'cui'."
+        echo "Invalid first argument. Please enter 'gui' or 'cui'."
+        
         exit 1
     fi
 }

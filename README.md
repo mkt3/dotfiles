@@ -14,9 +14,13 @@
     ```bash
     curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui
     ```
-  - GUI & CUI environment
+  - CUI development environment only
     ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui
+    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui dev
+    ```
+  - GUI & CUI development environment
+    ```bash
+    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui dev
     ```
 ## Link
 [emacs conf](./files/emacs)

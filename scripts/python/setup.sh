@@ -71,8 +71,6 @@ setup_python() {
     title "Setting up python"
     local python_file_dir="$CONFIGS_DIR/python"
 
-    pip3 install --user i3ipc
-
     info "Creating symlink for matplotlib"
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
 
