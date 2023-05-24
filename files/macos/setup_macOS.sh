@@ -137,8 +137,15 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 ## Time MachineからTime Machine用のSMBフォルダを参照できるように
 defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
 
-## システムの透過設定を無効化
-#defaults write com.apple.universalaccess reduceTransparency 1
+## Reduce motion
+defaults write com.apple.Accessibility ReduceMotionEnabled -int 1
+defaults write com.apple.universalaccess reduceMotion -int 1
+
+## reduce transparency
+defaults write com.apple.universalaccess reduceTransparency -int 1
 
 ## Dictationの無効化して、ダイアログを再表示させない
 defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 1
+
+## Keep the Spaces arrangement
+defaults write com.apple.dock "mru-spaces" -bool "false"
