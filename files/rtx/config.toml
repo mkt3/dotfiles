@@ -4,7 +4,7 @@ missing_runtime_behavior = 'prompt' # other options: 'ignore', 'warn', 'prompt',
 
 # plugins can read the versions files used by other version managers (if enabled by the plugin)
 # for example, .nvmrc in the case of nodejs's nvm
-legacy_version_file = true         # enabled by default (different than asdf)
+legacy_version_file = false         # enabled by default (different than asdf)
 
 # configure `rtx install` to always keep the downloaded archive
 always_keep_download = false        # deleted after install by default
