@@ -17,8 +17,8 @@ echo -ne "\x1b]0;$HOST\x1b\\"
 # Alias
 setopt complete_aliases
 
-case "${PLATFORM}" in
-    osx)
+case "${OS}" in
+    Darwin)
         (( ${+commands[gdate]} )) && alias date='gdate'
         (( ${+commands[gls]} )) && alias ls='gls'
         (( ${+commands[gmkdir]} )) && alias mkdir='gmkdir'
@@ -35,7 +35,7 @@ case "${PLATFORM}" in
         (( ${+commands[gdirname]} )) && alias dirname='gdirname'
         (( ${+commands[gxargs]} )) && alias xargs='gxargs'
         ;;
-    linux)
+    Linux)
         alias open="xdg-open"
         ;;
 esac
@@ -135,7 +135,7 @@ if [[ ! -n $TMUX  ]]; then
 fi
 
 # gpg-agent
-if [[ "$PLATFORM" == 'osx' ]]; then
+if [[ "$OS" == 'Darwin' ]]; then
    gpgconf --launch gpg-agent
 fi
 

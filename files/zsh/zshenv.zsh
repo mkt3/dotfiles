@@ -23,14 +23,6 @@ export PAGER=less
 export OS=`uname -s`
 export ARCH=`uname -m`
 
-if [[ "$OS" == 'Darwin' ]];then
-    PLATFORM='osx'
-elif [[ "$OS" == 'Linux' ]];then
-    PLATFORM='linux'
-fi
-
-export PLATFORM
-
 # PATH
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
@@ -46,7 +38,7 @@ export LISTMAX=1000
 [ -d "${HOME}/Nextcloud/personal_config/env" ] && . "${HOME}/Nextcloud/personal_config/env/zshenv"
 
 
-if [[ "$PLATFORM" == 'osx' ]];then
+if [[ "$OS" == 'Darwin' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export SHELL_SESSIONS_DISABLE=1
 
@@ -64,7 +56,7 @@ if [[ "$PLATFORM" == 'osx' ]];then
 
     fi
 
-elif [[ "$PLATFORM" == 'linux' ]];then
+elif [[ "$OS" == 'Linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
     # Rootless docker path
@@ -96,7 +88,7 @@ export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
 # cuda path
-if [[ "$PLATFORM" == 'linux' ]];then
+if [[ "$OS" == 'Linux' ]];then
     export PATH="${PATH}:/opt/cuda/bin:/usr/local/cuda-11.3/bin"
     export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
 fi
@@ -132,9 +124,9 @@ export GPG_TTY=$(tty)
 
 # ssh
 export SSH_AGENT_PID=""
-if [[ "$PLATFORM" == 'linux' ]];then
+if [[ "$OS" == 'Linux' ]];then
     export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
-elif [[ "$PLATFORM" == 'osx' ]];then
+elif [[ "$OS" == 'Darwin' ]];then
     export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
 fi
 
