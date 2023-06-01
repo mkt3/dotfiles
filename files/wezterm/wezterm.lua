@@ -26,7 +26,6 @@ return {
   font = wezterm.font_with_fallback {
     { family = 'Cica'},
     { family = 'Cica', assume_emoji_presentation = true },
-    { family = 'Noto Color Emoji'},
   },
   use_ime = true,
   font_size = 20.0,

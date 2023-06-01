@@ -79,9 +79,9 @@ ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
 ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
 
-if [[ "$PLATFORM" == 'osx' ]];then
+if [[ "$OS" == 'Darwin' ]];then
    OS_FONT=$'\Uf179 '
-elif [[ "$PLATFORM" == 'linux' ]];then
+elif [[ "$OS" == 'Linux' ]];then
    OS_FONT=$'\Uf17c '
 fi
 
