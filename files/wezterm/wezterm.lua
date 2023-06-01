@@ -22,6 +22,7 @@ if wezterm.target_triple == 'x86_64-apple-darwin' then
   table.insert(keys, {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}})
 end
 
+
 return {
   font = wezterm.font_with_fallback {
     { family = 'Cica'},
@@ -39,4 +40,5 @@ return {
     bottom = 0,
   },
   keys=keys,
+  window_close_confirmation = 'NeverPrompt',
 }

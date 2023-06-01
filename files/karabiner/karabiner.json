@@ -1,8 +1,10 @@
 {
     "global": {
+        "ask_for_confirmation_before_quitting": true,
         "check_for_updates_on_startup": true,
         "show_in_menu_bar": true,
-        "show_profile_name_in_menu_bar": false
+        "show_profile_name_in_menu_bar": false,
+        "unsafe_ui": false
     },
     "profiles": [
         {
@@ -159,7 +161,7 @@
                             {
                                 "conditions": [
                                     {
-                                      "bundle_identifiers": [
+                                        "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
@@ -305,7 +307,7 @@
                             {
                                 "conditions": [
                                     {
-                                      "bundle_identifiers": [
+                                        "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
@@ -446,7 +448,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.github\\.wez\\.wezterm$", 
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
@@ -516,8 +518,8 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                           "^com\\.github\\.wez\\.wezterm$",
-                                           "^org\\.gnu\\.Emacs$",
+                                            "^com\\.github\\.wez\\.wezterm$",
+                                            "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp.conkeror$",
@@ -776,36 +778,12 @@
                         ]
                     },
                     {
-                        "description": "元に戻す undo (ctrl + /)",
-                        "manipulators": [{
-                                "conditions": [
-                                    {
-                                      "bundle_identifiers": [
-                                            "^com\\.github\\.wez\\.wezterm$",
-                                            "^org\\.gnu\\.Emacs$"
-                                        ],
-                                        "type": "frontmost_application_unless"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "slash",
-                                    "modifiers": {"mandatory": ["control"]}
-                                },
-                                "to":[{
-                                    "key_code": "z",
-                                    "modifiers": ["command"]
-                                }],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
                         "description": "AquaSKK for Terminal/iTerm2/wezterm",
                         "manipulators": [
                             {
                                 "conditions": [
                                     {
-                                      "bundle_identifiers": [
+                                        "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^com\\.googlecode\\.iterm2",
                                             "^com\\.apple\\.Terminal"
@@ -824,6 +802,65 @@
                                 "to": [
                                     {
                                         "key_code": "japanese_kana"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "make alt+q map to cmd+q (quit app)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.finder"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "q",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "q",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.finder"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "q",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "w",
+                                        "modifiers": [
+                                            "command"
+                                        ]
                                     }
                                 ],
                                 "type": "basic"

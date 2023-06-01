@@ -3,6 +3,9 @@ alt - f : yabai -m space --layout float
 # restart
 alt + shift - r : yabai --restart-service
 
+# Finder
+alt - e:  open /System/Library/CoreServices/Finder.app
+
 # Toggle between bsp and stack
 alt + shift - space : [ "$(yabai -m query --spaces --space | jq -r '.type')" = bsp ] \
     && yabai -m space --layout stack \
@@ -60,7 +63,7 @@ alt - space : yabai -m window --toggle zoom-fullscreen
 alt - 0x2B : yabai -m display --focus prev && yabai -m display --focus stack.prev
 alt - 0x2F : yabai -m display --focus next && yabai -m display --focus stack.next
 # toggle window split type
-alt - e : yabai -m window --toggle split
+alt - f : yabai -m window --toggle split
 # float / unfloat window and restore position
 # alt - t : yabai -m window --toggle float && /tmp/yabai-restore/$(yabai -m query --windows --window | jq -re '.id').restore 2>/dev/null || true
 alt - t : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
