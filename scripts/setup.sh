@@ -89,14 +89,14 @@ setup_linux() {
     # distribution
     case $distro in
         Arch)
-            setup_pre_common
             setup_pacman
+            setup_pre_common
             setup_linux_ui
             setup_post_common
             ;;
         Ubuntu)
-            setup_pre_common
             setup_apt
+            setup_pre_common
             setup_linux_ui
             setup_post_common
             ;;

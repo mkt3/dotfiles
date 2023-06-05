@@ -118,9 +118,6 @@ defaults write com.apple.dock persistent-apps -array
 defaults write com.apple.dock autohide-delay -float 0
 killall Dock
 
-## ファイアーウォールを有効
-sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
-
 # キャプチャ
 ## キャプチャの保存場所を変更
 defaults write com.apple.screencapture location ~/Downloads

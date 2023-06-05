@@ -7,11 +7,10 @@ setup_apt() {
 
     package_list=(build-essential
                   zsh
-                  tmux
                   locales
                   cmake
                   jq
-                  xsel
+                  unar
                   vim
                   duf
                   htop
