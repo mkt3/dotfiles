@@ -60,8 +60,9 @@
    #+begin_src emacs-lisp
      (defconst my:f:bib (expand-file-name "GoogleDrive/paperpile.bib" (getenv "HOME")))
      (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
-     (defconst my:d:gtd (expand-file-name "gtd" my:d:nextcloud))
-     (defconst my:d:org-roam (expand-file-name "org-roam" my:d:nextcloud))
+     (defconst my:d:org (expand-file-name "orgnotes" my:d:nextcloud))
+     (defconst my:d:org-gtd (expand-file-name "gtd" my:d:org))
+     (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
      (defconst my:d:password-store (expand-file-name "password-store" my:d:nextcloud))
    #+end_src
@@ -223,7 +224,7 @@
    #+end_src
 * Appearance
 ** Color theme
-*** Doom nord
+*** Doom Nord
     #+begin_src emacs-lisp
       (use-package doom-themes
         :ensure t
@@ -340,7 +341,7 @@
                                         ".*Ilist.*"))
        (dimmer-mode t))
    #+end_src
-** whitespace
+** Whitespace
    #+begin_src emacs-lisp
      (use-package whitespace
        :ensure t
@@ -664,18 +665,19 @@
          "Align sideline string by LENGTHS from the right of the window."
          (+ (apply '+ lengths)
             (if (display-graphic-p) 6 2)))
-     (advice-add 'lsp-ui-sideline--align :override #'my/lsp-ui-sideline--align)
-     :custom ((lsp-completion-provider             :none)
-              ;; (lsp-keymap-prefix                   "C-c l")
-              (lsp-log-io                          t)
-              ;; (lsp-eldoc-render-all               . t)
-              (lsp-enable-snippet                  nil)
-              (lsp-keep-workspace-alive            nil)
-              (lsp-document-sync-method            2)
-              (lsp-response-timeout                5)
-              (lsp-headerline-breadcrumb-icons-enable  nil)
-              (lsp-enable-file-watchers           nil))
-     :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
+       (advice-add 'lsp-ui-sideline--align :override #'my/lsp-ui-sideline--align)
+       :custom ((lsp-completion-provider             :none)
+                ;; (lsp-keymap-prefix                   "C-c l")
+                (lsp-log-io                          t)
+                ;; (lsp-eldoc-render-all               . t)
+                (lsp-enable-snippet                  nil)
+                (lsp-keep-workspace-alive            nil)
+                (lsp-document-sync-method            2)
+                (lsp-response-timeout                5)
+                (lsp-headerline-breadcrumb-icons-enable  nil)
+                (lsp-enable-file-watchers           nil))
+       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
+
      (use-package lsp-ui
        :ensure t
        :after lsp-mode
@@ -695,21 +697,23 @@
               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
               ([remap xref-find-references] . lsp-ui-peek-find-references)
               :map lsp-mode-map
-              ("C-c s" . lsp-ui-sideline-mode)
-              ("C-c d" . lsp-ui-doc-mode)
+              ("C-c a" . lsp-execute-code-action)
+              ;; ("C-c d" . lsp-ui-doc-mode)
+              ;; ("C-c s" . lsp-ui-sideline-mode)
               )
        :hook ((lsp-mode-hook . lsp-ui-mode)))
 #+end_src
 ** eglot
    #+begin_src emacs-lisp
      (use-package eglot
-      ; :ensure t
        :config
        (add-hook 'rust-mode-hook 'eglot-ensure)
        (add-hook 'bash-ts-mode-hook 'eglot-ensure)
-       )
+       :bind (nil
+              :map eglot-mode-map
+              ("C-c a" . eglot-code-actions)))
    #+end_src
-** flymake
+** Flymake
    #+begin_src emacs-lisp
      (use-package flymake
        :ensure t
@@ -737,13 +741,6 @@
         :config
         (setq treesit-auto-install 'prompt)
         (global-treesit-auto-mode))
-    #+end_src
-*** docker-mode
-    #+begin_src emacs-lisp
-      ;; (use-package docker :ensure t)
-      ;; (use-package dockerfile-mode :ensure t)
-      ;; (use-package docker-compose-mode :ensure t)
-      ;; (use-package docker-tramp :ensure t)
     #+end_src
 *** git
     #+begin_src emacs-lisp
@@ -922,36 +919,24 @@
      #+begin_src emacs-lisp
        (use-package org
          :ensure t
-         ;; :hook ((org-mode-hook . (lambda ()
-         ;;                           (setq flycheck-checker 'textlint)
-         ;;                           (flycheck-mode 1))))
-         :bind (("C-c c" . org-capture)
-                ("C-c a" . org-agenda)
-                ("C-c g" . gtd)
+         :bind (nil
                 :map org-mode-map
                 ("C-c l" . org-store-link)
                 ("C-c i" . org-insert-structure-template)
                 ("C-c C-'" . org-edit-special)
                 ("C-c C-SPC" . my-pop-global-mark-and-delete-window)
                 :map org-src-mode-map
-                ("C-c C-'" . org-edit-src-exit)
-                )
+                ("C-c C-'" . org-edit-src-exit))
          :init
-         (defvar org-gtd-file (expand-file-name "gtd.org" my:d:gtd))
-         (defun gtd ()
-           (interactive)
-           (find-file org-gtd-file))
          (defun my-pop-global-mark-and-delete-window ()
            "Pop back to the previous mark and delete the current window."
            (interactive)
            (pop-global-mark)
            (delete-window))
-         (setq org-directory my:d:gtd)
-         (setq org-agenda-files (list org-directory))
+         (setq org-directory my:d:org)
          (setq org-latex-create-formula-image-program 'dvisvgm)
          :custom
          (org-refile-targets  '((org-agenda-files :maxlevel . 1)))
-         (org-agenda-current-time-string "now ============")
          (org-startup-indent nil)
          (org-hide-leading-stars t)
          (org-return-follows-link t)
@@ -960,25 +945,9 @@
          (org-log-done t)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
+         (org-agenda-current-time-string "now ============")
          (org-agenda-todo-ignore-scheduled 'feature)
-         (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
-                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "MEMO(m)" "SOMEDAY(s)")
-                              (type "Project" "Sub-Project" "|" "DONE(d)")
-                              ))
-         (org-todo-keyword-faces '(("Project" :foreground "royal blue"
-                                    :weight bold)
-                                   ("Sub-Project" :foreground "royal blue"
-                                    :weight bold)
-                                   ("TODO" :foreground "red"
-                                    :weight bold)
-                                   ("IN PROGRESS" :foreground "cornflower blue"
-                                    :weight bold)
-                                   ("DONE" :foreground "green"
-                                    :weight bold)
-                                   ("WAITING" :foreground "orange"
-                                    :weight bold)
-                                   ("CANCELLED" :foreground "green"
-                                    :weight bold)))
+         (org-gtd-engage-prefix-width 32)
          :config
          (add-hook 'org-mode-hook (lambda ()
                                     (setq-local time-stamp-active t
@@ -987,39 +956,39 @@
                                                 time-stamp-end "$"
                                                 time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
                                     (add-hook 'before-save-hook 'time-stamp nil 'local))))
-       (use-package org-capture
-         :after org
-         :if (file-directory-p my:d:gtd)
-         :commands (org-capture)
-         :init
-         (defun my-format-project-filename (project-name)
-           "Convert PROJECT-NAME to the desired format for a filename."
-           (let* ((sanitized-name (replace-regexp-in-string "[[:space:]]+" "_" (downcase project-name)))
-                  (date-prefix (format-time-string "%Y%m_")))
-             (expand-file-name (concat date-prefix sanitized-name ".org") my:d:gtd) ))
-         :config
-         (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
-                                        "** %^{Brief Description}")
-                                       ("p" "Project" plain (file (lambda () (my-format-project-filename (read-string "Project name: "))))
-                "#+STARTUP: show3levels\n\n* Project %?\n\n* Link\n* Log\n"))))
        (use-package org-appear
          :ensure t
+         :after org
          :hook (org-mode-hook . org-appear-mode)
          :custom
          (org-hide-emphasis-markers t)
          (org-appear-inside-latex   t)
          (org-appear-autosubmarkers t))
      #+end_src
-**** org-pomodoro
+**** org-gtd
      #+begin_src emacs-lisp
-       (use-package org-pomodoro
+       (use-package org-gtd
          :ensure t
+         :demand t
          :after org
-         :if (file-directory-p my:d:gtd)
+         :init
+         (setq org-gtd-update-ack "3.0.0")
          :custom
-         (org-pomodoro-length 50)
-         (org-promodoro-short-break-length 10))
-     #+end_src
+         (org-gtd-directory my:d:org-gtd)
+         (org-edna-use-inheritance t)
+         (org-gtd-organize-hooks '(org-gtd-set-area-of-focus))
+         (org-gtd-areas-of-focus '("Personal" "Home" "Research" "Work"))
+         :config
+         (org-edna-mode 1)
+         :bind
+         (("C-c d c" . org-gtd-capture)
+          ("C-c d e" . org-gtd-engage)
+          ("C-c d p" . org-gtd-process-inbox)
+          ("C-c d n" . org-gtd-show-all-next)
+          ("C-c d s" . org-gtd-show-stuck-projects)
+          :map org-gtd-clarify-map
+          ("C-c c" . org-gtd-organize)))
+      #+end_src
 **** org-roam
      #+begin_src emacs-lisp
        (use-package org-roam
@@ -1226,7 +1195,7 @@
        (setq message-citation-line-function 'message-insert-formatted-citation-line)
        (setq mu4e-headers-include-related nil)
        (setq mu4e-headers-show-threads nil)
-                                             ; https://github.com/djcb/mu/issues/1136#issuecomment-1229005006
+       ;; https://github.com/djcb/mu/issues/1136#issuecomment-1229005006
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
              (lambda (docid msg target)
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
@@ -1243,11 +1212,8 @@
        :config
        (if (eq system-type 'darwin) (mu4e-alert-set-default-style 'notifier) (mu4e-alert-set-default-style 'libnotify))
        (mu4e-alert-enable-mode-line-display)
-       (mu4e-alert-enable-notifications)
-       )
-
+       (mu4e-alert-enable-notifications))
    #+end_src
-
 * Shell
   #+begin_src emacs-lisp
     (use-package vterm
@@ -1307,6 +1273,9 @@
            (let ((default-directory ltex-ls-install-dir))
              (shell-command (format "tar xvfz %s" ltex-ls-tar-file)))
            (make-symbolic-link (concat ltex-ls-install-dir (format "ltex-ls-%s"  ltex-ls-version)) (concat ltex-ls-install-dir "latest") t)))
+       (let ((my-ltex-user-rules-path (expand-file-name "personal_config/lsp-ltex" my:d:nextcloud)))
+         (when (file-directory-p my-ltex-user-rules-path)
+           (setq lsp-ltex-user-rules-path my-ltex-user-rules-path)))
        :hook (org-mode-hook . (lambda ()
                                 (setq-local lsp-completion-enable nil)
                                 (require 'lsp-ltex)
