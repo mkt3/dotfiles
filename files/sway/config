@@ -260,6 +260,11 @@ for_window [app_id="com.nextcloud.desktopclient.nextcloud"] floating enable
 for_window [app_id="thunar" title="File Operation Progress"] floating enable
 for_window [app_id="nm-connection-editor"] floating enable
 exec nextcloud --background
+for_window [app_id="Bitwarden"] {
+    floating enable
+    sticky enable
+}
+exec bitwarden-desktop --ozone-platform-hint=auto
 for_window [class="Enpass"] {
     floating enable
     sticky enable
@@ -277,7 +282,6 @@ assign [class="discord"] workspace $ws3
 for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
-for_window [app_id="Bitwarden"] floating enable
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws0
 for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws0
 
