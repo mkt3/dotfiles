@@ -58,11 +58,11 @@
    #+end_src
 ** Constant
    #+begin_src emacs-lisp
-     (defconst my:f:bib (expand-file-name "GoogleDrive/paperpile.bib" (getenv "HOME")))
      (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
      (defconst my:d:org (expand-file-name "orgnotes" my:d:nextcloud))
      (defconst my:d:org-gtd (expand-file-name "gtd" my:d:org))
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
+     (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:nextcloud))
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
      (defconst my:d:password-store (expand-file-name "password-store" my:d:nextcloud))
    #+end_src
@@ -1013,23 +1013,23 @@
          (setq org-roam-dailies-directory "daily_notes/")
          (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          :custom
-         (org-roam-capture-templates  '(("n" "notes" plain "%?"
-                                         :if-new
-                                         (file+head "notes/${slug}.org"
-                                                    "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n#+filetags: :draft:\n")
-                                         :immediate-finish t
-                                         :unnarrowed t)
-                                        ("p" "paper" plain "%?"
-                                         :if-new
-                                         (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n* Title\n  - Clear and concise title of the paper.\n** Authors and Affiliations\n   - List the authors and their affiliations.\n** Objective and Background\n   - Briefly explain the objective and background of the research, helping readers understand why the research was conducted.\n** Methods\n   - Describe the methods or approach used in the research briefly. You can direct the reader to the main paper for more details.\n** Results\n   - Clearly present the main results of the research. Use graphs or tables to make the information visually clear and easy to understand.\n** Discussion and Conclusion\n   - Show the discussion and conclusions based on the results, and emphasize the significance and impact of the research.\n** References\n   - List important references related to the research, making it easier for readers to track related studies.")
-                                         :immediate-finish t
-                                         :unnarrowed t)
-                                        ("r" "reference" plain "%?"
-                                         :if-new
-                                         (file+head "reference/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n")
-                                         :immediate-finish t
-                                         :unnarrowed t)
-                                        ))
+         (org-roam-capture-templates '(("n" "notes" plain "%?"
+                                        :if-new
+                                        (file+head "notes/${slug}.org"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
+                                       ("b" "book" plain "%?"
+                                        :if-new
+                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
+                                       ("w" "web" plain "%?"
+                                        :if-new
+                                        (file+head "reference/web/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
+                                       ))
          (org-roam-dailies-capture-templates  '(("j" "journal" entry
                                                  "** %<%H:%M> %?"
                                                  :target (file+head+olp "%<%Y-%m>.org"
@@ -1072,24 +1072,22 @@
          :ensure t
          :if (file-exists-p my:f:bib)
          :custom
-         (citar-bibliography  my:f:bib)
+         (citar-bibliography  my:f:bib))
+
+       (use-package citar-org-roam
+         :ensure t
+         :after (citar org-roam)
          :config
-         (defun my:org-roam-node-from-cite (keys-entries)
-           (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
-           (let ((title (citar--format-entry-no-widths (cdr keys-entries)
-                                                       "${author editor} :: ${title}")))
-             (org-roam-capture- :templates
-                                '(("r" "reference" plain "%?" :if-new
-                                   (file+head "reference/${citekey}.org"
-                                              ":PROPERTIES:
-             :ROAM_REFS: [cite:@${citekey}]
-             :END:
-             ,#+title: ${title}\n")
-                                   :immediate-finish t
-                                   :unnarrowed t))
-                                :info (list :citekey (car keys-entries))
-                                :node (org-roam-node-create :title title)
-                                :props '(:finalize find-file)))))
+         (citar-org-roam-mode)
+         (setq citar-org-roam-note-title-template "${title}")
+         (setq org-roam-capture-templates
+               (append org-roam-capture-templates
+                       '(("p" "paper" plain "%?"
+                          :if-new
+                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                          :immediate-finish t
+                          :unnarrowed t))))
+         (setq citar-org-roam-capture-template-key "p"))
      #+end_src
 **** ox-hugo
      #+begin_src emacs-lisp
