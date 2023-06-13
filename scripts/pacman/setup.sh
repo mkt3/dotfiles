@@ -115,13 +115,13 @@ setup_pacman() {
                                 slack-desktop
                                 google-chrome
                                 anki-official-binary-bundle
-                                autotiling
                                 nwg-look
                                 nordic-theme
                                 ddcci-driver-linux-dkms
                                 clipman
                                 emacs29-git
                                 mu
+                                zotero-bin
                                )
 
 
