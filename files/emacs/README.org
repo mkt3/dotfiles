@@ -702,7 +702,39 @@
               ;; ("C-c s" . lsp-ui-sideline-mode)
               )
        :hook ((lsp-mode-hook . lsp-ui-mode)))
-#+end_src
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package lsp-ltex
+       :ensure t
+       :init
+       (defconst my-os-type
+         (pcase system-type
+           ('darwin "mac")
+           ('gnu/linux "linux")
+           (_ nil)))
+       (defvar ltex-ls-version "16.0.0")
+       (defvar ltex-ls-tar-file (expand-file-name (format "~/.config/emacs/.cache/lsp/ltex-ls-%s.tar.gz" ltex-ls-version)))
+       (defvar ltex-ls-install-dir (file-name-as-directory (expand-file-name "~/.config/emacs/.cache/lsp/ltex-ls")))
+       (unless (file-exists-p ltex-ls-install-dir)
+         (let ((ltex-ls-url (format "https://github.com/valentjn/ltex-ls/releases/download/%s/ltex-ls-%s-%s-x64.tar.gz"
+                                    ltex-ls-version ltex-ls-version my-os-type)))
+           (make-directory ltex-ls-install-dir t)
+           (message "Downloading ltex-ls...")
+           (url-copy-file ltex-ls-url ltex-ls-tar-file)
+           (message "Extracting ltex-ls...")
+           (let ((default-directory ltex-ls-install-dir))
+             (shell-command (format "tar xvfz %s" ltex-ls-tar-file)))
+           (make-symbolic-link (concat ltex-ls-install-dir (format "ltex-ls-%s"  ltex-ls-version)) (concat ltex-ls-install-dir "latest") t)))
+       (let ((my-ltex-user-rules-path (expand-file-name "personal_config/lsp-ltex" my:d:nextcloud)))
+         (when (file-directory-p my-ltex-user-rules-path)
+           (setq lsp-ltex-user-rules-path my-ltex-user-rules-path)))
+       :hook (org-mode-hook . (lambda ()
+                                (setq-local lsp-completion-enable nil)
+                                (require 'lsp-ltex)
+                                (lsp-deferred)))  ; or lsp-deferred
+       )
+   #+end_src
 ** eglot
    #+begin_src emacs-lisp
      (use-package eglot
@@ -1007,6 +1039,7 @@
                 ("C-c n c" . org-roam-capture)
                 ("C-c n j" . org-roam-dailies-capture-today)
                 ("C-c n d" . org-roam-dailies-find-date)
+                ("C-c n p" . citar-open)
                 ("C-c C-g t" . org-roam-dailies-find-today))
          :init
          (setq org-roam-directory my:d:org-roam)
@@ -1066,13 +1099,14 @@
          (consult-org-roam-grep-func #'consult-ripgrep)
          :bind (("C-c n e" . consult-org-roam-file-find)
                 ("C-c n b" . consult-org-roam-backlinks)
-                ("C-c n s" . consult-org-roam-search))
-         )
+                ("C-c n s" . consult-org-roam-search)))
+
        (use-package citar
          :ensure t
          :if (file-exists-p my:f:bib)
          :custom
-         (citar-bibliography  my:f:bib))
+         (citar-bibliography my:f:bib)
+         (citar-file-open-functions '(("pdf" . citar-file-open-external) ("html" . citar-file-open-external) (t . find-file))))
 
        (use-package citar-org-roam
          :ensure t
@@ -1249,36 +1283,4 @@
        :if (display-graphic-p)
        :config
        (atomic-chrome-start-server))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (use-package lsp-ltex
-       :ensure t
-       :init
-       (defconst my-os-type
-         (pcase system-type
-           ('darwin "mac")
-           ('gnu/linux "linux")
-           (_ nil)))
-       (defvar ltex-ls-version "16.0.0")
-       (defvar ltex-ls-tar-file (expand-file-name (format "~/.config/emacs/.cache/lsp/ltex-ls-%s.tar.gz" ltex-ls-version)))
-       (defvar ltex-ls-install-dir (file-name-as-directory (expand-file-name "~/.config/emacs/.cache/lsp/ltex-ls")))
-       (unless (file-exists-p ltex-ls-install-dir)
-         (let ((ltex-ls-url (format "https://github.com/valentjn/ltex-ls/releases/download/%s/ltex-ls-%s-%s-x64.tar.gz"
-                                    ltex-ls-version ltex-ls-version my-os-type)))
-           (make-directory ltex-ls-install-dir t)
-           (message "Downloading ltex-ls...")
-           (url-copy-file ltex-ls-url ltex-ls-tar-file)
-           (message "Extracting ltex-ls...")
-           (let ((default-directory ltex-ls-install-dir))
-             (shell-command (format "tar xvfz %s" ltex-ls-tar-file)))
-           (make-symbolic-link (concat ltex-ls-install-dir (format "ltex-ls-%s"  ltex-ls-version)) (concat ltex-ls-install-dir "latest") t)))
-       (let ((my-ltex-user-rules-path (expand-file-name "personal_config/lsp-ltex" my:d:nextcloud)))
-         (when (file-directory-p my-ltex-user-rules-path)
-           (setq lsp-ltex-user-rules-path my-ltex-user-rules-path)))
-       :hook (org-mode-hook . (lambda ()
-                                (setq-local lsp-completion-enable nil)
-                                (require 'lsp-ltex)
-                                (lsp-deferred)))  ; or lsp-deferred
-       )
    #+end_src
