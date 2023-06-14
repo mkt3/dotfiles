@@ -121,12 +121,21 @@ compdef _gnu_generic bat delta
 # zoxide
 eval "$(zoxide init zsh --cmd j)"
 
-function t()
+function sd()
 {
-    cd ./$(git rev-parse --show-cdup)
-    if [ $# = 1 ]; then
-        cd $1
+    local session_name="$(tmux display-message -p '#S')"
+    if [ -z "$session_name" ]; then
+        cd "$HOME"
     fi
+    
+    local default_dir
+    if [ "$session_name" = "main_session" ]; then
+        default_dir="$HOME"
+    else
+        default_dir="$(ghq list --exact --full-path "$session_name")"
+    fi
+    
+    cd "$default_dir"
 }
 
 if [[ ! -n $TMUX  ]]; then
