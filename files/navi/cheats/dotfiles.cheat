@@ -1,0 +1,10 @@
+% dotfiles
+
+# CUI environment only
+curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui
+
+# CUI development environment only
+curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui dev
+
+# GUI & CUI development environment
+curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui dev
