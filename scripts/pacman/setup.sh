@@ -106,6 +106,7 @@ setup_pacman() {
                                    kdeconnect
                                    dvd+rw-tools
                                    bitwarden
+                                   python-i3ipc  # for inactive-windows-transparency.py
                                   )
 
     # local cui_aur_package_list=""

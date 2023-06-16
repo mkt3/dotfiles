@@ -32,6 +32,7 @@ setup_apt() {
                   python3-dev
                   python3-venv
                   python3-pip
+                  pipx
                   trash-cli
                   axel
                   tk-dev)

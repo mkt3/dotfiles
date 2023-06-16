@@ -5,10 +5,6 @@ set -eu
 setup_pipx() {
     info "Setting up pipx"
 
-    if [ "$OS" != "darwin" ] && ! (type pipx > /dev/null 2>&1); then
-        pip3 install --user pipx
-    fi
-
     info "Installing/Updating pipx packages"
     local package_list=(jupyterlab black pyright ruff)
 

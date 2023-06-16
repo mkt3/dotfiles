@@ -140,7 +140,7 @@ bindsym $mod+semicolon scratchpad show
 set $ws1 "1: main"
 set $ws2 "2: slack"
 set $ws3 "3: disco"
-set $ws4 "4"
+set $ws4 ""
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
@@ -225,9 +225,6 @@ gaps right 2
 gaps left 2
 gaps inner 2
 
-# auto tiling
-#exec ~/.config/i3/scripts/column-layout.py
-
 # keyboard & touchpad
 input type:keyboard {
     repeat_delay 300
@@ -245,7 +242,7 @@ input type:touchpad {
 # sway-session
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
-exec_always autotiling -o DP-1 HDMI-A-2
+exec_always ~/.local/bin/autotiling -o DP-1 HDMI-A-2
 
 exec nm-applet --indicator
 exec mako
@@ -282,6 +279,8 @@ assign [class="discord"] workspace $ws3
 for_window [app_id="zoom"] floating enable
 exec blueman-applet
 for_window [app_id="blueman-manager"] floating enable
+assign [class="Zotero"] workspace $ws4
+exec zotero
 for_window [class="Google-chrome" title="YouTube Music"] move container to workspace number $ws0
 for_window [class="Google-chrome" title="YouTube"] move container to workspace number $ws0
 

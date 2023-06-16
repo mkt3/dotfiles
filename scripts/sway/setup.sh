@@ -29,7 +29,4 @@ setup_sway() {
     info "Adding kanshi"
     ln -sfn "${kanshi_file_dir}" "${XDG_CONFIG_HOME}"
     ln -sfn "${kanshi_file_dir}/kanshi.service" "${XDG_CONFIG_HOME}/systemd/user/"
-
-    # for inactive-windows-transparency.py
-    pip3 install --user i3ipc
 }

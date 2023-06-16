@@ -19,7 +19,9 @@ brew "readline" # python dependencies
 brew "sqlite3"  # python dependencies
 brew "xz"       # python dependencies
 brew "zlib"     # python dependencies
-brew "tcl-tk"   # python dependencied
+brew "tcl-tk"   # python dependencies
+brew "python3"
+brew "pipx"
 brew "trash-cli"
 brew "git"
 brew "neofetch"
@@ -32,8 +34,6 @@ brew "wget"
 brew "bash"
 brew "zsh"
 brew "iproute2mac"
-brew "python3"
-brew "pipx"
 brew "go"
 brew "hugo"
 brew "cmake"
