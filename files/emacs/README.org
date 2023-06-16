@@ -31,10 +31,6 @@
 
        (setq use-package-hook-name-suffix nil)
        (use-package delight :ensure t))
-
-     (unless (package-installed-p 'vc-use-package)
-       (package-vc-install "https://github.com/slotThe/vc-use-package"))
-     (require 'vc-use-package)
    #+end_src
 ** Auto package update
    #+begin_src emacs-lisp
@@ -55,6 +51,12 @@
        (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
        (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME"))
        (exec-path-from-shell-initialize))
+   #+end_src
+** vc-use-package
+   #+begin_src emacs-lisp
+     (unless (package-installed-p 'vc-use-package)
+       (package-vc-install "https://github.com/slotThe/vc-use-package"))
+     (require 'vc-use-package)
    #+end_src
 ** Constant
    #+begin_src emacs-lisp
