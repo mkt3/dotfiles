@@ -80,7 +80,7 @@ setup_pacman() {
                                    slurp
                                    grim
                                    kanshi
-                                   texlive-core
+                                   texlive-basic
                                    wezterm
                                    nextcloud-client
                                    qtkeychain-qt5
