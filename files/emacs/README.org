@@ -1279,6 +1279,18 @@
       )
   #+end_src
 * External Collaboration
+** pdf
+   #+begin_src emacs-lisp
+     (use-package pdf-tools
+       :ensure t
+       :if (display-graphic-p)
+       :hook ((pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1))))
+       :config
+       (pdf-tools-install)
+       (setq-default pdf-view-display-size 'fit-page)
+       (setq pdf-annot-activate-created-annotations t)
+       )
+   #+end_src
 ** atomic-chrome
    #+begin_src emacs-lisp
      (use-package atomic-chrome
