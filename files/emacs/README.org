@@ -1180,10 +1180,12 @@
         :ensure t
         :after (json-mode))
     #+end_src
-** EPUB
-    #+begin_src emacs-lisp
-      (use-package nov :ensure t)
-    #+end_src
+*** EPUB
+     #+begin_src emacs-lisp
+       (use-package nov
+         :ensure t
+         :if (display-graphic-p))
+     #+end_src
 * Tramp
   #+begin_src emacs-lisp
     (use-package tramp

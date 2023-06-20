@@ -140,7 +140,7 @@ bindsym $mod+semicolon scratchpad show
 set $ws1 "1: main"
 set $ws2 "2: slack"
 set $ws3 "3: disco"
-set $ws4 ""
+set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
@@ -180,6 +180,7 @@ bindsym $mod+Next workspace next
 workspace $ws1 output DP-1 DP-2 HDMI-A-2
 workspace $ws2 output DP-1 DP-2 HDMI-A-2
 workspace $ws3 output DP-1 DP-2 HDMI-A-2
+workspace $ws4 output DP-1 DP-2 HDMI-A-2
 workspace $ws9 output eDP-1 HDMI-A-3
 workspace $ws0 output eDP-1 HDMI-A-3
 
@@ -242,7 +243,7 @@ input type:touchpad {
 # sway-session
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
-exec_always ~/.local/bin/autotiling -o DP-1 HDMI-A-2
+exec_always autotiling-rs
 
 exec nm-applet --indicator
 exec mako

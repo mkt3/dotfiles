@@ -107,6 +107,7 @@ setup_pacman() {
                                    dvd+rw-tools
                                    bitwarden
                                    python-i3ipc  # for inactive-windows-transparency.py
+                                   autotiling-rs
                                   )
 
     # local cui_aur_package_list=""
