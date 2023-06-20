@@ -482,8 +482,8 @@
             (consult-line)))
         :custom
         (recentf-mode t)
-        :bind* (("C-s" . my:consult-line)
-                ("C-c C-a" . consult-buffer)
+        :bind (("C-s" . my:consult-line))
+        :bind* (("C-c C-a" . consult-buffer)
                 ("C-z" . consult-imenu)
                 ([remap goto-line] . consult-goto-line)
                 ([remap yank-pop] . consult-yank-pop)))
@@ -1125,6 +1125,11 @@
                           :immediate-finish t
                           :unnarrowed t))))
          (setq citar-org-roam-capture-template-key "p"))
+
+       (use-package org-noter
+         :ensure t
+         :custom
+         (org-noter-highlight-selected-text t))
      #+end_src
 **** ox-hugo
      #+begin_src emacs-lisp
@@ -1174,6 +1179,10 @@
       (use-package json-reformat
         :ensure t
         :after (json-mode))
+    #+end_src
+** EPUB
+    #+begin_src emacs-lisp
+      (use-package nov :ensure t)
     #+end_src
 * Tramp
   #+begin_src emacs-lisp
@@ -1284,7 +1293,11 @@
      (use-package pdf-tools
        :ensure t
        :if (display-graphic-p)
+       :demand t
        :hook ((pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1))))
+       :bind (nil
+              :map pdf-view-mode-map
+              ("C-s" . isearch-forward))
        :config
        (pdf-tools-install)
        (setq-default pdf-view-display-size 'fit-page)
