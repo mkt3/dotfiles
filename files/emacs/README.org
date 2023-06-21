@@ -54,9 +54,12 @@
    #+end_src
 ** vc-use-package
    #+begin_src emacs-lisp
-     (unless (package-installed-p 'vc-use-package)
-       (package-vc-install "https://github.com/slotThe/vc-use-package"))
-     (require 'vc-use-package)
+     (eval-and-compile
+       (unless (package-installed-p 'vc-use-package)
+         (package-vc-install "https://github.com/slotThe/vc-use-package"))
+       (require 'vc-use-package))
+
+
    #+end_src
 ** Constant
    #+begin_src emacs-lisp
