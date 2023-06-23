@@ -1124,7 +1124,7 @@
                (append org-roam-capture-templates
                        '(("p" "paper" plain "%?"
                           :if-new
-                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Author\n\n* Abstract\n\n* Memo\n")
                           :immediate-finish t
                           :unnarrowed t))))
          (setq citar-org-roam-capture-template-key "p"))
