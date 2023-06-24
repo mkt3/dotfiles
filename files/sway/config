@@ -139,8 +139,8 @@ bindsym $mod+semicolon scratchpad show
 # Workspaces:
 set $ws1 "1: main"
 set $ws2 "2: slack"
-set $ws3 "3: disco"
-set $ws4 "4"
+set $ws3 "3: discord"
+set $ws4 "4: zotero"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
