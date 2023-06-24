@@ -1119,12 +1119,13 @@
          :if (file-exists-p my:f:bib)
          :config
          (citar-org-roam-mode)
+         (add-to-list 'citar-org-roam-template-fields '(:citar-file . ("file")))
          (setq citar-org-roam-note-title-template "${title}")
          (setq org-roam-capture-templates
                (append org-roam-capture-templates
                        '(("p" "paper" plain "%?"
                           :if-new
-                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Author\n\n* Abstract\n\n* Memo\n")
+                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Author\n\n* Abstract\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n")
                           :immediate-finish t
                           :unnarrowed t))))
          (setq citar-org-roam-capture-template-key "p"))
