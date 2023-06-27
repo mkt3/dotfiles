@@ -6,3 +6,6 @@ gpg --fetch-keys https://github.com/mkt3.gpg
 # list gpg directory
 gpgconf --list-dir
 
+
+# Trust gpg key
+gpg --edit-key "<gpg key id>" trust quit

@@ -145,9 +145,6 @@ export SQLITE_HISTORY="${XDG_DATA_HOME}/sqlite_history"
 # dvdcss
 export DVDCSS_CACHE="${XDG_DATA_HOME}/dvdcss"
 
-# wget
-export WGETRC="${XDG_CONFIG_HOME}/wgetr"
-
 # opam
 export OPAMROOT="${XDG_DATA_HOME}/opam"
 export PATH="${PATH}:${OPAMROOT}/default/bin:"
