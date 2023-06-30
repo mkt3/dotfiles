@@ -1051,9 +1051,9 @@
          (setq org-roam-dailies-directory "daily_notes/")
          (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          :custom
-         (org-roam-capture-templates '(("n" "notes" plain "%?"
+         (org-roam-capture-templates '(("n" "note" plain "%?"
                                         :if-new
-                                        (file+head "notes/${slug}.org"
+                                        (file+head "note/${slug}.org"
                                                    "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
