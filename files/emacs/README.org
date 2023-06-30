@@ -1067,6 +1067,11 @@
                                         (file+head "reference/web/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
+                                       ("c" "config" plain "%?"
+                                        :if-new
+                                        (file+head "config/${slug}.org.gpg" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
                                        ))
          (org-roam-dailies-capture-templates  '(("j" "journal" entry
                                                  "** %<%H:%M> %?"
