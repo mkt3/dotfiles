@@ -1102,13 +1102,12 @@
 
        (use-package consult-org-roam
          :ensure t
-         ;; :after (consult org-roam)
+         :after (consult org-roam)
          :init
          (consult-org-roam-mode 1)
          :custom
          (consult-org-roam-grep-func #'consult-ripgrep)
-         :bind (("C-c n e" . consult-org-roam-file-find)
-                ("C-c n b" . consult-org-roam-backlinks)
+         :bind (("C-c n b" . consult-org-roam-backlinks)
                 ("C-c n s" . consult-org-roam-search)))
 
        (use-package citar
