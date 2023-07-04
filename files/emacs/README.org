@@ -201,12 +201,14 @@
    #+end_src
 ** Authentication
    #+begin_src emacs-lisp
+     (require 'epa-file)
+     (epa-file-enable)
+
      (use-package plstore
        :if (file-directory-p my:d:password-store)
        :init
        (setq epa-pinentry-mode 'loopback))
    #+end_src
-
 ** Misc
    #+begin_src emacs-lisp
      (defalias 'yes-or-no-p 'y-or-n-p)
@@ -1033,6 +1035,7 @@
        (use-package org-roam
          :ensure t
          :after org
+         :demand t
          :if (file-directory-p my:d:org-roam)
          :bind (("C-c n a" . org-roam-alias-add)
                 ("C-c n f" . org-roam-node-find)
@@ -1102,13 +1105,11 @@
 
        (use-package consult-org-roam
          :ensure t
-         ;; :after (consult org-roam)
          :init
          (consult-org-roam-mode 1)
          :custom
          (consult-org-roam-grep-func #'consult-ripgrep)
-         :bind (("C-c n e" . consult-org-roam-file-find)
-                ("C-c n b" . consult-org-roam-backlinks)
+         :bind (("C-c n b" . consult-org-roam-backlinks)
                 ("C-c n s" . consult-org-roam-search)))
 
        (use-package citar

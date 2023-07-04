@@ -58,7 +58,6 @@ else
 fi
 
 alias jl='~/.local/bin/jupyterlab.sh'
-alias ta='~/.local/bin/tmux_session.sh'
 
 chpwd() {
     ls
@@ -147,8 +146,8 @@ if [[ "$OS" == 'Darwin' ]]; then
    gpgconf --launch gpg-agent
 fi
 
-# Remove only the files that have been deleted more than 30 days ago:
-yes y | trash-empty 30
+# Remove only the files that have been deleted more than 7 days ago:
+yes y | trash-empty 7
 
 # Mount Google Drive (Arch Linux desktop environment only)
 local GOOGLE_DRIVE="${HOME}/GoogleDrive"
