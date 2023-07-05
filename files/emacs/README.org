@@ -203,11 +203,7 @@
    #+begin_src emacs-lisp
      (require 'epa-file)
      (epa-file-enable)
-
-     (use-package plstore
-       :if (file-directory-p my:d:password-store)
-       :init
-       (setq epa-pinentry-mode 'loopback))
+     (setq epa-pinentry-mode 'loopback)
    #+end_src
 ** Misc
    #+begin_src emacs-lisp
@@ -625,7 +621,7 @@
        :delight
        :bind ("M-/" . undo-tree-redo)
        :custom
-       (undo-tree-auto-save-history  t)
+       (undo-tree-auto-save-history nil)
        (undo-tree-history-directory-alist  `(("." . ,(concat user-emacs-directory
                                                              ".cache/undo-tree-hist/"))))
        :config
@@ -1057,7 +1053,7 @@
          (org-roam-capture-templates '(("n" "note" plain "%?"
                                         :if-new
                                         (file+head "note/${slug}.org"
-                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_auto_set_lastmod: t\n#+hugo_slug: ${id}\n#+hugo_draft: true\n\n")
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_slug: ${id}\n#+hugo_draft: true\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
@@ -1150,7 +1146,29 @@
                   (file-directory-p my:d:org-hugo))
          :custom
          (org-hugo-base-dir my:d:org-hugo)
-         (org-hugo-default-section-directory "notes"))
+         (org-hugo-default-section-directory "notes")
+         :config
+         (defun org-hugo-export-drafts ()
+           "Export all non-draft .org files in my:d:org-roam to markdown using org-hugo."
+           (interactive)
+           (let ((recentf-active recentf-mode))
+             (when recentf-active
+               (recentf-mode -1))
+             (dolist (org-file (directory-files-recursively (expand-file-name "note" my:d:org-roam) "\\.org$"))
+               (with-current-buffer (find-file-noselect org-file)
+                 (save-excursion
+                   (goto-char (point-min))
+                   (when (re-search-forward "^#\\+hugo_draft: false$" nil t)
+                     (let ((modified (buffer-modified-p)))
+                       (goto-char (point-min))
+                       (while (re-search-forward "^#\\+last_modified:" nil t)
+                         (replace-match "#+hugo_lastmod:"))
+                       (org-hugo-export-to-md)
+                       (set-buffer-modified-p modified)
+                       )))
+                 (kill-buffer)))
+             (when recentf-active
+               (recentf-mode 1)))))
      #+end_src
 *** Markdown
     #+begin_src emacs-lisp
