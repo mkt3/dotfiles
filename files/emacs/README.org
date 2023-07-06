@@ -89,7 +89,8 @@
    #+begin_src emacs-lisp
      (setq-default
       indent-tabs-mode nil
-      tab-width 4)
+      tab-width 4
+      tab-always-indent t)
    #+end_src
 ** Truncate line
    #+begin_src emacs-lisp
@@ -519,10 +520,10 @@
     #+begin_src emacs-lisp
       (use-package tempel
         :ensure t
-        :bind (nil
-               :map tempel-map
-               ("C-i" . tempel-next)
-               )
+        ;; :bind (nil
+        ;;        :map tempel-map
+        ;;        ("C-i" . tempel-next)
+        ;;        )
         :init
         (defun tempel-setup-capf ()
           (setq-local completion-at-point-functions
@@ -544,8 +545,7 @@
         :custom ((corfu-auto t)
                  (corfu-auto-prefix 1)
                  (corfu-auto-delay 0)
-                 (corfu-cycle t)
-                 (tab-always-indent 'complete))
+                 (corfu-cycle t))
         :init
         (global-corfu-mode)
         (corfu-popupinfo-mode))
