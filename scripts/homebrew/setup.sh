@@ -21,6 +21,6 @@ setup_homebrew() {
     brew bundle
 
     info "Updating apps"
-    brew upgrade
+    brew upgrade || true
     brew cleanup
 }
