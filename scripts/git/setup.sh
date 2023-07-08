@@ -40,6 +40,10 @@ setup_git() {
 
     git config --global init.defaultBranch main
 
+    git config --global fetch.prune true
+
+    git config --global core.ignorecase false
+
     git config --global commit.gpgsign true
 
     # delta
