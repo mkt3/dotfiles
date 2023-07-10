@@ -1,5 +1,3 @@
-tap "homebrew/cask"
-tap "homebrew/core"
 tap "homebrew/cask-fonts"
 brew "curl"
 brew "coreutils"
@@ -72,7 +70,6 @@ cask "libreoffice"
 mas "Kindle", id: 405399194
 mas "Slack", id: 803453959
 mas "The Unarchiver", id: 425424353
-mas "Enpass", id: 732710998
 mas "Sequel Ace", id: 1518036000
 mas "GoodNotes", id: 1444383602
 mas "Dictonaries", id: 1380563956
