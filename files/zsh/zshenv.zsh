@@ -47,13 +47,9 @@ if [[ "$OS" == 'Darwin' ]];then
     if [[ "$ARCH" == 'arm64' ]]; then
         export PATH="/opt/homebrew/bin:${MAC_DEFAULT_PATH}"
         export PATH="/opt/homebrew/opt/texinfo/bin:${PATH}"
-        export LIBRARY_PATH="/opt/homebrew/opt/libgccjit/lib/gcc/11"
-        export CPATH="/opt/homebrew/Cellar/libgccjit/11.2.0_1/include"
     elif [[ "$ARCH" == 'x86_64' ]]; then
         export PATH="/usr/local/bin:${MAC_DEFAULT_PATH}"
         export PATH="/usr/local/opt/texinfo/bin:${PATH}"
-        export LIBRARY_PATH="/usr/local/opt/libgccjit/lib/gcc/11"
-
     fi
 
 elif [[ "$OS" == 'Linux' ]];then

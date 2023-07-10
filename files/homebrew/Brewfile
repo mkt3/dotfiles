@@ -37,6 +37,7 @@ brew "iproute2mac"
 brew "go"
 brew "hugo"
 brew "cmake"
+brew "pam-reattach" # for TouchID with sudo
 brew "unar"
 brew "shellcheck"
 brew "isync"
