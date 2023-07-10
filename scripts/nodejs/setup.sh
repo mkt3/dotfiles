@@ -7,7 +7,7 @@ setup_nodejs() {
     title "Setting up nodejs"
 
     info "Installing nodejs"
-    local nodejs_version="nodejs@20.3.0"
+    local nodejs_version="node@20.3.0"
     "${CARGO_HOME}/bin/rtx" install "$nodejs_version"
     "${CARGO_HOME}/bin/rtx" use -g "$nodejs_version"
 
