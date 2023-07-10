@@ -15,9 +15,9 @@ setup_gpg() {
         ln -sfn "${gpg_file_dir}/gpg.conf" "${GNUPGHOME}/gpg.conf"
     fi
 
-    if [ "$OS" = "darwin" ]; then
+    if [ "$OS" = "Darwin" ]; then
         ln -sfn "${gpg_file_dir}/gpg-agent_for_macos.conf" "${GNUPGHOME}/gpg-agent.conf"
-    elif [ "$OS" = "linux" ]; then
+    elif [ "$OS" = "Linux" ]; then
         ln -sfn "${gpg_file_dir}/gpg-agent_for_linux.conf" "${GNUPGHOME}/gpg-agent.conf"
     fi
 

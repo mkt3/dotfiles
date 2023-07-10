@@ -71,7 +71,7 @@ setup_python() {
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
 
     info "Creating symlink for ruff"
-    if [ "$OS" = "darwin" ]; then
+    if [ "$OS" = "Darwin" ]; then
         eval "ln -sfn ${python_file_dir}/ruff \"${HOME}/Library/Application Support/\""
     else
         ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"

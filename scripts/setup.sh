@@ -16,8 +16,6 @@ UI=$1
 
 DEV=${2:-"nodev"}
 
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-
 . "${REPO_DIR}/scripts/common.sh"
 
 setup_files="${REPO_DIR}/scripts/**/setup.sh"
@@ -126,11 +124,11 @@ setup_mac() {
 }
 
 execute_setup() {
-    case $OS in
-        darwin)
+    case "$OS" in
+        Darwin)
             setup_mac
             ;;
-        linux)
+        Linux)
             setup_linux
             ;;
         *)
