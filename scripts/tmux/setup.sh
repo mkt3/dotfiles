@@ -19,4 +19,15 @@ setup_tmux() {
         info "Clonening tpm repository"
         git clone $tpm_git_url "$tpm_install_dir"
     fi
+
+    if [[ "$OS" == "Darwin" ]] && ! infocmp tmux-256color >/dev/null 2>&1; then
+        tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
+        trap 'rm -f "$tmpfile"' EXIT
+        if [[ "$ARCH" == 'arm64' ]]; then
+            /opt/homebrew/opt/ncurses/bin/infocmp tmux-256color > "$tmpfile"
+        elif [[ "$ARCH" == 'x86_64' ]]; then
+            /usr/local/opt/ncurses/bin/infocmp tmux-256color > "$tmpfile"
+        fi
+        tic -xe tmux-256color "$tmpfile"
+    fi
 }

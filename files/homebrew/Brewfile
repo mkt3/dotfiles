@@ -28,6 +28,7 @@ brew "neofetch"
 brew "axel"
 brew "jq"
 brew "mas"
+brew "ncurses" # for tmux-256color
 brew "tmux"
 brew "vim"
 brew "wget"
