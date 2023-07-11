@@ -9,7 +9,21 @@
 
 ## Install
 1. Sign in to App store manually (Only macOS)
-2. Run
+2. Run one of the following:
+  - CUI environment only
+    ```bash
+    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui
+    ```
+  - CUI development environment only
+    ```bash
+    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui dev
+    ```
+  - GUI & CUI development environment
+    ```bash
+    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui dev
+    ```
+## Update
+1. Run one of the following:
   - CUI environment only
     ```bash
     curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui
