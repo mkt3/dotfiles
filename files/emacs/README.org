@@ -200,11 +200,13 @@
        (save-place-mode t))
 
    #+end_src
-** Authentication
+** Encrypting/decrypting
    #+begin_src emacs-lisp
      (require 'epa-file)
      (epa-file-enable)
      (setq epa-pinentry-mode 'loopback)
+     ; https://www.reddit.com/r/emacs/comments/14t3jcb/anyone_seen_if_gnupg_243_encryption_with_emacs/
+     (fset 'epg-wait-for-status 'ignore)
    #+end_src
 ** Misc
    #+begin_src emacs-lisp
