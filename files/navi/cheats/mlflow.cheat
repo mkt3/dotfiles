@@ -1,0 +1,7 @@
+% mlflow
+
+# mlflow ui start
+mlflow ui -h 0.0.0.0
+
+# Complete deletion of deleted tasks on mlflow ui
+ mlflow gc
