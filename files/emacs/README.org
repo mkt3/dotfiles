@@ -827,6 +827,8 @@
         :hook ((python-ts-mode-hook . poetry-tracking-mode)))
       (use-package flymake-ruff
         :ensure t
+        :config
+        (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml"))
         :hook ((python-ts-mode-hook . (lambda ()
                                         (advice-add 'eglot-flymake-backend :after
                                                     (lambda (report-fn &rest args)
