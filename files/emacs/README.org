@@ -1298,8 +1298,7 @@
           (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
                   (list (plist-get auth-info :feed-url)
                         :api-url (plist-get auth-info :api-url)
-                        :password (plist-get auth-info :password)))))
-      )
+                        :password (plist-get auth-info :password))))))
 #+end_src
 * Mail
 ** mu4e
