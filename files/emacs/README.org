@@ -49,7 +49,7 @@
        :if (display-graphic-p)
        :config
        (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
-       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME"))
+       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID"))
        (exec-path-from-shell-initialize))
    #+end_src
 ** vc-use-package
@@ -69,7 +69,7 @@
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
      (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:nextcloud))
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
-     (defconst my:d:password-store (expand-file-name "password-store" my:d:nextcloud))
+     (defconst my:d:password-store (getenv "PASSWORD_STORE_DIR"))
    #+end_src
 * Builtin config
 ** scroll
@@ -202,11 +202,36 @@
    #+end_src
 ** Encrypting/decrypting
    #+begin_src emacs-lisp
-     (require 'epa-file)
-     (epa-file-enable)
-     (setq epa-pinentry-mode 'loopback)
-     ; https://www.reddit.com/r/emacs/comments/14t3jcb/anyone_seen_if_gnupg_243_encryption_with_emacs/
-     (fset 'epg-wait-for-status 'ignore)
+     (use-package epg
+       :custom
+       (epg-pinentry-mode 'loopback)
+       :config
+       ;; https://www.reddit.com/r/emacs/comments/14t3jcb/anyone_seen_if_gnupg_243_encryption_with_emacs/
+       (fset 'epg-wait-for-status 'ignore))
+
+     (use-package epa
+       :after epg
+       :config
+       (require 'epa-file)
+       (epa-file-enable)
+       )
+
+     (use-package password-store :ensure t)
+
+     (use-package plstore
+       :if (file-directory-p my:d:password-store)
+       :mode (("\\.plist\\'" . plstore-mode))
+       :custom
+       (plstore-encrypt-to (getenv "GPG_KEY_ID"))
+       :config
+       (setq store (plstore-open (expand-file-name "plstore.plist" my:d:password-store))))
+
+     (use-package auth-source
+       :if (file-directory-p my:d:password-store)
+       :custom
+       (auth-source-gpg-encrypt-to (getenv "GPG_KEY_ID"))
+       :config
+       (add-to-list 'auth-sources (expand-file-name "plstore.plist" my:d:password-store)))
    #+end_src
 ** Misc
    #+begin_src emacs-lisp
@@ -1217,7 +1242,8 @@
      #+begin_src emacs-lisp
        (use-package nov
          :ensure t
-         :if (display-graphic-p))
+         :if (display-graphic-p)
+         :mode (("\\.epub\\'" . nov-mode)))
      #+end_src
 * Tramp
   #+begin_src emacs-lisp
@@ -1244,6 +1270,36 @@
                                "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
                                "-o ControlMaster=auto -o ControlPersist=yes")))
   #+end_src
+* Rss
+  #+begin_src emacs-lisp
+    (use-package elfeed
+      :ensure t
+      :if (file-directory-p my:d:nextcloud)
+      :bind
+      ("C-x w" . elfeed))
+
+    (use-package elfeed-protocol
+      :ensure t
+      :demand t
+      :if (file-directory-p my:d:nextcloud)
+      :after elfeed
+      :config
+      (elfeed-protocol-enable)
+      :custom
+      (elfeed-use-curl t)
+      (elfeed-set-timeout 36000)
+      (elfeed-log-level 'debug)
+      (elfeed-protocol-fever-update-unread-only t)
+      :config
+      ;; (load (expand-file-name "personal_config/emacs_mail/config.el" my:d:nextcloud))
+                                            ; mail server config
+      (setq elfeed-feeds
+          (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
+                  (list (plist-get auth-info :feed-url)
+                        :api-url (plist-get auth-info :api-url)
+                        :password (plist-get auth-info :password)))))
+      )
+#+end_src
 * Mail
 ** mu4e
    #+begin_src emacs-lisp
@@ -1280,7 +1336,7 @@
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
              (lambda (docid msg target)
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
-       (load (expand-file-name "personal_config/emacs_mail/config.el" my:d:nextcloud)) ; mail server config
+       (load (expand-file-name "personal_config/emacs_mail/config.el.gpg" my:d:nextcloud)) ; mail server config
        )
    #+end_src
 
@@ -1347,3 +1403,16 @@
        :config
        (atomic-chrome-start-server))
    #+end_src
+
+** dict
+   #+begin_src emacs-lisp
+     (when (eq system-type 'darwin)
+       (defun monokakido-lookup (word)
+         "Lookup word with Dictionaries.app by Monokakido"
+         (call-process "open" nil 0 nil (concat "mkdictionaries:///?text=" word)))
+       (defun monokakido-lookup-word ()
+         "Lookup the word at point with Dictionaries.app by Monokakido."
+         (interactive)
+         (monokakido-lookup (read-from-minibuffer "Monokakido: " (current-word))))
+       (global-set-key (kbd "C-c w") 'monokakido-lookup-word))
+#+end_src

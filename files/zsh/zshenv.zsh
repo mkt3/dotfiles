@@ -37,6 +37,8 @@ export LISTMAX=1000
 # personal env
 [ -d "${HOME}/Nextcloud/personal_config/env" ] && . "${HOME}/Nextcloud/personal_config/env/zshenv"
 
+# password store
+[ -d "${HOME}/Nextcloud/personal_config/password-store" ] && export PASSWORD_STORE_DIR="${HOME}/Nextcloud/personal_config/password-store"
 
 if [[ "$OS" == 'Darwin' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
