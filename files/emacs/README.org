@@ -67,7 +67,7 @@
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
      (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:nextcloud))
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
-     (defconst my:d:password-store (getenv "PASSWORD_STORE_DIR"))
+     (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
    #+end_src
 * Builtin config
 ** scroll
