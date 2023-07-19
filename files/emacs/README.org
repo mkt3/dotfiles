@@ -52,14 +52,12 @@
        (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID"))
        (exec-path-from-shell-initialize))
    #+end_src
-** vc-use-package
+** Vc-use-package
    #+begin_src emacs-lisp
      (eval-and-compile
        (unless (package-installed-p 'vc-use-package)
          (package-vc-install "https://github.com/slotThe/vc-use-package"))
        (require 'vc-use-package))
-
-
    #+end_src
 ** Constant
    #+begin_src emacs-lisp
@@ -189,6 +187,7 @@
        (setq recentf-exclude '(".recentf"
                                "^/tmp\\.*"
                                "bookmarks"
+                               "\\.gpg"
                                "\\.*.calendar.ics"))
        :config
        (recentf-mode))
@@ -1008,18 +1007,8 @@
          (org-use-speed-commands t)
          (org-log-done t)
          (org-adapt-indentation t)
-         (org-confirm-babel-evaluate nil)
-         (org-agenda-current-time-string "now ============")
-         (org-agenda-todo-ignore-scheduled 'feature)
-         (org-gtd-engage-prefix-width 32)
-         :config
-         (add-hook 'org-mode-hook (lambda ()
-                                    (setq-local time-stamp-active t
-                                                time-stamp-line-limit 18
-                                                time-stamp-start "^#\\+last_modified: [ \t]*"
-                                                time-stamp-end "$"
-                                                time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
-                                    (add-hook 'before-save-hook 'time-stamp nil 'local))))
+         (org-confirm-babel-evaluate nil))
+
        (use-package org-appear
          :ensure t
          :after org
@@ -1029,18 +1018,27 @@
          (org-appear-inside-latex   t)
          (org-appear-autosubmarkers t))
      #+end_src
-**** org-gtd
+**** org gtd
      #+begin_src emacs-lisp
+       (use-package org-agenda
+         :after org
+         :if (file-directory-p my:d:org-gtd)
+         :custom
+          (org-agenda-current-time-string "now ============")
+          (org-agenda-todo-ignore-scheduled 'feature))
+
        (use-package org-gtd
          :ensure t
          :demand t
          :after org
+         :if (file-directory-p my:d:org-gtd)
          :init
          (setq org-gtd-update-ack "3.0.0")
          :custom
          (org-gtd-directory my:d:org-gtd)
          (org-edna-use-inheritance t)
          (org-gtd-organize-hooks '(org-gtd-set-area-of-focus))
+         (org-gtd-engage-prefix-width 32)
          (org-gtd-areas-of-focus '("Personal" "Home" "Research" "Work"))
          :config
          (org-edna-mode 1)
@@ -1107,6 +1105,13 @@
                                                                         "#+title: %<%Y-%m>\n"
                                                                         ("%<%Y-%m-%d>")))))
          :config
+         (add-hook 'org-mode-hook (lambda ()
+                                    (setq-local time-stamp-active t
+                                                time-stamp-line-limit 18
+                                                time-stamp-start "^#\\+last_modified: [ \t]*"
+                                                time-stamp-end "$"
+                                                time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
+                                    (add-hook 'before-save-hook 'time-stamp nil 'local)))
          (cl-defmethod org-roam-node-type ((node org-roam-node))
            "Return the TYPE of NODE."
            (condition-case nil
@@ -1217,26 +1222,26 @@
     #+begin_src emacs-lisp
       (use-package yaml-mode
         :ensure t
-        :mode (("\\.yml\\'" . yaml-mode)
-               ("\\.yaml\\'" . yaml-mode))
-        :commands (yaml-mode))
+        :mode (("\\.yml\\'" . yaml-ts-mode)
+               ("\\.yaml\\'" . yaml-ts-mode))
+        :commands (yaml-ts-mode))
     #+end_src
 *** TOML
     #+begin_src emacs-lisp
       (use-package toml-mode
         :ensure t
-        :mode (("\\.toml\\'" . toml-mode))
-        :commands (toml-mode))
+        :mode (("\\.toml\\'" . toml-ts-mode))
+        :commands (toml-ts-mode))
     #+end_src
 *** JSON
     #+begin_src emacs-lisp
       (use-package json-mode
         :ensure t
-        :mode (("\\.json\\'" . json-mode))
-        :commands (json-mode))
+        :mode (("\\.json\\'" . json-ts-mode))
+        :commands (json-ts-mode))
       (use-package json-reformat
         :ensure t
-        :after (json-mode))
+        :after (json-ts-mode))
     #+end_src
 *** EPUB
      #+begin_src emacs-lisp
@@ -1275,8 +1280,22 @@
     (use-package elfeed
       :ensure t
       :if (file-directory-p my:d:nextcloud)
-      :bind
-      ("C-x w" . elfeed))
+      :bind (("C-x w" . elfeed)
+             :map elfeed-search-mode-map
+             ("u" . elfeed-search-fetch)
+             ("r" . elfeed-search-update--force)
+             ("j" . next-line)
+             ("k" . previous-line)
+             ("o" . elfeed-search-browse-url)
+             (";" . elfeed-search-quit-window)
+             ("m" . elfeed-search-show-entry)
+             :map elfeed-show-mode-map
+             ("j" . elfeed-show-next)
+             ("k" . elfeed-show-prev)
+             ("o" . elfeed-show-visit)
+             (";" . elfeed-kill-buffer))
+      :custom
+      (elfeed-db-directory (locate-user-emacs-file "elfeed")))
 
     (use-package elfeed-protocol
       :ensure t
@@ -1292,13 +1311,27 @@
       (elfeed-protocol-fever-update-unread-only t)
       (browse-url-browser-function 'eww)
       :config
-      ;; (load (expand-file-name "personal_config/emacs_mail/config.el" my:d:nextcloud))
-                                            ; mail server config
       (setq elfeed-feeds
-          (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
-                  (list (plist-get auth-info :feed-url)
-                        :api-url (plist-get auth-info :api-url)
-                        :password (plist-get auth-info :password))))))
+            (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
+                    (list (plist-get auth-info :feed-url)
+                          :api-url (plist-get auth-info :api-url)
+                          :password (plist-get auth-info :password))))))
+  #+end_src
+* Browser
+  #+begin_src emacs-lisp
+    (use-package eww
+      :bind (nil
+             :map eww-mode-map
+             ("h" . eww-back-url)
+             ("l" . eww-forward-url)
+             ("o" . eww-browse-with-external-browser)
+             ("r" . eww-reload)
+             ("y" . eww-copy-page-down)
+             ("j" . next-line)
+             ("k" . previous-line)
+             ("g" . beginning-of-buffer)
+             (";" . quit-window)
+             ("G" . end-of-buffer)))
 #+end_src
 * Mail
 ** mu4e
@@ -1404,7 +1437,7 @@
        (atomic-chrome-start-server))
    #+end_src
 
-** dict
+** dictionary
    #+begin_src emacs-lisp
      (when (eq system-type 'darwin)
        (defun monokakido-lookup (word)
