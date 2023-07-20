@@ -1369,7 +1369,7 @@
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
              (lambda (docid msg target)
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
-       (load (expand-file-name "personal_config/emacs_mail/config.el.gpg" my:d:nextcloud)) ; mail server config
+       (load (expand-file-name "personal_config/emacs_mail/mu4e_config.el" my:d:nextcloud)) ; mail server config
        )
    #+end_src
 
@@ -1448,4 +1448,15 @@
          (interactive)
          (monokakido-lookup (read-from-minibuffer "Monokakido: " (current-word))))
        (global-set-key (kbd "C-c w") 'monokakido-lookup-word))
+   #+end_src
+** prodigy
+   #+begin_src emacs-lisp
+     (use-package prodigy
+       :ensure t
+       :if (and (executable-find "goimapnotify") (file-directory-p my:d:nextcloud))
+       :commands (prodigy
+                  prodigy-start-service
+                  prodigy-find-service)
+       :config
+       (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
 #+end_src

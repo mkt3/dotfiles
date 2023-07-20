@@ -146,3 +146,6 @@ defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 1
 
 ## Keep the Spaces arrangement
 defaults write com.apple.dock "mru-spaces" -bool "false"
+
+# Disable nap mode for Emacs
+defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
