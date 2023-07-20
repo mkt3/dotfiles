@@ -1007,7 +1007,13 @@
          (org-use-speed-commands t)
          (org-log-done t)
          (org-adapt-indentation t)
-         (org-confirm-babel-evaluate nil))
+         (org-confirm-babel-evaluate nil)
+         :config
+         (org-babel-do-load-languages
+          'org-babel-load-languages
+          '((emacs-lisp . t)
+            (python . t)
+            (shell . t))))
 
        (use-package org-appear
          :ensure t
