@@ -102,7 +102,8 @@ setup_pacman() {
                                    borg
                                    zathura
                                    zathura-pdf-mupdf
-                                   isync
+                                   isync           # for mu4e
+                                   goimapnotify    # for mu4e
                                    kdeconnect
                                    dvd+rw-tools
                                    bitwarden
@@ -122,7 +123,7 @@ setup_pacman() {
                                 ddcci-driver-linux-dkms
                                 clipman
                                 emacs29-git
-                                mu
+                                mu # for mu4e
                                 zotero-bin
                                )
 
