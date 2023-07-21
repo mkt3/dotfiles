@@ -232,6 +232,18 @@
        :config
        (add-to-list 'auth-sources (expand-file-name "plstore.plist" my:d:password-store)))
    #+end_src
+** Server
+   #+begin_src emacs-lisp
+     (when (and (not (server-running-p))
+                (display-graphic-p))
+       (server-start))
+
+     (bind-key "C-x C-q" 'server-edit)
+   #+end_src
+
+   #+RESULTS:
+   : my:server-edit-and-close-tab
+
 ** Misc
    #+begin_src emacs-lisp
      (defalias 'yes-or-no-p 'y-or-n-p)
@@ -647,7 +659,7 @@
        :delight
        :bind ("M-/" . undo-tree-redo)
        :custom
-       (undo-tree-auto-save-history nil)
+       (undo-tree-auto-save-history t)
        (undo-tree-history-directory-alist  `(("." . ,(concat user-emacs-directory
                                                              ".cache/undo-tree-hist/"))))
        :config
@@ -1342,17 +1354,22 @@
 * Mail
 ** mu4e
    #+begin_src emacs-lisp
-     (use-package mu4e
-       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud))
+     (use-package mu4e                       ;
+       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
        :load-path (lambda () (if (eq system-type 'darwin) "/usr/local/share/emacs/site-lisp/mu/mu4e/" "/usr/share/emacs/site-lisp/mu4e/"))
        :demand t
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
               ("C-j" . skk-kakutei)
               :map mu4e-main-mode-map
-              ("r" . revert-buffer)
+              ("r" . mu4e-update-index)
+              :map mu4e-headers-mode-map
+              ("r" . mu4e-update-index)
+              ("a" . mu4e-headers-mark-for-refile)
               :map mu4e-view-mode-map
-              ("C-m" . browse-url-at-point))
+              ("C-m" . browse-url-at-point)
+              ("a" . mu4e-view-mark-for-refile)
+              ("r" . mu4e-update-index))
        :config
        (setq mu4e-context-policy 'pick-first)
        (setq mu4e-headers-auto-update t)
@@ -1375,14 +1392,16 @@
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
              (lambda (docid msg target)
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
-       (load (expand-file-name "personal_config/emacs_mail/mu4e_config.el" my:d:nextcloud)) ; mail server config
-       )
+       (load (expand-file-name "personal_config/emacs_mail/mu4e_config.el" my:d:nextcloud))
+       (add-hook 'emacs-startup-hook  (lambda ()
+                                        (my:imapnotify-start-prodigy-services)
+                                        (mu4e))))
    #+end_src
 
    #+begin_src emacs-lisp
      (use-package mu4e-alert
        :ensure t
-       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud))
+       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
        :custom
        (mu4e-alert-email-notification-types '(subjects))
        :config
@@ -1459,10 +1478,8 @@
    #+begin_src emacs-lisp
      (use-package prodigy
        :ensure t
-       :if (and (executable-find "goimapnotify") (file-directory-p my:d:nextcloud))
-       :commands (prodigy
-                  prodigy-start-service
-                  prodigy-find-service)
+       :if (and (executable-find "goimapnotify") (file-directory-p my:d:nextcloud) (display-graphic-p))
        :config
-       (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
+       (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud))
+       )
 #+end_src
