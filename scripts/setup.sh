@@ -150,7 +150,7 @@ check_argument() {
 
     if [ "$UI" != "gui" ] && [ "$UI" != "cui" ]; then
         echo "Invalid first argument. Please enter 'gui' or 'cui'."
-        
+
         exit 1
     fi
 }

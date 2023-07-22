@@ -19,7 +19,15 @@ setup_emacs() {
         touch "$skk_record_file"
     fi
 
-    mkdir -p "${XDG_CONFIG_HOME}/msmtp"
-    ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
+    if [ "$UI" = "cui" ]; then
+        info "Adding systemd"
+        mkdir -p "${XDG_CONFIG_HOME}/systemd/user"
+        ln -sfn "${emacs_file_dir}/emacs.service" "${XDG_CONFIG_HOME}/systemd/user/"
+
+        systemctl --user enable emacs.service
+    else
+        mkdir -p "${XDG_CONFIG_HOME}/msmtp"
+        ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
+    fi
 
 }
