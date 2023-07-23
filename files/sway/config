@@ -275,7 +275,7 @@ exec vivaldi-stable
 assign [app_id="org.wezfurlong.wezterm"] workspace $ws1
 exec wezterm
 assign [app_id="emacs"] workspace $ws9
-exec emacs
+exec COLORTERM=truecolor emacs
 assign [class="discord"] workspace $ws3
 for_window [app_id="zoom"] floating enable
 exec blueman-applet
