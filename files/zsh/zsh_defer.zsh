@@ -154,3 +154,11 @@ local GOOGLE_DRIVE="${HOME}/GoogleDrive"
 if [ -x "$(command -v google-drive-ocamlfuse)" ] && ! mountpoint -q "$GOOGLE_DRIVE"; then
     google-drive-ocamlfuse "$GOOGLE_DRIVE"
 fi
+
+# Emacs daemon for cui linux environment
+if [[ "$OS" == 'Linux' ]]; then
+    if command -v emacs > /dev/null && systemctl get-default | grep -q 'multi-user.target' && ! pgrep -u "$USER" emacs > /dev/null; then
+        emacs --daemon > /dev/null 2>&1
+    fi
+fi
+
