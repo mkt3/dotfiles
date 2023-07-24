@@ -141,11 +141,6 @@ if [[ ! -n $TMUX  ]]; then
     bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
 fi
 
-# gpg-agent
-if [[ "$OS" == 'Darwin' ]]; then
-   gpgconf --launch gpg-agent
-fi
-
 # Remove only the files that have been deleted more than 7 days ago:
 yes y | trash-empty 7
 

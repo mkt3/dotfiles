@@ -112,8 +112,8 @@ setup_linux() {
 
 setup_mac() {
     title "Setting up mac"
-    setup_macos
     setup_homebrew
+    setup_macos
     setup_wezterm
     setup_pre_common
     setup_karabiner

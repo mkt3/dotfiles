@@ -23,5 +23,9 @@ setup_emacs() {
         mkdir -p "${XDG_CONFIG_HOME}/msmtp"
         ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
     fi
+    if [ "$OS" = "Darwin" ]; then
+        ln -sfn /usr/local/opt/emacs-plus@29/Emacs.app /Applications
 
+        go install gitlab.com/shackra/goimapnotify@latest
+    fi
 }

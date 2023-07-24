@@ -9,6 +9,13 @@ export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --lin
 
 export FZF_TMUX_OPTS="-p 80%"
 
+# gpg-agent
+if [[ "$OS" == 'Darwin' ]]; then
+    if command -v gpgconf > /dev/null && ! pgrep -u "$USER" gpg-agent > /dev/null; then
+        gpgconf --launch gpg-agent
+    fi
+fi
+
 # Tmux
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     main_session="main_session"
