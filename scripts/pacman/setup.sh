@@ -122,7 +122,6 @@ setup_pacman() {
                                 nordic-theme
                                 ddcci-driver-linux-dkms
                                 clipman
-                                emacs29-git
                                 mu # for mu4e
                                 zotero-bin
                                )
