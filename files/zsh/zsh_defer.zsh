@@ -160,5 +160,8 @@ if [[ "$OS" == 'Linux' ]]; then
     if command -v emacs > /dev/null && systemctl get-default | grep -q 'multi-user.target' && ! pgrep -u "$USER" emacs > /dev/null; then
         emacs --daemon > /dev/null 2>&1
     fi
+elif [[ "$OS" == 'Darwin' ]]; then
+    if command -v emacs > /dev/null && ! pgrep -u "$USER" Emacs > /dev/null; then
+        Open /Applications/Emacs.app
+    fi
 fi
-
