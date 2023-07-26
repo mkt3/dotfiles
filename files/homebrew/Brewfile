@@ -40,9 +40,10 @@ brew "cmake"
 brew "pam-reattach" # for TouchID with sudo
 brew "unar"
 brew "shellcheck"
-brew "isync"
-brew "mu"
-brew "terminal-notifier"
+brew "isync"             # for mu4e
+brew "msmtp"             # for mu4e
+brew "mu"                # for mu4e
+brew "terminal-notifier" # for mu4e
 cask "wezterm"
 tap "d12frosted/emacs-plus"
 brew "emacs-plus@29", args: ["with-native-comp"]

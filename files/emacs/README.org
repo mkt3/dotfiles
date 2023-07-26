@@ -278,14 +278,15 @@
       (use-package modus-themes
         :disabled
         :custom
-        ((modus-themes-italic-constructs . t)
-         (modus-themes-bold-constructs   . t)
-         (modus-themes-region            . '(bg-only no-extend))
-         (modus-themes-syntax            . '(faint))
-         (modus-themes-diffs             . 'deuteranopia)
+        ((modus-themes-italic-constructs  t)
+         (modus-themes-bold-constructs    t)
+         (modus-themes-region             '(bg-only no-extend))
+         (modus-themes-syntax             '(faint))
+         (modus-themes-diffs              'deuteranopia)
          )
         :config
-        (load-theme 'modus-vivendi))
+        (load-theme 'modus-vivendi)
+        (load-theme 'modus-vivendi-tinted))
     #+end_src
 ** Font
    #+begin_src emacs-lisp
@@ -872,8 +873,7 @@
                                         (eglot-ensure)))))
       (use-package ruff-fix
         :vc (:fetcher github :repo mkt3/ruff-fix.el)
-        :hook
-        (before-save-hook . ruff-fix-before-save))
+        :hook (before-save-hook . ruff-fix-before-save))
       (use-package ein :ensure t)
       ;; It's defficult to display tqdm jupyter
       ;; (use-package jupyter
@@ -1011,7 +1011,6 @@
          (setq org-directory my:d:org)
          (setq org-latex-create-formula-image-program 'dvisvgm)
          :custom
-         (org-refile-targets  '((org-agenda-files :maxlevel . 1)))
          (org-startup-indent nil)
          (org-hide-leading-stars t)
          (org-return-follows-link t)
@@ -1038,38 +1037,144 @@
      #+end_src
 **** org gtd
      #+begin_src emacs-lisp
+       (use-package vulpea
+         :ensure t)
+
        (use-package org-agenda
          :after org
          :if (file-directory-p my:d:org-gtd)
-         :custom
-          (org-agenda-current-time-string "now ============")
-          (org-agenda-todo-ignore-scheduled 'feature))
-
-       (use-package org-gtd
-         :ensure t
-         :demand t
-         :after org
-         :if (file-directory-p my:d:org-gtd)
+         :bind (("C-c d" . org-agenda)
+                ("C-c g" . gtd)
+                :map org-mode-map
+                ("C-c C-w" . my:org-refile))
          :init
-         (setq org-gtd-update-ack "3.0.0")
+         (defvar org-gtd-file (expand-file-name "gtd.org" my:d:org-gtd))
+         (defun gtd ()
+           (interactive)
+           (find-file org-gtd-file))
          :custom
-         (org-gtd-directory my:d:org-gtd)
-         (org-edna-use-inheritance t)
-         (org-gtd-organize-hooks '(org-gtd-set-area-of-focus))
-         (org-gtd-engage-prefix-width 32)
-         (org-gtd-areas-of-focus '("Personal" "Home" "Research" "Work"))
+         (org-agenda-span 'day)
+         (org-agenda-remove-tags t)
+         (org-agenda-current-time-string "now ============")
+         (org-agenda-todo-ignore-scheduled 'feature)
+         (org-agenda-skip-deadline-prewarning-if-scheduled t)
+         (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
+                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")
+                              ))
+         (org-todo-keyword-faces '(("TODO" :foreground "red"
+                                    :weight bold)
+                                   ("IN PROGRESS" :foreground "cornflower blue"
+                                    :weight bold)
+                                   ("DONE" :foreground "green"
+                                    :weight bold)
+                                   ("WAITING" :foreground "orange"
+                                    :weight bold)
+                                   ("CANCELLED" :foreground "green"
+                                    :weight bold)))
+         (org-habit-graph-column 50)
          :config
-         (org-edna-mode 1)
-         :bind
-         (("C-c d c" . org-gtd-capture)
-          ("C-c d e" . org-gtd-engage)
-          ("C-c d p" . org-gtd-process-inbox)
-          ("C-c d n" . org-gtd-show-all-next)
-          ("C-c d s" . org-gtd-show-stuck-projects)
-          :map org-gtd-clarify-map
-          ("C-c c" . org-gtd-organize)
-          :map org-agenda-mode-map
-          ("r" . org-gtd-engage)))
+         ;; The following function is a slight customization, quoted from the link below.
+         ;; https://d12frosted.io/posts/2021-01-16-task-management-with-roam-vol5.html
+         (add-to-list 'org-modules 'org-habit)
+         (setq org-agenda-prefix-format
+               '((agenda . " %i %(vulpea-agenda-category 20)%?-12t% s")
+                 (todo . " %i %(vulpea-agenda-category 20) ")
+                 (tags . " %i %(vulpea-agenda-category 20) ")
+                 (search . " %i %(vulpea-agenda-category 20) ")))
+         (defun vulpea-agenda-category (&optional len)
+           (let* ((file-name (when buffer-file-name
+                               (file-name-sans-extension
+                                (file-name-nondirectory buffer-file-name))))
+                  (title (vulpea-buffer-prop-get "title"))
+                  (category (org-get-category))
+                  (result
+                   (or (if (and
+                            title
+                            (string-equal category file-name))
+                           title
+                         category)
+                       "")))
+             (if (numberp len)
+                 (s-truncate len (s-pad-right len " " result))
+               result)))
+         (defun vulpea-project-p ()
+           "Return non-nil if current buffer has any todo entry.
+
+         TODO entries marked as done are ignored, meaning the this
+         function returns nil if current buffer contains only completed
+         tasks."
+           (seq-find
+            (lambda (type)
+              (eq type 'todo))
+            (org-element-map
+                (org-element-parse-buffer 'headline)
+                'headline
+              (lambda (h)
+                (org-element-property :todo-type h)))))
+         (defun vulpea-project-update-tag ()
+           "Update PROJECT tag in the current buffer."
+           (when (and (not (active-minibuffer-window))
+                      (vulpea-buffer-p))
+             (save-excursion
+               (goto-char (point-min))
+               (let* ((tags (vulpea-buffer-tags-get))
+                      (original-tags tags))
+                 (if (vulpea-project-p)
+                     (setq tags (cons "project" tags))
+                   (setq tags (remove "project" tags)))
+
+                 ;; cleanup duplicates
+                 (setq tags (seq-uniq tags))
+
+                 ;; update tags if changed
+                 (when (or (seq-difference tags original-tags)
+                           (seq-difference original-tags tags))
+                   (apply #'vulpea-buffer-tags-set tags))))))
+
+         (defun vulpea-buffer-p ()
+           "Return non-nil if the currently visited buffer is a note."
+           (and buffer-file-name
+                (string-prefix-p
+                 (expand-file-name (file-name-as-directory org-roam-directory))
+                 (file-name-directory buffer-file-name))))
+
+         (defun vulpea-project-files ()
+           "Return a list of note files containing 'project' tag." ;
+           (seq-uniq
+            (seq-map
+             #'car
+             (org-roam-db-query
+              [:select [nodes:file]
+                       :from tags
+                       :left-join nodes
+                       :on (= tags:node-id nodes:id)
+                       :where (like tag (quote "%\"project\"%"))]))))
+         (defun vulpea-agenda-files-update (&rest _)
+           "Update the value of `org-agenda-files'."
+           (setq org-agenda-files (append (list my:d:org-gtd) (vulpea-project-files)))
+           (setq my:refile-targets (append (list org-gtd-file) (vulpea-project-files)))
+           (setq org-refile-targets '((my:refile-targets :maxlevel . 1))))
+         (add-hook 'find-file-hook #'vulpea-project-update-tag)
+         (add-hook 'before-save-hook #'vulpea-project-update-tag)
+         (advice-add 'org-agenda :before #'vulpea-agenda-files-update)
+         (advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
+         (advice-add 'org-refile :before #'vulpea-agenda-files-update)
+
+         (defun my:org-refile ()
+           "Custom refile command that updates refile targets each time."
+           (interactive)
+           (vulpea-agenda-files-update)
+           (call-interactively 'org-refile)))
+
+       (use-package org-capture
+         :after (org org-agenda)
+         :if (file-directory-p my:d:org-gtd)
+         :commands (org-capture)
+         :bind ("C-c c" . org-capture)
+         :init
+         :config
+         (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+                                        "** %^{Brief Description}"))))
       #+end_src
 **** org-roam
      #+begin_src emacs-lisp
@@ -1099,6 +1204,11 @@
                                         :if-new
                                         (file+head "note/${slug}.org"
                                                    "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_slug: ${id}\n#+hugo_draft: true\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
+                                       ("p" "project" plain "%?"
+                                        :if-new
+                                        (file+head "project/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
@@ -1307,6 +1417,8 @@
              ("o" . elfeed-search-browse-url)
              (";" . elfeed-search-quit-window)
              ("m" . elfeed-search-show-entry)
+             ("," . elfeed-search-first-entry)
+             ("." . elfeed-search-last-entry)
              :map elfeed-show-mode-map
              ("j" . elfeed-show-next)
              ("k" . elfeed-show-prev)
@@ -1349,7 +1461,9 @@
              ("k" . previous-line)
              ("g" . beginning-of-buffer)
              (";" . quit-window)
-             ("G" . end-of-buffer)))
+             ("G" . end-of-buffer))
+      :custom
+      (eww-search-prefix "https://www.google.com/search?q="))
 #+end_src
 * Mail
 ** mu4e
@@ -1364,14 +1478,13 @@
               :map mu4e-main-mode-map
               ("r" . mu4e-update-index)
               :map mu4e-headers-mode-map
-              ("r" . mu4e-update-index)
+              ("r" . mu4e-search-rerun)
               ("a" . mu4e-headers-mark-for-refile)
               :map mu4e-view-mode-map
               ("C-m" . browse-url-at-point)
               ("a" . mu4e-view-mark-for-refile)
               ("r" . mu4e-update-index))
        :config
-       (setq mu4e-context-policy 'pick-first)
        (setq mu4e-headers-auto-update t)
        (setq mu4e-headers-skip-duplicates t)
        (setq mu4e-headers-sort-field :date)
@@ -1388,11 +1501,53 @@
        (setq message-citation-line-function 'message-insert-formatted-citation-line)
        (setq mu4e-headers-include-related nil)
        (setq mu4e-headers-show-threads nil)
+       (setq mu4e-context-policy 'pick-first)
+       (setq mu4e-compose-context-policy 'always-ask)
        ;; https://github.com/djcb/mu/issues/1136#issuecomment-1229005006
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
              (lambda (docid msg target)
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
+       ;; for sending mails
+       (require 'smtpmail)
+       ;; don't keep message compose buffers around after sending:
+       (setq message-kill-buffer-on-exit t)
+       (setq sendmail-program "msmtp"
+             send-mail-function 'smtpmail-send-it
+             message-sendmail-f-is-evil t
+             message-sendmail-extra-arguments '("--read-envelope-from")
+             message-send-mail-function 'message-send-mail-with-sendmail)
        (load (expand-file-name "personal_config/emacs_mail/mu4e_config.el" my:d:nextcloud))
+       (defun my:break-word-into-bigrams (word)
+         "Break word into list of bi-grams if non-ascii characters."
+         (cond ((or (<= (length word) 2)
+                    (equal (length word) (string-bytes word)))
+                word)
+               ((string-match ":" word)
+                (let ((pos (string-match ":" word)))
+                  (concat (substring word 0 (+ 1 pos))
+                          (my:break-word-into-bigrams (substring word (+ 1 pos))))))
+               ((memq 'ascii (find-charset-string word))
+                (let ((ascii-parts (split-string word "\\([^[:ascii:]]+\\)" t)))
+                  (mapconcat (lambda (part)
+                               (if (string-match-p "[[:ascii:]]" part)
+                                   part
+                                 (my:break-word-into-bigrams part)))
+                             ascii-parts "")))
+               (t
+                (let ((char-list (split-string word "" t))
+                      (br-word ""))
+                  (while (cdr char-list)
+                    (setq br-word (concat br-word (concat (car char-list) (cadr char-list)) " "))
+                    (setq char-list (cdr char-list)))
+                  br-word))))
+       (defun my:break-query-into-bigrams (expr)
+         "Break strings into bi-grams in query."
+         (let ((word-list (split-string expr " " t))
+               (new ""))
+           (dolist (word word-list new)
+             (setq new (concat new (my:break-word-into-bigrams word) " ")))))
+       (setq mu4e-query-rewrite-function 'my:break-query-into-bigrams)
+
        (add-hook 'emacs-startup-hook  (lambda ()
                                         (my:imapnotify-start-prodigy-services)
                                         (mu4e))))

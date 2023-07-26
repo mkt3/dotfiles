@@ -102,8 +102,9 @@ setup_pacman() {
                                    borg
                                    zathura
                                    zathura-pdf-mupdf
-                                   isync           # for mu4e
-                                   goimapnotify    # for mu4e
+                                   msmtp        # for mu4e
+                                   isync        # for mu4e
+                                   goimapnotify # for mu4e
                                    kdeconnect
                                    dvd+rw-tools
                                    bitwarden

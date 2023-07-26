@@ -1,6 +1,7 @@
 local wezterm = require 'wezterm';
 
 local keys = {
+  {key="s",mods="SUPER",action=wezterm.action.SendKey{key="s", mods="ALT"}}, -- for emacs
   {key="x",mods="SUPER",action=wezterm.action.SendKey{key="x", mods="ALT"}}, -- for emacs
   {key="c",mods="SUPER",action=wezterm.action.SendKey{key="c", mods="ALT"}}, -- for emacs
   {key="w",mods="SUPER",action=wezterm.action.SendKey{key="w", mods="ALT"}}, -- for emacs
