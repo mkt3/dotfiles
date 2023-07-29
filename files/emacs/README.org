@@ -1071,7 +1071,7 @@
                                     :weight bold)
                                    ("CANCELLED" :foreground "green"
                                     :weight bold)))
-         (org-habit-graph-column 50)
+         (org-habit-graph-column 45)
          :config
          ;; The following function is a slight customization, quoted from the link below.
          ;; https://d12frosted.io/posts/2021-01-16-task-management-with-roam-vol5.html
