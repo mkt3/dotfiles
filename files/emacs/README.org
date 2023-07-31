@@ -1071,7 +1071,7 @@
                                     :weight bold)
                                    ("CANCELLED" :foreground "green"
                                     :weight bold)))
-         (org-habit-graph-column 45)
+         (org-habit-graph-column 46)
          :config
          ;; The following function is a slight customization, quoted from the link below.
          ;; https://d12frosted.io/posts/2021-01-16-task-management-with-roam-vol5.html
@@ -1224,6 +1224,11 @@
                                        ("c" "config" plain "%?"
                                         :if-new
                                         (file+head "config/${slug}.org.gpg" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
+                                       ("r" "record" plain "%?"
+                                        :if-new
+                                        (file+head "record/${slug}.org.gpg" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ))

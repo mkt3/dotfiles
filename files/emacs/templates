@@ -2,13 +2,6 @@ fundamental-mode ;; Available everywhere
 
 (today (format-time-string "%Y-%m-%d"))
 
-prog-mode
-
-(fixme (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME ")
-(todo (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "TODO ")
-(bug (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "BUG ")
-(hack (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "HACK ")
-
 latex-mode
 
 (begin "\\begin{" (s env) "}" r> n> "\\end{" (s env) "}")
@@ -54,27 +47,21 @@ emacs-lisp-mode
 
 org-mode
 
-(title "#+title: " p n "#+author: Daniel Mendler" n "#+language: en" n n)
 (quote "#+begin_quote" n> r> n> "#+end_quote")
 (example "#+begin_example" n> r> n> "#+end_example")
 (comment "#+begin_comment" n> r> n> "#+end_comment")
 (verse "#+begin_verse" n> r> n> "#+end_verse")
 (src "#+begin_src " p n> r> n> "#+end_src" :post (org-edit-src-code))
-(python "#+begin_src python" n> r> n "#+end_src" :post (org-edit-src-code))
-(shell "#+begin_src shell" n> r> n "#+end_src" :post (org-edit-src-code))
-(elisp "#+begin_src emacs-lisp" n> r> n "#+end_src" :post (org-edit-src-code))
-(jupyter "#+PROPERTY: header-args:python+ :kernel " p n "#+PROPERTY: header-args:python+ :session " p)
+(python "#+begin_src python" n> r> n> "#+end_src" :post (org-edit-src-code))
+(shell "#+begin_src shl" n> r> n> "#+end_src" :post (org-edit-src-code))
+(elisp "#+begin_src emacs-lisp" n> r> n> "#+end_src" :post (org-edit-src-code))
 
 sh-mode
 
 (! "#!/usr/bin/env bash" n q)
-
 (if "if [ " p " ]" n "  then " p n "fi" q)
-
 (ife "if [ " p " ]" n "  then " p n "else" p n "fi" q)
-
 (cs "case " p " in" n> p " )" n> p n> ";;" n> q n "esac)")
-
 (fr "for " p " in " p n "do" n> q n "done")
 
 python-mode
