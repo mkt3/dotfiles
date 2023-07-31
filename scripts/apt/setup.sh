@@ -17,6 +17,7 @@ setup_apt() {
                   iotop
                   nvtop
                   neofetch
+                  rsync
                   golang
                   libbz2-dev
                   libdb-dev

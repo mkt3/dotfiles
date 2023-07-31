@@ -1,7 +1,6 @@
 #!/bin/zsh
 # plugin
 zinit wait lucid blockf light-mode for \
-    @'zsh-users/zsh-syntax-highlighting' \
     @'olets/zsh-abbr'
 
 # rehash
@@ -72,10 +71,6 @@ if [[ "$TERM" == "dumb" ]]; then
     unfunction preexec
     PS1='$ '
 fi
-
-# Completion
-fpath+=$ZSH_COMPLETION_DIR
-autoload -Uz compinit && compinit
 
 # Navi
 _navi_call() {

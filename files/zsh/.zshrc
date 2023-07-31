@@ -33,6 +33,9 @@ bindkey -e
 # rtx
 (( ${+commands[rtx]} )) && eval "$(rtx activate zsh)"
 
+# Completion
+fpath+=$ZSH_COMPLETION_DIR
+
 # zsh plugin
 . "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
@@ -42,7 +45,7 @@ zinit ice atload'!_zsh_git_prompt_precmd_hook' lucid
 zinit light woefe/git-prompt.zsh
 
 zinit light zsh-users/zsh-autosuggestions
-
+zinit light zsh-users/zsh-syntax-highlighting
 
 zinit ice lucid atload"bindkey '\t' menu-select \"$terminfo[kcbt]\" menu-select; bindkey -M menuselect '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete; bindkey '^N' history-beginning-search-forward; bindkey '^P' history-beginning-search-backward"
 zinit light marlonrichert/zsh-autocomplete
