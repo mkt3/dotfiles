@@ -1071,16 +1071,16 @@
                                     :weight bold)
                                    ("CANCELLED" :foreground "green"
                                     :weight bold)))
-         (org-habit-graph-column 46)
+         (org-habit-graph-column 43)
          :config
          ;; The following function is a slight customization, quoted from the link below.
          ;; https://d12frosted.io/posts/2021-01-16-task-management-with-roam-vol5.html
          (add-to-list 'org-modules 'org-habit)
          (setq org-agenda-prefix-format
-               '((agenda . " %i %(vulpea-agenda-category 20)%?-12t% s")
-                 (todo . " %i %(vulpea-agenda-category 20) ")
-                 (tags . " %i %(vulpea-agenda-category 20) ")
-                 (search . " %i %(vulpea-agenda-category 20) ")))
+               '((agenda . " %i %(vulpea-agenda-category 17)%?-12t% s")
+                 (todo . " %i %(vulpea-agenda-category 17) ")
+                 (tags . " %i %(vulpea-agenda-category 17) ")
+                 (search . " %i %(vulpea-agenda-category 17) ")))
          (defun vulpea-agenda-category (&optional len)
            (let* ((file-name (when buffer-file-name
                                (file-name-sans-extension
