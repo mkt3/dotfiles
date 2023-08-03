@@ -780,9 +780,6 @@
 ** eglot
    #+begin_src emacs-lisp
      (use-package eglot
-       :config
-       (add-hook 'rust-mode-hook 'eglot-ensure)
-       (add-hook 'bash-ts-mode-hook 'eglot-ensure)
        :bind (nil
               :map eglot-mode-map
               ("C-c a" . eglot-code-actions)))
@@ -837,11 +834,8 @@
 ** languages
 *** Shell Script
     #+begin_src emacs-lisp
-      (use-package flymake-shellcheck
-        :ensure t
-        :commands flymake-shellcheck-load
-        :init
-        (add-hook 'bash-ts-mode-hook 'flymake-shellcheck-load))
+      (use-package sh-script
+        :hook ((bash-ts-mode-hook . eglot-ensure)))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
@@ -895,7 +889,8 @@
 
       (use-package cargo
         :ensure t
-        :hook (rust-mode . cargo-minor-mode))
+        :hook ((rust-mode-hook . eglot-ensure)
+               (rust-ts-mode . cargo-minor-mode)))
     #+end_src
 *** Lua
     #+begin_src emacs-lisp
@@ -923,16 +918,17 @@
          (web-mode-tag-auto-close-style 2)
          (indent-tabs-mode nil)
          (tab-width 2)
-         :hook (web-mode-hook . (lambda ()
-                                  (interactive)
-                                  (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                                    (add-node-modules-path)
-                                    (tide-setup)
-                                    (flycheck-mode +1)
-                                    (flycheck-add-mode 'javascript-eslint 'web-mode)
-                                    (setq flycheck-checker 'javascript-eslint)
-                                    (eldoc-mode +1)
-                                    (tide-hl-identifier-mode +1)))))
+         ;; :hook (web-mode-hook . (lambda ()
+         ;;                          (interactive)
+         ;;                          (when (string-equal "tsx" (file-name-extension buffer-file-name))
+         ;;                            (add-node-modules-path)
+         ;;                            (tide-setup)
+         ;;                            (flycheck-mode +1)
+         ;;                            (flycheck-add-mode 'javascript-eslint 'web-mode)
+         ;;                            (setq flycheck-checker 'javascript-eslint)
+         ;;                            (eldoc-mode +1)
+         ;;                            (tide-hl-identifier-mode +1))))
+         )
      #+end_src
 **** scss-mode
      #+begin_src emacs-lisp
@@ -952,24 +948,18 @@
      #+end_src
 **** rjsx-mode
      #+begin_src emacs-lisp
-       (use-package rjsx-mode
-         :ensure t
-         :mode ("\\.jsx\\'" "\\.js\\'")
-         :custom
-         (indent-tabs-mode nil)
-         (js-indent-level 2)
-         (js2-strict-missing-semi-waring nil)
-         (js2-mode-show-strict-warnings nil)
-         :config
-         :hook (rjsx-mode-hook . (lambda ()
-                                   (add-node-modules-path)
-                                   (flycheck-mode t))))
-     #+end_src
-**** tide
-     #+begin_src emacs-lisp
-       (use-package tide
-         :ensure t
-         :commands tide-setup)
+       ;; (use-package rjsx-mode
+       ;;   :ensure t
+       ;;   :mode ("\\.jsx\\'" "\\.js\\'")
+       ;;   :custom
+       ;;   (indent-tabs-mode nil)
+       ;;   (js-indent-level 2)
+       ;;   (js2-strict-missing-semi-waring nil)
+       ;;   (js2-mode-show-strict-warnings nil)
+       ;;   :config
+       ;;   :hook (rjsx-mode-hook . (lambda ()
+       ;;                             (add-node-modules-path)
+       ;;                             (flycheck-mode t))))
      #+end_src
 **** typescript-mode
      #+begin_src emacs-lisp
@@ -977,15 +967,11 @@
          :ensure t
          :custom
          (typescript-indent-level 2)
-         :hook (typescript-mode-hook . (lambda ()
-                                         (interactive)
-                                         (add-node-modules-path)
-                                         (flycheck-mode +1)
-                                         (tide-setup)
-                                         (eldoc-mode +1)
-                                         (tide-hl-identifier +1)
-                                         (flycheck-add-mode 'javascript-eslint 'web-mode)
-                                         (setq flycheck-checker 'javascript-eslint))))
+         :hook (typescript-ts-mode-hook . (lambda ()
+                                            (interactive)
+                                            (add-node-modules-path)
+                                            (eglot-ensure)
+                                            )))
      #+end_src
 ** Markup Languages
 *** Org
@@ -1370,7 +1356,8 @@
       (use-package json-mode
         :ensure t
         :mode (("\\.json\\'" . json-ts-mode))
-        :commands (json-ts-mode))
+        :commands (json-ts-mode)
+        :hook ((json-ts-mode-hook . eglot-ensure)))
       (use-package json-reformat
         :ensure t
         :after (json-ts-mode))

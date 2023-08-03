@@ -82,8 +82,9 @@ export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 [ -d "$CARGO_HOME" ] && . "${CARGO_HOME}/env"
 
-# npm path
+# node path
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export PATH="${PATH}:${XDG_DATA_HOME}/npm/bin:${XDG_DATA_HOME}/node/bin"
 
 # cuda path
 if [[ "$OS" == 'Linux' ]];then

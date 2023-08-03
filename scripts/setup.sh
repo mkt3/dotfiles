@@ -10,8 +10,6 @@ CONFIGS_DIR="${REPO_DIR}/files"
 SETUP="TRUE"
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
-ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
-
 UI=$1
 
 DEV=${2:-"nodev"}
@@ -81,7 +79,8 @@ setup_linux_ui() {
 }
 
 setup_linux() {
-    local distro=$(awk '{print $1; exit}' /etc/issue)
+    local distro
+    distro=$(awk '{print $1; exit}' /etc/issue)
     title "Setting up ${distro}"
 
     # distribution
