@@ -22,10 +22,10 @@ setup_nodejs() {
     for package in "${package_list[@]}"; do
         if echo "$installed_package" | grep -q "$package"; then
             info "$package updating..."
-            "${XDG_DATA_HOME}/node/bin/npm" update --location=global "$package"
+            "${XDG_DATA_HOME}/node/bin/npm" update -g "$package"
         else
             info "$package installting..."
-            "${XDG_DATA_HOME}/node/bin/npm" install --location=global "$package"
+            "${XDG_DATA_HOME}/node/bin/npm" install -g "$package"
         fi
     done
 }
