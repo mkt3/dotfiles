@@ -874,7 +874,6 @@
       (use-package ruff-fix
         :vc (:fetcher github :repo mkt3/ruff-fix.el)
         :hook (before-save-hook . ruff-fix-before-save))
-      (use-package ein :ensure t)
       ;; It's defficult to display tqdm jupyter
       ;; (use-package jupyter
       ;;   :ensure t
@@ -1206,7 +1205,7 @@
                                                    "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_slug: ${id}\n#+hugo_draft: true\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
-                                       ("p" "project" plain "%?"
+                                       ("j" "project" plain "%?"
                                         :if-new
                                         (file+head "project/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
@@ -1426,11 +1425,16 @@
              ("." . elfeed-search-last-entry)
              :map elfeed-show-mode-map
              ("j" . elfeed-show-next)
+             ("r" . elfeed-search-update--force)
+             ("u" . elfeed-search-fetch)
              ("k" . elfeed-show-prev)
              ("o" . elfeed-show-visit)
              (";" . elfeed-kill-buffer))
       :custom
-      (elfeed-db-directory (locate-user-emacs-file "elfeed")))
+      (elfeed-db-directory (locate-user-emacs-file "elfeed"))
+      :config
+      (advice-add 'elfeed-search-fetch :after (lambda (&rest _) (message "RSS fetch completed.")))
+    )
 
     (use-package elfeed-protocol
       :ensure t
@@ -1451,6 +1455,18 @@
                     (list (plist-get auth-info :feed-url)
                           :api-url (plist-get auth-info :api-url)
                           :password (plist-get auth-info :password))))))
+
+    (use-package elfeed-goodies
+      :ensure t
+      :demand t
+      :after elfeed
+      :bind (nil
+             :map elfeed-show-mode-map
+             ("j" . elfeed-goodies/split-show-next)
+             ("k" . elfeed-goodies/split-show-prev))
+
+      :config
+      (elfeed-goodies/setup))
   #+end_src
 * Browser
   #+begin_src emacs-lisp
