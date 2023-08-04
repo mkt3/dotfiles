@@ -53,7 +53,7 @@ org-mode
 (verse "#+begin_verse" n> r> n> "#+end_verse")
 (src "#+begin_src " p n> r> n> "#+end_src" :post (org-edit-src-code))
 (python "#+begin_src python" n> r> n> "#+end_src" :post (org-edit-src-code))
-(shell "#+begin_src shl" n> r> n> "#+end_src" :post (org-edit-src-code))
+(shl "#+begin_src shell" n> r> n> "#+end_src" :post (org-edit-src-code))
 (elisp "#+begin_src emacs-lisp" n> r> n> "#+end_src" :post (org-edit-src-code))
 
 sh-mode
