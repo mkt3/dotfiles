@@ -651,10 +651,8 @@
                 (value ,(nerd-icons-codicon "nf-cod-symbol_field") :face font-lock-builtin-face)
                 (variable ,(nerd-icons-codicon "nf-cod-symbol_variable") :face font-lock-variable-name-face)
                 (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face)))
-        ;; (custom-set-variables
-        ;;  '(kind-icon-default-style
-        ;;    '(:padding 0 :stroke 0 :margin 0 :radius 0 :height 0.6 :scale 1.0)))
-        ;; (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
+        (plist-put kind-icon-default-style :height 0.6)
+        (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
         )
       (use-package cape
         :ensure t
