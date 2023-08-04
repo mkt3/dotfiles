@@ -290,7 +290,10 @@
            (add-to-list 'default-frame-alist '(font . "Cica-20"))
          (add-to-list 'default-frame-alist '(font . "Cica-24"))))
 
-     (use-package nerd-icons :ensure t)
+     (use-package nerd-icons
+       :ensure t
+       :custom
+       (nerd-icons-scale-factor 0.8))
 
      (use-package nerd-icons-dired
        :ensure t
