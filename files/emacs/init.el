@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2023  Makoto Morinaga
 
-;; Author: Makoto Morinaga <makoto@mkt3.me>
+;; Author: Makoto Morinaga <makoto@mkt3.dev>
 
 ;;; Commentary:
 ;; It's an Emacs init file.
