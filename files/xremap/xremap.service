@@ -4,7 +4,7 @@ BindsTo=sway-session.target
 
 [Service]
 KillMode=process
-ExecStart=%h/.local/share/cargo/bin/xremap %h/.config/xremap/config.yml
+ExecStart=%h/.local/share/cargo/bin/xremap %h/.config/xremap/config.yml --watch
 ExecStop=/usr/bin/killall xremap
 Type=simple
 Restart=always
