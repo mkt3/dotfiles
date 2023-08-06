@@ -474,6 +474,7 @@
    #+begin_src emacs-lisp
      (use-package ddskk
        :ensure t
+       :demand t
        :if (display-graphic-p)
        :bind* ("C-j" . skk-kakutei)
        :custom
@@ -485,7 +486,18 @@
        (when (file-directory-p my:d:nextcloud)
          (setq skk-jisyo (cons (expand-file-name "personal_config/skk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
          )
-       (setq viper-mode nil))
+       (setq viper-mode nil)
+       :config
+       ;; マーカーを変更する
+       ;; https://github.com/skk-dev/ddskk/issues/162
+       (defun skk-set-display-table ()
+         (walk-windows (lambda (w)
+                         (let ((disptab (make-display-table)))
+                           (aset disptab ?\▼ (vector (make-glyph-code ?＃ 'escape-glyph)))
+                           (aset disptab ?\▽ (vector (make-glyph-code ?＠ 'escape-glyph)))
+                           (set-window-display-table w disptab)))))
+       (add-hook 'window-configuration-change-hook #'skk-set-display-table)
+       (add-hook 'after-init-hook #'skk-set-display-table))
    #+end_src
 ** smartparens
    #+begin_src emacs-lisp

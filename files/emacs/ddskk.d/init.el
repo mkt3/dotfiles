@@ -74,17 +74,6 @@
 ;; 変換の学習
 (require 'skk-study)
 
-;; マーカーを変更する
-;; https://github.com/skk-dev/ddskk/issues/162
-(defun skk-set-display-table ()
-  (walk-windows (lambda (w)
-                  (let ((disptab (make-display-table)))
-                    (aset disptab ?\▼ (vector (make-glyph-code ?＃ 'escape-glyph)))
-                    (aset disptab ?\▽ (vector (make-glyph-code ?＠ 'escape-glyph)))
-                    (set-window-display-table w disptab)))))
-(add-hook 'window-configuration-change-hook #'skk-set-display-table)
-(add-hook 'after-init-hook #'skk-set-display-table)
-
 ;; 複数の Emacsen を起動して個人辞書を共有する
 (setq skk-share-private-jisyo t)
 
