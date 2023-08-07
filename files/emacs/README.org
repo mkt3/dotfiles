@@ -400,6 +400,7 @@
    #+begin_src emacs-lisp
      (use-package whitespace
        :ensure t
+       :demand t
        :delight
        :bind ("C-c W" . whitespace-cleanup)
        :custom
@@ -408,9 +409,7 @@
                                       (tab-mark ?\t [?\u00BB ?\t]
                                                 [?\\ ?\t])))
        (whitespace-space-regexp  "\\(\u3000+\\)")
-       (whitespace-global-modes  '(emacs-lisp-mode shell-script-mode bash-ts-mode python-ts-mode
-                                                   org-mode markdown-mode rjsx-mode
-                                                   css-mode))
+       (whitespace-global-modes  '(not dired-mode tar-mode))
        (global-whitespace-mode t)
        :config
        (set-face-attribute 'whitespace-trailing nil

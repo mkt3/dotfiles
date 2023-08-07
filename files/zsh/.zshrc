@@ -171,3 +171,4 @@ zshaddhistory() {
 zinit wait lucid null for \
     atinit'source "$ZDOTDIR/zsh_defer.zsh"' \
     @'zdharma-continuum/null'
+ 

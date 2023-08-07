@@ -121,14 +121,14 @@ function sd()
     if [ -z "$session_name" ]; then
         cd "$HOME"
     fi
-    
+
     local default_dir
     if [ "$session_name" = "main_session" ]; then
         default_dir="$HOME"
     else
         default_dir="$(ghq list --exact --full-path "$session_name")"
     fi
-    
+
     cd "$default_dir"
 }
 
@@ -147,8 +147,15 @@ fi
 
 # Emacs daemon for cui linux environment
 if [[ "$OS" == 'Linux' ]]; then
-    if command -v emacs > /dev/null && systemctl get-default | grep -q 'multi-user.target' && ! pgrep -u "$USER" emacs > /dev/null; then
-        emacs --daemon > /dev/null 2>&1
+    if systemctl get-default | grep -q 'multi-user.target'; then
+        if command -v emacs > /dev/null && ! pgrep -u "$USER" emacs > /dev/null; then
+            emacs --daemon > /dev/null 2>&1
+        fi
+    else
+        if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/null; then
+            yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
+        fi
+
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
     if command -v emacs > /dev/null && ! pgrep -u "$USER" Emacs > /dev/null; then
@@ -158,3 +165,4 @@ elif [[ "$OS" == 'Darwin' ]]; then
         yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
     fi
 fi
+ 
