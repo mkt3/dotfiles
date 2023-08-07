@@ -30,6 +30,6 @@ setup_skk() {
     cp -av target/release/yaskkserv2_make_dictionary "${HOME}/.local/bin"
 
     mkdir -p "$yaskkserv2_dict_path"
-    yaskkserv2_make_dictionary --dictionary-filename="${yaskkserv2_dict_path}/dictionary.yaskkserv2" "${HOME}/Nextcloud/personal_config/aquaskk/skk-jisyo.utf8" "${HOME}/Nextcloud/personal_config/skk/skk-jisyo.utf8" /tmp/SKK-JISYO.L  > /dev/null
+    yaskkserv2_make_dictionary --dictionary-filename="${yaskkserv2_dict_path}/dictionary.yaskkserv2" "${HOME}/Nextcloud/personal_config/skk/aquaskk/skk-jisyo.utf8" "${HOME}/Nextcloud/personal_config/skk/fcitx5skk/user.dict" "${HOME}/Nextcloud/personal_config/skk/ddskk/skk-jisyo.utf8" /tmp/SKK-JISYO.L  > /dev/null
 
 }
