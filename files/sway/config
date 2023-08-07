@@ -251,6 +251,7 @@ exec fcitx5 -d
 exec thunar --daemon
 exec /usr/lib64/kdeconnectd
 exec kdeconnect-indicator
+exec yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
 
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="org.fcitx.fcitx5-config-qt"] floating enable

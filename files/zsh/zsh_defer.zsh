@@ -154,4 +154,7 @@ elif [[ "$OS" == 'Darwin' ]]; then
     if command -v emacs > /dev/null && ! pgrep -u "$USER" Emacs > /dev/null; then
         Open /Applications/Emacs.app
     fi
+    if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/null; then
+        yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
+    fi
 fi

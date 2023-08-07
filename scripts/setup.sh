@@ -118,6 +118,7 @@ setup_mac() {
     setup_karabiner
     setup_yabai_skhd
     setup_aquaskk
+    setup_skk
     setup_latex
     setup_post_common
 }

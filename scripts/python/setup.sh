@@ -85,5 +85,5 @@ setup_python() {
 
     setup_poetry
 
-    setup_jupyterlab
+    # setup_jupyterlab
 }
