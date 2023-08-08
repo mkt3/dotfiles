@@ -7,7 +7,6 @@ set -eu
 REPO_DIR="$(cd "$(dirname "$0")/.."; pwd)"
 CONFIGS_DIR="${REPO_DIR}/files"
 
-SETUP="TRUE"
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
 UI=$1

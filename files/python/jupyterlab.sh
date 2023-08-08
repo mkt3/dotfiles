@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
-WORKSPACE_DIR=$HOME/workspace/*/*/*/
-INSTALLE_DIR=$HOME/.local/share/jupyter/kernels
+WORKSPACE_DIR="$HOME/workspace/*/*/*/"
+INSTALLED_DIR="$HOME/.local/share/jupyter/kernels"
 
-projects=($(ls ${WORKSPACE_DIR}))
-installs=($(ls ${INSTALLE_DIR}))
+mapfile -t projects < <(find "${WORKSPACE_DIR}" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")
 
-for install in ${installs[@]}; do
-    rm -rf ${INSTALLE_DIR}/${install}
-done
+rm -rf "${INSTALLED_DIR:?}"/*
 
-for project in ${projects[@]}; do
-    if [ -f ${WORKSPACE_DIR}/${project}/.venv/bin/python ]; then
-        ${WORKSPACE_DIR}/${project}/.venv/bin/python -m ipykernel install --user --name=${project} --display-name=${project}
+for project in "${projects[@]}"; do
+    if [ -f "${WORKSPACE_DIR}/${project}/.venv/bin/python" ]; then
+        "${WORKSPACE_DIR}/${project}/.venv/bin/python" -m ipykernel install --user --name="${project}" --display-name="${project}"
     fi
 done
 

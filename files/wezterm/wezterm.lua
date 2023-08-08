@@ -14,6 +14,7 @@ local keys = {
   {key="<",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="<", mods="ALT"}}, -- for emacs
   {key=">",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key=">", mods="ALT"}}, -- for emacs
   {key="?",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="?", mods="ALT"}}, -- for emacs
+  {key="j",mods="CTRL",action=wezterm.action.SendKey{key="\\", mods="CTRL"}}, -- for emacs ddskk
   {key="v",mods="SUPER",action=wezterm.action.PasteFrom 'Clipboard'},
   {key="w",mods="ALT",action=wezterm.action.CloseCurrentTab{confirm=false}},
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},

@@ -1,4 +1,4 @@
-if [[ "$SETUP" == "TRUE" ]];then
+if [ -n "$BASH_VERSION" ];then
     echo "loading from setup script"
 else
     setopt no_global_rcs

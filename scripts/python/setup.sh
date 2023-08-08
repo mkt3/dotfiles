@@ -6,19 +6,21 @@ setup_pipx() {
     info "Setting up pipx"
 
     info "Installing/Updating pipx packages"
-    local package_list=(jupyterlab black pyright ruff)
+    # local package_list=(jupyterlab black pyright ruff)
+    local package_list=(black pyright ruff)
 
-    local installed_list=$(pipx list)
+    local installed_list
+    installed_list=$(pipx list)
 
     for package in "${package_list[@]}"; do
-        if [[ $installed_list =~ "package $package" ]]; then
+        if [[ $installed_list =~ package\ "$package" ]]; then
             info "Updating $package"
             pipx upgrade --include-injected "$package"
         else
             info "Installing $package"
             pipx install "$package"
 
-            if [ $package == "jupyterlab" ]; then
+            if [ "$package" == "jupyterlab" ]; then
                 info "Installing jupyterlab template extention"
                pipx inject jupyterlab jupyterlab_templates
             fi
@@ -29,7 +31,7 @@ setup_pipx() {
 
 setup_poetry() {
     local poetry_path="${HOME}/.local/bin/poetry"
-    if [ ! -L $poetry_path ]; then
+    if [ ! -L "$poetry_path" ]; then
         info "Installing poetry"
         pipx install poetry
     else

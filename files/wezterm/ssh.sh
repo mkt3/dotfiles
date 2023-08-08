@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
 
-ssh_config_file=`bash -c "ls ~/.ssh/config" 2> /dev/null`
+ssh_config_file=$(bash -c "ls ~/.ssh/config" 2> /dev/null)
 host_list=""
-for i in `grep "^Host " $ssh_config_file | grep -v "*" | sed s/"^Host "// | sed s/","/\ /g`
-do
-    host_list="${host_list}${i}\n"
-done
-ssh_host="`echo -e $host_list | ~/.local/share/fzf/bin/fzf --reverse --border --ansi --prompt='Server:' | cut -d: -f1`"
+
+while IFS= read -r line; do
+  if [[ $line =~ ^Host ]] && [[ ! $line =~ \* ]]; then
+    hosts="${line#Host }"
+    hosts="${hosts//,/ }"
+    for host in $hosts; do
+      host_list+="${host}\n"
+    done
+  fi
+done < "$ssh_config_file"
+
+
+ssh_host=$(echo -e "$host_list" | ~/.local/share/fzf/bin/fzf --reverse --border --ansi --prompt='Server:' | cut -d: -f1)
 if [[ "$ssh_host" = "" ]]; then
     :
 else

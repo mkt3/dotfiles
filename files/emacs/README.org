@@ -95,13 +95,11 @@
      (setq truncate-lines nil
            truncate-partial-width-windows nil)
 
-     (use-package visual-line-mode
-       :config
-       (global-visual-line-mode t))
-
      (use-package adaptive-wrap
        :ensure t
-       :hook (visual-line-mode-hook . #'adaptive-wrap-prefix-mode))
+       :hook (visual-line-mode-hook . #'adaptive-wrap-prefix-mode)
+       :config
+       (global-visual-line-mode t))
    #+end_src
 ** Delete
    Delete selection if you insert.
@@ -483,6 +481,7 @@
        :ensure t
        :demand t
        :bind* ("C-j" . skk-kakutei)
+       :bind ("C-\\". skk-kakutei) ;; for ctrl-j from wezterm
        :custom
        (default-input-method "japanese-skk")
        (skk-byte-compile-init-file t)
@@ -871,8 +870,8 @@
               ("C-c C-p" . flymake-goto-prev-error)
               ("C-c C-n" . flymake-goto-next-error))
        :config
-       (set-face-background 'flymake-errline "red")
-       (set-face-background 'flymake-warnline "yellow"))
+       (set-face-background 'flymake-errline "red4")
+       (set-face-background 'flymake-warnline "DarkOrange"))
      (use-package flymake-diagnostic-at-point
        :ensure t
        :after flymake
