@@ -17,11 +17,9 @@ setup_zsh() {
     info "Creating zsh completion dir"
     mkdir -p "$ZSH_COMPLETION_DIR"
 
-    local ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-
     if [ -d "$ZINIT_HOME" ]; then
         info "Updating zinit and plugins"
-        zsh -c 'source "${ZINIT_HOME}/zinit.zsh" && zinit update'
+        zsh -c 'source "${ZINIT_HOME}/zinit.zsh" && zinit update --parallel'
     else
        info "Clonening zinit repository"
        git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"

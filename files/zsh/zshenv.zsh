@@ -23,7 +23,7 @@ export PAGER=less
 export OS=`uname -s`
 export ARCH=`uname -m`
 
-# PATH
+# XDG Base directory
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
@@ -37,9 +37,13 @@ export LISTMAX=1000
 # personal env
 [ -d "${HOME}/Nextcloud/personal_config/env" ] && . "${HOME}/Nextcloud/personal_config/env/zshenv"
 
+# zinit
+ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
+
 # password store
 [ -d "${HOME}/Nextcloud/personal_config/password-store" ] && export PASSWORD_STORE_DIR="${HOME}/Nextcloud/personal_config/password-store"
 
+# PATH
 if [[ "$OS" == 'Darwin' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export SHELL_SESSIONS_DISABLE=1
@@ -53,21 +57,18 @@ if [[ "$OS" == 'Darwin' ]];then
         export PATH="/usr/local/bin:${MAC_DEFAULT_PATH}"
         export PATH="/usr/local/opt/texinfo/bin:${PATH}"
     fi
-
 elif [[ "$OS" == 'Linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
     # Rootless docker path
     export DOCKER_HOST=unix:///run/user/`id $(whoami) | awk -F'[=()]' '{print $2}'`/docker.sock
 fi
+export PATH="${HOME}/.local/bin:${PATH}"
 
 export PYTHONUSERBASE="${HOME}/.local"
 
 # Poety path
 export PATH="${HOME}/.poetry/bin:${PATH}"
-
-export PATH="${HOME}/.local/bin:${PATH}"
-
 export PYTHONDONTWRITEBYTECODE=1
 
 # ipython path
