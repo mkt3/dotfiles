@@ -94,6 +94,14 @@
    #+begin_src emacs-lisp
      (setq truncate-lines nil
            truncate-partial-width-windows nil)
+
+     (use-package visual-line-mode
+       :config
+       (global-visual-line-mode t))
+
+     (use-package adaptive-wrap
+       :ensure t
+       :hook (visual-line-mode-hook . #'adaptive-wrap-prefix-mode))
    #+end_src
 ** Delete
    Delete selection if you insert.
@@ -877,8 +885,9 @@
 *** tree-sitter
     #+begin_src emacs-lisp
       (use-package treesit-auto
-        :demand t
         :ensure t
+        :custom
+        (treesit-font-lock-level 4)
         :config
         (setq treesit-auto-install 'prompt)
         (global-treesit-auto-mode))
@@ -1049,9 +1058,8 @@
      #+begin_src emacs-lisp
        (use-package org
          :ensure t
-         :bind (nil
+         :bind (("C-c l" . org-store-link)
                 :map org-mode-map
-                ("C-c l" . org-store-link)
                 ("C-c i" . org-insert-structure-template)
                 ("C-c C-'" . org-edit-special)
                 ("C-c C-SPC" . my-pop-global-mark-and-delete-window)
