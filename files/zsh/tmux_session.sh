@@ -6,16 +6,17 @@ function get_source_list() {
     mapfile -t session_list < <(tmux list-sessions -F "#S" 2>/dev/null)
 
     local candidate_list
+    local session_name
+    local color
+    local icon
     mapfile -t candidate_list < <(ghq list | sort)
     candidate_list+=("main_session")
     for repo in "${candidate_list[@]}"; do
-        local array
-        mapfile -t array< <(echo "$repo" | tr -s '/' ' ')
-        local session="${array[${#array[@]}-1]//[:. ]/-}"
-        local color="$blue"
-        local icon="$unopened"
+        session_name=$(basename "$repo" | sed 's/\./_/g')
+        color="$blue"
+        icon="$unopened"
 
-        if printf '%s\n' "${session_list[@]}" | grep -qx "$session"; then
+        if printf '%s\n' "${session_list[@]}" | grep -qx "$session_name"; then
             color="$green"
             icon="$opened"
         fi
@@ -42,9 +43,9 @@ function set_session() {
     else
         repo_dir="$(ghq list --exact --full-path "$selected_source")"
     fi
-    local array
-    mapfile -t array< <(echo "$selected_source" | tr -s '/' ' ')
-    local session_name="${array[${#array[@]}-1]//[:. ]/-}"
+
+    local session_name
+    session_name=$(basename "$selected_source" | sed 's/\./_/g')
 
     if [[ -z "$TMUX" ]]; then
         tmux new-session -A -s "$session_name" -c "$repo_dir" 2> /dev/null
