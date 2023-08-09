@@ -27,14 +27,15 @@ end
 
 return {
   font = wezterm.font_with_fallback {
-    { family = 'Cica', assume_emoji_presentation = false },
-    { family = 'Cica', assume_emoji_presentation = true },
+    { family = 'PlemolJP', assume_emoji_presentation = false},
+    { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false},
   },
   use_ime = true,
   font_size = 20.0,
   color_scheme = "nord",
+  allow_square_glyphs_to_overflow_width = "Always",
   adjust_window_size_when_changing_font_size = false,
-  warn_about_missing_glyphs = false,
+  warn_about_missing_glyphs = true,
   window_padding = {
     left = 0,
     right = 0,
