@@ -15,13 +15,24 @@ setup_font() {
 
     if bash -lc "fc-match $cica_font_name | grep ${cica_font_name} > /dev/null"; then
         info "Cica font already exists... Skipping."
-        return 0
+    else
+        local cica_download_path="/tmp/Cica.zip"
+        curl -fL -o $cica_download_path https://github.com/miiton/Cica/releases/download/v5.0.3/Cica_v5.0.3.zip
+        unar "$cica_download_path" -D -o "$cica_font_dir"
+        fc-cache -vf
     fi
 
-    local cica_download_path="/tmp/Cica.zip"
-    sudo curl -fL -o $cica_download_path https://github.com/miiton/Cica/releases/download/v5.0.3/Cica_v5.0.3.zip
+    info "Add PlemolJP font"
+    local plemoljp_font_dir="${XDG_DATA_HOME}/fonts/PlemolJP"
+    local plemoljp_font_name="PlemolJP"
 
-    unar $cica_download_path -D -o "$cica_font_dir"
+    if bash -lc "fc-match $plemoljp_font_name | grep ${plemoljp_font_name} > /dev/null"; then
+        info "PlemolJP font already exists... Skipping."
+    else
+        local plemoljp_download_path="/tmp/plemoljp.zip"
+        curl -fL -o $plemoljp_download_path https://github.com/yuru7/PlemolJP/releases/download/v1.6.0/PlemolJP_v1.6.0.zip
+        unar "$plemoljp_download_path" -D -o "$plemoljp_font_dir"
+        fc-cache -vf
+    fi
 
-    fc-cache -vf
 }
