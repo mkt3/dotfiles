@@ -28,4 +28,22 @@ setup_emacs() {
 
         go install gitlab.com/shackra/goimapnotify@latest
     fi
+
+    ## for org-insert-link for nov
+    local emacs_lisp_path
+    local ol_path
+    local sed_command
+    if [ "$OS" = "Darwin" ]; then
+        emacs_lisp_path="/usr/local/Cellar/emacs-plus@29"
+        sed_command="gsed"
+    else
+        emacs_lisp_path="/usr/local/share/emacs"
+        sed_command="sed"
+    fi
+
+    ol_path=$(find $emacs_lisp_path -type f -name "ol.el")
+
+    if [ -n "$ol_path" ]; then
+        "$sed_command" -i 's/file\\\\|docview/file\\\\|nov\\\\|docview/g' "$ol_path"
+    fi
 }

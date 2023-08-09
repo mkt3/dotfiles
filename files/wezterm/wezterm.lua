@@ -27,7 +27,7 @@ end
 
 return {
   font = wezterm.font_with_fallback {
-    { family = 'Cica'},
+    { family = 'Cica', assume_emoji_presentation = false },
     { family = 'Cica', assume_emoji_presentation = true },
   },
   use_ime = true,

@@ -97,9 +97,8 @@
 
      (use-package adaptive-wrap
        :ensure t
-       :hook (visual-line-mode-hook . #'adaptive-wrap-prefix-mode)
-       :config
-       (global-visual-line-mode t))
+       :demand t
+       :hook ((org-mode-hook nov-mode-hook) . #'adaptive-wrap-prefix-mode))
    #+end_src
 ** Delete
    Delete selection if you insert.
