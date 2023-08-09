@@ -11,21 +11,22 @@ setup_nodejs() {
     "${CARGO_HOME}/bin/rtx" install "$nodejs_version"
     "${CARGO_HOME}/bin/rtx" use -g "$nodejs_version"
     ln -sfn "${XDG_DATA_HOME}/rtx/installs/node/latest" "${XDG_DATA_HOME}/node"
+    local npm_command="${XDG_DATA_HOME}/node/bin/npm"
 
-    info "Creating symlink for npm"
+    info "Setting up for npm"
     ln -sfn "${CONFIGS_DIR}/npm" "${XDG_CONFIG_HOME}/npm"
 
     info "Installing npm's packages"
     local installed_package
-    installed_package=$(npm ls --location=global)
+    installed_package=$("$npm_command" ls -g 2>/dev/null) || installed_package=""
     local package_list=(bash-language-server vscode-langservers-extracted typescript-language-server typescript)
     for package in "${package_list[@]}"; do
         if echo "$installed_package" | grep -q "$package"; then
             info "$package updating..."
-            "${XDG_DATA_HOME}/node/bin/npm" update -g "$package"
+            "$npm_command" update -g "$package"
         else
             info "$package installting..."
-            "${XDG_DATA_HOME}/node/bin/npm" install -g "$package"
+            "$npm_command" install -g "$package"
         fi
     done
 }
