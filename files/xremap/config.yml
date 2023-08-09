@@ -61,10 +61,10 @@ keymap:
       C-d: delete
       Super-d: C-delete
       C-h: backspace
-      
+
       # enter
       C-m: enter
-     
+
       # Emacs word
       Super-b: C-left
       Super-f: C-right
@@ -97,34 +97,18 @@ keymap:
     application:
       only: Vivaldi-stable
     remap:
-
       Super-s: C-f
       C-g: Esc
-
-  - name: Sidekick
-    application:
-      only: Sidekick-browser
-    remap:
-      Super-s: C-f
-      C-g: Esc
-      Super-Enter: C-Enter
-      Super-f: C-1
-      
-      Super-1: C-1
-      Super-2: C-2
-      Super-3: C-3
-      Super-4: C-4
-      Super-5: C-5
-      Super-6: C-6
-      Super-7: C-7
-      Super-8: C-8
-      Super-9: C-9
 
   - name: Wezterm
     application:
       only: org.wezfurlong.wezterm
     remap:
       Super_R-v: C-Shift-v
+
+      # for emacs ddskk in wezterm
+      C-j: C-KEY_BACKSLASH
+      C-Shift-j: C-j
 
   - name: Slack
     application:

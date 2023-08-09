@@ -14,7 +14,6 @@ local keys = {
   {key="<",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="<", mods="ALT"}}, -- for emacs
   {key=">",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key=">", mods="ALT"}}, -- for emacs
   {key="?",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="?", mods="ALT"}}, -- for emacs
-  {key="j",mods="CTRL",action=wezterm.action.SendKey{key="\\", mods="CTRL"}}, -- for emacs ddskk
   {key="v",mods="SUPER",action=wezterm.action.PasteFrom 'Clipboard'},
   {key="w",mods="ALT",action=wezterm.action.CloseCurrentTab{confirm=false}},
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
@@ -22,6 +21,7 @@ local keys = {
 
 if wezterm.target_triple == 'x86_64-apple-darwin' then
   table.insert(keys, {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}})
+  table.insert(keys, {key="j",mods="CTRL",action=wezterm.action.SendKey{key="\\", mods="CTRL"}}) -- for emacs ddskk
 end
 
 
