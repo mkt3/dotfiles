@@ -292,7 +292,7 @@
    #+begin_src emacs-lisp
      (when (display-graphic-p)
        (if (eq system-type 'darwin)
-           (add-to-list 'default-frame-alist '(font . "PlemolJP-20"))
+           (add-to-list 'default-frame-alist '(font . "PlemolJP-18"))
          (add-to-list 'default-frame-alist '(font . "PlemolJP-24"))))
 
      (use-package nerd-icons :ensure t)

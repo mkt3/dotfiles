@@ -29,9 +29,10 @@ return {
   font = wezterm.font_with_fallback {
     { family = 'PlemolJP', assume_emoji_presentation = false},
     { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false},
+    { family = 'Noto Emoji', assume_emoji_presentation = true},
   },
   use_ime = true,
-  font_size = 20.0,
+  font_size = 18.0,
   color_scheme = "nord",
   allow_square_glyphs_to_overflow_width = "Always",
   adjust_window_size_when_changing_font_size = false,
