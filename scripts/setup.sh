@@ -82,6 +82,12 @@ setup_linux() {
     distro=$(awk '{print $1; exit}' /etc/issue)
     title "Setting up ${distro}"
 
+    if [ "$UI" = "cui" ]; then
+        sudo systemctl set-default multi-user.target
+    elif [ "$UI" = "gui" ]; then
+        sudo systemctl set-default graphical.target
+    fi
+
     # distribution
     case $distro in
         Arch)
