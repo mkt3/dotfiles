@@ -19,9 +19,11 @@ local keys = {
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
 }
 
+font_size = 20.0
 if wezterm.target_triple == 'x86_64-apple-darwin' then
   table.insert(keys, {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}})
   table.insert(keys, {key="j",mods="CTRL",action=wezterm.action.SendKey{key="\\", mods="CTRL"}}) -- for emacs ddskk
+  font_size = 18.0
 end
 
 
@@ -32,7 +34,7 @@ return {
     { family = 'Noto Emoji', assume_emoji_presentation = true},
   },
   use_ime = true,
-  font_size = 18.0,
+  font_size = font_size,
   color_scheme = "nord",
   allow_square_glyphs_to_overflow_width = "Always",
   adjust_window_size_when_changing_font_size = false,
