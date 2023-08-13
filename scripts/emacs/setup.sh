@@ -43,6 +43,8 @@ setup_emacs() {
 
     if [ -d "$emacs_lisp_path" ]; then
         ol_path=$(find $emacs_lisp_path -type f -name "ol.el")
-        "$sed_command" -i 's/file\\\\|docview/file\\\\|nov\\\\|docview/g' "$ol_path"
+        if [ -d "$ol_path" ]; then
+            "$sed_command" -i 's/file\\\\|docview/file\\\\|nov\\\\|docview/g' "$ol_path"
+        fi
     fi
 }

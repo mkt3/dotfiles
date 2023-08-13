@@ -1052,7 +1052,6 @@
 **** org-mode
      #+begin_src emacs-lisp
        (use-package org
-         :ensure t
          :bind (("C-c l" . org-store-link)
                 :map org-mode-map
                 ("C-c i" . org-insert-structure-template)
