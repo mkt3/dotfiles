@@ -45,8 +45,6 @@ brew "msmtp"             # for mu4e
 brew "mu"                # for mu4e
 brew "terminal-notifier" # for mu4e
 cask "wezterm"
-tap "d12frosted/emacs-plus"
-brew "emacs-plus@29", args: ["with-native-comp"]
 brew "koekeishiya/formulae/yabai"
 brew "koekeishiya/formulae/skhd"
 cask "monitorcontrol"

@@ -24,27 +24,8 @@ setup_emacs() {
         ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
     fi
     if [ "$OS" = "Darwin" ]; then
-        ln -sfn /usr/local/opt/emacs-plus@29/Emacs.app /Applications
+        ln -sfn "$HOME/.local/src/emacs/nextstep/Emacs.app" /Applications
 
         go install gitlab.com/shackra/goimapnotify@latest
-    fi
-
-    ## for org-insert-link for nov
-    local emacs_lisp_path
-    local ol_path
-    local sed_command
-    if [ "$OS" = "Darwin" ]; then
-        emacs_lisp_path="/usr/local/Cellar/emacs-plus@29"
-        sed_command="gsed"
-    else
-        emacs_lisp_path="/usr/local/share/emacs"
-        sed_command="sed"
-    fi
-
-    if [ -d "$emacs_lisp_path" ]; then
-        ol_path=$(find $emacs_lisp_path -type f -name "ol.el")
-        if [ -d "$ol_path" ]; then
-            "$sed_command" -i 's/file\\\\|docview/file\\\\|nov\\\\|docview/g' "$ol_path"
-        fi
     fi
 }
