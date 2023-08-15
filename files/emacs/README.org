@@ -1135,7 +1135,7 @@
          (add-to-list 'org-modules 'org-habit)
          (setq org-agenda-prefix-format
                '((agenda . " %i %(vulpea-agenda-category 17)%?-12t% s")
-                 (todo . " %i %(vulpea-agenda-category 17) ")
+                 (todo . " %i %(vulpea-agenda-category 25) ")
                  (tags . " %i %(vulpea-agenda-category 17) ")
                  (search . " %i %(vulpea-agenda-category 17) ")))
          (defun vulpea-agenda-category (&optional len)
@@ -1270,7 +1270,7 @@
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
                                         :if-new
-                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n Review\n\n* Memo\n\n* Table of contents\n")
+                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Review\n\n* Memo\n\n* Table of contents\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("w" "web" plain "%?"
