@@ -57,6 +57,7 @@ if [[ "$OS" == 'Darwin' ]];then
         export PATH="/usr/local/bin:${MAC_DEFAULT_PATH}"
         export PATH="/usr/local/opt/texinfo/bin:${PATH}"
     fi
+    export PATH="${HOME}/.local/src/emacs/nextstep/Emacs.app/Contents/MacOS/bin:${PATH}"
 elif [[ "$OS" == 'Linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
