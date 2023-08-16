@@ -1719,4 +1719,23 @@
        :config
        (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud))
        )
-#+end_src
+  #+end_src
+** Translate
+   #+begin_src emacs-lisp
+     (use-package go-translate
+       :ensure t
+       :bind (("C-c t" . gts-do-translate))
+       :config
+       (setq gts-translate-list '(("ja" "en") ("en" "ja")))
+       (setq gts-default-translator
+             (gts-translator
+              :picker
+              (gts-prompt-picker)
+              :engines
+              (list
+               (gts-google-engine)
+               (gts-bing-engine))
+              :render
+              (gts-buffer-render)))
+       (setq gts-buffer-follow-p t))
+   #+end_src
