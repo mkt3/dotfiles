@@ -1154,7 +1154,7 @@
              (if (numberp len)
                  (s-truncate len (s-pad-right len " " result))
                result)))
-         (defun vulpea-project-p ()
+         (defun vulpea-todo-p ()
            "Return non-nil if current buffer has any todo entry.
 
          TODO entries marked as done are ignored, meaning the this
@@ -1168,17 +1168,17 @@
                 'headline
               (lambda (h)
                 (org-element-property :todo-type h)))))
-         (defun vulpea-project-update-tag ()
-           "Update PROJECT tag in the current buffer."
+         (defun vulpea-todo-update-tag ()
+           "Update todo tag in the current buffer."
            (when (and (not (active-minibuffer-window))
                       (vulpea-buffer-p))
              (save-excursion
                (goto-char (point-min))
                (let* ((tags (vulpea-buffer-tags-get))
                       (original-tags tags))
-                 (if (vulpea-project-p)
-                     (setq tags (cons "project" tags))
-                   (setq tags (remove "project" tags)))
+                 (if (vulpea-todo-p)
+                     (setq tags (cons "todo" tags))
+                   (setq tags (remove "todo" tags)))
 
                  ;; cleanup duplicates
                  (setq tags (seq-uniq tags))
@@ -1195,8 +1195,8 @@
                  (expand-file-name (file-name-as-directory org-roam-directory))
                  (file-name-directory buffer-file-name))))
 
-         (defun vulpea-project-files ()
-           "Return a list of note files containing 'project' tag." ;
+         (defun vulpea-todo-files ()
+           "Return a list of note files containing 'todo' tag." ;
            (seq-uniq
             (seq-map
              #'car
@@ -1205,14 +1205,14 @@
                        :from tags
                        :left-join nodes
                        :on (= tags:node-id nodes:id)
-                       :where (like tag (quote "%\"project\"%"))]))))
+                       :where (like tag (quote "%\"todo\"%"))]))))
          (defun vulpea-agenda-files-update (&rest _)
            "Update the value of `org-agenda-files'."
-           (setq org-agenda-files (append (list my:d:org-gtd) (vulpea-project-files)))
-           (setq my:refile-targets (append (list org-gtd-file) (vulpea-project-files)))
+           (setq org-agenda-files (append (list my:d:org-gtd) (vulpea-todo-files)))
+           (setq my:refile-targets (append (list org-gtd-file) (vulpea-todo-files)))
            (setq org-refile-targets '((my:refile-targets :maxlevel . 1))))
-         (add-hook 'find-file-hook #'vulpea-project-update-tag)
-         (add-hook 'before-save-hook #'vulpea-project-update-tag)
+         (add-hook 'find-file-hook #'vulpea-todo-update-tag)
+         (add-hook 'before-save-hook #'vulpea-todo-update-tag)
          (advice-add 'org-agenda :before #'vulpea-agenda-files-update)
          (advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
          (advice-add 'org-refile :before #'vulpea-agenda-files-update)
@@ -1265,7 +1265,7 @@
                                         :unnarrowed t)
                                        ("j" "project" plain "%?"
                                         :if-new
-                                        (file+head "project/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        (file+head "project/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Tasks\n\n* Work log\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
