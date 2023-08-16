@@ -1441,7 +1441,10 @@
        (use-package nov
          :ensure t
          :if (display-graphic-p)
-         :mode (("\\.epub\\'" . nov-mode)))
+         :mode (("\\.epub\\'" . nov-mode))
+         :hook (nov-mode-hook . visual-line-mode)
+         :config
+         (setq nov-text-width t))
      #+end_src
 * Tramp
   #+begin_src emacs-lisp
@@ -1550,7 +1553,7 @@
 * Mail
 ** mu4e
    #+begin_src emacs-lisp
-     (use-package mu4e                       ;
+     (use-package mu4e
        :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
        :load-path (lambda () (if (eq system-type 'darwin) "/usr/local/share/emacs/site-lisp/mu/mu4e/" "/usr/share/emacs/site-lisp/mu4e/"))
        :demand t
@@ -1687,8 +1690,7 @@
        :config
        (pdf-tools-install)
        (setq-default pdf-view-display-size 'fit-page)
-       (setq pdf-annot-activate-created-annotations t)
-       )
+       (setq pdf-annot-activate-created-annotations t))
    #+end_src
 ** atomic-chrome
    #+begin_src emacs-lisp
@@ -1717,8 +1719,7 @@
        :ensure t
        :if (and (executable-find "goimapnotify") (file-directory-p my:d:nextcloud) (display-graphic-p))
        :config
-       (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud))
-       )
+       (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
   #+end_src
 ** Translate
    #+begin_src emacs-lisp
