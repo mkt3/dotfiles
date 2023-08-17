@@ -104,6 +104,7 @@
    Delete selection if you insert.
    #+begin_src emacs-lisp
      (bind-key "C-h" 'delete-backward-char)
+     (bind-key "C-x ?" 'help-command)
      (use-package delsel
        :custom
        (delete-selection-mode t))
@@ -242,7 +243,6 @@
      (when (and (not (server-running-p))
                 (display-graphic-p))
        (server-start))
-     (bind-key "C-x C-q" 'server-edit)
    #+end_src
 ** Misc
    #+begin_src emacs-lisp
@@ -1073,7 +1073,7 @@
          (org-return-follows-link t)
          (org-startup-truncated nil)
          (org-use-speed-commands t)
-         (org-log-done t)
+         (org-log-done 'time)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
          :config
