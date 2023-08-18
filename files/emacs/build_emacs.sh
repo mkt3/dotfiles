@@ -61,11 +61,10 @@ if [ -d "$EMACS_REPO_PATH" ]; then
     git switch "$BRANCH"
     git pull
 else
-    git clone "$EMACS_REPO" "$EMACS_REPO_PATH"
+    git clone --depth 1 --branch "$BRANCH" "$EMACS_REPO" "$EMACS_REPO_PATH"
 fi
 
 cd "$EMACS_REPO_PATH" || exit
-git switch "$BRANCH"
 
 ./autogen.sh
 
