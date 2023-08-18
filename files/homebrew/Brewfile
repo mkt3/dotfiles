@@ -40,10 +40,6 @@ brew "cmake"
 brew "pam-reattach" # for TouchID with sudo
 brew "unar"
 brew "shellcheck"
-brew "isync"             # for mu4e
-brew "msmtp"             # for mu4e
-brew "mu"                # for mu4e
-brew "terminal-notifier" # for mu4e
 cask "wezterm"
 brew "koekeishiya/formulae/yabai"
 brew "koekeishiya/formulae/skhd"

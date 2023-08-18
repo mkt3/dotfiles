@@ -31,7 +31,6 @@ setup_pacman() {
                                    shellcheck
                                    trash-cli
                                    bc
-                                   tree-sitter
                                   )
 
     local gui_pacman_package_list=(sway

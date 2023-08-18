@@ -14,6 +14,7 @@ setup_emacs() {
     ln -sfn "${emacs_file_dir}/init.el" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/templates" "${XDG_CONFIG_HOME}/emacs/"
     ln -sfn "${emacs_file_dir}/ddskk.d/init.el" "${XDG_CONFIG_HOME}/emacs/ddskk.d/"
+    ln -sfn "${emacs_file_dir}/build_emacs.sh" "${HOME}/.local/bin/"
 
     if [ ! -e "$skk_record_file" ]; then
         touch "$skk_record_file"
