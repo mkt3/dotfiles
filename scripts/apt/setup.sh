@@ -19,6 +19,7 @@ setup_apt() {
                   neofetch
                   rsync
                   golang
+                  libevent-dev  # for tmux
                   libbz2-dev
                   libdb-dev
                   libreadline-dev

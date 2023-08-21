@@ -1703,15 +1703,19 @@
 
 ** dictionary
    #+begin_src emacs-lisp
-     (when (eq system-type 'darwin)
-       (defun monokakido-lookup (word)
-         "Lookup word with Dictionaries.app by Monokakido"
-         (call-process "open" nil 0 nil (concat "mkdictionaries:///?text=" word)))
-       (defun monokakido-lookup-word ()
-         "Lookup the word at point with Dictionaries.app by Monokakido."
-         (interactive)
-         (monokakido-lookup (read-from-minibuffer "Monokakido: " (current-word))))
-       (global-set-key (kbd "C-c w") 'monokakido-lookup-word))
+     ;; (when (eq system-type 'darwin)
+     ;;   (defun monokakido-lookup (word)
+     ;;     "Lookup word with Dictionaries.app by Monokakido"
+     ;;     (call-process "open" nil 0 nil (concat "mkdictionaries:///?text=" word)))
+     ;;   (defun monokakido-lookup-word ()
+     ;;     "Lookup the word at point with Dictionaries.app by Monokakido."
+     ;;     (interactive)
+     ;;     (monokakido-lookup (read-from-minibuffer "Monokakido: " (current-word))))
+     ;;   (global-set-key (kbd "C-c w") 'monokakido-lookup-word))
+
+     (use-package  mw-thesaurus
+       :ensure t
+       :bind ("C-c w" . mw-thesaurus-lookup-dwim))
    #+end_src
 ** prodigy
    #+begin_src emacs-lisp
