@@ -1545,6 +1545,13 @@
       :config
       (elfeed-goodies/setup))
   #+end_src
+* Filer
+  #+begin_src emacs-lisp
+    (use-package dired
+      :custom
+      (dired-dwim-target t)
+      (dired-recursive-copies 'always))
+  #+end_src
 * Browser
   #+begin_src emacs-lisp
     (use-package eww
