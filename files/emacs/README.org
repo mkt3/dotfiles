@@ -1260,7 +1260,7 @@
          (org-roam-capture-templates '(("n" "note" plain "%?"
                                         :if-new
                                         (file+head "note/${slug}.org"
-                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_slug: ${id}\n#+hugo_draft: true\n\n")
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_draft: true\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("j" "project" plain "%?"
@@ -1337,7 +1337,7 @@
          :if (file-exists-p my:f:bib)
          :custom
          (citar-bibliography my:f:bib)
-         (citar-file-open-functions '(("pdf" . citar-file-open-external) ("html" . citar-file-open-external) (t . find-file))))
+         (citar-file-open-functions '(("html" . citar-file-open-external) (t . find-file))))
 
        (use-package citar-org-roam
          :ensure t
@@ -1373,6 +1373,20 @@
          (org-hugo-base-dir my:d:org-hugo)
          (org-hugo-default-section-directory "notes")
          :config
+         (defun org-hugo-set-slug-if-absent (draft-position)
+           "Set the Hugo slug from the ID if it's not already set."
+           (goto-char (point-min))
+           (unless (re-search-forward "^#\\+hugo_slug:" nil t)
+             (when (re-search-forward ":ID: +\\([a-zA-Z0-9-]+\\)" nil t)
+               (let ((id (match-string 1)))
+                 (goto-char draft-position)
+                 (forward-line)
+                 (insert (concat "#+hugo_slug: " id "\n"))))))
+         (defun org-hugo-replace-last-modified ()
+           "Replace last_modified with hugo_lastmod."
+           (goto-char (point-min))
+           (while (re-search-forward "^#\\+last_modified:" nil t)
+             (replace-match "#+hugo_lastmod:")))
          (defun org-hugo-export-drafts ()
            "Export all non-draft .org files in my:d:org-roam to markdown using org-hugo."
            (interactive)
@@ -1380,17 +1394,17 @@
              (when recentf-active
                (recentf-mode -1))
              (dolist (org-file (directory-files-recursively (expand-file-name "note" my:d:org-roam) "\\.org$"))
-               (with-current-buffer (find-file-noselect org-file)
+               (with-current-buffer (find-file-noselect org-file nil t nil)
                  (save-excursion
+                   (undo-tree-mode -1)
                    (goto-char (point-min))
-                   (when (re-search-forward "^#\\+hugo_draft: false$" nil t)
-                     (let ((modified (buffer-modified-p)))
-                       (goto-char (point-min))
-                       (while (re-search-forward "^#\\+last_modified:" nil t)
-                         (replace-match "#+hugo_lastmod:"))
+                   (let ((draft-position (re-search-forward "^#\\+hugo_draft: false$" nil t))
+                         (modified (buffer-modified-p)))
+                     (when draft-position
+                       (org-hugo-set-slug-if-absent draft-position)
+                       (org-hugo-replace-last-modified)
                        (org-hugo-export-to-md)
-                       (set-buffer-modified-p modified)
-                       )))
+                       (set-buffer-modified-p modified))))
                  (kill-buffer)))
              (when recentf-active
                (recentf-mode 1)))))
@@ -1512,7 +1526,6 @@
       (elfeed-set-timeout 36000)
       (elfeed-log-level 'debug)
       (elfeed-protocol-fever-update-unread-only t)
-      (browse-url-browser-function 'eww)
       :config
       (setq elfeed-feeds
             (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
@@ -1548,7 +1561,16 @@
              (";" . quit-window)
              ("G" . end-of-buffer))
       :custom
-      (eww-search-prefix "https://www.google.com/search?q="))
+      (eww-search-prefix "https://www.google.com/search?q=")
+      ;; (browse-url-browser-function 'eww)
+      :config
+      (defun my:custom-browse-url (url &rest args)
+        "Open URL with eww if it does not contain the string 'slack' or 'notion'. Otherwise, use the default browser."
+        (if (or (string-match-p "slack" url)
+                (string-match-p "notion" url))
+            (browse-url-default-browser url)
+          (eww-browse-url url)))
+      (setq browse-url-browser-function 'my:custom-browse-url))
 #+end_src
 * Mail
 ** mu4e
