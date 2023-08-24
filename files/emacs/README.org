@@ -1488,6 +1488,7 @@
 * Rss
   #+begin_src emacs-lisp
     (use-package elfeed
+      :requires eww
       :ensure t
       :if (file-directory-p my:d:nextcloud)
       :bind (("C-x w" . elfeed)
