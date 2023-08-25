@@ -1681,30 +1681,13 @@
    #+end_src
 * Shell
   #+begin_src emacs-lisp
-    (use-package vterm
-      :ensure t
+    (use-package eshell
       :custom
-      (vterm-keymap-exceptions  '("C-c" "C-x" "C-u" "C-t" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
-      :bind (nil
-             :map vterm-mode-map
-             ("C-h" . vterm-send-backspace)))
-    (use-package vterm-toggle
-      :ensure t
-      :config
-      (setq vterm-toggle-fullscreen-p nil)
-      (add-to-list 'display-buffer-alist
-                   '((lambda (buffer-or-name _)
-                       (let ((buffer (get-buffer buffer-or-name)))
-                         (with-current-buffer buffer
-                           (or (equal major-mode 'vterm-mode)
-                               (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
-                     (display-buffer-reuse-window display-buffer-in-side-window)
-                     (side . bottom)
-                     ;;(dedicated . t) ;dedicated is supported in emacs27
-                     (reusable-frames . visible)
-                     (window-height . 0.3)))
-      ;; :bind ("C-t" . vterm-toggle))
-      )
+      (eshell-cmpl-ignore-case t)
+      (eshell-cmpl-cycle-completions t)
+      (shell-cmpl-cycle-cutoff-length 5)
+      (eshell-ask-to-save-history (quote always))
+      (eshell-hist-ignoredups t))
   #+end_src
 * External Collaboration
 ** pdf
