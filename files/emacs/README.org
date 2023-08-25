@@ -1495,6 +1495,7 @@
 * Browser
   #+begin_src emacs-lisp
     (use-package eww
+      :demand t
       :bind (nil
              :map eww-mode-map
              ("h" . eww-back-url)

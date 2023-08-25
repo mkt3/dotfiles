@@ -47,7 +47,7 @@ bindsym $super+q kill
 bindsym $super+Tab exec "rofi -show window"
 
 # start rofi (a program launcher)
-bindsym $super+space exec "rofi -show combi" 
+bindsym $super+Control+space exec "rofi -show combi"
 
 # clipboard
 # watched the clipboard and sends any new item to 'myclipman'
