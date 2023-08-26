@@ -113,8 +113,7 @@ setup_pacman() {
 
     # local cui_aur_package_list=""
 
-    local gui_aur_package_list=(enpass-bin
-                                rofi-lbonn-wayland-git
+    local gui_aur_package_list=(rofi-lbonn-wayland-git
                                 slack-desktop
                                 google-chrome
                                 anki-official-binary-bundle
