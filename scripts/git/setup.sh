@@ -36,7 +36,7 @@ setup_git() {
     info "Setting up git"
     git config --global pull.rebase false
 
-    git config --global url.git@github.com:.insteadOf https://github.com/
+    git config --global url.git@github.com:.pushInsteadOf https://github.com/
 
     git config --global init.defaultBranch main
 
