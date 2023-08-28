@@ -5,7 +5,7 @@ OS=$(uname -s)
 UI=$1
 EMACS_REPO="https://github.com/mkt3/emacs.git"
 EMACS_REPO_PATH="${HOME}/.local/src/emacs"
-BRANCH="emacs-29"
+BRANCH="master"
 
 case "$UI" in
     gui | cui)

@@ -52,13 +52,6 @@
        (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID"))
        (exec-path-from-shell-initialize))
    #+end_src
-** Vc-use-package
-   #+begin_src emacs-lisp
-     (eval-and-compile
-       (unless (package-installed-p 'vc-use-package)
-         (package-vc-install "https://github.com/slotThe/vc-use-package"))
-       (require 'vc-use-package))
-   #+end_src
 ** Constant
    #+begin_src emacs-lisp
      (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
@@ -940,7 +933,8 @@
                                                       (flymake-ruff--run-checker report-fn)))
                                         (eglot-ensure)))))
       (use-package ruff-fix
-        :vc (:fetcher github :repo mkt3/ruff-fix.el)
+        :vc (:url "https://github.com/mkt3/ruff-fix.el.git"
+             :branch "main")
         :hook (before-save-hook . ruff-fix-before-save))
       ;; It's defficult to display tqdm jupyter
       ;; (use-package jupyter
