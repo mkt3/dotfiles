@@ -30,4 +30,8 @@ setup_tmux() {
         fi
         tic -xe tmux-256color "$tmpfile"
     fi
+
+    if [[ "$OS" == "Linux" ]] && ! (type tmux > /dev/null 2>&1); then
+        "${tmux_dir}/build_tmux.sh"
+    fi
 }
