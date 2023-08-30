@@ -54,4 +54,4 @@ sh ./autogen.sh
 ./configure
 make
 
-sudo make insall
+sudo make install
