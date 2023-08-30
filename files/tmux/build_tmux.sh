@@ -43,15 +43,16 @@ if [ -d "$TMUX_REPO_PATH" ]; then
     cd "$TMUX_REPO_PATH" || exit
     make clean
     git pull
-    git switch -d "$TAG"
 else
-    git clone -b "$TAG" "$TMUX_REPO" "$TMUX_REPO_PATH"
+    git clone "$TMUX_REPO" "$TMUX_REPO_PATH"
+    cd "$TMUX_REPO_PATH" || exit
 fi
 
-cd "$TMUX_REPO_PATH" || exit
+git checkout "$TAG"
 
 sh ./autogen.sh
 ./configure
-make
+
+make -j"$(nproc)"
 
 sudo make install
