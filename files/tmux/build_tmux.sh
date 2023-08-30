@@ -5,7 +5,7 @@ OS=$(uname -s)
 UI=$1
 TMUX_REPO="https://github.com/tmux/tmux.git"
 TMUX_REPO_PATH="${HOME}/.local/src/tmux"
-BRANCH="master"
+TAG="3.3a"
 
 # Install library
 case "$OS" in
@@ -41,11 +41,11 @@ esac
 # clone
 if [ -d "$TMUX_REPO_PATH" ]; then
     cd "$TMUX_REPO_PATH" || exit
-    make distclean
-    git switch "$BRANCH"
+    make clean
     git pull
+    git switch -d "$TAG"
 else
-    git clone --depth 1 --branch "$BRANCH" "$TMUX_REPO" "$TMUX_REPO_PATH"
+    git clone -b "$TAG" "$TMUX_REPO" "$TMUX_REPO_PATH"
 fi
 
 cd "$TMUX_REPO_PATH" || exit
