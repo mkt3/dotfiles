@@ -1067,6 +1067,7 @@
          (org-return-follows-link t)
          (org-startup-truncated nil)
          (org-use-speed-commands t)
+         (org-startup-with-latex-preview t)
          (org-log-done 'time)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
@@ -1516,7 +1517,8 @@
       (defun my:custom-browse-url (url &rest args)
         "Open URL with eww if it does not contain the string 'slack' or 'notion'. Otherwise, use the default browser."
         (if (or (string-match-p "slack" url)
-                (string-match-p "notion" url))
+                (string-match-p "notion" url)
+                (string-match-p "github" url))
             (browse-url-default-browser url)
           (eww-browse-url url)))
       (setq browse-url-browser-function 'my:custom-browse-url))
