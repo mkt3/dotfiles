@@ -56,7 +56,7 @@ org-mode
 (shl "#+begin_src shell" n> r> n> "#+end_src" :post (org-edit-src-code))
 (elisp "#+begin_src emacs-lisp" n> r> n> "#+end_src" :post (org-edit-src-code))
 
-sh-mode
+bash-ts-mode
 
 (! "#!/usr/bin/env bash" n q)
 (if "if [ " p " ]" n "  then " p n "fi" q)
@@ -64,11 +64,13 @@ sh-mode
 (cs "case " p " in" n> p " )" n> p n> ";;" n> q n "esac)")
 (fr "for " p " in " p n "do" n> q n "done")
 
-python-mode
+python-ts-mode
 
 (ifm "if __name__ == '__main__':" n> p)
 (init "def __init__(self" p "):" n> p)
 (defaultdict "from collections import defaultdict")
+(dd "from collections import defaultdict")
+(itr "import itertools" n> "list(itertools.chain.from_iterable(" p "))")
 
 ;; Local Variables:
 ;; mode: lisp-data
