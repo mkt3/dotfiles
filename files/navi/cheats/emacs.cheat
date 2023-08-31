@@ -1,4 +1,0 @@
-% emacs
-
-# Configure cui
-./configure --prefix=/usr/local -with-native-compilation=aot -with-tree-sitter -without-x --without-pop --with-mailutils

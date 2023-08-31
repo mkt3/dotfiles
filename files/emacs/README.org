@@ -1048,7 +1048,7 @@
        (use-package org
          :bind (("C-c l" . org-store-link)
                 :map org-mode-map
-                ("C-c i" . org-insert-structure-template)
+                ("C-c i t" . org-insert-structure-template)
                 ("C-c C-'" . org-edit-special)
                 ("C-c C-SPC" . my-pop-global-mark-and-delete-window)
                 :map org-src-mode-map
@@ -1086,6 +1086,11 @@
          (org-hide-emphasis-markers t)
          (org-appear-inside-latex   t)
          (org-appear-autosubmarkers t))
+
+       (use-package org-web-tools
+         :ensure t
+         :bind
+         ("C-c i l" . org-web-tools-insert-link-for-url))
      #+end_src
 **** org gtd
      #+begin_src emacs-lisp
@@ -1245,6 +1250,7 @@
                 ("C-c n c" . org-roam-capture)
                 ("C-c n j" . org-roam-dailies-capture-today)
                 ("C-c n d" . org-roam-dailies-find-date)
+                ("C-c n e" . org-roam-extract-subtree)
                 ("C-c n p" . citar-open)
                 ("C-c C-g t" . org-roam-dailies-find-today))
          :init
