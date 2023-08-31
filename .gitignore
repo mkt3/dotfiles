@@ -7,3 +7,4 @@ files/borg/security
 Brewfile.lock.json
 key.json
 meta.json
+files/rtx/trusted-configs
