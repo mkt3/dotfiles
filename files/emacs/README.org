@@ -1050,15 +1050,9 @@
                 :map org-mode-map
                 ("C-c i t" . org-insert-structure-template)
                 ("C-c C-'" . org-edit-special)
-                ("C-c C-SPC" . my-pop-global-mark-and-delete-window)
                 :map org-src-mode-map
                 ("C-c C-'" . org-edit-src-exit))
          :init
-         (defun my-pop-global-mark-and-delete-window ()
-           "Pop back to the previous mark and delete the current window."
-           (interactive)
-           (pop-global-mark)
-           (delete-window))
          (setq org-directory my:d:org)
          (setq org-latex-create-formula-image-program 'dvisvgm)
          :custom
