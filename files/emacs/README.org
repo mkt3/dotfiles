@@ -263,14 +263,13 @@
     #+begin_src emacs-lisp
       (use-package doom-themes
         :ensure t
-        :if (not (display-graphic-p))
         :config
         (load-theme 'doom-nord t))
     #+end_src
 *** Modus theme
     #+begin_src emacs-lisp
       (use-package emacs
-        ;; :disabled
+        :disabled
         :if (display-graphic-p)
         :config
         (require-theme 'modus-themes)
