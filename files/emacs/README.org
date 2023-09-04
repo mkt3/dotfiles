@@ -263,7 +263,7 @@
     #+begin_src emacs-lisp
       (use-package doom-themes
         :ensure t
-        :disabled
+        :if (not (display-graphic-p))
         :config
         (load-theme 'doom-nord t))
     #+end_src
@@ -271,6 +271,7 @@
     #+begin_src emacs-lisp
       (use-package emacs
         ;; :disabled
+        :if (display-graphic-p)
         :config
         (require-theme 'modus-themes)
         (setq
@@ -457,11 +458,7 @@
        (ns-right-control-modifier 'control)
        (ns-right-option-modifier 'hyper)
        (ns-right-command-modifier 'meta)
-       (ns-function-modifier 'super)
-       :config
-       (setq default-frame-alist (append '((ns-appearance            . dark)
-                                           (ns-transparent-titlebar  . t))
-                                         default-frame-alist)))
+       (ns-function-modifier 'super))
    #+end_src
 ** language
    #+begin_src emacs-lisp
