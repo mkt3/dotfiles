@@ -579,7 +579,9 @@
     #+end_src
 *** embark
     #+begin_src emacs-lisp
-      (use-package embark :ensure t)
+      (use-package embark
+        :ensure t
+        :bind ("C-." . embark-act))
       (use-package embark-consult
         :ensure t
         :hook
@@ -1243,7 +1245,7 @@
                 ("C-c n t" . org-roam-tag-add)
                 ("C-c n r" . org-roam-ref-add)
                 ("C-c n l" . org-roam-buffer-toggle)
-                ("C-c n c" . org-roam-capture)
+                ("C-c n c" . citar-insert-citation)
                 ("C-c n j" . org-roam-dailies-capture-today)
                 ("C-c n d" . org-roam-dailies-find-date)
                 ("C-c n e" . org-roam-extract-subtree)
@@ -1337,6 +1339,14 @@
          :custom
          (citar-bibliography my:f:bib)
          (citar-file-open-functions '(("html" . citar-file-open-external) (t . find-file))))
+
+       (use-package citar-embark
+         :ensure t
+         :after citar embark
+         :no-require
+         :config
+         (setq citar-at-point-function 'embark-act)
+         (citar-embark-mode))
 
        (use-package citar-org-roam
          :ensure t
