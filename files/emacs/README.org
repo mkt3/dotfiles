@@ -1061,6 +1061,7 @@
          (setq org-latex-create-formula-image-program 'dvisvgm)
          :custom
          (org-startup-indent nil)
+         ;; (org-startup-numerated t)
          (org-hide-leading-stars t)
          (org-return-follows-link t)
          (org-startup-truncated nil)
