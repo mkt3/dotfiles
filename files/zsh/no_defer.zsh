@@ -30,9 +30,6 @@ fi
 # Emacs keybind
 bindkey -e
 
-# rtx
-(( ${+commands[rtx]} )) && eval "$(rtx activate zsh)"
-
 # Completion
 fpath+=$ZSH_COMPLETION_DIR
 

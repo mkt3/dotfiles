@@ -1,3 +1,6 @@
+# rtx
+(( ${+commands[rtx]} )) && eval "$(rtx activate zsh)"
+
 # rehash
 zstyle ":completion:*:commands" rehash 1
 
