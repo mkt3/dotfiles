@@ -5,7 +5,7 @@ cache-dir = "~/.cache/ruff"
 # https://beta.ruff.rs/docs/rules/
 #select = ["E", "W", "F", "B", "I", "RUF", "NPY", "TRY", "PLW", "PLR", "PLE", "PL", "PD", "PTH", "ARG", "SIM"]
 select = ["ALL"]
-ignore = ["E501", "PGH", "DJ", "D", "T20", "ERA", "C90", "ANN101", "FA102"]
+ignore = ["E501", "PGH", "DJ", "D", "T20", "ERA", "C90", "ANN101", "FA102", "RUF001", "PLR0915", "S101"]
 
 fixable = ["I", "SIM118"]
 unfixable = []
