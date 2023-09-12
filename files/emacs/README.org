@@ -761,6 +761,7 @@
       :delight
       :custom
       (gcmh-verbose t)
+      (gc-cons-threshold 12800000)
       (gcmh-high-cons-threshold 100000000)
       (garbage-collection-messages t)
       :config
