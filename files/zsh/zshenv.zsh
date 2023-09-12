@@ -30,15 +30,15 @@ export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_STATE_HOME="${HOME}/.local/state"
 
 # zsh
-ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+export ZSH_COMPLETION_DIR="${XDG_DATA_HOME}/zsh/completion"
 export LISTMAX=1000
 
 # personal env
 [ -d "${HOME}/Nextcloud/personal_config/env" ] && . "${HOME}/Nextcloud/personal_config/env/zshenv"
 
-# zinit
-ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
+# sheldon
+export SHELDON_CONFIG_DIR="$ZDOTDIR/sheldon"
 
 # password store
 [ -d "${HOME}/Nextcloud/personal_config/password-store" ] && export PASSWORD_STORE_DIR="${HOME}/Nextcloud/personal_config/password-store"

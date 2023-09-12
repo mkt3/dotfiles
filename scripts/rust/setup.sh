@@ -23,7 +23,7 @@ setup_rust() {
 
 
     info "Installing common packages"
-    local package_list=(bat fd-find ripgrep git-delta grex lsd du-dust csview zoxide)
+    local package_list=(sheldon bat fd-find ripgrep git-delta grex lsd du-dust csview zoxide)
     for package in "${package_list[@]}"; do
         info "$package ..."
         "${CARGO_HOME}/bin/rustup" run stable cargo install "$package"

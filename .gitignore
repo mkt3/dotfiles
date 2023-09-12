@@ -3,6 +3,8 @@
 files/tmux/plugins
 files/borg/security
 !.gitkeep
+*.zwc
+files/zsh/sheldon/sheldon.zsh
 .zcompdump
 Brewfile.lock.json
 key.json

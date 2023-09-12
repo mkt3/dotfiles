@@ -1,7 +1,5 @@
-#!/bin/zsh
-# plugin
-zinit wait lucid blockf light-mode for \
-    @'olets/zsh-abbr'
+# rtx
+(( ${+commands[rtx]} )) && eval "$(rtx activate zsh)"
 
 # rehash
 zstyle ":completion:*:commands" rehash 1
@@ -56,10 +54,8 @@ else
     alias ls='ls --color=auto'
 fi
 
-alias jl='~/.local/bin/jupyterlab.sh'
-
 chpwd() {
-    ls
+    lsd -F
 }
 
 # Emacs tramp config for zsh
@@ -128,4 +124,3 @@ elif [[ "$OS" == 'Darwin' ]]; then
         yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
     fi
 fi
- 
