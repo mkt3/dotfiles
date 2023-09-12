@@ -55,7 +55,7 @@ else
 fi
 
 chpwd() {
-    ls
+    lsd -F
 }
 
 # Emacs tramp config for zsh
