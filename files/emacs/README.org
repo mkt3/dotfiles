@@ -1526,15 +1526,6 @@
             (browse-url-default-browser url)
           (eww-browse-url url)))
       (setq browse-url-browser-function 'my:custom-browse-url))
-
-    (use-package eww-hatebu
-      :after eww
-      :vc (:url "https://github.com/syohex/emacs-eww-hatebu.git"
-                :branch "master")
-      :config
-      (eww-hatebu-setup)
-      :custom-face
-      (eww-hatebu-bookmarks ((t (:foreground "#81A1C1" :weight bold)))))
 #+end_src
 * Rss
   #+begin_src emacs-lisp
