@@ -761,7 +761,7 @@
       :delight
       :custom
       (gcmh-verbose t)
-      (gc-cons-threshold 12800000)
+      (gc-cons-threshold 51200000)
       (gcmh-high-cons-threshold 100000000)
       (garbage-collection-messages t)
       :config
@@ -907,20 +907,21 @@
 *** Shell Script
     #+begin_src emacs-lisp
       (use-package sh-script
-        :hook ((bash-ts-mode-hook . eglot-ensure)))
+        :hook (bash-ts-mode-hook . eglot-ensure))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
       (use-package python
-        :custom (python-indent-guess-indent-offset-verbose . nil))
+        :custom (python-indent-guess-indent-offset-verbose . nil)
+        :hook (python-ts-mode-hook . eglot-ensure))
+
       (use-package blacken
         :ensure t
         :delight
         :hook (python-ts-mode-hook .  blacken-mode)
         :custom
-        (blacken-line-length 300)
-        ;; (blacken-skip-string-normalization t)
-        )
+        (blacken-line-length 300))
+
       (use-package poetry
         :ensure t
         :config
@@ -928,31 +929,17 @@
         ;; one is quite slow.
         (setq poetry-tracking-strategy 'switch-buffer)
         :hook ((python-ts-mode-hook . poetry-tracking-mode)))
+
       (use-package flymake-ruff
         :ensure t
+        :hook (eglot-managed-mode-hook . flymake-ruff-load)
         :config
-        (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml"))
-        :hook ((python-ts-mode-hook . (lambda ()
-                                        (advice-add 'eglot-flymake-backend :after
-                                                    (lambda (report-fn &rest args)
-                                                      (flymake-ruff--run-checker report-fn)))
-                                        (eglot-ensure)))))
+        (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
+
       (use-package ruff-fix
         :vc (:url "https://github.com/mkt3/ruff-fix.el.git"
-             :branch "main")
+                  :branch "main")
         :hook (before-save-hook . ruff-fix-before-save))
-      ;; It's defficult to display tqdm jupyter
-      ;; (use-package jupyter
-      ;;   :ensure t
-      ;;   :config
-      ;;   (org-babel-do-load-languages
-      ;;    'org-babel-load-languages
-      ;;    '((emacs-lisp . t)
-      ;;      (shell . t)
-      ;;      (python  . t)
-      ;;      (jupyter . t)))
-      ;;   (setq org-babel-default-header-args:python '((:async . "yes")))
-      ;;   (org-babel-jupyter-override-src-block "python"))
     #+end_src
 *** Rust
     #+begin_src emacs-lisp
