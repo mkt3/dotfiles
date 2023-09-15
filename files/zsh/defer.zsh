@@ -104,23 +104,7 @@ if [ -x "$(command -v google-drive-ocamlfuse)" ] && ! mountpoint -q "$GOOGLE_DRI
     google-drive-ocamlfuse "$GOOGLE_DRIVE"
 fi
 
-# Emacs daemon for cui linux environment
-if [[ "$OS" == 'Linux' ]]; then
-    if systemctl get-default | grep -q 'multi-user.target'; then
-        if command -v emacs > /dev/null && ! pgrep -u "$USER" emacs > /dev/null; then
-            emacs --daemon > /dev/null 2>&1
-        fi
-    else
-        if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/null; then
-            yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
-        fi
-
-    fi
-elif [[ "$OS" == 'Darwin' ]]; then
-    if command -v emacs > /dev/null && ! pgrep -u "$USER" Emacs > /dev/null; then
-        Open /Applications/Emacs.app
-    fi
-    if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/null; then
-        yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
-    fi
+# for skkserv
+if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/null; then
+    yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
 fi
