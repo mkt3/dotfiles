@@ -932,7 +932,9 @@
 
       (use-package flymake-ruff
         :ensure t
-        :hook (eglot-managed-mode-hook . flymake-ruff-load)
+        :hook (eglot-managed-mode-hook . (lambda ()
+                                           (when (derived-mode-p 'python-mode 'python-ts-mode)
+                                             (flymake-ruff-load))))
         :config
         (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
 
