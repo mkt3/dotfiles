@@ -1,0 +1,7 @@
+% vim
+
+# Hide line numbers
+set nonumber
+
+# Show line numbers
+set number
