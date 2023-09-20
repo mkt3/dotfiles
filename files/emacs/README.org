@@ -1572,7 +1572,7 @@
       (elfeed-log-level 'debug)
       (elfeed-protocol-fever-update-unread-only t)
       :config
-      (setq elfeed-feeds
+      (setq elfeed-protocol-feeds
             (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
                     (list (plist-get auth-info :feed-url)
                           :api-url (plist-get auth-info :api-url)
@@ -1586,7 +1586,6 @@
              :map elfeed-show-mode-map
              ("j" . elfeed-goodies/split-show-next)
              ("k" . elfeed-goodies/split-show-prev))
-
       :config
       (elfeed-goodies/setup))
   #+end_src
