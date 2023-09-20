@@ -439,14 +439,17 @@
          (interactive)
          (let ((base64_text (base64-encode-string (encode-coding-string (substring-no-properties (nth 0 kill-ring)) 'utf-8) t)))
            (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))
+
        (defun region-to-clipboard ()
          "Copy the selected region to both thethe kill-ring and clipboard  with OSC 52."
          (interactive)
          (if (region-active-p)
              (let* ((selected-text (buffer-substring-no-properties (region-beginning) (region-end)))
                     (base64_text (base64-encode-string (encode-coding-string selected-text 'utf-8) t)))
-               (kill-new selected-text)
-               (send-string-to-terminal (format "\033]52;c;%s\a" base64_text)))
+               (if (display-graphic-p)
+                   (clipboard-kill-ring-save (region-beginning) (region-end))
+                 (kill-new selected-text)
+                 (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))
            (message "No region selected."))))
    #+end_src
 ** wayland / x11
