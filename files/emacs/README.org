@@ -431,39 +431,23 @@
 * UI
 ** Clipboard
    #+begin_src emacs-lisp
-     (defun yank-to-clipboard ()
-       "Use ANSI OSC 52 escape sequence to attempt clipboard copy"
-       ;; https://sunaku.github.io/tmux-yank-osc52.html
-       (interactive)
-       (let ((tmx_tty (concat "/dev/" (shell-command-to-string "ps l | grep 'tmux attach' | grep -v grep | awk '{print $11}'")))
-             (base64_text (base64-encode-string (encode-coding-string (substring-no-properties (nth 0 kill-ring)) 'utf-8) t)))
-         ;; Check if inside TMUX
-         (if (getenv "TMUX")
-             (shell-command
-              (format "printf \"\033]52;c;%s\a\" > %s" base64_text tmx_tty))
-           ;; Check if inside SSH
-           (if (getenv "SSH_TTY")
-               (shell-command (format "printf \"\033]52;c;%s\a\" > %s" base64_text (getenv "SSH_TTY")))
-             ;; Send to current TTY
-             (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))))
-
-     (defun region-to-clipboard ()
-       "Use ANSI OSC 52 escape sequence to attempt clipboard copy."
-       (interactive)
-       ;; If there is an active region, copy it to clipboard
-       (if (region-active-p)
-           (let* ((selected-text (buffer-substring-no-properties (region-beginning) (region-end)))
-                  (base64_text (base64-encode-string (encode-coding-string selected-text 'utf-8) t))
-                  (tmx_tty (concat "/dev/" (shell-command-to-string "ps l | grep 'tmux attach' | grep -v grep | awk '{print $11}'"))))
-             ;; Check if inside TMUX
-             (if (getenv "TMUX")
-                 (shell-command (format "printf \"\033]52;c;%s\a\" > %s" base64_text tmx_tty))
-               ;; Check if inside SSH
-               (if (getenv "SSH_TTY")
-                   (shell-command (format "printf \"\033]52;c;%s\a\" > %s" base64_text (getenv "SSH_TTY")))
-                 ;; Send to current TTY
-                 (send-string-to-terminal (format "\033]52;c;%s\a" base64_text)))))
-         (message "No region selected.")))
+     (use-package emacs
+       :bind ("M-w" . region-to-clipboard)
+       :config
+       (defun yank-to-clipboard ()
+         "Copy the most recently killed text to the system clipboard with OSC 52."
+         (interactive)
+         (let ((base64_text (base64-encode-string (encode-coding-string (substring-no-properties (nth 0 kill-ring)) 'utf-8) t)))
+           (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))
+       (defun region-to-clipboard ()
+         "Copy the selected region to both thethe kill-ring and clipboard  with OSC 52."
+         (interactive)
+         (if (region-active-p)
+             (let* ((selected-text (buffer-substring-no-properties (region-beginning) (region-end)))
+                    (base64_text (base64-encode-string (encode-coding-string selected-text 'utf-8) t)))
+               (kill-new selected-text)
+               (send-string-to-terminal (format "\033]52;c;%s\a" base64_text)))
+           (message "No region selected."))))
    #+end_src
 ** wayland / x11
    #+begin_src emacs-lisp
