@@ -239,8 +239,8 @@
    #+end_src
 ** Misc
    #+begin_src emacs-lisp
-     (defalias 'yes-or-no-p 'y-or-n-p)
      (setq
+      use-short-answers t
       debug-on-error nil
       create-lockfiles nil
       enable-recursive-minibuffers t
