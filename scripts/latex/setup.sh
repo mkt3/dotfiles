@@ -11,5 +11,7 @@ setup_latex() {
         sudo tlmgr paper a4
         sudo tlmgr install collection-langjapanese
         sudo tlmgr install dvisvgm
+        sudo tlmgr install wrapfig
+        sudo tlmgr install capt-of
     fi
 }
