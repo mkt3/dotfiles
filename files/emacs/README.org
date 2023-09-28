@@ -1441,11 +1441,12 @@
                (("README\\.md\\'" . gfm-mode)))
         :custom
         (markdown-fontify-code-blocks-natively t)
-        :hook ((markdown-mode-hook . (lambda ()
+        :hook (markdown-mode-hook . (lambda ()
                                        (setq tab-width 2)
+                                       (turn-on-orgtbl)
                                        (add-to-list 'eglot-server-programs '(markdown-mode . ("marksman")))
                                        (eglot-ensure)
-                                       ))))
+                                       )))
     #+end_src
 *** YAML
     #+begin_src emacs-lisp
