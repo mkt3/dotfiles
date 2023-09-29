@@ -50,6 +50,10 @@ setup_poetry() {
 
 
 setup_jupyterlab() {
+    info "Creating symlink for jupyterlab.sh"
+    mkdir -p "${HOME}/.local/bin"
+    ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
+
     local python_file_dir="$CONFIGS_DIR/python"
     info "Creating directory for jupyter"
     mkdir -p "${XDG_CONFIG_HOME}/jupyter"
@@ -78,10 +82,6 @@ setup_python() {
     else
         ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
     fi
-
-    info "Creating symlink for jupyterlab.sh"
-    mkdir -p "${HOME}/.local/bin"
-    ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
 
     setup_pipx
 
