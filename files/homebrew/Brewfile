@@ -64,7 +64,7 @@ cask "aquaskk"
 cask "karabiner-elements"
 cask "nextcloud"
 cask "libreoffice"
-mas "Kindle", id: 405399194
+mas "Kindle", id: 302584613
 mas "Slack", id: 803453959
 mas "The Unarchiver", id: 425424353
 mas "Sequel Ace", id: 1518036000
