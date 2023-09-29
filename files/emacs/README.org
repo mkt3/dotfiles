@@ -784,8 +784,8 @@
       :delight
       :custom
       (gcmh-verbose t)
-      (gc-cons-threshold 51200000)
-      (gcmh-high-cons-threshold 100000000)
+      (gcmh-idle-delay 120)
+      (gcmh-high-cons-threshold #x80000000)
       (garbage-collection-messages t)
       :config
       (gcmh-mode 1))
