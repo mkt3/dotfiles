@@ -1014,16 +1014,7 @@
          ;;                            (eldoc-mode +1)
          ;;                            (tide-hl-identifier-mode +1))))
          )
-     #+end_src
-**** scss-mode
-     #+begin_src emacs-lisp
-       (use-package scss-mode
-         :ensure t
-         :hook ((scss-mode-hook . (lambda ()
-                                    (and
-                                     (set (make-local-variable 'css-indent-offset) 2)
-                                     (set (make-local-variable 'scss-compile-at-save) nil))))))
-     #+end_src
+     #+end_src     
 *** typescript / javascript
 **** node module path
      #+begin_src emacs-lisp
