@@ -58,7 +58,7 @@ esac
 # clone
 if [ -d "$EMACS_REPO_PATH" ]; then
     cd "$EMACS_REPO_PATH" || exit
-    make distclean
+    make extraclean
     git switch "$BRANCH"
     git pull
 else
