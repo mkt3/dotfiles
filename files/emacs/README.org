@@ -58,7 +58,7 @@
      (defconst my:d:org (expand-file-name "orgnotes" my:d:nextcloud))
      (defconst my:d:org-gtd (expand-file-name "gtd" my:d:org))
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
-     (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:nextcloud))
+     (defconst my:f:bib (expand-file-name "Google drive/My Drive/paperpile.bib" (getenv "HOME")))
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
      (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
    #+end_src
@@ -1365,7 +1365,7 @@
                (append org-roam-capture-templates
                        '(("p" "paper" plain "%?"
                           :if-new
-                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n** En\n\n** Ja\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n* References")
+                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n** En\n\n** Ja\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Google Drive/My Drive/Paperpile/${citar-file}\n  :END:\n* References")
                           :immediate-finish t
                           :unnarrowed t))))
          (setq citar-org-roam-capture-template-key "p"))
