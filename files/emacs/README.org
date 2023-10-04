@@ -913,16 +913,6 @@
       (use-package git-modes :ensure t)
       (use-package magit
         :ensure t
-        :init
-        (defun c/git-add ()
-          "Add anything."
-          (interactive)
-          (shell-command "git add ."))
-        (defun c/git-commit-a ()
-          "Commit after add anything."
-          (interactive)
-          (c/git-add)
-          (magit-commit-create))
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup)))
     #+end_src
