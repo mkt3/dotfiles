@@ -1,0 +1,7 @@
+% gpu
+
+# Use a specific number of GPUs
+export CUDA_VISIBLE_DEVICES="<number>"
+
+# Use multiple GPUs
+export CUDA_VISIBLE_DEVICES="<number0>,<number1>"
