@@ -875,8 +875,6 @@
       (use-package git-modes :ensure t)
       (use-package magit
         :ensure t
-        :custom
-        (magit-wip-mode t)
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup)))
     #+end_src
