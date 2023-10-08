@@ -1058,6 +1058,10 @@
          (defun gtd ()
            (interactive)
            (find-file org-gtd-file))
+         (run-at-time 0 (* 5 60)
+                      (lambda ()
+                        (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud))))
+
          :custom
          (org-agenda-span 'day)
          (org-agenda-remove-tags t)
