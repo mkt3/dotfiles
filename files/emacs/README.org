@@ -899,14 +899,6 @@
         :custom
         (blacken-line-length 300))
 
-      (use-package poetry
-        :ensure t
-        :config
-        ;; Checks for the correct virtualenv. Better strategy IMO because the default
-        ;; one is quite slow.
-        (setq poetry-tracking-strategy 'switch-buffer)
-        :hook ((python-ts-mode-hook . poetry-tracking-mode)))
-
       (use-package flymake-ruff
         :ensure t
         :hook (eglot-managed-mode-hook . (lambda ()
