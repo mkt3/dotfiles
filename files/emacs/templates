@@ -72,6 +72,10 @@ python-ts-mode
 (dd "from collections import defaultdict")
 (itr "import itertools" n> "list(itertools.chain.from_iterable(" p "))")
 
+toml-ts-mode
+
+(pyright "[tool.pyright]" n "venvPath = \".\"" n "venv = \".venv\"" n "include = [\"src\"]")
+
 ;; Local Variables:
 ;; mode: lisp-data
 ;; outline-regexp: "[a-z]"
