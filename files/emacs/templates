@@ -74,7 +74,9 @@ python-ts-mode
 
 toml-ts-mode
 
-(pyright "[tool.pyright]" n "venvPath = \".\"" n "venv = \".venv\"" n "include = [\"src\"]")
+(pyright "[tool.pyright]" n "exclude = [\".venv\"]" n "venvPath = \".\"" n "venv = \".venv\"" n "include = [\"src\"]")
+
+(rtx-python "[tools]" n "python = {version='3.xx.x', virtualenv='.venv'}" n n "[env]" n "PYTHONPATH = \".\"" )
 
 ;; Local Variables:
 ;; mode: lisp-data
