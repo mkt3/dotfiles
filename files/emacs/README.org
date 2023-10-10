@@ -452,7 +452,7 @@
                  (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))
            (message "No region selected."))))
    #+end_src
-** wayland / x11
+** Wayland / x11
    #+begin_src emacs-lisp
      (when (memq  window-system '(pgtk x))
        (setq x-super-keysym 'meta))
@@ -961,7 +961,7 @@
          ;;                            (tide-hl-identifier-mode +1))))
          )
      #+end_src
-*** typescript / javascript
+*** typescript / JavaScript
 **** node module path
      #+begin_src emacs-lisp
        (use-package  add-node-modules-path
@@ -1664,7 +1664,7 @@
       (eshell-hist-ignoredups t))
   #+end_src
 * External Collaboration
-** pdf
+** Pdf
    #+begin_src emacs-lisp
      (use-package pdf-tools
        :ensure t
