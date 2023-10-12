@@ -410,7 +410,7 @@
                                       (tab-mark ?\t [?\u00BB ?\t]
                                                 [?\\ ?\t])))
        (whitespace-space-regexp  "\\(\u3000+\\)")
-       (whitespace-global-modes  '(not dired-mode tar-mode))
+       (whitespace-global-modes  '(not dired-mode tar-mode magit-mode))
        (global-whitespace-mode t)
        :config
        (set-face-attribute 'whitespace-trailing nil
@@ -934,7 +934,6 @@
      #+begin_src emacs-lisp
        (use-package web-mode
          :ensure t
-         :after flycheck
          :mode ("\\.tsx\\'" "\\.css\\'" "\\.p?html?\\'")
          :custom
          (web-mode-markup-indent-offset 2)
