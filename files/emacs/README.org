@@ -879,6 +879,10 @@
         (magit-wip-mode t)
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup)))
+      (use-package magit-delta
+        :ensure t
+        :after magit
+        :hook (magit-mode-hook))
     #+end_src
 ** languages
 *** Shell Script
