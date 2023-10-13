@@ -1488,10 +1488,11 @@
       ;; (browse-url-browser-function 'eww)
       :config
       (defun my:custom-browse-url (url &rest args)
-        "Open URL with eww if it does not contain the string 'slack' or 'notion'. Otherwise, use the default browser."
+        "Open URL with eww if it does not contain bellow strings'. Otherwise, use the default browser."
         (if (or (string-match-p "slack\\.com" url)
                 (string-match-p "google\\.com" url)
                 (string-match-p "notion\\.so" url)
+                (string-match-p "figma\\.com" url)
                 (string-match-p "github\\.com" url))
             (browse-url-default-browser url)
           (eww-browse-url url)))
