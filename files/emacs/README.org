@@ -1496,7 +1496,17 @@
                 (string-match-p "github\\.com" url))
             (browse-url-default-browser url)
           (eww-browse-url url)))
-      (setq browse-url-browser-function 'my:custom-browse-url))
+      (setq browse-url-browser-function 'my:custom-browse-url)
+      (defun eww-disable-images ()
+        (interactive)
+        (setq-local shr-put-image-function 'shr-put-image-alt)
+        (eww-reload))
+      (defun eww-enable-images ()
+        (interactive)
+        (setq-local shr-put-image-function 'shr-put-image)
+        (eww-reload))
+      (defun shr-put-image-alt (spec alt &optional flags)
+        (insert alt)))
 #+end_src
 * Rss
   #+begin_src emacs-lisp
