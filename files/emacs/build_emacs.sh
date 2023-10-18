@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # constnt value
 OS=$(uname -s)
 UI=$1
@@ -37,9 +39,9 @@ case "$OS" in
                 sudo pacman -S --needed $DEPENDENCIES
                 ;;
             Ubuntu)
-                DEPENDENCIES="autoconf make texinfo gnutls-bin libgccjit-12-dev libacl1 libc6 libdbus-1-3 libgmp10 libgnutls30 libgpm2 libjansson4 liblcms2-2 libsystemd0 libtinfo6 libxml2 zlib1g libtree-sitter-dev libtool-bin"
+                DEPENDENCIES="autoconf make texinfo gnutls-bin libgccjit-12-dev libacl1 libc6 libdbus-1-3 libgmp10 libgnutls28-dev libgnutls30 libgpm2 libjansson-dev liblcms2-2 libsystemd0 libtinfo6 libxml2 libxml2-dev zlib1g libtree-sitter-dev libtool-bin"
                 if [[ "$UI" == "gui" ]]; then
-                    DEPENDENCIES="${DEPENDENCIES} libcairo2 libfontconfig1 libfreetype6 libgdk-pixbuf-2.0-0 libgif7 libglib2.0-0 libgtk-3-0 libharfbuzz0b libjpeg8 libm17n-0 libotf1 libpango-1.0-0 libpng16-16 libsvg2-2 libsm6 libtiff5 libxml2"
+                    DEPENDENCIES="${DEPENDENCIES} libcairo2 libfontconfig1 libfreetype6 libgdk-pixbuf-2.0-0 libgif7 libglib2.0-0 libgtk-3-0 libharfbuzz0b libjpeg8 libm17n-0 libotf1 libpango-1.0-0 libpng16-16 libsvg2-2 libsm6 libtiff5"
                 fi
                 # shellcheck disable=SC2086
                 sudo apt install -y $DEPENDENCIES
