@@ -20,6 +20,7 @@ esac
 case "$OS" in
     Darwin)
         DPENDENCIES="make autoconf gnu-sed gnu-tar grep awk coreutils pkg-config texinfo xz gnutls tree-sitter librsvg little-cms2 jansson tree-sitter mailutils libgccjit gcc gmp libjpeg zlib isync msmtp mu terminal-notifier"
+        # shellcheck disable=SC2086
         brew install $DPENDENCIES
         ;;
     Linux)
@@ -32,6 +33,7 @@ case "$OS" in
                 if [[ "$UI" == "gui" ]]; then
                     DEPENDENCIES="${DEPENDENCIES} alsa-lib fontconfig freetype2 gtk3 gdk-pixbuf2 giflib glib2 gtk3 harfbuzz libice libjpeg-turbo libotf pango libpng librsvg libsm sqlite libtiff libwebp lib32-libwebp libxfixes libxml2 m17n-lib sqlite"
                 fi
+                # shellcheck disable=SC2086
                 sudo pacman -S --needed $DEPENDENCIES
                 ;;
             Ubuntu)
@@ -39,6 +41,7 @@ case "$OS" in
                 if [[ "$UI" == "gui" ]]; then
                     DEPENDENCIES="${DEPENDENCIES} libcairo2 libfontconfig1 libfreetype6 libgdk-pixbuf-2.0-0 libgif7 libglib2.0-0 libgtk-3-0 libharfbuzz0b libjpeg8 libm17n-0 libotf1 libpango-1.0-0 libpng16-16 libsvg2-2 libsm6 libtiff5 libxml2"
                 fi
+                # shellcheck disable=SC2086
                 sudo apt install -y $DEPENDENCIES
 
                 export CFLAGS='-I/usr/lib/gcc/x86_64-linux-gnu/12/include -L/usr/lib/gcc/x86_64-linux-gnu/12'
@@ -73,20 +76,17 @@ BUILD_OPTIONS="--with-native-compilation=aot --with-tree-sitter --without-x --wi
 
 if [[ "$OS" == 'Linux' ]]; then
     if [[ "$UI" == 'cui' ]]; then
-        BUILD_OPTIONS="--prefix=/usr/local ${BUILD_OPTIONS}"
+        BUILD_OPTIONS="--prefix=${HOME}/.local ${BUILD_OPTIONS}"
     else
-        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk ${BUILD_OPTIONS}"
+        BUILD_OPTIONS="--prefix=${HOME}/.local --with-pgtk ${BUILD_OPTIONS}"
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
     BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns"
 fi
 
+# shellcheck disable=SC2086
 ./configure $BUILD_OPTIONS
 
 make -j"$(nproc)"
 
-if [[ "$OS" == 'Linux' ]]; then
-    sudo make install
-elif [[ "$OS" == 'Darwin' ]]; then
-    make install
-fi
+make install
