@@ -78,9 +78,9 @@ BUILD_OPTIONS="--with-native-compilation=aot --with-tree-sitter --without-x --wi
 
 if [[ "$OS" == 'Linux' ]]; then
     if [[ "$UI" == 'cui' ]]; then
-        BUILD_OPTIONS="--prefix=${HOME}/.local ${BUILD_OPTIONS}"
+        BUILD_OPTIONS="--prefix=/usr/local ${BUILD_OPTIONS}"
     else
-        BUILD_OPTIONS="--prefix=${HOME}/.local --with-pgtk ${BUILD_OPTIONS}"
+        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk ${BUILD_OPTIONS}"
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
     BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns"
@@ -91,4 +91,8 @@ fi
 
 make -j"$(nproc)"
 
-make install
+if [[ "$OS" == 'Linux' ]]; then
+    sudo make install
+elif [[ "$OS" == 'Darwin' ]]; then
+    make install
+fi
