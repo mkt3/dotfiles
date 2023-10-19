@@ -66,11 +66,12 @@ elif [[ "$OS" == 'Linux' ]];then
 fi
 export PATH="${HOME}/.local/bin:${PATH}"
 
+# Python
 export PYTHONUSERBASE="${HOME}/.local"
-
-# Poety path
-export PATH="${HOME}/.poetry/bin:${PATH}"
 export PYTHONDONTWRITEBYTECODE=1
+
+# Pipx path
+export PIPX_HOME="${HOME}/.local/share/pipx"
 
 # ipython path
 export IPYTHONDIR="${XDG_CONFIG_HOME}/jupyter"
