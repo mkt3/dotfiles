@@ -1252,7 +1252,7 @@
                                                  "** %<%H:%M> %?"
                                                  :target (file+head+olp "%<%Y-%m>.org"
                                                                         "#+title: %<%Y-%m>\n"
-                                                                        ("%<%Y-%m-%d>")))))
+                                                                        ("%<%Y-%m-%d %a>")))))
          :config
          (add-hook 'org-mode-hook (lambda ()
                                     (setq-local time-stamp-active t
@@ -1518,25 +1518,21 @@
              :map elfeed-search-mode-map
              ("u" . elfeed-search-fetch)
              ("r" . elfeed-search-update--force)
-             ("j" . next-line)
-             ("k" . previous-line)
              ("o" . elfeed-search-browse-url)
              (";" . elfeed-search-quit-window)
              ("m" . elfeed-search-show-entry)
              ("," . elfeed-search-first-entry)
              ("." . elfeed-search-last-entry)
              :map elfeed-show-mode-map
-             ("j" . elfeed-show-next)
              ("r" . elfeed-search-update--force)
              ("u" . elfeed-search-fetch)
-             ("k" . elfeed-show-prev)
              ("o" . elfeed-show-visit)
              (";" . elfeed-kill-buffer))
       :custom
       (elfeed-db-directory (locate-user-emacs-file "elfeed"))
       :config
       (advice-add 'elfeed-search-fetch :after (lambda (&rest _) (message "RSS fetch completed.")))
-    )
+      )
 
     (use-package elfeed-protocol
       :ensure t
@@ -1557,16 +1553,22 @@
                           :api-url (plist-get auth-info :api-url)
                           :password (plist-get auth-info :password))))))
 
-    (use-package elfeed-goodies
+    ;; (use-package elfeed-goodies
+    ;;   :ensure t
+    ;;   :demand t
+    ;;   :after elfeed
+    ;;   :config
+    ;;   (elfeed-goodies/setup))
+
+    (use-package elfeed-webkit
       :ensure t
-      :demand t
       :after elfeed
       :bind (nil
+             :map elfeed-webkit-map
+             ("k" . scroll-down-command)
+             ("j" . scroll-up-command)
              :map elfeed-show-mode-map
-             ("j" . elfeed-goodies/split-show-next)
-             ("k" . elfeed-goodies/split-show-prev))
-      :config
-      (elfeed-goodies/setup))
+             ("i" . elfeed-webkit-toggle)))
   #+end_src
 * Mail
 ** mu4e
@@ -1579,14 +1581,12 @@
               :map mu4e-minibuffer-search-query-map
               ("C-j" . skk-kakutei)
               :map mu4e-main-mode-map
-              ("r" . mu4e-update-index)
+              ("R" . mu4e-update-index)
               :map mu4e-headers-mode-map
-              ("r" . mu4e-search-rerun)
-              ("a" . mu4e-headers-mark-for-refile)
+              ("R" . mu4e-search-rerun)
               :map mu4e-view-mode-map
               ("C-m" . browse-url-at-point)
-              ("a" . mu4e-view-mark-for-refile)
-              ("r" . mu4e-update-index))
+              ("R" . mu4e-update-index))
        :config
        (setq mu4e-headers-auto-update t)
        (setq mu4e-headers-skip-duplicates t)

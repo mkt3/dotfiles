@@ -21,7 +21,7 @@ esac
 # Install library
 case "$OS" in
     Darwin)
-        DPENDENCIES="make autoconf gnu-sed gnu-tar grep awk coreutils pkg-config texinfo xz gnutls tree-sitter librsvg little-cms2 jansson tree-sitter mailutils libgccjit gcc gmp libjpeg zlib isync msmtp mu terminal-notifier"
+        DPENDENCIES="make autoconf gnu-sed gnu-tar grep awk coreutils pkg-config texinfo xz gnutls librsvg little-cms2 jansson tree-sitter webp giflib mailutils libgccjit gcc gmp libjpeg zlib isync msmtp mu terminal-notifier"
         # shellcheck disable=SC2086
         brew install $DPENDENCIES
         ;;
@@ -80,10 +80,10 @@ if [[ "$OS" == 'Linux' ]]; then
     if [[ "$UI" == 'cui' ]]; then
         BUILD_OPTIONS="--prefix=/usr/local ${BUILD_OPTIONS}"
     else
-        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk ${BUILD_OPTIONS}"
+        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets ${BUILD_OPTIONS}"
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
-    BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns"
+    BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns --with-xwidgets"
 fi
 
 # shellcheck disable=SC2086
