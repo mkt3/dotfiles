@@ -1247,6 +1247,12 @@
                                         (file+head "record/${slug}.org.gpg" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
+                                       ("m" "memo" plain "%?"
+                                        :if-new
+                                        (file+head "memo/${slug}.org"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
                                        ))
          (org-roam-dailies-capture-templates  '(("j" "journal" entry
                                                  "** %<%H:%M> %?"
