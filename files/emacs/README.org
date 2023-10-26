@@ -1571,8 +1571,8 @@
       :after elfeed
       :bind (nil
              :map elfeed-webkit-map
-             ("k" . scroll-down-command)
-             ("j" . scroll-up-command)
+             ("k" . xwidget-webkit-scroll-down-line)
+             ("j" . xwidget-webkit-scroll-up-line)
              :map elfeed-show-mode-map
              ("i" . elfeed-webkit-toggle)))
   #+end_src
