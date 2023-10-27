@@ -896,12 +896,13 @@
         :custom (python-indent-guess-indent-offset-verbose . nil)
         :hook (python-ts-mode-hook . eglot-ensure))
 
-      (use-package blacken
-        :ensure t
-        :delight
-        :hook (python-ts-mode-hook .  blacken-mode)
-        :custom
-        (blacken-line-length 300))
+      (use-package reformatter
+        :hook
+        (python-ts-mode-hook . ruff-format-on-save-mode)
+        :config
+        (reformatter-define ruff-format
+          :program "ruff"
+          :args `("format" "--stdin-filename" ,buffer-file-name "-")))
 
       (use-package flymake-ruff
         :ensure t
