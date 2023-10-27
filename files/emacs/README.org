@@ -259,9 +259,20 @@
    #+end_src
 * Appearance
 ** Color theme
+*** ef-themes
+    #+begin_src emacs-lisp
+      (use-package ef-themes
+        :ensure t
+        :config
+        (mapc #'disable-theme custom-enabled-themes)
+        (load-theme 'ef-maris-dark :no-confirm)
+        ;; (ef-themes-load-random 'dark)
+        )
+    #+end_src
 *** Doom Nord
     #+begin_src emacs-lisp
       (use-package doom-themes
+        :disabled
         :ensure t
         :config
         (load-theme 'doom-nord t))
