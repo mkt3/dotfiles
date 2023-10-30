@@ -1086,16 +1086,16 @@
          (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
                               (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")
                               ))
-         (org-todo-keyword-faces '(("TODO" :foreground "red"
-                                    :weight bold)
-                                   ("IN PROGRESS" :foreground "cornflower blue"
-                                    :weight bold)
-                                   ("DONE" :foreground "green"
-                                    :weight bold)
-                                   ("WAITING" :foreground "orange"
-                                    :weight bold)
-                                   ("CANCELLED" :foreground "green"
-                                    :weight bold)))
+         ;; (org-todo-keyword-faces '(("TODO" :foreground "red"
+         ;;                            :weight bold)
+         ;;                           ("IN PROGRESS" :foreground "cornflower blue"
+         ;;                            :weight bold)
+         ;;                           ("DONE" :foreground "green"
+         ;;                            :weight bold)
+         ;;                           ("WAITING" :foreground "orange"
+         ;;                            :weight bold)
+         ;;                           ("CANCELLED" :foreground "green"
+         ;;                            :weight bold)))
          (org-habit-graph-column 43)
          :config
          ;; The following function is a slight customization, quoted from the link below.
