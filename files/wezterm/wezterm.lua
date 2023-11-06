@@ -19,17 +19,17 @@ local keys = {
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
 }
 
-font_size = 20.0
+font_size = 18.0
 if wezterm.target_triple == 'x86_64-apple-darwin' then
   table.insert(keys, {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}})
   table.insert(keys, {key="j",mods="CTRL",action=wezterm.action.SendKey{key="\\", mods="CTRL"}}) -- for emacs ddskk
-  font_size = 18.0
+  font_size = 16.0
 end
 
 
 return {
   font = wezterm.font_with_fallback {
-    { family = 'Cica', assume_emoji_presentation = false},
+    { family = 'PlemolJP', assume_emoji_presentation = false},
     { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false},
     { family = 'Noto Emoji', assume_emoji_presentation = true},
   },
