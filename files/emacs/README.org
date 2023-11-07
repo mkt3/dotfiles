@@ -990,20 +990,46 @@
          :ensure t
          :commands add-node-modules-path)
      #+end_src
-**** rjsx-mode
+**** jsx-mode
      #+begin_src emacs-lisp
-       ;; (use-package rjsx-mode
-       ;;   :ensure t
-       ;;   :mode ("\\.jsx\\'" "\\.js\\'")
-       ;;   :custom
-       ;;   (indent-tabs-mode nil)
-       ;;   (js-indent-level 2)
-       ;;   (js2-strict-missing-semi-waring nil)
-       ;;   (js2-mode-show-strict-warnings nil)
-       ;;   :config
-       ;;   :hook (rjsx-mode-hook . (lambda ()
-       ;;                             (add-node-modules-path)
-       ;;                             (flycheck-mode t))))
+       (use-package jtsx
+         :vc (:url "https://github.com/llemaitre19/jtsx"
+                   :branch "master")
+         :mode (("\\.jsx?\\'" . jsx-mode)
+                ("\\.tsx?\\'" . tsx-mode))
+         :commands jtsx-install-treesit-language
+         :hook ((jsx-mode . hs-minor-mode)
+                (tsx-mode . hs-minor-mode))
+         :custom
+         (js-indent-level 2)
+         (typescript-ts-mode-indent-offset 2)
+         (jtsx-switch-indent-offset 0)
+         (jtsx-indent-statement-block-regarding-standalone-parent nil)
+         (jtsx-jsx-element-move-allow-step-out t)
+         (jtsx-enable-jsx-electric-closing-element t)
+         :config
+         (defun jtsx-bind-keys-to-mode-map (mode-map)
+           "Bind keys to MODE-MAP."
+           (define-key mode-map (kbd "C-c C-j") 'jtsx-jump-jsx-element-tag-dwim)
+           (define-key mode-map (kbd "C-c j o") 'jtsx-jump-jsx-opening-tag)
+           (define-key mode-map (kbd "C-c j c") 'jtsx-jump-jsx-closing-tag)
+           (define-key mode-map (kbd "C-c j r") 'jtsx-rename-jsx-element)
+           (define-key mode-map (kbd "C-c <down>") 'jtsx-move-jsx-element-tag-forward)
+           (define-key mode-map (kbd "C-c <up>") 'jtsx-move-jsx-element-tag-backward)
+           (define-key mode-map (kbd "C-c C-<down>") 'jtsx-move-jsx-element-forward)
+           (define-key mode-map (kbd "C-c C-<up>") 'jtsx-move-jsx-element-backward)
+           (define-key mode-map (kbd "C-c C-S-<down>") 'jtsx-move-jsx-element-step-in-forward)
+           (define-key mode-map (kbd "C-c C-S-<up>") 'jtsx-move-jsx-element-step-in-backward)
+           (define-key mode-map (kbd "C-c j w") 'jtsx-wrap-in-jsx-element))
+
+         (defun jtsx-bind-keys-to-jsx-mode-map ()
+             (jtsx-bind-keys-to-mode-map jsx-mode-map))
+
+         (defun jtsx-bind-keys-to-tsx-mode-map ()
+             (jtsx-bind-keys-to-mode-map tsx-mode-map))
+
+         (add-hook 'jsx-mode-hook 'jtsx-bind-keys-to-jsx-mode-map)
+         (add-hook 'tsx-mode-hook 'jtsx-bind-keys-to-tsx-mode-map))
      #+end_src
 **** typescript-mode
      #+begin_src emacs-lisp
