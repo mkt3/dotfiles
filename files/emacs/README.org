@@ -770,6 +770,7 @@
        :ensure t
        :commands (lsp lsp-deferred)
        :config
+       (setq read-process-output-max (* 1024 1024))
        (defun my/lsp-ui-sideline--align (&rest lengths)
          "Align sideline string by LENGTHS from the right of the window."
          (+ (apply '+ lengths)
