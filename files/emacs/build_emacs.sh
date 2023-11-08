@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu
+set -o pipefail
 
-# constnt value
+# constant value
 OS=$(uname -s)
 UI=$1
 EMACS_REPO="https://github.com/mkt3/emacs.git"
