@@ -1716,6 +1716,10 @@
       (shell-cmpl-cycle-cutoff-length 5)
       (eshell-ask-to-save-history (quote always))
       (eshell-hist-ignoredups t))
+
+    (use-package eat
+      :ensure t
+      :hook (eshell-load-hook . eat-eshell-mode))
   #+end_src
 * External Collaboration
 ** Pdf
