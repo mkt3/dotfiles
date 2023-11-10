@@ -246,7 +246,7 @@
    #+begin_src emacs-lisp
      (setq
       use-short-answers t
-      debug-on-error t
+      debug-on-error nil
       create-lockfiles nil
       enable-recursive-minibuffers t
       ring-bell-function 'ignore

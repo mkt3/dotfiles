@@ -6,8 +6,8 @@ setup_pipx() {
     info "Setting up pipx"
 
     info "Installing/Updating pipx packages"
-    # local package_list=(jupyterlab black pyright ruff)
-    local package_list=(black pyright ruff)
+    local package_list=(jupyterlab black pyright ruff)
+    # local package_list=(black pyright ruff)
 
     local installed_list
     installed_list=$(pipx list)
@@ -87,5 +87,5 @@ setup_python() {
 
     setup_poetry
 
-    # setup_jupyterlab
+    setup_jupyterlab
 }
