@@ -428,6 +428,7 @@
        (whitespace-space-regexp  "\\(\u3000+\\)")
        (whitespace-global-modes  '(not dired-mode tar-mode magit-mode))
        (global-whitespace-mode t)
+       (whitespace-action '(auto-cleanup))
        :config
        (set-face-attribute 'whitespace-trailing nil
                            :background "Black"
