@@ -1716,7 +1716,38 @@
       (eshell-cmpl-cycle-completions t)
       (shell-cmpl-cycle-cutoff-length 5)
       (eshell-ask-to-save-history (quote always))
-      (eshell-hist-ignoredups t))
+      (eshell-hist-ignoredups t)
+      (eshell-list-files-after-cd t)
+      :config
+      (setq eshell-prompt-function
+            (lambda ()
+              (concat
+               (propertize "┌[" 'face `(:foreground "#2aa198"))
+               (propertize (user-login-name) 'face `(:foreground "#dc322f"))
+               (propertize "@" 'face `(:foreground "#2aa198"))
+               (propertize (system-name) 'face `(:foreground "#268bd2"))
+               (propertize "]─[" 'face `(:foreground "#2aa198"))
+               (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "#b58900"))
+               (propertize "]─[" 'face `(:foreground "#2aa198"))
+               (propertize (concat (eshell/pwd)) 'face `(:foreground "#93a1a1"))
+               (propertize "]\n" 'face `(:foreground "#2aa198"))
+               (propertize "└>" 'face `(:foreground "#2aa198"))
+               (propertize (if (= (user-uid) 0) " # " " $ ") 'face `(:foreground "#2aa198"))
+               )))
+      (defun corfu-send-shell (&rest _)
+        "Send completion candidate when inside comint/eshell."
+        (cond
+         ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
+          (eshell-send-input))
+         ((and (derived-mode-p 'comint-mode)  (fboundp 'comint-send-input))
+          (comint-send-input))))
+      (advice-add #'corfu-insert :after #'corfu-send-shell))
+
+    (use-package eshell-toggle
+      :ensure t
+      :bind* ("C-t" . eshell-toggle)
+      :custom
+      (eshell-toggle-size-fraction 2))
 
     (use-package eat
       :ensure t

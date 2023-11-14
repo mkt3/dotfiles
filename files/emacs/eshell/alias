@@ -1,5 +1,5 @@
-alias ll ls -ltr
-alias la ls -a
+alias ll ls -ltr --color=always
+alias la ls -a --color=always
 alias o xdg-open $1
 alias ff find-file $1
 alias d dired .
