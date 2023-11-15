@@ -3,3 +3,6 @@ alias la ls -a --color=always
 alias o xdg-open $1
 alias ff find-file $1
 alias d dired .
+alias c clear-scrollback
+alias tp trash-put $*
+alias rm trash-put $*

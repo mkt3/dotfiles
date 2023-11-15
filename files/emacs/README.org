@@ -593,7 +593,7 @@
       (use-package consult-ghq
         :ensure t
         :after consult
-        :bind* (("C-c [" . consult-ghq-find)
+        :bind* (("C-c [" . consult-ghq-switch-project)
                 ("C-c ]" . consult-ghq-grep))
         :custom
         (consult-ghq-find-function #'consult-find)
@@ -1719,6 +1719,7 @@
       (eshell-hist-ignoredups t)
       (eshell-list-files-after-cd t)
       :config
+      (add-hook 'eshell-mode-hook (lambda () (setenv "TERM" "xterm-256color")))
       (setq eshell-prompt-function
             (lambda ()
               (concat
