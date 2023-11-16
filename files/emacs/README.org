@@ -1054,7 +1054,7 @@
          (org-return-follows-link t)
          (org-startup-truncated nil)
          (org-use-speed-commands t)
-         (org-startup-with-latex-preview t)
+         (org-startup-with-latex-preview nil)
          (org-log-done 'time)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
@@ -1718,6 +1718,9 @@
       (eshell-ask-to-save-history (quote always))
       (eshell-hist-ignoredups t)
       (eshell-list-files-after-cd t)
+      :bind (nil
+             :map eshell-mode-map
+             ("C-r" . consult-history))
       :config
       (add-hook 'eshell-mode-hook (lambda () (setenv "TERM" "xterm-256color")))
       (setq eshell-prompt-function
