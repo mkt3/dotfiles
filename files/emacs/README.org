@@ -1529,14 +1529,15 @@
       ;; (browse-url-browser-function 'eww)
       :config
       (defun my:custom-browse-url (url &rest args)
-        "Open URL with eww if it does not contain bellow strings'. Otherwise, use the default browser."
-        (if (or (string-match-p "slack\\.com" url)
-                (string-match-p "google\\.com" url)
-                (string-match-p "notion\\.so" url)
-                (string-match-p "figma\\.com" url)
-                (string-match-p "github\\.com" url))
-            (browse-url-default-browser url)
-          (eww-browse-url url)))
+        "Open URL with eww if it does not contain below strings. Otherwise, use the default browser."
+        (let ((urls-to-match '("slack\\.com"
+                               "google\\.com"
+                               "notion\\.so"
+                               "figma\\.com"
+                               "github\\.com")))
+          (if (cl-some (lambda (pattern) (string-match-p pattern url)) urls-to-match)
+              (browse-url-default-browser url)
+            (eww-browse-url url))))
       (setq browse-url-browser-function 'my:custom-browse-url)
       (defun eww-disable-images ()
         (interactive)
@@ -1723,21 +1724,6 @@
              ("C-r" . consult-history))
       :config
       (add-hook 'eshell-mode-hook (lambda () (setenv "TERM" "xterm-256color")))
-      (setq eshell-prompt-function
-            (lambda ()
-              (concat
-               (propertize "┌[" 'face `(:foreground "#2aa198"))
-               (propertize (user-login-name) 'face `(:foreground "#dc322f"))
-               (propertize "@" 'face `(:foreground "#2aa198"))
-               (propertize (system-name) 'face `(:foreground "#268bd2"))
-               (propertize "]─[" 'face `(:foreground "#2aa198"))
-               (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "#b58900"))
-               (propertize "]─[" 'face `(:foreground "#2aa198"))
-               (propertize (concat (eshell/pwd)) 'face `(:foreground "#93a1a1"))
-               (propertize "]\n" 'face `(:foreground "#2aa198"))
-               (propertize "└>" 'face `(:foreground "#2aa198"))
-               (propertize (if (= (user-uid) 0) " # " " $ ") 'face `(:foreground "#2aa198"))
-               )))
       (defun corfu-send-shell (&rest _)
         "Send completion candidate when inside comint/eshell."
         (cond
@@ -1746,6 +1732,15 @@
          ((and (derived-mode-p 'comint-mode)  (fboundp 'comint-send-input))
           (comint-send-input))))
       (advice-add #'corfu-insert :after #'corfu-send-shell))
+
+    (use-package eshell-prompt-extras
+      :ensure t
+      :after esh-opt
+      :defines eshell-highlight-prompt
+      :commands (epe-theme-lambda epe-theme-dakrone epe-theme-multiline-with-status)
+      :init (setq eshell-highlight-prompt nil
+                  epe-path-style 'full
+                  eshell-prompt-function 'epe-theme-multiline-with-status))
 
     (use-package eshell-toggle
       :ensure t
