@@ -1,3 +1,4 @@
+-*- buffer-read-only: t -*-
 #+title: Configurations for Emacs
 #+author: Makoto Morinaga
 #+startup: content
@@ -1059,6 +1060,17 @@
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
          :config
+         (advice-add 'org-edit-special :before (lambda (&rest args) (read-only-mode -1)))
+         (defun my-enable-read-only ()
+           "Enable read-only mode for certain conditions."
+           (when (or (save-excursion
+                       (goto-char (point-min))
+                       (search-forward " -*- buffer-read-only: t -*-" nil t))
+                     (and (buffer-file-name)
+                          (string-match-p "/roam/config/" (buffer-file-name))))
+             (read-only-mode 1)))
+         (advice-add 'org-edit-src-exit :after #'my-enable-read-only)
+
          (org-babel-do-load-languages
           'org-babel-load-languages
           '((emacs-lisp . t)
@@ -1295,6 +1307,12 @@
                                                                         "#+title: %<%Y-%m>\n"
                                                                         ("%<%Y-%m-%d %a>")))))
          :config
+         (defun my:org-roam-read-only ()
+           "Enable read-only mode for org-roam files."
+           (when (and (buffer-file-name)
+                      (string-match-p "/roam/config/" (buffer-file-name)))
+             (read-only-mode 1)))
+         (add-hook 'org-mode-hook 'my:org-roam-read-only)
          (add-hook 'org-mode-hook (lambda ()
                                     (setq-local time-stamp-active t
                                                 time-stamp-line-limit 18
