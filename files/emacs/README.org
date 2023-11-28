@@ -69,7 +69,8 @@
      (setq scroll-preserve-screen-position t
            scroll-margin 5
            scroll-conservatively 1
-           next-screen-context-lines 5)
+           next-screen-context-lines 5
+           pixel-scroll-precision-mode 1)
    #+end_src
 ** symlink
    Automatically visit symlink sources
@@ -1537,8 +1538,8 @@
              ("o" . eww-browse-with-external-browser)
              ("r" . eww-reload)
              ("y" . eww-copy-page-down)
-             ("j" . next-line)
-             ("k" . previous-line)
+             ("j" . pixel-scroll-up)
+             ("k" . pixel-scroll-down)
              ("g" . beginning-of-buffer)
              (";" . quit-window)
              ("G" . end-of-buffer))
@@ -1623,10 +1624,11 @@
     (use-package elfeed-webkit
       :ensure t
       :after elfeed
+      :config
       :bind (nil
              :map elfeed-webkit-map
-             ("k" . xwidget-webkit-scroll-down-line)
-             ("j" . xwidget-webkit-scroll-up-line)
+             ("k" . (lambda () (interactive) (xwidget-webkit-scroll-down 10)))
+             ("j" . (lambda () (interactive) (xwidget-webkit-scroll-up 10)))
              :map elfeed-show-mode-map
              ("i" . elfeed-webkit-toggle)))
   #+end_src
