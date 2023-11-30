@@ -104,6 +104,7 @@ setup_pacman() {
                                    msmtp        # for mu4e
                                    isync        # for mu4e
                                    goimapnotify # for mu4e
+                                   imagemagick  # for dirvish
                                    kdeconnect
                                    dvd+rw-tools
                                    bitwarden
