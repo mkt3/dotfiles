@@ -691,8 +691,8 @@
         (defun my/eglot-capf ()
           (setq-local completion-at-point-functions
                       (list (cape-super-capf
-                             #'eglot-completion-at-point
-                             #'tempel-complete)
+                             #'tempel-complete
+                             #'eglot-completion-at-point)
                             #'cape-keyword
                             #'cape-dabbrev
                             #'cape-file)
