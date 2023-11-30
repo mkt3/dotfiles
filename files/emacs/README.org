@@ -1547,7 +1547,7 @@
       (setq dirvish-subtree-state-style 'nerd)
       (setq delete-by-moving-to-trash t)
       (setq dired-listing-switches
-            "-l --almost-all --human-readable --group-directories-first --no-group")
+            "-l --human-readable --group-directories-first --no-group")
       :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
       (("C-c f" . dirvish-fd)
        ("C-x d" . dirvish)
