@@ -325,6 +325,12 @@
        :config
        (nerd-icons-completion-mode)
        :hook (marginalia-mode-hook . #'nerd-icons-completion-marginalia-setup))
+
+     (use-package nerd-icons-corfu
+       :ensure t
+       :after corfu
+       :config
+       (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
    #+end_src
 ** Highlight-indent-guide
    #+begin_src emacs-lisp
@@ -662,15 +668,7 @@
         :init
         (global-corfu-mode)
         (corfu-popupinfo-mode))
-      (use-package kind-icon
-        :ensure t
-        :after corfu
-        :custom (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
-        :config
-        (setq kind-icon-use-icons nil)
-        (plist-put kind-icon-default-style :height 0.6)
-        (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
-        )
+
       (use-package cape
         :ensure t
         :init
@@ -697,8 +695,7 @@
                             #'cape-dabbrev
                             #'cape-file)
                       ))
-        (add-hook 'eglot-managed-mode-hook #'my/eglot-capf)
-        )
+        (add-hook 'eglot-managed-mode-hook #'my/eglot-capf))
     #+end_src
 ** which-key
    #+begin_src emacs-lisp
