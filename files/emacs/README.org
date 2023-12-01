@@ -1442,6 +1442,7 @@
                (("README\\.md\\'" . gfm-mode)))
         :custom
         (markdown-fontify-code-blocks-natively t)
+        (markdown-indent-on-enter 'indent-and-new-item)
         :hook (markdown-mode-hook . (lambda ()
                                        (setq tab-width 2)
                                        (turn-on-orgtbl)
