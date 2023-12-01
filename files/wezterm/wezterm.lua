@@ -1,21 +1,22 @@
 local wezterm = require 'wezterm';
 
 local keys = {
-  {key="s",mods="SUPER",action=wezterm.action.SendKey{key="s", mods="ALT"}}, -- for emacs
-  {key="x",mods="SUPER",action=wezterm.action.SendKey{key="x", mods="ALT"}}, -- for emacs
-  {key="c",mods="SUPER",action=wezterm.action.SendKey{key="c", mods="ALT"}}, -- for emacs
-  {key="w",mods="SUPER",action=wezterm.action.SendKey{key="w", mods="ALT"}}, -- for emacs
-  {key="y",mods="SUPER",action=wezterm.action.SendKey{key="y", mods="ALT"}}, -- for emacs
-  {key="i",mods="SUPER",action=wezterm.action.SendKey{key="i", mods="ALT"}}, -- for emacs
-  {key=",",mods="SUPER",action=wezterm.action.SendKey{key=",", mods="ALT"}}, -- for emacs
-  {key=".",mods="SUPER",action=wezterm.action.SendKey{key=".", mods="ALT"}}, -- for emacs
-  {key=";",mods="SUPER",action=wezterm.action.SendKey{key=";", mods="ALT"}}, -- for emacs
-  {key="/",mods="SUPER",action=wezterm.action.SendKey{key="/", mods="ALT"}}, -- for emacs
-  {key="<",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="<", mods="ALT"}}, -- for emacs
-  {key=">",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key=">", mods="ALT"}}, -- for emacs
-  {key="?",mods="SUPER|SHIFT",action=wezterm.action.SendKey{key="?", mods="ALT"}}, -- for emacs
-  {key="v",mods="SUPER",action=wezterm.action.PasteFrom 'Clipboard'},
-  {key="w",mods="ALT",action=wezterm.action.CloseCurrentTab{confirm=false}},
+  {key="s",mods="CMD",action=wezterm.action.SendKey{key="s", mods="OPT"}}, -- for emacs
+  {key="x",mods="CMD",action=wezterm.action.SendKey{key="x", mods="OPT"}}, -- for emacs
+  {key="c",mods="CMD",action=wezterm.action.SendKey{key="c", mods="OPT"}}, -- for emacs
+  {key="w",mods="CMD",action=wezterm.action.SendKey{key="w", mods="OPT"}}, -- for emacs
+  {key="y",mods="CMD",action=wezterm.action.SendKey{key="y", mods="OPT"}}, -- for emacs
+  {key="v",mods="CMD",action=wezterm.action.SendKey{key="v", mods="OPT"}}, -- for emacs
+  {key="i",mods="CMD",action=wezterm.action.SendKey{key="i", mods="OPT"}}, -- for emacs
+  {key=",",mods="CMD",action=wezterm.action.SendKey{key=",", mods="OPT"}}, -- for emacs
+  {key=".",mods="CMD",action=wezterm.action.SendKey{key=".", mods="OPT"}}, -- for emacs
+  {key=";",mods="CMD",action=wezterm.action.SendKey{key=";", mods="OPT"}}, -- for emacs
+  {key="/",mods="CMD",action=wezterm.action.SendKey{key="/", mods="OPT"}}, -- for emacs
+  {key="<",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="<", mods="OPT"}}, -- for emacs
+  {key=">",mods="CMD|SHIFT",action=wezterm.action.SendKey{key=">", mods="OPT"}}, -- for emacs
+  {key="?",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="?", mods="OPT"}}, -- for emacs
+  {key="v",mods="OPT",action=wezterm.action.PasteFrom 'Clipboard'},
+  {key="w",mods="OPT",action=wezterm.action.CloseCurrentTab{confirm=false}},
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={".config/wezterm/ssh.sh"},cwd = '~'}},
 }
 

@@ -320,7 +320,6 @@
 
      (use-package nerd-icons-completion
        :ensure t
-       :demand t
        :after marginalia
        :config
        (nerd-icons-completion-mode)
@@ -466,7 +465,7 @@
            (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))
 
        (defun region-to-clipboard ()
-         "Copy the selected region to both thethe kill-ring and clipboard  with OSC 52."
+         "Copy the selected region to both the kill-ring and clipboard with OSC 52."
          (interactive)
          (if (region-active-p)
              (let* ((selected-text (buffer-substring-no-properties (region-beginning) (region-end)))
