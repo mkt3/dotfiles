@@ -9,7 +9,6 @@ brew "duf"
 brew "tree"
 brew "gnupg"
 brew "pinentry-mac"
-brew "cmigemo"
 brew "less"
 brew "nkf"
 brew "rsync"
@@ -67,7 +66,6 @@ cask "libreoffice"
 mas "Kindle", id: 302584613
 mas "Slack", id: 803453959
 mas "The Unarchiver", id: 425424353
-mas "Sequel Ace", id: 1518036000
 mas "GoodNotes", id: 1444383602
 mas "Dictonaries", id: 1380563956
 mas "MeetingBar", id: 1532419400

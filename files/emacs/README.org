@@ -90,15 +90,10 @@
      (setq truncate-lines nil
            truncate-partial-width-windows nil)
 
-     (use-package word-wrap-mode
-       :hook (visual-line-mode-hook . word-wrap-whitespace-mode)
-       :config
-       (add-to-list 'word-wrap-whitespace-characters ?\]))
-
      (use-package adaptive-wrap
        :ensure t
-       :hook (((markdown-mode-hook org-mode-hook nov-mode-hook) . visual-line-mode)
-              (visual-line-mode-hook . adaptive-wrap-prefix-mode)))
+       :demand t
+       :hook ((markdown-mode-hook org-mode-hook nov-mode-hook) . #'adaptive-wrap-prefix-mode))
    #+end_src
 ** Delete
    Delete selection if you insert.
