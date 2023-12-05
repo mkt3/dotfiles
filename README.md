@@ -2,6 +2,9 @@
 
 # dotfiles
 
+## Personal Use Notice
+This repository contains configuration files and scripts for my personal use. They are shared publicly for reference but are tailored to my specific needs and setup.
+
 ## Supported OS
 - macOS
 - Ubuntu
