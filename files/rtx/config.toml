@@ -1,7 +1,4 @@
 [settings]
-# whether to prompt to install plugins and runtimes if they're not already installed
-missing_runtime_behavior = 'prompt' # other options: 'ignore', 'warn', 'prompt', 'autoinstall'
-
 # plugins can read the versions files used by other version managers (if enabled by the plugin)
 # for example, .nvmrc in the case of nodejs's nvm
 legacy_version_file = false         # enabled by default (different than asdf)
@@ -23,7 +20,6 @@ shorthands_file = '~/.config/rtx/shorthands.toml' # path to the shorthands file,
 disable_default_shorthands = false # disable the default shorthands, see `RTX_DISABLE_DEFAULT_SHORTHANDS`
 
 experimental = true # enable experimental features such as shims
-log_level = 'debug' # log verbosity, see `RTX_LOG_LEVEL`
 
 [tools]
 node = "20.3.0"
