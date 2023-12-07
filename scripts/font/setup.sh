@@ -24,13 +24,13 @@ setup_font() {
 
     info "Add PlemolJP font"
     local plemoljp_font_dir="${XDG_DATA_HOME}/fonts/PlemolJP"
-    local plemoljp_font_name="PlemolJP"
+    local plemoljp_font_name="PlemolJP Console NF"
 
     if bash -lc "fc-match $plemoljp_font_name | grep ${plemoljp_font_name} > /dev/null"; then
         info "PlemolJP font already exists... Skipping."
     else
         local plemoljp_download_path="/tmp/plemoljp.zip"
-        curl -fL -o $plemoljp_download_path https://github.com/yuru7/PlemolJP/releases/download/v1.6.0/PlemolJP_v1.6.0.zip
+        curl -fL -o $plemoljp_download_path https://github.com/yuru7/PlemolJP/releases/download/v1.6.0/PlemolJP_NF_v1.6.0.zip
         unar "$plemoljp_download_path" -D -o "$plemoljp_font_dir"
         fc-cache -vf
     fi
