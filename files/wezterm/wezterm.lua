@@ -30,7 +30,7 @@ end
 
 return {
   font = wezterm.font_with_fallback {
-    { family = 'PlemolJP', assume_emoji_presentation = false},
+    { family = 'PlemolJP Console NF', assume_emoji_presentation = false},
     { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false},
     { family = 'Cica', assume_emoji_presentation = true},
     { family = 'Noto Emoji', assume_emoji_presentation = true},
