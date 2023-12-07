@@ -1553,6 +1553,10 @@
       (setq dirvish-attributes
             '(file-time file-size collapse subtree-state vc-state git-msg))
       (setq dirvish-subtree-state-style 'nerd)
+      (setq dirvish-path-separators (list
+                                     (format "  %s " (nerd-icons-codicon "nf-cod-home"))
+                                     (format "  %s " (nerd-icons-codicon "nf-cod-root_folder"))
+                                     (format " %s " (nerd-icons-faicon "nf-fa-angle_right"))))
       (setq delete-by-moving-to-trash t)
       (setq dired-listing-switches
             "-l --human-readable --group-directories-first --no-group")
