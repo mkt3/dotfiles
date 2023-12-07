@@ -22,7 +22,7 @@ esac
 # Install library
 case "$OS" in
     Darwin)
-        DPENDENCIES="make autoconf gnu-sed gnu-tar grep awk coreutils pkg-config texinfo xz gnutls librsvg little-cms2 jansson tree-sitter webp giflib mailutils libgccjit gcc gmp libjpeg zlib isync msmtp mu terminal-notifier"
+        DPENDENCIES="make autoconf gnu-sed gnu-tar grep awk coreutils pkg-config texinfo xz gnutls librsvg little-cms2 jansson tree-sitter webp giflib mailutils libgccjit gcc gmp libjpeg zlib isync msmtp mu terminal-notifier imagemagick"
         # shellcheck disable=SC2086
         brew install $DPENDENCIES
         ;;
@@ -34,7 +34,7 @@ case "$OS" in
                 DEPENDENCIES="gmp gnutls jansson lcms2 acl dbus gpm ncurses systemd-libs tree-sitter libxml2 zlib libgccjit marksman"
 
                 if [[ "$UI" == "gui" ]]; then
-                    DEPENDENCIES="${DEPENDENCIES} alsa-lib fontconfig freetype2 gtk3 gdk-pixbuf2 giflib glib2 gtk3 harfbuzz libice libjpeg-turbo libotf pango libpng librsvg libsm sqlite libtiff libwebp lib32-libwebp libxfixes libxml2 m17n-lib sqlite"
+                    DEPENDENCIES="${DEPENDENCIES} alsa-lib fontconfig freetype2 gtk3 gdk-pixbuf2 giflib glib2 gtk3 harfbuzz libice libjpeg-turbo libotf pango libpng librsvg libsm sqlite libtiff libwebp lib32-libwebp libxfixes libxml2 m17n-lib sqlite imagemagick"
                 fi
                 # shellcheck disable=SC2086
                 sudo pacman -S --needed $DEPENDENCIES
@@ -64,7 +64,7 @@ esac
 # clone
 if [ -d "$EMACS_REPO_PATH" ]; then
     cd "$EMACS_REPO_PATH" || exit
-    make extraclean
+    make distclean
     git switch "$BRANCH"
     git pull
 else
@@ -81,16 +81,16 @@ if [[ "$OS" == 'Linux' ]]; then
     if [[ "$UI" == 'cui' ]]; then
         BUILD_OPTIONS="--prefix=/usr/local ${BUILD_OPTIONS}"
     else
-        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets ${BUILD_OPTIONS}"
+        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets --with-imagemagick ${BUILD_OPTIONS}"
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
-    BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns --with-xwidgets"
+    BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns --with-xwidgets --with-imagemagick"
 fi
 
 # shellcheck disable=SC2086
 ./configure $BUILD_OPTIONS
 
-make -j"$(nproc)"
+make bootstrap -j"$(nproc)"
 
 if [[ "$OS" == 'Linux' ]]; then
     sudo make install
