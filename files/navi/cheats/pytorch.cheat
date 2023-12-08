@@ -1,7 +1,0 @@
-% pytorch
-
-# Add source for torch cuda11.8
-poetry source add torch_cu118 --priority=explicit https://download.pytorch.org/whl/cu118
-
-# Install torch from cuda11.8
-poetry add torch --source torch_cu118
