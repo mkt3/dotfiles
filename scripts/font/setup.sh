@@ -26,7 +26,7 @@ setup_font() {
     local plemoljp_font_dir="${XDG_DATA_HOME}/fonts/PlemolJP"
     local plemoljp_font_name="PlemolJP Console NF"
 
-    if bash -lc "fc-match $plemoljp_font_name | grep ${plemoljp_font_name} > /dev/null"; then
+    if bash -lc "fc-match '$plemoljp_font_name' | grep '${plemoljp_font_name}' > /dev/null"; then
         info "PlemolJP font already exists... Skipping."
     else
         local plemoljp_download_path="/tmp/plemoljp.zip"
