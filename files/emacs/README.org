@@ -891,10 +891,25 @@
         (magit-wip-mode t)
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup)))
+
       (use-package magit-delta
         :ensure t
         :after magit
         :hook (magit-mode-hook))
+
+      (use-package diff-hl
+        :ensure t
+        :init
+        (global-diff-hl-mode)
+        (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+        (unless (window-system) (diff-hl-margin-mode))
+        :custom-face
+        (diff-hl-change ((t (:background "#8adf80"))))
+        (diff-hl-delete ((t (:background "#ff8f88"))))
+        (diff-hl-insert ((t (:background "#bfc9ff"))))
+        :config
+        (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+        (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
     #+end_src
 ** languages
 *** Shell Script
