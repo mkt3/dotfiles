@@ -679,17 +679,7 @@
         ;;(add-to-list 'completion-at-point-functions #'cape-dict)
         ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
         ;;(add-to-list 'completion-at-point-functions #'cape-line)
-        :config
-        (defun my/eglot-capf ()
-          (setq-local completion-at-point-functions
-                      (list (cape-super-capf
-                             #'tempel-complete
-                             #'eglot-completion-at-point)
-                            #'cape-keyword
-                            #'cape-dabbrev
-                            #'cape-file)
-                      ))
-        (add-hook 'eglot-managed-mode-hook #'my/eglot-capf))
+      )
     #+end_src
 ** which-key
    #+begin_src emacs-lisp
@@ -850,7 +840,18 @@
      (use-package eglot
        :bind (nil
               :map eglot-mode-map
-              ("C-c a" . eglot-code-actions)))
+              ("C-c a" . eglot-code-actions))
+       :config
+       (defun my/eglot-capf ()
+         (setq-local completion-at-point-functions
+                     (list (cape-super-capf
+                            #'tempel-complete
+                            #'eglot-completion-at-point)
+                           #'cape-keyword
+                           #'cape-dabbrev
+                           #'cape-file)
+                     ))
+       (add-hook 'eglot-managed-mode-hook #'my/eglot-capf))
    #+end_src
 ** Flymake
    #+begin_src emacs-lisp
