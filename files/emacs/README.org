@@ -445,7 +445,11 @@
                            :foreground "GreenYellow"
                            :weight 'bold)
        (set-face-attribute 'whitespace-empty nil
-                           :background "Black"))
+                           :background "Black")
+       (advice-add 'org-edit-src-save :before (lambda () (whitespace-cleanup)))
+       (advice-add 'org-edit-src-exit :before (lambda () (whitespace-cleanup)))
+       :hook
+       (org-src-mode-hook . whitespace-turn-on))
    #+end_src
 * UI
 ** Clipboard
@@ -1395,13 +1399,13 @@
          :if (file-exists-p my:f:bib)
          :config
          (citar-org-roam-mode)
-         (add-to-list 'citar-org-roam-template-fields '(:citar-file . ("file")))
+         (setq citar-org-roam-template-fields (append citar-org-roam-template-fields '((:citar-file . ("file")) (:citar-abstract . ("abstract")))))
          (setq citar-org-roam-note-title-template "${title}")
          (setq org-roam-capture-templates
                (append org-roam-capture-templates
                        '(("p" "paper" plain "%?"
                           :if-new
-                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n** En\n\n** Ja\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n* References")
+                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n** En\n   ${citar-abstract}\n** Ja\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n* References")
                           :immediate-finish t
                           :unnarrowed t))))
          (setq citar-org-roam-capture-template-key "p"))
@@ -1900,14 +1904,18 @@
        :bind (("C-c t" . gts-do-translate))
        :config
        (setq gts-translate-list '(("ja" "en") ("en" "ja")))
+       (setq engine-list (list
+                          (gts-google-engine)
+                          (gts-bing-engine)))
+       (when (file-directory-p my:d:password-store)
+         ;; (setq engine-list (append '((gts-deepl-engine :auth-key (plist-get (nth 0 (auth-source-search :app "deepl" :max 1)) :api-key) :pro nil)) engine-list))
+         )
        (setq gts-default-translator
              (gts-translator
               :picker
               (gts-prompt-picker)
               :engines
-              (list
-               (gts-google-engine)
-               (gts-bing-engine))
+              engine-list
               :render
               (gts-buffer-render)))
        (setq gts-buffer-follow-p t))
