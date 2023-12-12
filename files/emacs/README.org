@@ -1908,8 +1908,8 @@
                           (gts-google-engine)
                           (gts-bing-engine)))
        (when (file-directory-p my:d:password-store)
-         ;; (setq engine-list (append '((gts-deepl-engine :auth-key (plist-get (nth 0 (auth-source-search :app "deepl" :max 1)) :api-key) :pro nil)) engine-list))
-         )
+         (let ((deeplapi-key (plist-get (nth 0 (auth-source-search :app "deepl" :max 1)) :api-key)))
+           (setq engine-list (append (list (gts-deepl-engine :auth-key deeplapi-key :pro nil)) engine-list))))
        (setq gts-default-translator
              (gts-translator
               :picker
