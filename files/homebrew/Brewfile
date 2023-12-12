@@ -33,7 +33,6 @@ brew "wget"
 brew "bash"
 brew "zsh"
 brew "iproute2mac"
-brew "imagemagick" # for emacs
 brew "go"
 brew "hugo"
 brew "cmake"

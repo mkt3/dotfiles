@@ -92,7 +92,6 @@
 
      (use-package adaptive-wrap
        :ensure t
-       :demand t
        :hook ((markdown-mode-hook org-mode-hook nov-mode-hook) . #'adaptive-wrap-prefix-mode))
    #+end_src
 ** Delete
@@ -160,10 +159,10 @@
 ** Parentheses
    #+begin_src emacs-lisp
      (use-package paren
-       :custom-face (show-paren-match . '((t
-                                           (:weight regular
-                                                    :background "#44475a"
-                                                    :underline "$ffff00"))))
+       ;; :custom-face (show-paren-match . '((t
+       ;;                                     (:weight regular
+       ;;                                              :background "#44475a"
+       ;;                                              :underline "$ffff00"))))
        :custom
        (show-paren-delay 0.0)
        (show-paren-mode t))
@@ -432,20 +431,20 @@
        (global-whitespace-mode t)
        (whitespace-action '(auto-cleanup))
        :config
-       (set-face-attribute 'whitespace-trailing nil
-                           :background "Black"
-                           :foreground "DeepPink"
-                           :underline t)
-       (set-face-attribute 'whitespace-tab nil
-                           :background "Black"
-                           :foreground "LightSkyBlue"
-                           :underline t)
-       (set-face-attribute 'whitespace-space nil
-                           :background "Black"
-                           :foreground "GreenYellow"
-                           :weight 'bold)
-       (set-face-attribute 'whitespace-empty nil
-                           :background "Black")
+       ;; (set-face-attribute 'whitespace-trailing nil
+       ;;                     :background "Black"
+       ;;                     :foreground "DeepPink"
+       ;;                     :underline t)
+       ;; (set-face-attribute 'whitespace-tab nil
+       ;;                     :background "Black"
+       ;;                     :foreground "LightSkyBlue"
+       ;;                     :underline t)
+       ;; (set-face-attribute 'whitespace-space nil
+       ;;                     :background "Black"
+       ;;                     :foreground "GreenYellow"
+       ;;                     :weight 'bold)
+       ;; (set-face-attribute 'whitespace-empty nil
+       ;;                     :background "Black")
        (advice-add 'org-edit-src-save :before (lambda () (whitespace-cleanup)))
        (advice-add 'org-edit-src-exit :before (lambda () (whitespace-cleanup)))
        :hook
@@ -516,7 +515,6 @@
    #+begin_src emacs-lisp
      (use-package ddskk
        :ensure t
-       :demand t
        :bind* ("C-j" . skk-kakutei)
        :bind ("C-\\". skk-kakutei) ;; for ctrl-j from wezterm
        :custom
@@ -528,18 +526,7 @@
        (when (file-directory-p my:d:nextcloud)
          (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
          )
-       (setq viper-mode nil)
-       :config
-       ;; Change marker
-       ;; https://github.com/skk-dev/ddskk/issues/162
-       (defun skk-set-display-table ()
-         (walk-windows (lambda (w)
-                         (let ((disptab (make-display-table)))
-                           (aset disptab ?\▼ (vector (make-glyph-code ?＃ 'escape-glyph)))
-                           (aset disptab ?\▽ (vector (make-glyph-code ?＠ 'escape-glyph)))
-                           (set-window-display-table w disptab)))))
-       (add-hook 'window-configuration-change-hook #'skk-set-display-table)
-       (add-hook 'after-init-hook #'skk-set-display-table))
+       (setq viper-mode nil))
    #+end_src
 ** smartparens
    #+begin_src emacs-lisp
@@ -706,10 +693,11 @@
        :bind ("C-x o" . ace-window)
        :custom
        (aw-keys '(?j ?k ?l ?i ?o ?h ?y ?u ?p))
-       :custom-face
-       (aw-leading-char-face . '((t
-                                   (:height 4.0
-                                            :foreground "#f1fa8c")))))
+       ;; :custom-face
+       ;; (aw-leading-char-face . '((t
+       ;;                             (:height 4.0
+       ;;                                      :foreground "#f1fa8c"))))
+       )
    #+end_src
 ** undo-tree
    #+begin_src emacs-lisp
@@ -757,88 +745,6 @@
       (gcmh-mode 1))
   #+end_src
 * LSP
-** lsp-mode
-   #+begin_src emacs-lisp
-     (use-package lsp-mode
-       :ensure t
-       :commands (lsp lsp-deferred)
-       :config
-       (setq read-process-output-max (* 1024 1024))
-       (defun my/lsp-ui-sideline--align (&rest lengths)
-         "Align sideline string by LENGTHS from the right of the window."
-         (+ (apply '+ lengths)
-            (if (display-graphic-p) 6 2)))
-       (advice-add 'lsp-ui-sideline--align :override #'my/lsp-ui-sideline--align)
-       :custom ((lsp-completion-provider             :none)
-                ;; (lsp-keymap-prefix                   "C-c l")
-                (lsp-log-io                          t)
-                ;; (lsp-eldoc-render-all               . t)
-                (lsp-enable-snippet                  nil)
-                (lsp-keep-workspace-alive            nil)
-                (lsp-document-sync-method            2)
-                (lsp-response-timeout                5)
-                (lsp-headerline-breadcrumb-icons-enable  nil)
-                (lsp-enable-file-watchers           nil))
-       :hook (lsp-mode-hook . lsp-headerline-breadcrumb-mode))
-
-     (use-package lsp-ui
-       :ensure t
-       :after lsp-mode
-       :custom ((lsp-ui-doc-enable             t)
-                (lsp-ui-doc-position           'at-point)
-                (lsp-ui-doc-header             t)
-                (lsp-ui-doc-include-signature  t)
-                (lsp-ui-doc-max-width          150)
-                (lsp-ui-doc-max-height         30)
-                (lsp-ui-doc-use-childframe     nil)
-                (lsp-ui-doc-use-webkit         nil)
-                (lsp-ui-peek-enable            t)
-                (lsp-ui-peek-peek-height       20)
-                (lsp-ui-peek-list-width        50))
-       :bind (nil
-              :map lsp-ui-mode-map
-              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-              ([remap xref-find-references] . lsp-ui-peek-find-references)
-              :map lsp-mode-map
-              ("C-c a" . lsp-execute-code-action)
-              ;; ("C-c d" . lsp-ui-doc-mode)
-              ;; ("C-c s" . lsp-ui-sideline-mode)
-              )
-       :hook ((lsp-mode-hook . lsp-ui-mode)))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (use-package lsp-ltex
-       :ensure t
-       :disabled
-       :init
-       (defconst my-os-type
-         (pcase system-type
-           ('darwin "mac")
-           ('gnu/linux "linux")
-           (_ nil)))
-       (defvar ltex-ls-version "16.0.0")
-       (defvar ltex-ls-tar-file (expand-file-name (format "~/.config/emacs/.cache/lsp/ltex-ls-%s.tar.gz" ltex-ls-version)))
-       (defvar ltex-ls-install-dir (file-name-as-directory (expand-file-name "~/.config/emacs/.cache/lsp/ltex-ls")))
-       (unless (file-exists-p ltex-ls-install-dir)
-         (let ((ltex-ls-url (format "https://github.com/valentjn/ltex-ls/releases/download/%s/ltex-ls-%s-%s-x64.tar.gz"
-                                    ltex-ls-version ltex-ls-version my-os-type)))
-           (make-directory ltex-ls-install-dir t)
-           (message "Downloading ltex-ls...")
-           (url-copy-file ltex-ls-url ltex-ls-tar-file)
-           (message "Extracting ltex-ls...")
-           (let ((default-directory ltex-ls-install-dir))
-             (shell-command (format "tar xvfz %s" ltex-ls-tar-file)))
-           (make-symbolic-link (concat ltex-ls-install-dir (format "ltex-ls-%s"  ltex-ls-version)) (concat ltex-ls-install-dir "latest") t)))
-       (let ((my-ltex-user-rules-path (expand-file-name "personal_config/lsp-ltex" my:d:nextcloud)))
-         (when (file-directory-p my-ltex-user-rules-path)
-           (setq lsp-ltex-user-rules-path my-ltex-user-rules-path)))
-       :hook (org-mode-hook . (lambda ()
-                                (setq-local lsp-completion-enable nil)
-                                (require 'lsp-ltex)
-                                (lsp-deferred)))  ; or lsp-deferred
-       )
-   #+end_src
 ** eglot
    #+begin_src emacs-lisp
      (use-package eglot
@@ -865,9 +771,10 @@
               :map flymake-mode-map
               ("C-c C-p" . flymake-goto-prev-error)
               ("C-c C-n" . flymake-goto-next-error))
-       :config
-       (set-face-background 'flymake-errline "red4")
-       (set-face-background 'flymake-warnline "DarkOrange"))
+       ;; :config
+       ;; (set-face-background 'flymake-errline "red4")
+       ;; (set-face-background 'flymake-warnline "DarkOrange")
+       )
      (use-package flymake-diagnostic-at-point
        :ensure t
        :after flymake
@@ -906,15 +813,10 @@
         :ensure t
         :init
         (global-diff-hl-mode)
-        (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
         (unless (window-system) (diff-hl-margin-mode))
-        :custom-face
-        (diff-hl-change ((t (:background "#8adf80"))))
-        (diff-hl-delete ((t (:background "#ff8f88"))))
-        (diff-hl-insert ((t (:background "#bfc9ff"))))
-        :config
-        (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-        (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+        :hook ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
+               (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+               (dired-mode-hook . diff-hl-dired-mode)))
     #+end_src
 ** languages
 *** Shell Script
@@ -1120,10 +1022,10 @@
          (defun gtd ()
            (interactive)
            (find-file org-gtd-file))
-         (run-at-time 0 (* 5 60)
+         (when (display-graphic-p)
+           (run-at-time 0 (* 5 60)
                       (lambda ()
-                        (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud))))
-
+                        (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud)))))
          :custom
          (org-agenda-span 'day)
          (org-agenda-remove-tags t)
@@ -1251,7 +1153,6 @@
            (condition-case err
                (update-org-agenda-buffer)
              (error (message "Error updating *Org Agenda*: %s" (error-message-string err)))))
-
          (run-with-timer 0 60 'safe-update-org-agenda-buffer))
 
        (use-package org-capture
@@ -1672,7 +1573,6 @@
 
     (use-package elfeed-protocol
       :ensure t
-      :demand t
       :if (file-directory-p my:d:nextcloud)
       :after elfeed
       :config
@@ -1688,13 +1588,6 @@
                     (list (plist-get auth-info :feed-url)
                           :api-url (plist-get auth-info :api-url)
                           :password (plist-get auth-info :password))))))
-
-    ;; (use-package elfeed-goodies
-    ;;   :ensure t
-    ;;   :demand t
-    ;;   :after elfeed
-    ;;   :config
-    ;;   (elfeed-goodies/setup))
 
     (use-package elfeed-webkit
       :ensure t
@@ -1847,6 +1740,14 @@
       :ensure t
       :hook (eshell-load-hook . eat-eshell-mode))
   #+end_src
+* Spell Checker
+  #+begin_src emacs-lisp
+    (use-package jinx
+      :ensure t
+      :hook (emacs-startup-hook . global-jinx-mode)
+      :bind (("C-;" . jinx-correct)
+             ("C-M-$" . jinx-languages)))
+  #+end_src
 * External Collaboration
 ** Pdf
    #+begin_src emacs-lisp
@@ -1903,6 +1804,7 @@
        :ensure t
        :bind (("C-c t" . gts-do-translate))
        :config
+       (set-face-attribute 'gts-render-buffer-me-header-backgroud-face nil :foreground "black")
        (setq gts-translate-list '(("ja" "en") ("en" "ja")))
        (setq engine-list (list
                           (gts-google-engine)
