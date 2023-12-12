@@ -11,6 +11,7 @@ local keys = {
   {key=",",mods="CMD",action=wezterm.action.SendKey{key=",", mods="OPT"}}, -- for emacs
   {key=".",mods="CMD",action=wezterm.action.SendKey{key=".", mods="OPT"}}, -- for emacs
   {key=";",mods="CMD",action=wezterm.action.SendKey{key=";", mods="OPT"}}, -- for emacs
+  {key=";",mods="CTRL",action=wezterm.action.SendKey{key="@", mods="CTRL"}}, -- for emacs
   {key="/",mods="CMD",action=wezterm.action.SendKey{key="/", mods="OPT"}}, -- for emacs
   {key="<",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="<", mods="OPT"}}, -- for emacs
   {key=">",mods="CMD|SHIFT",action=wezterm.action.SendKey{key=">", mods="OPT"}}, -- for emacs

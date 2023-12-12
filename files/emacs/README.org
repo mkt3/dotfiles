@@ -1746,6 +1746,7 @@
       :ensure t
       :hook (emacs-startup-hook . global-jinx-mode)
       :bind (("C-;" . jinx-correct)
+             ("C-@" . jinx-correct) ; for wezterm
              ("C-M-$" . jinx-languages)))
   #+end_src
 * External Collaboration
