@@ -8,6 +8,7 @@ OS=$(uname -s)
 UI=$1
 EMACS_REPO="https://github.com/mkt3/emacs.git"
 EMACS_REPO_PATH="${HOME}/.local/src/emacs"
+ENCHANT_CONFIG_DIR="${HOME}/.config/enchant"
 BRANCH="master"
 
 case "$UI" in
@@ -60,6 +61,11 @@ case "$OS" in
         exit 1
         ;;
 esac
+
+mkdir -p "$ENCHANT_CONFIG_DIR"
+if [[ "$UI" == "gui" ]]; then
+    ln -sf "${HOME}/Nextcloud/personal_config/enchant/dict/en_US.dic" "${ENCHANT_CONFIG_DIR}/en_US.dic"
+fi
 
 # clone
 if [ -d "$EMACS_REPO_PATH" ]; then
