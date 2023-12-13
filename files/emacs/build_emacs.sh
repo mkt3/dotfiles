@@ -31,7 +31,7 @@ case "$OS" in
 
         case "$DISTRO" in
             Arch)
-                DEPENDENCIES="gmp gnutls jansson lcms2 acl dbus gpm ncurses systemd-libs tree-sitter libxml2 zlib libgccjit marksman enchant"
+                DEPENDENCIES="gmp gnutls jansson lcms2 acl dbus gpm ncurses systemd-libs tree-sitter libxml2 zlib libgccjit marksman enchant nuspell hunspell-en_us"
 
                 if [[ "$UI" == "gui" ]]; then
                     DEPENDENCIES="${DEPENDENCIES} alsa-lib fontconfig freetype2 gtk3 gdk-pixbuf2 giflib glib2 gtk3 harfbuzz libice libjpeg-turbo libotf pango libpng librsvg libsm sqlite libtiff libwebp lib32-libwebp libxfixes libxml2 m17n-lib sqlite imagemagick"
@@ -40,9 +40,9 @@ case "$OS" in
                 sudo pacman -S --needed $DEPENDENCIES
                 ;;
             Ubuntu)
-                DEPENDENCIES="autoconf make texinfo gnutls-bin libgccjit-12-dev libacl1 libc6 libdbus-1-3 libgmp10 libgnutls28-dev libgnutls30 libgpm2 libjansson-dev liblcms2-2 libsystemd0 libtinfo6 libxml2 libxml2-dev zlib1g libtree-sitter-dev libtool-bin"
+                DEPENDENCIES="autoconf make texinfo gnutls-bin libgccjit-12-dev libacl1 libc6 libdbus-1-3 libgmp10 libgnutls28-dev libgnutls30 libgpm2 libjansson-dev liblcms2-2 libsystemd0 libtinfo6 libxml2 libxml2-dev zlib1g libtree-sitter-dev libtool-bin enchant-2 nuspell libnuspell-dev hunspell-en-us"
                 if [[ "$UI" == "gui" ]]; then
-                    DEPENDENCIES="${DEPENDENCIES} libcairo2 libfontconfig1 libfreetype6 libgdk-pixbuf-2.0-0 libgif7 libglib2.0-0 libgtk-3-0 libharfbuzz0b libjpeg8 libm17n-0 libotf1 libpango-1.0-0 libpng16-16 libsvg2-2 libsm6 libtiff5"
+                    DEPENDENCIES="${DEPENDENCIES} libcairo2 libfontconfig1 libfreetype6 libgdk-pixbuf-2.0-0 libgif7 libglib2.0-0 libgtk-3-0 libharfbuzz0b libjpeg8 libm17n-0 libotf1 libpango-1.0-0 libpng16-16 libsvg2-2 libsm6 libtiff5 imagemagick"
                 fi
                 # shellcheck disable=SC2086
                 sudo apt install -y $DEPENDENCIES
