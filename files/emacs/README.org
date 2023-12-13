@@ -92,7 +92,7 @@
 
      (use-package adaptive-wrap
        :ensure t
-       :hook ((markdown-mode-hook org-mode-hook nov-mode-hook) . #'adaptive-wrap-prefix-mode))
+       :hook ((markdown-mode-hook org-mode-hook nov-mode-hook) . adaptive-wrap-prefix-mode))
    #+end_src
 ** Delete
    Delete selection if you insert.
@@ -341,7 +341,7 @@
    #+begin_src emacs-lisp
      (use-package rainbow-delimiters
        :ensure t
-       :hook ((prog-mode-hook . rainbow-delimiters-mode)))
+       :hook (prog-mode-hook . rainbow-delimiters-mode))
    #+end_src
 ** Nyan mode
    #+begin_src emacs-lisp
@@ -447,8 +447,7 @@
        ;;                     :background "Black")
        (advice-add 'org-edit-src-save :before (lambda () (whitespace-cleanup)))
        (advice-add 'org-edit-src-exit :before (lambda () (whitespace-cleanup)))
-       :hook
-       (org-src-mode-hook . whitespace-turn-on))
+       :hook (org-src-mode-hook . whitespace-turn-on))
    #+end_src
 * UI
 ** Clipboard
@@ -617,8 +616,7 @@
         :bind ("C-." . embark-act))
       (use-package embark-consult
         :ensure t
-        :hook
-        (embark-collect-mode . consult-preview-at-point-mode))
+        :hook (embark-collect-mode-hook . consult-preview-at-point-mode))
     #+end_src
 *** tempel
     #+begin_src emacs-lisp
@@ -831,8 +829,7 @@
         :hook (python-ts-mode-hook . eglot-ensure))
 
       (use-package reformatter
-        :hook
-        (python-ts-mode-hook . ruff-format-on-save-mode)
+        :hook (python-ts-mode-hook . ruff-format-on-save-mode)
         :config
         (reformatter-define ruff-format
           :program "ruff"
@@ -903,8 +900,7 @@
          :mode (("\\.jsx?\\'" . jsx-mode)
                 ("\\.tsx?\\'" . tsx-mode))
          :commands jtsx-install-treesit-language
-         :hook ((jsx-mode . hs-minor-mode)
-                (tsx-mode . hs-minor-mode))
+         :hook ((jsx-mode-hook tsx-mode-hook) . hs-minor-mode)
          :custom
          (js-indent-level 2)
          (typescript-ts-mode-indent-offset 2)
@@ -1402,7 +1398,7 @@
         :ensure t
         :mode (("\\.json\\'" . json-ts-mode))
         :commands (json-ts-mode)
-        :hook ((json-ts-mode-hook . eglot-ensure)))
+        :hook (json-ts-mode-hook . eglot-ensure))
       (use-package json-reformat
         :ensure t
         :after (json-ts-mode))
@@ -1595,8 +1591,8 @@
       :config
       :bind (nil
              :map elfeed-webkit-map
-             ("k" . (lambda () (interactive) (xwidget-webkit-scroll-down 10)))
-             ("j" . (lambda () (interactive) (xwidget-webkit-scroll-up 10)))
+             ("k" . (lambda () (interactive) (xwidget-webkit-scroll-down 20)))
+             ("j" . (lambda () (interactive) (xwidget-webkit-scroll-up 20)))
              :map elfeed-show-mode-map
              ("i" . elfeed-webkit-toggle)))
   #+end_src
@@ -1744,7 +1740,7 @@
   #+begin_src emacs-lisp
     (use-package jinx
       :ensure t
-      :hook (emacs-startup-hook . global-jinx-mode)
+      :hook ((org-mode-hook text-mode-hook) . jinx-mode)
       :bind (("C-;" . jinx-correct)
              ("C-x @ ;" . jinx-correct) ; for wezterm
              ("C-M-$" . jinx-languages)))
@@ -1756,7 +1752,7 @@
        :ensure t
        :if (display-graphic-p)
        :demand t
-       :hook ((pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1))))
+       :hook (pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1)))
        :bind (nil
               :map pdf-view-mode-map
               ("C-s" . isearch-forward))
