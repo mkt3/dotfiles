@@ -1799,6 +1799,7 @@
    #+begin_src emacs-lisp
      (use-package chatgpt-shell
        :ensure t
+       :if (file-directory-p my:d:password-store)
        :custom
        ((chatgpt-shell-openai-key
          (lambda ()
