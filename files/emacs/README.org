@@ -26,10 +26,8 @@
         'package-archives '(("org" . "https://orgmode.org/elpa/")
                             ("melpa" . "https://melpa.org/packages/")
                             ("gnu" . "https://elpa.gnu.org/packages/")
-                            ("nongnu" . "https://elpa.nongnu.org/nongnu/"))
-        )
+                            ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
        (package-initialize)
-
        (setq use-package-hook-name-suffix nil)
        (use-package delight :ensure t))
    #+end_src
@@ -95,7 +93,6 @@
        :hook ((markdown-mode-hook org-mode-hook nov-mode-hook) . adaptive-wrap-prefix-mode))
    #+end_src
 ** Delete
-   Delete selection if you insert.
    #+begin_src emacs-lisp
      (bind-key "C-h" 'delete-backward-char)
      (bind-key "C-x ?" 'help-command)
@@ -169,9 +166,6 @@
    #+end_src
 ** Window
    #+begin_src emacs-lisp
-     (bind-key* "C-x |" 'split-window-right)
-     (bind-key* "C-x -" 'split-window-below)
-     (bind-key* "C-x x" 'delete-window)
      (use-package windmove
        :custom
        (windmove-wrap-around  t)
@@ -197,7 +191,6 @@
      (use-package saveplace
        :custom
        (save-place-mode t))
-
    #+end_src
 ** Encrypting/decrypting
    #+begin_src emacs-lisp
@@ -248,6 +241,7 @@
       ring-bell-function 'ignore
       text-quoting-style 'straight
       user-full-name (getenv "NAME"))
+
      (use-package simple
        :demand t
        :custom
@@ -553,6 +547,7 @@
                 :map vertico-map
                 ("C-r" . vertico-previous)
                 ("C-s" . vertico-next)))
+
        (use-package vertico-directory
          :ensure nil ;; part of vertico
          :after vertico
@@ -604,16 +599,14 @@
         :ensure t
         :custom
         (completion-styles '(orderless basic))
-        (completion-category-overrides '((file (styles . (partial-completion)))
-                                         ;; (eglot (styles orderless+initialism))
-                                         )))
-
+        (completion-category-overrides '((file (styles . (partial-completion))))))
     #+end_src
 *** embark
     #+begin_src emacs-lisp
       (use-package embark
         :ensure t
         :bind ("C-." . embark-act))
+
       (use-package embark-consult
         :ensure t
         :hook (embark-collect-mode-hook . consult-preview-at-point-mode))
@@ -642,6 +635,7 @@
         :if (not (display-graphic-p))
         :config
         (corfu-terminal-mode +1))
+
       (use-package corfu
         :ensure t
         :custom ((corfu-auto t)
@@ -706,7 +700,9 @@
      (use-package undo-fu
        :ensure t
        :bind (("C-/" . undo-fu-only-undo)
-              ("M-/" . undo-fu-only-redo)))
+              ("M-/" . undo-fu-only-redo))
+       :custom
+       (vundo-roll-back-on-quit nil))
 
      (use-package undo-fu-session
        :ensure t
@@ -729,8 +725,7 @@
        :custom
        (dmacro-key (kbd "C-t"))
        :config
-       (global-dmacro-mode)
-       )
+       (global-dmacro-mode))
    #+end_src
 * Garbage collection
   #+begin_src emacs-lisp
@@ -776,6 +771,7 @@
        ;; (set-face-background 'flymake-errline "red4")
        ;; (set-face-background 'flymake-warnline "DarkOrange")
        )
+
      (use-package flymake-diagnostic-at-point
        :ensure t
        :after flymake
@@ -798,6 +794,7 @@
 *** git
     #+begin_src emacs-lisp
       (use-package git-modes :ensure t)
+
       (use-package magit
         :ensure t
         :custom
@@ -944,8 +941,7 @@
          :hook (typescript-ts-mode-hook . (lambda ()
                                             (interactive)
                                             (add-node-modules-path)
-                                            (eglot-ensure)
-                                            )))
+                                            (eglot-ensure))))
      #+end_src
 ** Markup Languages
 *** Org
@@ -1018,6 +1014,7 @@
                 ("C-c C-w" . my:org-refile))
          :init
          (defvar org-gtd-file (expand-file-name "gtd.org" my:d:org-gtd))
+
          (defun gtd ()
            (interactive)
            (find-file org-gtd-file))
@@ -1054,6 +1051,7 @@
                  (todo . " %i %(vulpea-agenda-category 25) ")
                  (tags . " %i %(vulpea-agenda-category 17) ")
                  (search . " %i %(vulpea-agenda-category 17) ")))
+
          (defun vulpea-agenda-category (&optional len)
            (let* ((file-name (when buffer-file-name
                                (file-name-sans-extension
@@ -1070,6 +1068,7 @@
              (if (numberp len)
                  (s-truncate len (s-pad-right len " " result))
                result)))
+
          (defun vulpea-todo-p ()
            "Return non-nil if current buffer has any todo entry.
 
@@ -1084,6 +1083,7 @@
                 'headline
               (lambda (h)
                 (org-element-property :todo-type h)))))
+
          (defun vulpea-todo-update-tag ()
            "Update todo tag in the current buffer."
            (when (and (not (active-minibuffer-window))
@@ -1122,6 +1122,7 @@
                        :left-join nodes
                        :on (= tags:node-id nodes:id)
                        :where (like tag (quote "%\"todo\"%"))]))))
+
          (defun vulpea-agenda-files-update (&rest _)
            "Update the value of `org-agenda-files'."
            (setq org-agenda-files (append (list my:d:org-gtd) (vulpea-todo-files)))
@@ -1336,11 +1337,13 @@
                  (goto-char draft-position)
                  (forward-line)
                  (insert (concat "#+hugo_slug: " id "\n"))))))
+
          (defun org-hugo-replace-last-modified ()
            "Replace last_modified with hugo_lastmod."
            (goto-char (point-min))
            (while (re-search-forward "^#\\+last_modified:" nil t)
              (replace-match "#+hugo_lastmod:")))
+
          (defun org-hugo-export-drafts ()
            "Export all non-draft .org files in my:d:org-roam to markdown using org-hugo."
            (interactive)
@@ -1376,8 +1379,7 @@
                                        (setq tab-width 2)
                                        (turn-on-orgtbl)
                                        (add-to-list 'eglot-server-programs '(markdown-mode . ("marksman")))
-                                       (eglot-ensure)
-                                       )))
+                                       (eglot-ensure))))
     #+end_src
 *** YAML
     #+begin_src emacs-lisp
@@ -1439,6 +1441,7 @@
                               (concat
                                "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
                                "-o ControlMaster=auto -o ControlPersist=yes"))
+
       (defun sudo ()
         "Use TRAMP to `sudo' the current buffer."
         (interactive)
@@ -1648,6 +1651,7 @@
              message-sendmail-extra-arguments '("--read-envelope-from")
              message-send-mail-function 'message-send-mail-with-sendmail)
        (load (expand-file-name "personal_config/emacs_mail/mu4e_config.el" my:d:nextcloud))
+
        (defun my:break-word-into-bigrams (word)
          "Break word into list of bi-grams if non-ascii characters."
          (cond ((or (<= (length word) 2)
@@ -1671,6 +1675,7 @@
                     (setq br-word (concat br-word (concat (car char-list) (cadr char-list)) " "))
                     (setq char-list (cdr char-list)))
                   br-word))))
+
        (defun my:break-query-into-bigrams (expr)
          "Break strings into bi-grams in query."
          (let ((word-list (split-string expr " " t))
@@ -1682,9 +1687,7 @@
        (add-hook 'emacs-startup-hook  (lambda ()
                                         (my:imapnotify-start-prodigy-services)
                                         (mu4e))))
-   #+end_src
 
-   #+begin_src emacs-lisp
      (use-package mu4e-alert
        :ensure t
        :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
@@ -1772,19 +1775,8 @@
        :config
        (atomic-chrome-start-server))
    #+end_src
-
 ** dictionary
    #+begin_src emacs-lisp
-     ;; (when (eq system-type 'darwin)
-     ;;   (defun monokakido-lookup (word)
-     ;;     "Lookup word with Dictionaries.app by Monokakido"
-     ;;     (call-process "open" nil 0 nil (concat "mkdictionaries:///?text=" word)))
-     ;;   (defun monokakido-lookup-word ()
-     ;;     "Lookup the word at point with Dictionaries.app by Monokakido."
-     ;;     (interactive)
-     ;;     (monokakido-lookup (read-from-minibuffer "Monokakido: " (current-word))))
-     ;;   (global-set-key (kbd "C-c w") 'monokakido-lookup-word))
-
      (use-package  mw-thesaurus
        :ensure t
        :bind ("C-c w" . mw-thesaurus-lookup-dwim))

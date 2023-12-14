@@ -61,11 +61,8 @@ cask "aquaskk"
 cask "karabiner-elements"
 cask "nextcloud"
 cask "libreoffice"
-mas "Kindle", id: 302584613
 mas "Slack", id: 803453959
 mas "The Unarchiver", id: 425424353
-mas "GoodNotes", id: 1444383602
-mas "Dictonaries", id: 1380563956
 mas "MeetingBar", id: 1532419400
 mas "WireGuard", id: 1451685025
 mas "Bitwarden", id: 1352778147
