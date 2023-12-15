@@ -999,6 +999,10 @@
          :ensure t
          :bind
          ("C-c i l" . org-web-tools-insert-link-for-url))
+
+       (use-package org-sticky-header
+         :ensure t
+         :hook (org-mode-hook . org-sticky-header-mode))
      #+end_src
 **** org gtd
      #+begin_src emacs-lisp
