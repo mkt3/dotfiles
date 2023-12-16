@@ -1101,6 +1101,8 @@
 
        (use-package org-super-agenda
          :ensure t
+         :after (org org-agena)
+         :if (file-directory-p my:d:org-gtd)
          :init
          (org-super-agenda-mode))
 
