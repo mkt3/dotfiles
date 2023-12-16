@@ -15,6 +15,7 @@ local keys = {
   {key="<",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="<", mods="OPT"}}, -- for emacs
   {key=">",mods="CMD|SHIFT",action=wezterm.action.SendKey{key=">", mods="OPT"}}, -- for emacs
   {key="?",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="?", mods="OPT"}}, -- for emacs
+  {key="\\",mods="CMD|CTRL",action=wezterm.action.SendKey{key="\\", mods="OPT|CTRL"}}, -- for emacs
   {key=";",mods="CTRL",action=wezterm.action.SendString "\x18@;"}, -- for emacs in terminal
   {key="j",mods="CTRL",action=wezterm.action.SendString "\x18@j"}, -- for emacs ddskk interminal
   {key="v",mods="OPT",action=wezterm.action.PasteFrom 'Clipboard'},

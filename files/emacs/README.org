@@ -182,7 +182,7 @@
                                "^/tmp\\.*"
                                "bookmarks"
                                "\\.gpg"
-                               "\\.*.calendar.ics"))
+                               "Nextcloud/orgnotes"))
        :config
        (recentf-mode))
    #+end_src
@@ -970,7 +970,7 @@
          (org-confirm-babel-evaluate nil)
          :config
          (advice-add 'org-edit-special :before (lambda (&rest args) (read-only-mode -1)))
-         (defun my-enable-read-only ()
+         (defun my:enable-read-only ()
            "Enable read-only mode for certain conditions."
            (when (or (save-excursion
                        (goto-char (point-min))
@@ -978,7 +978,7 @@
                      (and (buffer-file-name)
                           (string-match-p "/roam/config/" (buffer-file-name))))
              (read-only-mode 1)))
-         (advice-add 'org-edit-src-exit :after #'my-enable-read-only)
+         (advice-add 'org-edit-src-exit :after #'my:enable-read-only)
 
          (org-babel-do-load-languages
           'org-babel-load-languages
@@ -1006,16 +1006,13 @@
      #+end_src
 **** org gtd
      #+begin_src emacs-lisp
-       (use-package vulpea
-         :ensure t)
-
        (use-package org-agenda
          :after org
          :if (file-directory-p my:d:org-gtd)
          :bind (("C-c d" . org-agenda)
                 ("C-c g" . gtd)
                 :map org-mode-map
-                ("C-c C-w" . my:org-refile))
+                ("C-c C-w" . org-refile))
          :init
          (defvar org-gtd-file (expand-file-name "gtd.org" my:d:org-gtd))
 
@@ -1028,129 +1025,72 @@
                         (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud)))))
          :custom
          (org-agenda-span 'day)
-         (org-agenda-remove-tags t)
-         (org-agenda-current-time-string "now ============")
-         (org-agenda-todo-ignore-scheduled 'feature)
+         ;; (org-agenda-remove-tags t)
+         ;; (org-agenda-current-time-string "now ============")
+         ;; (org-agenda-todo-ignore-scheduled 'feature)
          (org-agenda-skip-deadline-prewarning-if-scheduled t)
          (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
-                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")
-                              ))
-         ;; (org-todo-keyword-faces '(("TODO" :foreground "red"
-         ;;                            :weight bold)
-         ;;                           ("IN PROGRESS" :foreground "cornflower blue"
-         ;;                            :weight bold)
-         ;;                           ("DONE" :foreground "green"
-         ;;                            :weight bold)
-         ;;                           ("WAITING" :foreground "orange"
-         ;;                            :weight bold)
-         ;;                           ("CANCELLED" :foreground "green"
-         ;;                            :weight bold)))
-         (org-habit-graph-column 43)
+                              (sequence "WAITING(w@/!)" "CANCELLED(c@/!)" "SOMEDAY(s)")))
+         ;; (org-habit-graph-column 43)
          :config
-         ;; The following function is a slight customization, quoted from the link below.
-         ;; https://d12frosted.io/posts/2021-01-16-task-management-with-roam-vol5.html
-         (add-to-list 'org-modules 'org-habit)
-         (setq org-agenda-prefix-format
-               '((agenda . " %i %(vulpea-agenda-category 17)%?-12t% s")
-                 (todo . " %i %(vulpea-agenda-category 25) ")
-                 (tags . " %i %(vulpea-agenda-category 17) ")
-                 (search . " %i %(vulpea-agenda-category 17) ")))
+         (add-to-list 'org-modules 'org-habit t)
 
-         (defun vulpea-agenda-category (&optional len)
-           (let* ((file-name (when buffer-file-name
-                               (file-name-sans-extension
-                                (file-name-nondirectory buffer-file-name))))
-                  (title (vulpea-buffer-prop-get "title"))
-                  (category (org-get-category))
-                  (result
-                   (or (if (and
-                            title
-                            (string-equal category file-name))
-                           title
-                         category)
-                       "")))
-             (if (numberp len)
-                 (s-truncate len (s-pad-right len " " result))
-               result)))
+         (setq my:roam-task-tag "todo")
 
-         (defun vulpea-todo-p ()
-           "Return non-nil if current buffer has any todo entry.
+         (defun my:org-roam-todo-entry-p ()
+           "Return non-nil if current buffer has any todo entry."
+           (seq-find (lambda (type) (eq type 'todo))
+                     (org-element-map (org-element-parse-buffer 'headline)
+                         'headline
+                       (lambda (h)
+                         (org-element-property :todo-type h)))))
 
-         TODO entries marked as done are ignored, meaning the this
-         function returns nil if current buffer contains only completed
-         tasks."
-           (seq-find
-            (lambda (type)
-              (eq type 'todo))
-            (org-element-map
-                (org-element-parse-buffer 'headline)
-                'headline
-              (lambda (h)
-                (org-element-property :todo-type h)))))
+         (defun my:org-roam-note-buffer-p ()
+           "Return non-nil if the currently visited buffer is an Org Roam note."
+           (and buffer-file-name
+                (string-prefix-p (expand-file-name (file-name-as-directory org-roam-directory))
+                                 (file-name-directory buffer-file-name))))
 
-         (defun vulpea-todo-update-tag ()
-           "Update todo tag in the current buffer."
+         (defun my:org-roam-update-task-tag ()
+           "Update `my:roam-task-tag' in the current buffer."
            (when (and (not (active-minibuffer-window))
-                      (vulpea-buffer-p))
+                      (my:org-roam-note-buffer-p))
              (save-excursion
                (goto-char (point-min))
-               (let* ((tags (vulpea-buffer-tags-get))
-                      (original-tags tags))
-                 (if (vulpea-todo-p)
-                     (setq tags (cons "todo" tags))
-                   (setq tags (remove "todo" tags)))
+               (if (my:org-roam-todo-entry-p)
+                   (org-roam-tag-add (list my:roam-task-tag))
+                 (org-roam-tag-remove (list my:roam-task-tag))))))
 
-                 ;; cleanup duplicates
-                 (setq tags (seq-uniq tags))
-
-                 ;; update tags if changed
-                 (when (or (seq-difference tags original-tags)
-                           (seq-difference original-tags tags))
-                   (apply #'vulpea-buffer-tags-set tags))))))
-
-         (defun vulpea-buffer-p ()
-           "Return non-nil if the currently visited buffer is a note."
-           (and buffer-file-name
-                (string-prefix-p
-                 (expand-file-name (file-name-as-directory org-roam-directory))
-                 (file-name-directory buffer-file-name))))
-
-         (defun vulpea-todo-files ()
-           "Return a list of note files containing 'todo' tag." ;
+         (defun my:org-roam-get-task-files ()
+           "Return a list of note files containing 'my:roam-task-tag'."
            (seq-uniq
-            (seq-map
-             #'car
-             (org-roam-db-query
-              [:select [nodes:file]
-                       :from tags
-                       :left-join nodes
-                       :on (= tags:node-id nodes:id)
-                       :where (like tag (quote "%\"todo\"%"))]))))
+            (mapcar 'car
+                    (org-roam-db-query
+                     [:select [nodes:file]
+                              :from tags
+                              :left-join nodes
+                              :on (= tags:node-id nodes:id)
+                              :where (like tag $s1)] (concat "%" my:roam-task-tag "%")))))
 
-         (defun vulpea-agenda-files-update (&rest _)
-           "Update the value of `org-agenda-files'."
-           (setq org-agenda-files (append (list my:d:org-gtd) (vulpea-todo-files)))
-           (setq my:refile-targets (append (list org-gtd-file) (vulpea-todo-files)))
-           (setq org-refile-targets '((my:refile-targets :maxlevel . 1))))
-         (add-hook 'find-file-hook #'vulpea-todo-update-tag)
-         (add-hook 'before-save-hook #'vulpea-todo-update-tag)
-         (advice-add 'org-agenda :before #'vulpea-agenda-files-update)
-         (advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
-         (advice-add 'org-refile :before #'vulpea-agenda-files-update)
+         (defun my:org-agenda-update-files (&rest _)
+           "Update the value of `org-agenda-files' and and `my:refile-targets'."
+             (let ((task-files (my:org-roam-get-task-files)))
+               (setq org-agenda-files (append (list my:d:org-gtd) task-files))
+               (setq my:refile-targets (append (list org-gtd-file) task-files))
+               (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
 
-         (defun my:org-refile ()
-           "Custom refile command that updates refile targets each time."
-           (interactive)
-           (vulpea-agenda-files-update)
-           (call-interactively 'org-refile))
+         (add-hook 'before-save-hook #'my:org-roam-update-task-tag)
+         (advice-add 'org-agenda :before #'my:org-agenda-update-files)
+         (advice-add 'org-todo-list :before #'my:org-agenda-update-files)
+         (advice-add 'org-refile :before #'my:org-agenda-update-files)
 
          (defun update-org-agenda-buffer ()
-         "Update the *Org Agenda* buffer if it exists."
-         (when (get-buffer "*Org Agenda*")
-           (with-current-buffer "*Org Agenda*"
-             (let ((current-position (point)))
-               (org-agenda-redo)
-               (goto-char current-position)))))
+           "Update the *Org Agenda* buffer if it exists."
+           (when (get-buffer "*Org Agenda*")
+             (with-current-buffer "*Org Agenda*"
+               (let ((current-position (point)))
+                 (org-agenda-redo)
+                 (goto-char current-position)))))
 
          (defun safe-update-org-agenda-buffer ()
            "Safely update the *Org Agenda* buffer and handle any errors."
@@ -1158,6 +1098,11 @@
                (update-org-agenda-buffer)
              (error (message "Error updating *Org Agenda*: %s" (error-message-string err)))))
          (run-with-timer 0 60 'safe-update-org-agenda-buffer))
+
+       (use-package org-super-agenda
+         :ensure t
+         :init
+         (org-super-agenda-mode))
 
        (use-package org-capture
          :after (org org-agenda)
@@ -1463,8 +1408,6 @@
 
     (use-package dirvish
       :ensure t
-      :init
-      (dirvish-override-dired-mode)
       :custom
       (dirvish-quick-access-entries ; It's a custom option, `setq' won't work
        '(("h" "~/"                          "Home")
@@ -1472,6 +1415,7 @@
          ("b" "~/Nextcloud/book"            "Books")
          ("t" "~/.local/share/Trash/files/" "TrashCan")))
       :config
+      (dirvish-override-dired-mode)
       ;; (dirvish-peek-mode) ; Preview files in minibuffer
       ;; (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
       (setq dirvish-mode-line-format
