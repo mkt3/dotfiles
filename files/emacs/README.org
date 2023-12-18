@@ -508,8 +508,8 @@
    #+begin_src emacs-lisp
      (use-package ddskk
        :ensure t
-       :bind* ("C-j" . skk-kakutei)
-       :bind ("C-x @ j" . skk-kakutei) ;; for ctrl-j from wezterm
+       :bind* (("C-j" . skk-kakutei)
+               ("C-x @ j" . skk-kakutei)) ;; for ctrl-j from wezterm
        :custom
        (default-input-method "japanese-skk")
        (skk-byte-compile-init-file t)
@@ -1025,8 +1025,8 @@
                         (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud)))))
          :custom
          (org-agenda-span 'day)
-         ;; (org-agenda-remove-tags t)
-         ;; (org-agenda-current-time-string "now ============")
+         (org-agenda-remove-tags t)
+         (org-agenda-current-time-string "← now ───────────────────")
          ;; (org-agenda-todo-ignore-scheduled 'feature)
          (org-agenda-skip-deadline-prewarning-if-scheduled t)
          (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
@@ -1034,7 +1034,11 @@
          ;; (org-habit-graph-column 43)
          :config
          (add-to-list 'org-modules 'org-habit t)
-
+         (setq org-agenda-prefix-format
+             '((agenda . " %i %-15:c%?-12t% s")
+               (todo . " %i %-12:c")
+               (tags . " %i %-12:c")
+               (search . " %i %-12:c")))
          (setq my:roam-task-tag "todo")
 
          (defun my:org-roam-todo-entry-p ()
@@ -1097,14 +1101,32 @@
            (condition-case err
                (update-org-agenda-buffer)
              (error (message "Error updating *Org Agenda*: %s" (error-message-string err)))))
-         (run-with-timer 0 60 'safe-update-org-agenda-buffer))
+         (run-with-timer 0 60 'safe-update-org-agenda-buffer)
+         )
 
        (use-package org-super-agenda
          :ensure t
-         :after (org org-agena)
+         :after (org-agenda)
          :if (file-directory-p my:d:org-gtd)
-         :init
-         (org-super-agenda-mode))
+         :config
+         (org-super-agenda-mode)
+         (setq org-super-agenda-groups
+                '(;; Each group has an implicit boolean OR operator between its selectors.
+                  (:name "Schedule"
+                         :time-grid t
+                         :todo "TODAY")
+                  (:name "Today's daily task"
+                         :habit t
+                         :order 1)
+                  (:name "Important"
+                         :priority "A"
+                         :order 2)
+                  (:priority<= "B"
+                               :order 3)
+                  (:todo "WAITING" :order 8)
+                  (:todo "SOMEDAY" :order 9)
+                  (:auto-category t
+                                  :order 4))))
 
        (use-package org-capture
          :after (org org-agenda)
@@ -1478,6 +1500,7 @@
         "Open URL with eww if it does not contain below strings. Otherwise, use the default browser."
         (let ((urls-to-match '("slack\\.com"
                                "google\\.com"
+                               "linkedin\\.com"
                                "notion\\.so"
                                "figma\\.com"
                                "github\\.com")))

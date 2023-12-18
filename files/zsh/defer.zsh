@@ -108,5 +108,5 @@ fi
 
 # for skkserv
 if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/null; then
-    yaskkserv2 "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
+    yaskkserv2 --google-japanese-input=disable "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
 fi
