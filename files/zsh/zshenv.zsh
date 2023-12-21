@@ -17,7 +17,7 @@ export SVN_EDITOR="$EDITOR"
 export GIT_EDITOR="$EDITOR"
 
 # Pager
-export PAGER=less
+export PAGER="less -R"
 
 # Paltform Arch
 export OS=`uname -s`
@@ -159,3 +159,25 @@ export RTX_CONFIG_FILE="${XDG_CONFIG_HOME}/rtx/config.toml"
 export RTX_DATA_DIR="${XDG_DATA_HOME}/rtx"
 export RTX_CACHE_DIR="${XDG_CACHE_HOME}/rtx"
 export RTX_USE_TOML=1
+
+# nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+     . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
+export NIX_PATH="darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:/nix/var/nix/profiles/per-user/root/channels"
+export NIX_SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+export TERMINFO_DIRS="${HOME}/.nix-profile/share/terminfo:/run/current-system/sw/share/terminfo:/nix/var/nix/profiles/default/share/terminfo:${TERMINFO_DIRS}"
+export XDG_CONFIG_DIRS="${HOME}/.nix-profile/etc/xdg:/run/current-system/sw/etc/xdg:/nix/var/nix/profiles/default/etc/xdg"
+export XDG_DATA_DIRS="${HOME}/.nix-profile/share:/run/current-system/sw/share:/nix/var/nix/profiles/default/share"
+export TERM=$TERM
+export NIX_USER_PROFILE_DIR="/nix/var/nix/profiles/per-user/${USER}"
+export NIX_PROFILES="/nix/var/nix/profiles/default /run/current-system/sw ${HOME}/.nix-profile"
+if [ -e "${HOME}/.nix-defexpr/channels" ]; then
+  export NIX_PATH="${HOME}/.nix-defexpr/channels${NIX_PATH:+:$NIX_PATH}"
+fi
+# Set up secure multi-user builds: non-root users build through the
+# Nix daemon.
+if [ ! -w /nix/var/nix/db ]; then
+    export NIX_REMOTE=daemon
+fi

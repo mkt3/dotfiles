@@ -4,27 +4,7 @@
 # macOSの設定
 ##
 
-# keyboard
-## リピート入力までの時間
-defaults write -g InitialKeyRepeat -int 15
-## キーのリピート
-defaults write -g KeyRepeat -int 2
-
-# trackpad
-## 軌跡の速さ
-defaults write -g com.apple.trackpad.scaling 3
-## スクロールの速さ
-defaults write -g com.apple.trackpad.scrolling 1
-## 3本指ドラッグの有効化
-defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
-
 # Finder
-## フルパス表示
-defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
-## ステータスバー表示
-defaults write com.apple.finder ShowStatusBar -bool true
-## パスバー表示
-defaults write com.apple.finder ShowPathbar -bool true
 ## 新規ウィンドウをホームディレクトリで開く
 defaults write com.apple.finder NewWindowTarget -string "PfLo"
 defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}"
@@ -35,22 +15,13 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
 defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
 defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
-## 拡張子を常に表示
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-## 保存ダイアログを詳細設定で表示
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -boolean true
+
 ## 「ゴミ箱に入れる」のショートカットキーをctrl + dへ
 defaults write com.apple.Finder NSUserKeyEquivalents -dict-add "ゴミ箱に入れる" -string "^d"
 ## 「Emoji & Symbols」のショートカットキーをctrl + shift + f12へ
 defaults write "Apple Global Domain" NSUserKeyEquivalents -dict-add "Emoji & Symbols" -string "@$\\Uf70f"
 ## 「絵文字と記号」のショートカットキーをctrl + shift + f12へ
 defaults write "Apple Global Domain" NSUserKeyEquivalents -dict-add "\\U7d75\\U6587\\U5b57\\U3068\\U8a18\\U53f7" -string "@$\\Uf70f"
-## 名前で並べ替えを選択時にディレクトリを前に置くようにする
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-## 検索時にデフォルトでカレントディレクトリを検索
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-## デフォルトをカラム表示
-defaults write com.apple.finder FXPreferredViewStyle clmv
 
 ## サイドバーの表示
 defaults write com.apple.finder ShowRecentTags -bool false
@@ -83,16 +54,7 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 61 "<dic
 ## Disable Dictation Shortcut
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 164 "<dict><key>enabled</key><false/></dict>"
 
-# スペルの訂正を無効にする
-defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
-# 自動大文字の無効化
-defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
-
 # メニューバー
-## バッテリー残量の％表記
-defaults write com.apple.menuextra.battery ShowPercent -string "YES"
-## 日付、曜日、時間の表記
-defaults write com.apple.menuextra.clock DateFormat -string 'EEE d MMM HH:mm'
 ## menu bar icon
 defaults write com.apple.systemuiserver menuExtras -array \
          "/System/Library/CoreServices/Menu Extras/Clock.menu" \
@@ -101,26 +63,8 @@ defaults write com.apple.systemuiserver menuExtras -array \
          "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
          "/System/Library/CoreServices/Menu Extras/Displays.menu"
 
-# Dock
-## Dockを自動的に隠す
-defaults write com.apple.dock autohide -bool true
-## Dockの拡大機能を有効化
-defaults write com.apple.dock magnification -bool true
-## アイコンサイズ
-defaults write com.apple.dock tilesize -int 43
-## 拡大時のアイコンサイズ
-defaults write com.apple.dock largesize -int 96
-## 最近つかったアプリケーションを非表示
-defaults write com.apple.dock show-recents -bool false
-## 起動中のアプリのみ表示
-defaults write com.apple.dock persistent-apps -array
-# Dockをすぐに表示
-defaults write com.apple.dock autohide-delay -float 0
-killall Dock
 
 # キャプチャ
-## キャプチャの保存場所を変更
-defaults write com.apple.screencapture location ~/Downloads
 ## キャプチャのプレフィックスを変更
 defaults write com.apple.screencapture name "ss_"
 
@@ -138,14 +82,11 @@ defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
 defaults write com.apple.Accessibility ReduceMotionEnabled -int 1
 defaults write com.apple.universalaccess reduceMotion -int 1
 
-## reduce transparency
-defaults write com.apple.universalaccess reduceTransparency -int 1
 
 ## Dictationの無効化して、ダイアログを再表示させない
 defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 1
 
-## Keep the Spaces arrangement
-defaults write com.apple.dock "mru-spaces" -bool "false"
 
 # Disable nap mode for Emacs
+# https://github.com/rejeep/prodigy.el
 defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
