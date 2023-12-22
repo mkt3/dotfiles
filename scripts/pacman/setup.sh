@@ -24,7 +24,7 @@ setup_pacman() {
                                    neofetch
                                    rsync
                                    httpie
-                                   axel
+                                   aria2
                                    unarchiver
                                    cmake
                                    gnupg

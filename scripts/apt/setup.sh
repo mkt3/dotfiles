@@ -36,7 +36,7 @@ setup_apt() {
                   python3-pip
                   pipx
                   trash-cli
-                  axel
+                  aria2
                   tk-dev)
 
     info "Installing packages"

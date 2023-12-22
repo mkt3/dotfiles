@@ -23,6 +23,11 @@ setup_skk() {
                               "${skk_dict_repo_path}/SKK-JISYO.jinmei"
                               "${skk_dict_repo_path}/SKK-JISYO.propernoun")
 
+
+    if [ ! -d "${HOME}/Nextcloud/personal_config/skk" ]; then
+        return
+    fi
+
     if [ -d "$yaskkserv2_repo_path" ]; then
         cd "$yaskkserv2_repo_path"
         git pull
@@ -31,7 +36,7 @@ setup_skk() {
     fi
 
     cd "$yaskkserv2_repo_path"
-    cargo build --release
+    "${CARGO_HOME}/bin/rustup" run stable cargo build --release
 
     ln -sfn "${yaskkserv2_repo_path}/target/release/yaskkserv2" "${HOME}/.local/bin"
     ln -sfn "${yaskkserv2_repo_path}/target/release/yaskkserv2_make_dictionary" "${HOME}/.local/bin"

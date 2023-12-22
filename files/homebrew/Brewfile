@@ -23,7 +23,7 @@ brew "pipx"
 brew "trash-cli"
 brew "git"
 brew "neofetch"
-brew "axel"
+brew "aria2"
 brew "jq"
 brew "mas"
 brew "ncurses" # for tmux-256color
