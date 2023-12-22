@@ -13,8 +13,6 @@ defaults write -g KeyRepeat -int 2
 # trackpad
 ## 軌跡の速さ
 defaults write -g com.apple.trackpad.scaling 3
-## スクロールの速さ
-defaults write -g com.apple.trackpad.scrolling 1
 ## 3本指ドラッグの有効化
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 
@@ -33,18 +31,17 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 # マウントされたディスクがあったら、自動的に新しいウィンドウを開く
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
-defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
 defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 ## 拡張子を常に表示
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write -g AppleShowAllExtensions -bool true
 ## 保存ダイアログを詳細設定で表示
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -boolean true
+defaults write -g NSNavPanelExpandedStateForSaveMode -boolean true
 ## 「ゴミ箱に入れる」のショートカットキーをctrl + dへ
 defaults write com.apple.Finder NSUserKeyEquivalents -dict-add "ゴミ箱に入れる" -string "^d"
 ## 「Emoji & Symbols」のショートカットキーをctrl + shift + f12へ
-defaults write "Apple Global Domain" NSUserKeyEquivalents -dict-add "Emoji & Symbols" -string "@$\\Uf70f"
+defaults write -g NSUserKeyEquivalents -dict-add "Emoji & Symbols" -string "@$\\Uf70f"
 ## 「絵文字と記号」のショートカットキーをctrl + shift + f12へ
-defaults write "Apple Global Domain" NSUserKeyEquivalents -dict-add "\\U7d75\\U6587\\U5b57\\U3068\\U8a18\\U53f7" -string "@$\\Uf70f"
+defaults write -g NSUserKeyEquivalents -dict-add "\\U7d75\\U6587\\U5b57\\U3068\\U8a18\\U53f7" -string "@$\\Uf70f"
 ## 名前で並べ替えを選択時にディレクトリを前に置くようにする
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 ## 検索時にデフォルトでカレントディレクトリを検索
@@ -66,7 +63,7 @@ defaults write com.apple.finder DisableAllAnimations -bool true
 killall Finder
 
 # コントロール間のフォーカス移動をキーボードで
-defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
+defaults write -g AppleKeyboardUIMode -int 2
 # 次のウィンドウを操作対象へ
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 27 "<dict><key>enabled</key><true/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>48</integer><integer>524288</integer></array><key>type</key><string>standard</string></dict></dict>"
 
@@ -76,30 +73,32 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dic
 ## 「Finderの検索ウインドウを表示」を無効化
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1572864</integer></array><key>type</key><string>standard</string></dict></dict>"
 
-## Disable Input Sources 
+## Disable Input Sources
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 60 "<dict><key>enabled</key><false/></dict>"
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 61 "<dict><key>enabled</key><false/></dict>"
 
 ## Disable Dictation Shortcut
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 164 "<dict><key>enabled</key><false/></dict>"
 
-# スペルの訂正を無効にする
-defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
-# 自動大文字の無効化
-defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+# 自動大文字の無効
+defaults write -g NSAutomaticCapitalizationEnabled -int 0
+# ダッシュ置換を無効
+defaults write -g NSAutomaticDashSubstitutionEnabled -int 0
+# 自動ピリオド置換を無効
+defaults write -g NSAutomaticPeriodSubstitutionEnabled -int 0
+# スマートクォートを無効
+defaults write -g NSAutomaticQuoteSubstitutionEnabled -int 0
+# 自動スペル置換を無効
+defaults write -g NSAutomaticSpellingCorrectionEnabled -int 0
+# 自動テキスト補完を無効
+defaults write -g NSAutomaticTextCompletionEnabled -int 0
 
 # メニューバー
-## バッテリー残量の％表記
-defaults write com.apple.menuextra.battery ShowPercent -string "YES"
-## 日付、曜日、時間の表記
-defaults write com.apple.menuextra.clock DateFormat -string 'EEE d MMM HH:mm'
-## menu bar icon
-defaults write com.apple.systemuiserver menuExtras -array \
-         "/System/Library/CoreServices/Menu Extras/Clock.menu" \
-         "/System/Library/CoreServices/Menu Extras/Battery.menu" \
-         "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
-         "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
-         "/System/Library/CoreServices/Menu Extras/Displays.menu"
+defaults write com.apple.systemuiserver "NSStatusItem Visible Siri" -bool false # Siri 非表示
+defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.battery" -bool true # battery 表示
+defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.bluetooth" -bool true # bluetooth 表示
+defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.clock" -bool true # clock 表示
+defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.volume" -bool true # volume 表示
 
 # Dock
 ## Dockを自動的に隠す
@@ -123,6 +122,8 @@ killall Dock
 defaults write com.apple.screencapture location ~/Downloads
 ## キャプチャのプレフィックスを変更
 defaults write com.apple.screencapture name "ss_"
+## Disable shadow
+defaults write com.apple.screencapture disable-shadow -boolean true
 
 # TextEdit
 ## RichTextの無効化
@@ -149,3 +150,9 @@ defaults write com.apple.dock "mru-spaces" -bool "false"
 
 # Disable nap mode for Emacs
 defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
+
+# Enable Automatically hide and show the menubar for sketchybar
+defaults write .GlobalPreferences _HIHideMenuBar -int 1
+
+# Click wallpaper to show desktop items – Only in Stage Manager
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop 0

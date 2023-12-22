@@ -347,29 +347,29 @@
 ** tab-bar-mode
    #+begin_src emacs-lisp
      (use-package tab-bar
-       :init (defvar my:ctrl-q-map (make-sparse-keymap)
-               "My original keymap binded to C-o.")
-       (defalias 'my:ctrl-q-prefix my:ctrl-q-map)
-       (define-key global-map (kbd "C-q") 'my:ctrl-q-prefix)
-       (define-key my:ctrl-q-map (kbd "c")   'tab-new)
-       (define-key my:ctrl-q-map (kbd "C-c") 'tab-new)
-       (define-key my:ctrl-q-map (kbd "k")   'tab-close)
-       (define-key my:ctrl-q-map (kbd "C-k") 'tab-close)
-       (define-key my:ctrl-q-map (kbd "n")   'tab-next)
-       (define-key my:ctrl-q-map (kbd "C-n") 'tab-next)
-       (define-key my:ctrl-q-map (kbd "TAB") 'tab-next)
-       (define-key my:ctrl-q-map (kbd "p")   'tab-previous)
-       (define-key my:ctrl-q-map (kbd "C-p") 'tab-previous)
-       (define-key my:ctrl-q-map (kbd "1") '(lambda () (interactive) (tab-bar-select-tab 1)))
-       (define-key my:ctrl-q-map (kbd "2") '(lambda () (interactive) (tab-bar-select-tab 2)))
-       (define-key my:ctrl-q-map (kbd "3") '(lambda () (interactive) (tab-bar-select-tab 3)))
-       (define-key my:ctrl-q-map (kbd "4") '(lambda () (interactive) (tab-bar-select-tab 4)))
-       (define-key my:ctrl-q-map (kbd "5") '(lambda () (interactive) (tab-bar-select-tab 5)))
-       (define-key my:ctrl-q-map (kbd "6") '(lambda () (interactive) (tab-bar-select-tab 6)))
-       (define-key my:ctrl-q-map (kbd "7") '(lambda () (interactive) (tab-bar-select-tab 7)))
-       (define-key my:ctrl-q-map (kbd "8") '(lambda () (interactive) (tab-bar-select-tab 8)))
-       (define-key my:ctrl-q-map (kbd "9") '(lambda () (interactive) (tab-bar-select-tab 9)))
-       (define-key my:ctrl-q-map (kbd "0") '(lambda () (interactive) (tab-bar-select-tab 0)))
+       :init (defvar my:tab-bar-map (make-sparse-keymap)
+               "My original keymap binded for tab-bar.")
+       (defalias 'my:tab-bar-prefix my:tab-bar-map)
+       (define-key global-map (kbd "C-o") 'my:tab-bar-prefix)
+       (define-key my:tab-bar-map (kbd "c")   'tab-new)
+       (define-key my:tab-bar-map (kbd "C-c") 'tab-new)
+       (define-key my:tab-bar-map (kbd "k")   'tab-close)
+       (define-key my:tab-bar-map (kbd "C-k") 'tab-close)
+       (define-key my:tab-bar-map (kbd "n")   'tab-next)
+       (define-key my:tab-bar-map (kbd "C-n") 'tab-next)
+       (define-key my:tab-bar-map (kbd "TAB") 'tab-next)
+       (define-key my:tab-bar-map (kbd "p")   'tab-previous)
+       (define-key my:tab-bar-map (kbd "C-p") 'tab-previous)
+       (define-key my:tab-bar-map (kbd "1") '(lambda () (interactive) (tab-bar-select-tab 1)))
+       (define-key my:tab-bar-map (kbd "2") '(lambda () (interactive) (tab-bar-select-tab 2)))
+       (define-key my:tab-bar-map (kbd "3") '(lambda () (interactive) (tab-bar-select-tab 3)))
+       (define-key my:tab-bar-map (kbd "4") '(lambda () (interactive) (tab-bar-select-tab 4)))
+       (define-key my:tab-bar-map (kbd "5") '(lambda () (interactive) (tab-bar-select-tab 5)))
+       (define-key my:tab-bar-map (kbd "6") '(lambda () (interactive) (tab-bar-select-tab 6)))
+       (define-key my:tab-bar-map (kbd "7") '(lambda () (interactive) (tab-bar-select-tab 7)))
+       (define-key my:tab-bar-map (kbd "8") '(lambda () (interactive) (tab-bar-select-tab 8)))
+       (define-key my:tab-bar-map (kbd "9") '(lambda () (interactive) (tab-bar-select-tab 9)))
+       (define-key my:tab-bar-map (kbd "0") '(lambda () (interactive) (tab-bar-select-tab 0)))
 
        (defun my:tab-bar-tab-name-truncated ()
          "Custom: Generate tab name from the buffer of the selected window."
@@ -530,7 +530,8 @@
        :custom
        (electric-pair-mode nil)
        :config
-       (require 'smartparens-config))
+       (sp-with-modes 'org-mode
+         (sp-local-pair "/" "/" :actions nil)))
       #+end_src
 ** Completion UI
 *** vertico

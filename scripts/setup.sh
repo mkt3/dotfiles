@@ -121,7 +121,7 @@ setup_mac() {
     setup_wezterm
     setup_pre_common
     setup_karabiner
-    setup_yabai_skhd
+    setup_yabai_skhd_sketchybar
     setup_aquaskk
     setup_skk
     setup_latex
@@ -131,6 +131,11 @@ setup_mac() {
 execute_setup() {
     case "$OS" in
         Darwin)
+            if [ ! -e "/Library/Developer/CommandLineTools/" ]; then
+                echo "Please run 'xcode-select --install' to install macOS command line tools."
+                exit 1
+            fi
+
             setup_mac
             ;;
         Linux)

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+yabai -m config external_bar all:35:0
 
 yabai -m config mouse_follows_focus          on
 yabai -m config focus_follows_mouse          off
@@ -38,6 +39,9 @@ yabai -m rule --add app="^Bitwarden$"                     manage=off
 yabai -m rule --add app="^Karabiner-Elements$"            manage=off
 yabai -m rule --add app="^Karabiner-MultitouchExtension$" manage=off
 yabai -m rule --add app="^Stats$"                         manage=off
-yabai -m rule --add title='^emacs.*$'                     manage=on
+yabai -m rule --add title="^Emacs$"                       manage=on
+yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 
 echo "yabai configuration loaded.."

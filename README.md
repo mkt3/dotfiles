@@ -11,7 +11,9 @@ This repository contains configuration files and scripts for my personal use. Th
 - Arch Linux
 
 ## Install
-1. Sign in to App store manually (Only macOS)
+1. **macOS Users:**
+   - Sign in to the App Store manually.
+   - Run `xcode-select --install` in the terminal.
 2. Run one of the following:
   - CUI environment only
     ```bash
@@ -25,6 +27,7 @@ This repository contains configuration files and scripts for my personal use. Th
     ```bash
     curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui dev
     ```
+
 ## Update
 1. Run one of the following:
   - CUI environment only
@@ -39,5 +42,6 @@ This repository contains configuration files and scripts for my personal use. Th
     ```bash
     curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui dev
     ```
+
 ## Link
 [emacs conf](./files/emacs)

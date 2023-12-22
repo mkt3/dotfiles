@@ -9,9 +9,6 @@ setup_latex() {
         brew install --cask basictex
         sudo tlmgr update --self --all
         sudo tlmgr paper a4
-        sudo tlmgr install collection-langjapanese
-        sudo tlmgr install dvisvgm
-        sudo tlmgr install wrapfig
-        sudo tlmgr install capt-of
+        sudo tlmgr install collection-langjapanese dvisvgm wrapfig capt-of
     fi
 }
