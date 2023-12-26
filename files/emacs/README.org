@@ -751,7 +751,7 @@
        :config
        (defun my/eglot-capf ()
          (setq-local completion-at-point-functions
-                     (list (cape-super-capf
+                     (list (cape-capf-super
                             #'tempel-complete
                             #'eglot-completion-at-point)
                            #'cape-keyword
