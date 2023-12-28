@@ -9,7 +9,23 @@ CONFIGS_DIR="${REPO_DIR}/files"
 
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
-UI=$1
+if [ "$GUI_ENV" = "y" ]; then
+    UI="GUI"
+elif [ "$GUI_ENV" = "n" ]; then
+    UI="CUI"
+else
+    echo "Invalid input for GUI_ENV."
+    exit 1
+fi
+
+if [ "$DEV_ENV" = "y" ]; then
+    DEV="dev"
+elif [ "$GUI_ENV" = "n" ]; then
+    DEV="nodev"
+else
+    echo "Invalid input for DEV_ENV."
+    exit 1
+fi
 
 DEV=${2:-"nodev"}
 
@@ -19,6 +35,9 @@ setup_files="${REPO_DIR}/scripts/**/setup.sh"
 for filepath in $setup_files; do
     . "$filepath"
 done
+
+### fzf
+
 
 # function
 setup_pre_common() {
@@ -31,7 +50,6 @@ setup_pre_common() {
     setup_emacs
     setup_vim
     setup_docker
-    setup_rust
     if [ "$DEV" = "dev" ]; then
         setup_rtx
     fi
@@ -47,19 +65,6 @@ setup_post_common() {
     setup_ghq
     setup_navi
     setup_lazygit
-}
-
-setup_minimal() {
-    title "Setting up minimal"
-    setup_xdg_config
-    setup_gpg
-    setup_zsh
-    setup_fzf
-    setup_tmux
-    setup_git
-    setup_vim
-    setup_rust
-    setup_ripgrep
 }
 
 setup_linux_ui() {
@@ -91,20 +96,17 @@ setup_linux() {
     # distribution
     case $distro in
         Arch)
-            setup_pacman
             setup_pre_common
             setup_linux_ui
             setup_post_common
             ;;
         Ubuntu)
-            setup_apt
             setup_pre_common
             setup_linux_ui
             setup_post_common
             ;;
         Raspbian*)
             setup_pre_common
-            setup_apt
             setup_linux_ui
             setup_post_common
             ;;
@@ -116,7 +118,6 @@ setup_linux() {
 
 setup_mac() {
     title "Setting up mac"
-    setup_homebrew
     setup_macos
     setup_wezterm
     setup_pre_common
@@ -131,11 +132,6 @@ setup_mac() {
 execute_setup() {
     case "$OS" in
         Darwin)
-            if [ ! -e "/Library/Developer/CommandLineTools/" ]; then
-                echo "Please run 'xcode-select --install' to install macOS command line tools."
-                exit 1
-            fi
-
             setup_mac
             ;;
         Linux)
@@ -151,20 +147,6 @@ execute_setup() {
     success "Setup is complete."
 }
 
-check_argument() {
-    if [ $# -lt 1 ] || [ $# -gt 2 ]; then
-        echo "Please enter least one argument: 'gui' or 'cui' or 'minimal'."
-        echo "And, please add the 'dev' argument when in the development environment."
-        exit 1
-    fi
-
-    if [ "$UI" != "gui" ] && [ "$UI" != "cui" ]; then
-        echo "Invalid first argument. Please enter 'gui' or 'cui'."
-
-        exit 1
-    fi
-}
 
 # main code
-check_argument "$@"
 execute_setup

@@ -1,0 +1,533 @@
+# build package
+[build-essential]
+type = "basic"
+ubuntu = [{name="build-essential", method = "apt" }]
+
+[cmake]
+type = "basic"
+arch = [ { name="cmake", method = "pacman" } ]
+macos = [ { name="cmake", method = "brew" } ]
+ubuntu = [
+  { name="cmake", method = "apt" },
+  { name="gmake", method = "apt" }
+]
+
+# package management tool
+[go] # for goimapnotify and ghq
+type = "basic"
+arch = [ { name="go", method="pacman" } ]
+macos = [ { name="go", method="brew" } ]
+ubuntu = [ { name="golang-go", method="apt" } ]
+
+[pacman-contrib] # for paccache
+type = "basic"
+arch = [ { name="pacman-contrib", method="pacman" } ]
+
+[mas]
+type = "basic"
+macos = [ { name="mas", method="brew" } ]
+
+# CLI command packages
+[zsh]
+type = "basic"
+arch = [ { name="zsh", method="pacman" } ]
+macos = [ { name="zsh", method="brew" } ]
+ubuntu = [ { name="zsh", method="apt" } ]
+
+[bash]
+type = "basic"
+arch = [ { name="bash", method="pacman" } ]
+macos = [ { name="bash", method="brew" } ]
+ubuntu = [ { name="bash", method="apt" } ]
+
+[coreutils]
+type = "basic"
+arch = [ { name="coreutils", method="pacman" } ]
+macos = [ { name="coreutils", method="brew" } ]
+ubuntu = [ { name="coreutils", method="apt" } ]
+
+[findutils]
+type = "basic"
+arch = [ { name="findutils", method="pacman" } ]
+macos = [ { name="findutils", method="brew" } ]
+ubuntu = [ { name="findutils", method="apt" } ]
+
+[grep]
+type = "basic"
+arch = [ { name="grep", method="pacman" } ]
+macos = [ { name="grep", method="brew" } ]
+ubuntu = [ { name="grep", method="apt" } ]
+
+[sed]
+type = "basic"
+arch = [ { name="sed", method="pacman" } ]
+macos = [ { name="gnu-sed", method="brew" } ]
+ubuntu = [ { name="sed", method="apt" } ]
+
+[gawk]
+type = "basic"
+arch = [ { name="gawk", method="pacman" } ]
+macos = [ { name="gawk", method="brew" } ]
+ubuntu = [ { name="gawk", method="apt" } ]
+
+[less]
+type = "basic"
+arch = [ { name="less", method="pacman" } ]
+macos = [ { name="less", method="brew" } ]
+ubuntu = [ { name="less", method="apt" } ]
+
+[jq]
+type = "basic"
+arch = [ { name="jq", method="pacman" } ]
+macos = [ { name="jq", method="brew" } ]
+ubuntu = [ { name="jq", method="apt" } ]
+
+[tree]
+type = "basic"
+arch = [ { name="tree", method="pacman" } ]
+macos = [ { name="tree", method="brew" } ]
+ubuntu = [ { name="tree", method="apt" } ]
+
+[duf]
+type = "basic"
+arch = [ { name="duf", method="pacman" } ]
+macos = [ { name="duf", method="brew" } ]
+ubuntu = [ { name="duf", method="apt" } ]
+
+[neofetch]
+type = "basic"
+arch = [ { name="neofetch", method="pacman" } ]
+macos = [ { name="neofetch", method="brew" } ]
+ubuntu = [ { name="neofetch", method="apt" } ]
+
+[unarchiver]
+type = "basic"
+arch = [ { name="unarchiver", method="pacman" } ]
+macos = [ { name="unar", method="brew" } ]
+ubuntu = [ { name="unar", method="apt" } ]
+
+[rsync]
+type = "basic"
+arch = [ { name="rsync", method="pacman" } ]
+macos = [ { name="rsync", method="brew" } ]
+ubuntu = [ { name="rsync", method="apt" } ]
+
+[trash-cli]
+type = "basic"
+arch = [ { name="trash-cli", method="pacman" } ]
+macos = [ { name="trash-cli", method="brew" } ]
+ubuntu = [ { name="trash-cli", method="apt" } ]
+
+[tmux]
+type = "basic"
+arch = [ { name="tmux", method="pacman" } ]
+macos = [
+  { name="tmux", method="brew" },
+  { name="ncurses", method="brew", comment="for tmux-256 color" }  # for tmux-256 color
+]
+ubuntu = [ { name="tmux", method="apt" } ]
+
+[git]
+type = "basic"
+arch = [ { name="git", method="pacman" } ]
+macos = [ { name="git", method="brew" } ]
+ubuntu = [ { name="git", method="apt" } ]
+
+[sheldon]
+type = "basic"
+arch = [ { name="sheldon", method="cargo" } ]
+macos = [ { name="sheldon", method="cargo" } ]
+ubuntu = [ { name="sheldon", method="cargo" } ]
+
+[bat]
+type = "basic"
+arch = [ { name="bat", method="cargo" } ]
+macos = [ { name="bat", method="cargo" } ]
+ubuntu = [ { name="bat", method="cargo" } ]
+
+[fd-find]
+type = "basic"
+arch = [ { name="fd-find", method="cargo" } ]
+macos = [ { name="fd-find", method="cargo" } ]
+ubuntu = [ { name="fd-find", method="cargo" } ]
+
+[ripgrep]
+type = "basic"
+arch = [ { name="ripgrep", method="cargo" } ]
+macos = [ { name="ripgrep", method="cargo" } ]
+ubuntu = [ { name="ripgrep", method="cargo" } ]
+
+[git-delta]
+type = "basic"
+arch = [ { name="git-delta", method="cargo" } ]
+macos = [ { name="git-delta", method="cargo" } ]
+ubuntu = [ { name="git-delta", method="cargo" } ]
+
+[lsd]
+type = "basic"
+arch = [ { name="lsd", method="cargo" } ]
+macos = [ { name="lsd", method="cargo" } ]
+ubuntu = [ { name="lsd", method="cargo" } ]
+
+[du-dust]
+type = "basic"
+arch = [ { name="du-dust", method="cargo" } ]
+macos = [ { name="du-dust", method="cargo" } ]
+ubuntu = [ { name="du-dust", method="cargo" } ]
+
+[csview]
+type = "basic"
+arch = [ { name="csview", method="cargo" } ]
+macos = [ { name="csview", method="cargo" } ]
+ubuntu = [ { name="csview", method="cargo" } ]
+
+[zoxide]
+type = "basic"
+arch = [ { name="zoxide", method="cargo" } ]
+macos = [ { name="zoxide", method="cargo" } ]
+ubuntu = [ { name="zoxide", method="cargo" } ]
+
+[navi]
+type = "basic"
+arch = [ { name="navi", method="cargo" } ]
+macos = [ { name="navi", method="cargo" } ]
+ubuntu = [ { name="navi", method="cargo" } ]
+
+[lazygit]
+type = "basic"
+arch = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
+macos = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
+ubuntu = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
+
+
+## security
+[openssl]
+type = "basic"
+arch = [ { name="openssl", method="pacman" } ]
+macos = [ { name="openssl", method="brew" } ]
+ubuntu = [ { name="openssl", method="apt" } ]
+
+[gnupg]
+type = "basic"
+arch = [ { name="gnupg", method="pacman" } ]
+macos = [ { name="gnupg", method="brew" } ]
+ubuntu = [ { name="gnupg", method="apt" } ]
+
+[macos-security]
+type = "basic"
+macos = [
+  { name="pinentry-mac", method="brew" },
+  { name="pam-reattach", method="brew" }
+]
+
+## network
+[iproute2mac]
+type = "basic"
+macos = [ { name="iproute2mac", method="brew" } ]
+
+## downloader
+[wget]
+type = "basic"
+arch = [ { name="wget", method="pacman" } ]
+macos = [ { name="wget", method="brew" } ]
+ubuntu = [ { name="wget", method="apt" } ]
+
+[curl]
+type = "basic"
+arch = [ { name="curl", method="pacman" } ]
+macos = [ { name="curl", method="brew" } ]
+ubuntu = [ { name="curl", method="apt" } ]
+
+[aria2]
+type = "basic"
+arch = [ { name="aria2", method="pacman" } ]
+macos = [ { name="aria2", method="brew" } ]
+ubuntu = [ { name="aria2", method="apt" } ]
+
+## top series
+[htop]
+type = "basic"
+arch = [ { name="htop", method="pacman" } ]
+macos = [ { name="htop", method="brew" } ]
+ubuntu = [ { name="htop", method="apt" } ]
+
+[iotop]
+type = "basic"
+arch = [ { name="iotop", method="pacman" } ]
+ubuntu = [ { name="iotop", method="apt" } ]
+
+[nvtop]
+type = "dev"
+arch = [ { name="nvtop", method="pacman" } ]
+ubuntu = [ { name="nvtop", method="apt" } ]
+
+# Editor
+[vim]
+type = "basic"
+arch = [ { name="vim", method="pacman" } ]
+macos = [ { name="vim", method="brew" } ]
+ubuntu = [ { name="vim", method="apt" } ]
+
+# repository management
+[ghq]
+type = "basic"
+arch = [ { name="github.com/x-motemen/ghq@latest", method="go" } ]
+macos = [ { name="github.com/x-motemen/ghq@latest", method="go" } ]
+ubuntu = [ { name="github.com/x-motemen/ghq@latest", method="go" } ]
+
+# development packages
+## shell script
+[shellcheck]
+type = "dev"
+arch = [ { name="shellcheck-bin", method="aur" } ]
+macos = [ { name="shellcheck", method="brew" } ]
+ubuntu = [ { name="shellcheck", method="apt" } ]
+
+## pipx
+[pipx]
+type = "dev"
+arch = [ { name="python-pipx", method="pacman" } ]
+macos = [ { name="pipx", method="brew" } ]
+ubuntu = [ { name="pipx", method="apt" } ]
+
+## for python
+[ruff]
+type = "dev"
+arch = [ { name="ruff", method="pipx" } ]
+macos = [ { name="ruff", method="pipx" } ]
+ubuntu = [ { name="ruff", method="pipx" } ]
+
+[pyright]
+type = "dev"
+arch = [ { name="pyright", method="pipx" } ]
+macos = [ { name="pyright", method="pipx" } ]
+ubuntu = [ { name="pyright", method="pipx" } ]
+
+[jupyterlab]
+type = "dev"
+arch = [ { name="jupyterlab", method="pipx" } ]
+macos = [ { name="jupyterlab", method="pipx" } ]
+ubuntu = [ { name="jupyterlab", method="pipx" } ]
+
+[poetry]
+type = "dev"
+arch = [ { name="poetry", method="pipx" } ]
+macos = [ { name="poetry", method="pipx" } ]
+ubuntu = [ { name="poetry", method="pipx" } ]
+
+## hugo
+[hugo]
+type = "dev"
+arch = [ { name="hugo", method="pacman" } ]
+macos = [ { name="hugo", method="brew" } ]
+
+## rtx-cli
+[rtx-cli]
+type = "dev"
+arch = [ { name="rtx-cli", method="cargo" } ]
+macos = [ { name="rtx-cli", method="cargo" } ]
+ubuntu = [ { name="rtx-cli", method="cargo" } ]
+
+## tex
+[latex]
+type = "dev"
+arch = [ { name="texlive", method="pacman" } ]
+macos = [ { name="basictex", method="cask" } ]
+
+# gui packages
+## communication tools
+[slack]
+type = "gui"
+arch = [ { name="slack-desktop", method="aur" } ]
+macos = [ { name="803453959", method="mas" } ]
+
+[discord]
+type = "gui"
+arch = [ { name="discord", method="pacman" } ]
+macos = [ { name="discord", method="cask" } ]
+
+[zoom]
+type = "gui"
+arch = [ { name="zoom", method="aur" } ]
+macos = [ { name="zoom", method="cask" } ]
+
+[MeetingBar]
+type = "gui"
+macos = [ { name="1532419400", method="mas"} ]
+
+## browser
+[vivaldi]
+type = "gui"
+arch = [
+  { name="vivaldi", method="pacman" },
+  { name="vivaldi-ffmpeg-codecs", method="pacman" }
+]
+macos = [ { name="vivaldi", method="cask" } ]
+
+[firefox]
+type = "gui"
+arch = [ { name="firefox", method="pacman" } ]
+macos = [ { name="firefox", method="cask" } ]
+
+## media
+[vlc]
+type = "gui"
+arch = [
+  { name="vlc", method="pacman" },
+  { name="libdvdread", method="pacman" },
+  { name="libdvdnav", method="pacman" },
+  { name="libdvdcss", method="pacman" }
+]
+macos = [ { name="vlc", method="cask" } ]
+
+## research
+[zotero]
+type = "gui"
+arch = [ { name="zotero-bin", method="aur" } ]
+macos = [ { name="zotero", method="cask" } ]
+
+[anki]
+type = "gui"
+arch = [ { name="anki-official-binary-bundle", method="aur" } ]
+macos = [ { name="anki", method="cask" } ]
+
+## password manager
+[bitwarden]
+type = "gui"
+arch = [ { name="bitwarden", method="pacman" } ]
+macos = [ { name="1352778147", method="mas" } ]
+
+## terminal emulator
+[wezterm]
+type = "gui"
+arch = [ { name="wezterm", method="pacman" } ]
+macos = [
+  { name="wezterm", method="cask" },
+  { name="font-cica", method="cask" },
+  { name="font-plemol-jp-nf", method="cask" }
+]
+
+## cloud storage
+[nextcloud-client]
+type = "gui"
+arch = [ { name="nextcloud-client", method="pacman" } ]
+macos = [ { name="nextcloud", method="cask" } ]
+
+[google-drive]
+type = "gui"
+macos = [ { name="google-drive", method="cask" } ]
+
+## libreoffice
+[libreoffice]
+type = "gui"
+arch = [ { name="libreoffice-fresh", method="pacman" } ]
+macos = [ { name="libreoffice", method="cask" } ]
+
+## launcher
+[alfred]
+type = "gui"
+macos = [ { name="alfred", method="cask" } ]
+
+[rofi]
+type = "gui"
+arch = [ { name="rofi-lbonn-wayland-git", method="aur" } ]
+
+## external monitor control
+[monitorcontrol]
+type = "gui"
+macos = [ { name="monitorcontrol", method="cask" } ]
+arch = [ { name="ddcci-driver-linux-dkms", method="aur" } ]
+
+## window manager
+[sway]
+type = "gui"
+arch = [
+  { name="sway", method="pacman" },
+  { name="xorg-xwayland", method="pacman" },
+  { name="qt5-wayland", method="pacman" },
+  { name="qt6-wayland", method="pacman" },
+  { name="swayidle", method="pacman" },
+  { name="swaylock", method="pacman" },
+  { name="swaybg", method="pacman" },
+  { name="xdg-desktop-portal-wlr", method="pacman" },
+  { name="xdg-desktop-portal", method="pacman" },
+  { name="waybar", method="pacman" },
+  { name="wl-clipboard", method="pacman" },
+  { name="lightdm", method="pacman" },
+  { name="lightdm-gtk-greeter", method="pacman" },
+  { name="network-manager-applet", method="pacman" },
+  { name="papirus-icon-theme", method="pacman" },
+  { name="bluez", method="pacman" },
+  { name="bluez-utils", method="pacman" },
+  { name="blueman", method="pacman" },
+  { name="pipewire", method="pacman" },
+  { name="wireplumber", method="pacman" },
+  { name="pipewire-alsa", method="pacman" },
+  { name="pipewire-pulse", method="pacman" },
+  { name="pavucontrol", method="pacman" },
+  { name="playerctl", method="pacman" },
+  { name="thunar", method="pacman" },
+  { name="tumbler", method="pacman" },
+  { name="gvfs", method="pacman" },
+  { name="gvfs-smb", method="pacman" },
+  { name="sshfs", method="pacman" },
+  { name="ristretto", method="pacman" },
+  { name="slurp", method="pacman" },
+  { name="grim", method="pacman" },
+  { name="kanshi", method="pacman" },
+  { name="qtkeychain-qt5", method="pacman" },
+  { name="libsecret", method="pacman" },
+  { name="gnome-keyring", method="pacman" },
+  { name="seahorse", method="pacman" },
+  { name="gtk2", method="pacman" },
+  { name="autotiling-rs", method="pacman" },
+  { name="python-i3ipc", method="pacman" },  # for inactive-windows-transparency.py
+  { name="noto-fonts", method="pacman" },
+  { name="noto-fonts-cjk", method="pacman" },
+  { name="noto-fonts-emoji", method="pacman" },
+  { name="noto-fonts-extra", method="pacman" },
+  { name="ttf-font-awesome", method="pacman" },
+  { name="acpi", method="pacman" },
+  { name="fcitx5", method="pacman" },
+  { name="fcitx5-configtool", method="pacman" },
+  { name="fcitx5-gtk", method="pacman" },
+  { name="fcitx5-qt", method="pacman" },
+  { name="fcitx5-skk", method="pacman" },
+  { name="clipman", method="aur" },
+  { name="nwg-look", method="aur" },
+  { name="nordic-theme", method="aur" }
+
+]
+
+[yabai]
+type = "gui"
+macos = [
+  { name="koekeishiya/formulae/yabai", method="brew"},
+  { name="koekeishiya/formulae/skhd", method="brew" },
+  { name="FelixKratz/formulae/sketchybar", method="brew" },
+  { name="font-hack-nerd-font", method="cask" },
+  { name="aquaskk", method="cask" }
+]
+
+## backup tools
+[borg]
+type = "gui"
+arch = [ { name="borg", method="pacman" } ]
+
+## dvd writing
+[growisofs]
+type = "gui"
+arch = [ { name="dvd+rw-tools", method="pacman" } ]
+
+## macos only
+[utils]
+type = "gui"
+macos = [
+  { name="stats", method="cask" },
+  { name="appcleaner", method="cask" },
+  { name="karabiner-elements", method="cask" }
+]
+
+[WireGuard]
+type = "gui"
+macos = [ { name="1451685025", method="mas" } ]

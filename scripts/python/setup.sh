@@ -2,44 +2,7 @@
 
 set -eu
 
-setup_pipx() {
-    info "Setting up pipx"
-
-    info "Installing/Updating pipx packages"
-    local package_list=(jupyterlab pyright ruff)
-    # local package_list=(pyright ruff)
-
-    local installed_list
-    installed_list=$(pipx list)
-
-    for package in "${package_list[@]}"; do
-        if [[ $installed_list =~ package\ "$package" ]]; then
-            info "Updating $package"
-            pipx upgrade --include-injected "$package"
-        else
-            info "Installing $package"
-            pipx install "$package"
-
-            if [ "$package" == "jupyterlab" ]; then
-                info "Installing jupyterlab template extention"
-               pipx inject jupyterlab jupyterlab_templates
-            fi
-        fi
-    done
-
-}
-
 setup_poetry() {
-    local poetry_path="${HOME}/.local/bin/poetry"
-    if [ ! -L "$poetry_path" ]; then
-        info "Installing poetry"
-        pipx install poetry
-    else
-        info "Updating poetry"
-        pipx upgrade --include-injected poetry
-
-    fi
-
     info "Setting global config"
     $poetry_path config virtualenvs.in-project true
     $poetry_path config virtualenvs.prefer-active-python true
@@ -47,7 +10,6 @@ setup_poetry() {
     info "Enable completions"
     $poetry_path completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
 }
-
 
 setup_jupyterlab() {
     info "Creating symlink for jupyterlab.sh"
@@ -82,8 +44,6 @@ setup_python() {
     else
         ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
     fi
-
-    setup_pipx
 
     setup_poetry
 

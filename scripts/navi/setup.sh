@@ -6,8 +6,6 @@ setup_navi() {
     title "Setting up navi"
     local navi_dir="$CONFIGS_DIR/navi"
 
-    "${CARGO_HOME}/bin/rustup" run stable cargo install navi
-
     info "Creating symlink for navi"
     ln -sfn "$navi_dir" "${XDG_CONFIG_HOME}/navi"
 

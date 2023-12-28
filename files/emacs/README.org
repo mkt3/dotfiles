@@ -321,15 +321,15 @@
    #+end_src
 ** Highlight-indent-guide
    #+begin_src emacs-lisp
-     (use-package highlight-indent-guides
-       :ensure t
-       :delight
-       :hook ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
-       :custom
-       (highlight-indent-guides-method  'character)
-       (highlight-indent-guides-auto-enabled t)
-       (highlight-indent-guides-responsive t)
-       (highlight-indent-guides-character ?\|))
+     ;; (use-package highlight-indent-guides
+     ;;   :ensure t
+     ;;   :delight
+     ;;   :hook ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
+     ;;   :custom
+     ;;   (highlight-indent-guides-method  'character)
+     ;;   (highlight-indent-guides-auto-enabled t)
+     ;;   (highlight-indent-guides-responsive t)
+     ;;   (highlight-indent-guides-character ?\|))
    #+end_src
 ** rainbow-delimiters
    #+begin_src emacs-lisp
@@ -418,8 +418,8 @@
        :custom
        (whitespace-style '(face trailing tabs spaces empty space-mark tab-mark))
        (whitespace-display-mappings '((space-mark ?\u3000 [?\u25a1])
-                                      (tab-mark ?\t [?\u00BB ?\t]
-                                                [?\\ ?\t])))
+                                      ;; (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
+                                      ))
        (whitespace-space-regexp  "\\(\u3000+\\)")
        (whitespace-global-modes  '(not dired-mode tar-mode magit-mode))
        (global-whitespace-mode t)
@@ -429,10 +429,10 @@
        ;;                     :background "Black"
        ;;                     :foreground "DeepPink"
        ;;                     :underline t)
-       ;; (set-face-attribute 'whitespace-tab nil
-       ;;                     :background "Black"
-       ;;                     :foreground "LightSkyBlue"
-       ;;                     :underline t)
+       (set-face-attribute 'whitespace-tab nil
+                           :background nil
+                           :foreground "LightSkyBlue"
+                           :underline t)
        ;; (set-face-attribute 'whitespace-space nil
        ;;                     :background "Black"
        ;;                     :foreground "GreenYellow"
@@ -782,6 +782,13 @@
    #+end_src
 * Programming Languages
 ** General
+*** makefile
+    #+begin_src emacs-lisp
+      (use-package makefile-mode
+        :mode ("\\Makefile\\'" . makefile-mode)
+        :hook (makefile-mode-hook . (lambda ()
+                                      (setq tab-width 4))))
+    #+end_src
 *** tree-sitter
     #+begin_src emacs-lisp
       (use-package treesit-auto
@@ -1719,7 +1726,7 @@
   #+begin_src emacs-lisp
     (use-package jinx
       :ensure t
-      :hook ((org-mode-hook text-mode-hook) . jinx-mode)
+      :hook ((org-mode-hook markdown-mode-hook) . jinx-mode)
       :bind (("C-;" . jinx-correct)
              ("C-x @ ;" . jinx-correct) ; for wezterm
              ("C-M-$" . jinx-languages)))
