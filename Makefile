@@ -10,7 +10,7 @@ ifeq ($(DISTRO),Linux)
 endif
 RESULTS = ./results
 
-all: install package
+all: check-env install package setup
 
 .PHONY: setup
 setup:
@@ -18,7 +18,7 @@ setup:
 	$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) \
-	/usr/bin/env bash "$INSTALL_DIR/scripts/setup.sh"
+	/usr/bin/env bash "$(INSTALL_DIR)/scripts/setup.sh"
 
 .PHONY: package
 package: $(RESULTS)/install_package.sh
@@ -31,15 +31,20 @@ install:
 	@echo $(DISTRO)
 
 
-$(RESULTS)/install_package.sh: packages.toml $(INSTALL_DIR)/make_package_install_script.sh check-env
+$(RESULTS)/install_package.sh: packages.toml $(INSTALL_DIR)/make_package_install_script.sh $(ENV_FILE)
 	$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@echo "Making package install scripts.."
 	@DISTRO=$(DISTRO) DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) \
     /usr/bin/env bash "$(INSTALL_DIR)/make_package_install_script.sh"
 
+.PHONY: check-env
 check-env:
 	@if [ ! -f $(ENV_FILE) ]; then \
 		mkdir -p $(RESULTS); \
 		ENV_FILE=$(ENV_FILE) /usr/bin/env bash ./scripts/setup_env.sh; \
 	fi
+
+.PHONY: clean
+clean:
+	rm -rf $(RESULTS)
