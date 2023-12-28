@@ -18,12 +18,12 @@ setup:
 	$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) \
-	/usr/bin/env bash "$(INSTALL_DIR)/scripts/setup.sh"
+	#/usr/bin/env bash "$(INSTALL_DIR)/scripts/setup.sh"
 
 .PHONY: install-package
 install-package: $(RESULTS)/install_package.sh
 	@echo "package install"
-	/usr/bin/env bash "$(RESULTS)/install_package.sh"
+	# /usr/bin/env bash "$(RESULTS)/install_package.sh"
 
 .PHONY: install-repository
 install-repository:

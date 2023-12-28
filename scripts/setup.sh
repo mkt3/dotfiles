@@ -105,13 +105,9 @@ setup_linux() {
             setup_linux_ui
             setup_post_common
             ;;
-        Raspbian*)
-            setup_pre_common
-            setup_linux_ui
-            setup_post_common
-            ;;
         *)
-            setup_minimal
+            echo "${distro} is not supported."
+            exit 1
     esac
 }
 

@@ -41,9 +41,9 @@ if [[ "$os_name" == "macos" ]]; then
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
-    package_names=$(echo "$json_content" | jq --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select(.value[$os] != null and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | .value[$os][] | select(.method == $method) | .name | select(. != null)' | tr '\n' ' ')
+    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | jq --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select(.value[$os] != null and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | .value[$os][] | select(.method == $method) | .name | select(. != null)' && printf '\0')
 
-    if [ -z "$package_names" ]; then
+    if [ ${#package_names[@]} -eq 0 ]; then
         continue
     fi
 
@@ -63,42 +63,43 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             # shellcheck disable=SC2016
             install_cmd='"${CARGO_HOME}/bin/rustup" run stable cargo install'
             ;;
+        "go")
+            install_cmd="go install"
+            ;;
         "pipx")
             install_cmd="pipx install"
             update_cmd="pipx upgrade --include-injected"
             ;;
         "npm")
             install_cmd="npm install -g"
-            package_names="${package_names// /@latest }"
+            package_names=("${package_names[@]/%/@latest}")
             ;;
     esac
 
-    package_names="${package_names%%[[:space:]]}"
-
     case "$method" in
         brew|cask)
-            for package in ${package_names}; do
+            for package in "${package_names[@]}"; do
                 echo "${method} \"${package}\"" >> "$brew_file"
             done
             ;;
         mas)
-            for package in ${package_names}; do
+            for package in "${package_names[@]}"; do
                 echo "${method} \"${package}\", id: ${package}" >> "$brew_file"
             done
             ;;
         pipx)
-            for package in ${package_names}; do
+            for package in "${package_names[@]}"; do
                 echo "${update_cmd} ${package} || ${install_cmd} ${package}"  >> "$output_file"
             done
 
             ;;
-        go)
-            for package in ${package_names}; do
-                echo "go install ${package}" >> "$output_file"
+        go|cargo)
+            for package in "${package_names[@]}"; do
+                echo "${install_cmd} ${package}" >> "$output_file"
             done
             ;;
         *)
-            echo "${install_cmd} ${package_names}" >> "$output_file"
+            echo "${install_cmd} ${package_names[*]}" >> "$output_file"
             ;;
     esac
 done

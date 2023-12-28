@@ -339,12 +339,6 @@ arch = [ { name="rtx-cli", method="cargo" } ]
 macos = [ { name="rtx-cli", method="cargo" } ]
 ubuntu = [ { name="rtx-cli", method="cargo" } ]
 
-## tex
-[latex]
-type = "dev"
-arch = [ { name="texlive", method="pacman" } ]
-macos = [ { name="basictex", method="cask" } ]
-
 ## nodejs
 [nodejs]
 type = "dev"
@@ -386,6 +380,12 @@ macos = [ { name="typescript", method="npm" } ]
 ubuntu = [ { name="typescript", method="npm" } ]
 
 # gui packages
+## tex
+[latex]
+type = "gui"
+arch = [ { name="texlive", method="pacman" } ]
+macos = [ { name="basictex", method="cask" } ]
+
 ## communication tools
 [slack]
 type = "gui"
@@ -559,6 +559,12 @@ macos = [
   { name="font-hack-nerd-font", method="cask" },
   { name="aquaskk", method="cask" }
 ]
+
+## key remapper
+[key-remap]
+type = "gui"
+macos = [ { name="karabiner-elements", method="cask" }]
+arch = [ { name="xremap --features wlroots", method="cargo" } ]
 
 ## backup tools
 [borg]
