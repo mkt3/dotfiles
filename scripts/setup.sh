@@ -78,7 +78,6 @@ setup_linux_ui() {
         setup_xremap
         setup_skk
         setup_borg
-        setup_zathura
     fi
 }
 
