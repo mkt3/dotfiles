@@ -19,7 +19,7 @@ declare -A methods
 methods["ubuntu"]="apt"
 methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
-common_methods=("cargo" "pipx" "go")
+common_methods=("cargo" "pipx" "go" "npm")
 
 toml_file="./packages.toml"
 output_file="./results/install_package.sh"
@@ -32,6 +32,7 @@ echo '. "./files/zsh/zshenv.zsh"'  > "$output_file"
 echo '. "./scripts/install_essential_packages.sh"' >> "$output_file"
 
 if [[ "$os_name" == "macos" ]]; then
+    echo -n > "$brew_file"
     {
         echo "brew bundle --file $brew_file"
         echo "brew upgrade"
@@ -47,17 +48,37 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
     fi
 
     install_cmd=""
+    update_cmd=""
     case "$method" in
-        "apt") install_cmd="sudo apt-get -y install" ;;
-        "pacman") install_cmd="sudo pacman -S --needed --noconfirm" ;;
-        "aur") install_cmd="yay -S --needed --noconfirm" ;;
-        "cargo") install_cmd='"${CARGO_HOME}/bin/rustup" run stable cargo install'
+        "apt")
+            install_cmd="sudo apt-get -y install"
+            ;;
+        "pacman")
+            install_cmd="sudo pacman -S --needed --noconfirm"
+            ;;
+        "aur")
+            install_cmd="yay -S --needed --noconfirm"
+            ;;
+        "cargo")
+            # shellcheck disable=SC2016
+            install_cmd='"${CARGO_HOME}/bin/rustup" run stable cargo install'
+            ;;
+        "pipx")
+            install_cmd="pipx install"
+            update_cmd="pipx upgrade --include-injected"
+            ;;
+        "npm")
+            install_cmd="npm install -g"
+            package_names="${package_names// /@latest }"
+            ;;
     esac
+
+    package_names="${package_names%%[[:space:]]}"
 
     case "$method" in
         brew|cask)
             for package in ${package_names}; do
-                echo "${method} \"${package}\" " >> "$brew_file"
+                echo "${method} \"${package}\"" >> "$brew_file"
             done
             ;;
         mas)
@@ -66,16 +87,10 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             done
             ;;
         pipx)
-            installed_pipx_list=$(pipx list)
-
             for package in ${package_names}; do
-                if [[ $installed_pipx_list =~ package\ "$package" ]]; then
-                    echo "pipx upgrade --include-injected ${package}"  >> "$output_file"
-
-                else
-                    echo "pipx install ${package}"  >> "$output_file"
-                fi
+                echo "${update_cmd} ${package} || ${install_cmd} ${package}"  >> "$output_file"
             done
+
             ;;
         go)
             for package in ${package_names}; do
@@ -86,5 +101,4 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             echo "${install_cmd} ${package_names}" >> "$output_file"
             ;;
     esac
-
 done

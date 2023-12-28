@@ -199,7 +199,6 @@ arch = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
 macos = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
 ubuntu = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
 
-
 ## security
 [openssl]
 type = "basic"
@@ -283,12 +282,24 @@ arch = [ { name="shellcheck-bin", method="aur" } ]
 macos = [ { name="shellcheck", method="brew" } ]
 ubuntu = [ { name="shellcheck", method="apt" } ]
 
-## pipx
-[pipx]
+## python
+[python]
 type = "dev"
-arch = [ { name="python-pipx", method="pacman" } ]
-macos = [ { name="pipx", method="brew" } ]
-ubuntu = [ { name="pipx", method="apt" } ]
+arch = [
+  { name="python", method="pacman" },
+  { name="python-pip", method="pacman" },
+  { name="python-pipx", method="pacman" }
+]
+macos = [
+  { name="python3", method="brew" },
+  { name="pipx", method="brew" }
+]
+ubuntu = [
+  { name="python3-dev", method="apt" },
+  { name="python3-venv", method="apt" },
+  { name="python3-pip", method="apt" },
+  { name="pipx", method="apt" }
+]
 
 ## for python
 [ruff]
@@ -333,6 +344,46 @@ ubuntu = [ { name="rtx-cli", method="cargo" } ]
 type = "dev"
 arch = [ { name="texlive", method="pacman" } ]
 macos = [ { name="basictex", method="cask" } ]
+
+## nodejs
+[nodejs]
+type = "dev"
+arch = [
+  { name="nodejs", method="pacman" },
+  { name="npm", method="pacman" }
+]
+macos = [ { name="node", method="brew" } ]
+ubuntu = [
+  { name="nodejs", method="apt" },
+  { name="npm", method="apt" }
+]
+
+## for bash
+[bash-language-server]
+type = "dev"
+arch = [ { name="bash-language-server", method="npm" } ]
+macos = [ { name="bash-language-server", method="npm" } ]
+ubuntu = [ { name="bash-language-server", method="npm" } ]
+
+## for markdown eslint json
+[vscode-langservers-extracted]
+type = "dev"
+arch = [ { name="vscode-langservers-extracted", method="npm" } ]
+macos = [ { name="vscode-langservers-extracted", method="npm" } ]
+ubuntu = [ { name="vscode-langservers-extracted", method="npm" } ]
+
+## for typescript
+[typescript-language-server]
+type = "dev"
+arch = [ { name="typescript-language-server", method="npm" } ]
+macos = [ { name="typescript-language-server", method="npm" } ]
+ubuntu = [ { name="typescript-language-server", method="npm" } ]
+
+[typescript]
+type = "dev"
+arch = [ { name="typescript", method="npm" } ]
+macos = [ { name="typescript", method="npm" } ]
+ubuntu = [ { name="typescript", method="npm" } ]
 
 # gui packages
 ## communication tools

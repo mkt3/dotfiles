@@ -10,7 +10,7 @@ ifeq ($(DISTRO),Linux)
 endif
 RESULTS = ./results
 
-all: check-env install package setup
+all: check-env install-repository install-package setup
 
 .PHONY: setup
 setup:
@@ -20,13 +20,13 @@ setup:
 	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) \
 	/usr/bin/env bash "$(INSTALL_DIR)/scripts/setup.sh"
 
-.PHONY: package
-package: $(RESULTS)/install_package.sh
+.PHONY: install-package
+install-package: $(RESULTS)/install_package.sh
 	@echo "package install"
 	/usr/bin/env bash "$(RESULTS)/install_package.sh"
 
-.PHONY: install
-install:
+.PHONY: install-repository
+install-repository:
 	@git -C "$(INSTALL_DIR)" pull || @git clone https://github.com/mkt3/dotfiles "$(INSTALL_DIR)"
 	@echo $(DISTRO)
 

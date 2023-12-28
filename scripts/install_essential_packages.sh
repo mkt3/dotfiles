@@ -17,7 +17,11 @@ install_essential_packages() {
         ;;
     esac
 
+    ## rust for cargo
     install_rust
+
+    ## npm conf
+    ln -sfn "./files/npm" "${XDG_CONFIG_HOME}/npm"
 
 }
 
@@ -46,10 +50,10 @@ install_linux() {
     # distribution
     case $distro in
         Arch)
-            sudo pacman -S --needed --noconfirm git jq wget
+            sudo pacman -S --needed --noconfirm git jq wget base-devel
             ;;
         Ubuntu)
-            sudo apt-get -y install git jq wget
+            sudo apt-get -y install git jq wget make
             ;;
         *)
             echo "${distro} is not supported."
@@ -59,7 +63,6 @@ install_linux() {
     local yj_path="${HOME}/.local/bin/yj"
     wget https://github.com/sclevine/yj/releases/latest/download/yj-macos-amd64 -o "$yj_path"
     chomod +x "yj_path"
-
 }
 
 install_rust() {
