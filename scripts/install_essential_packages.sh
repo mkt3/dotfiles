@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
+# shellcheck source=/dev/null
 
 set -eu
-set -o pipefail
+
+# variable
+CONFIGS_DIR="${REPO_DIR}/files"
+
+. "${CONFIGS_DIR}/zsh/zshenv.zsh"
+
 
 install_essential_packages() {
     case "$OS" in
@@ -19,10 +25,6 @@ install_essential_packages() {
 
     ## rust for cargo
     install_rust
-
-    ## npm conf
-    ln -sfn "./files/npm" "${XDG_CONFIG_HOME}/npm"
-
 }
 
 install_macos() {
@@ -53,7 +55,7 @@ install_linux() {
             sudo pacman -S --needed --noconfirm git jq wget base-devel
             ;;
         Ubuntu)
-            sudo apt-get -y install git jq wget make
+            sudo apt-get -y install git jq wget make nodejs
             ;;
         *)
             echo "${distro} is not supported."
@@ -61,8 +63,8 @@ install_linux() {
     esac
 
     local yj_path="${HOME}/.local/bin/yj"
-    wget https://github.com/sclevine/yj/releases/latest/download/yj-macos-amd64 -o "$yj_path"
-    chomod +x "yj_path"
+    wget https://github.com/sclevine/yj/releases/latest/download/yj-linux-amd64 -O "$yj_path"
+    chmod +x "$yj_path"
 }
 
 install_rust() {

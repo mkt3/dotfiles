@@ -352,12 +352,6 @@ arch = [ { name="poetry", method="pipx", function="setup_poetry" } ]
 macos = [ { name="poetry", method="pipx", function="setup_poetry" } ]
 ubuntu = [ { name="poetry", method="pipx", function="setup_poetry" } ]
 
-## hugo
-[hugo]
-type = "dev"
-arch = [ { name="hugo", method="pacman" } ]
-macos = [ { name="hugo", method="brew" } ]
-
 ## rtx-cli
 [rtx-cli]
 type = "dev"
@@ -593,6 +587,11 @@ type = "gui"
 arch = [ { name="skk", method="script", function="setup_skk" } ]
 macos = [ { name="skk", method="script", function="setup_skk" } ]
 
+## hugo
+[hugo]
+type = "gui"
+arch = [ { name="hugo", method="pacman" } ]
+macos = [ { name="hugo", method="brew" } ]
 
 ## programing font
 [programing_font]

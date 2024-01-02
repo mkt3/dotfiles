@@ -5,26 +5,34 @@ ENV_FILE := ./results/env_settings
 
 DISTRO := $(shell uname -s)
 ifeq ($(DISTRO),Linux)
-    DISTRO := $(shell awk '{print $1; exit}' /etc/issue)
+    DISTRO := $(shell awk '{print $$1; exit}' /etc/issue)
 endif
 RESULTS = ./results
 
-all: install-repository install-package
+all: install-repository install_essential_packages install-packages
 
-.PHONY: install-package
-install-package: $(RESULTS)/install_package.sh
+.PHONY: install-packages
+install-packages: $(RESULTS)/install_packages.sh
 	@echo "package install"
 	$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) \
 	/usr/bin/env bash "$(RESULTS)/install_packages.sh"
 
+.PHONY: install_essential_packages
+install_essential_packages:
+	@echo "package install"
+	$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
+	$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
+	REPO_DIR=$(INSTALL_DIR) \
+	/usr/bin/env bash "$(INSTALL_DIR)/scripts/install_essential_packages.sh"
+
 .PHONY: install-repository
 install-repository: $(ENV_FILE)
 	@git -C "$(INSTALL_DIR)" pull || git clone https://github.com/mkt3/dotfiles "$(INSTALL_DIR)"
 	@echo $(DISTRO)
 
-$(RESULTS)/install_package.sh: packages.toml $(INSTALL_DIR)/make_package_install_script.sh $(ENV_FILE)
+$(RESULTS)/install_packages.sh: packages.toml $(INSTALL_DIR)/make_package_install_script.sh $(ENV_FILE)
 	@echo "Making package install scripts.."
 	$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))

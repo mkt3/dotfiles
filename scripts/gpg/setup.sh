@@ -20,6 +20,8 @@ pre_setup_gpg() {
 post_setup_gpg() {
     title "Post setting up GPG"
 
+    local gpg_file_dir="${CONFIGS_DIR}/gpg"
+
     if [ "$GUI_ENV" = "n" ]; then
         systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket
         ln -sfn "${gpg_file_dir}/gpg.conf" "${GNUPGHOME}/gpg.conf"

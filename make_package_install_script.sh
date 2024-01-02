@@ -53,8 +53,6 @@ for filepath in $setup_files; do
     . "$filepath"
 done
 
-. "${REPO_DIR}/scripts/install_essential_packages.sh"
-
 EOF
 
 
@@ -112,7 +110,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             update_cmd="pipx upgrade --include-injected"
             ;;
         "npm")
-            install_cmd="npm install -g"
+            install_cmd="sudo npm install -g"
             package_names=("${package_names[@]/%/@latest}")
             ;;
     esac
