@@ -2,8 +2,8 @@
 
 set -eu
 
-setup_lazygit() {
-    title "Setting up lazygit"
+pre_setup_lazygit() {
+    title "Pre setting up lazygit"
 
     mkdir -p "${XDG_CONFIG_HOME}/lazygit"
     info "Creating symlink for lazygit"

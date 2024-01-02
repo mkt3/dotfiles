@@ -2,7 +2,7 @@
 
 set -eu
 
-setup_skk() {
+post_setup_skk() {
     title "Setting up skk"
 
     info "Creating symlink for zsh"

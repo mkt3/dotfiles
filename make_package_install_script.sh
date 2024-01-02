@@ -22,22 +22,63 @@ methods["arch"]="pacman aur"
 common_methods=("cargo" "pipx" "go" "npm")
 
 toml_file="./packages.toml"
-output_file="./results/install_package.sh"
+install_script_path="./results/install_packages.sh"
+
 brew_file="./results/Brewfile"
 
 json_content=$(yj -t < "$toml_file")
 
+setup_files="./scripts/**/setup.sh"
+for filepath in $setup_files; do
+    . "$filepath"
+done
 
-echo '. "./files/zsh/zshenv.zsh"'  > "$output_file"
-echo '. "./scripts/install_essential_packages.sh"' >> "$output_file"
+
+cat << 'EOF' > "$install_script_path"
+#!/usr/bin/env bash
+# shellcheck source=/dev/null
+
+set -eu
+
+# variable
+REPO_DIR="$(cd "$(dirname "$0")/.."; pwd)"
+CONFIGS_DIR="${REPO_DIR}/files"
+
+. "${CONFIGS_DIR}/zsh/zshenv.zsh"
+
+. "${REPO_DIR}/scripts/common.sh"
+
+setup_files="${REPO_DIR}/scripts/**/setup.sh"
+for filepath in $setup_files; do
+    . "$filepath"
+done
+
+. "${REPO_DIR}/scripts/install_essential_packages.sh"
+
+EOF
+
+
+# pre functions
+IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | jq --arg os "$os_name" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select(.value[$os] != null and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) |  .value[$os][] | .function | select(. != null)' && printf '\0')
+
+echo "# pre functions" >> "$install_script_path"
+for func in "${functions[@]}"; do
+    if type "pre_${func}" &> /dev/null; then
+        echo "pre_${func}" >> "$install_script_path"
+    fi
+done
+
+# packages
+echo "# package install commands" >> "$install_script_path"
 
 if [[ "$os_name" == "macos" ]]; then
     echo -n > "$brew_file"
+
     {
         echo "brew bundle --file $brew_file"
         echo "brew upgrade"
         echo "brew cleanup"
-    } >> "$output_file"
+    } >> "$install_script_path"
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
@@ -89,17 +130,27 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             ;;
         pipx)
             for package in "${package_names[@]}"; do
-                echo "${update_cmd} ${package} || ${install_cmd} ${package}"  >> "$output_file"
+                echo "${update_cmd} ${package} || ${install_cmd} ${package}"  >> "$install_script_path"
             done
 
             ;;
         go|cargo)
             for package in "${package_names[@]}"; do
-                echo "${install_cmd} ${package}" >> "$output_file"
+                echo "${install_cmd} ${package}" >> "$install_script_path"
             done
             ;;
+        script)
+            ;;
         *)
-            echo "${install_cmd} ${package_names[*]}" >> "$output_file"
+            echo "${install_cmd} ${package_names[*]}" >> "$install_script_path"
             ;;
     esac
+done
+
+# post functions
+echo "# post functions" >> "$install_script_path"
+for func in "${functions[@]}"; do
+    if type "post_${func}" &> /dev/null; then
+        echo "post_${func}" >> "$install_script_path"
+    fi
 done

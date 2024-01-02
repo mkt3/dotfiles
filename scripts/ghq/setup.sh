@@ -2,8 +2,8 @@
 
 set -eu
 
-setup_ghq() {
-    title "Setting up ghq"
+post_setup_ghq() {
+    title "Post setting up ghq"
 
     git config --global ghq.root "${HOME}/workspace/ghq"
 }

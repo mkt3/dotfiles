@@ -2,7 +2,7 @@
 
 set -eu
 
-setup_docker() {
+pre_setup_docker() {
     title "Setting up docker"
     local docker_config_dir="${XDG_CONFIG_HOME}/docker"
 

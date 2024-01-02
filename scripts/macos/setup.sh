@@ -2,7 +2,7 @@
 
 set -eu
 
-setup_macos() {
+post_setup_macos() {
     title "Setting up macos"
 
     info "Changing macos config"

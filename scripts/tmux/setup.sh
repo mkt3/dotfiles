@@ -2,8 +2,8 @@
 
 set -eu
 
-setup_tmux() {
-    title "Setting up tmux"
+pre_setup_tmux() {
+    title "Pre setting up tmux"
     local tmux_dir="$CONFIGS_DIR/tmux"
 
     info "Creating symlink for tmux"
@@ -19,6 +19,16 @@ setup_tmux() {
         info "Clonening tpm repository"
         git clone $tpm_git_url "$tpm_install_dir"
     fi
+}
+
+post_setup_tmux() {
+    title "Post setting up tmux"
+
+    local tmux_dir="$CONFIGS_DIR/tmux"
+
+    if [[ "$OS" == "Linux" ]] && ! (type tmux > /dev/null 2>&1); then
+        "${tmux_dir}/build_tmux.sh"
+    fi
 
     if [[ "$OS" == "Darwin" ]] && ! infocmp tmux-256color >/dev/null 2>&1; then
         tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
@@ -29,9 +39,5 @@ setup_tmux() {
             /usr/local/opt/ncurses/bin/infocmp tmux-256color > "$tmpfile"
         fi
         tic -xe tmux-256color "$tmpfile"
-    fi
-
-    if [[ "$OS" == "Linux" ]] && ! (type tmux > /dev/null 2>&1); then
-        "${tmux_dir}/build_tmux.sh"
     fi
 }

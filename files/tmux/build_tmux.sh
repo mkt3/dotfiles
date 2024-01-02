@@ -2,7 +2,7 @@
 
 # constnt value
 OS=$(uname -s)
-UI=$1
+
 TMUX_REPO="https://github.com/tmux/tmux.git"
 TMUX_REPO_PATH="${HOME}/.local/src/tmux"
 TAG="3.3a"

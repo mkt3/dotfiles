@@ -2,8 +2,8 @@
 
 set -eu
 
-setup_latex() {
-    title "Setting up latex"
+post_setup_latex() {
+    title "Post setting up latex"
 
     if ! (type dvisvgm > /dev/null 2>&1); then
         sudo tlmgr update --self --all

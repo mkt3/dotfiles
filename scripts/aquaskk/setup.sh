@@ -2,8 +2,8 @@
 
 set -eu
 
-setup_aquaskk() {
-    title "Setting up aquaskk"
+pre_setup_aquaskk() {
+    title "Pre setting up aquaskk"
 
     local aquaskk_conf_dir="${HOME}/Library/Application Support/AquaSKK"
     info "Creating aquaskk dir"

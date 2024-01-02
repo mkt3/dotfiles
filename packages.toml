@@ -27,18 +27,32 @@ arch = [ { name="pacman-contrib", method="pacman" } ]
 type = "basic"
 macos = [ { name="mas", method="brew" } ]
 
+# common
+[xdg_config]
+type = "basic"
+arch = [ { name="xdg_config", method="script", function="setup_xdg_config" } ]
+macos = [ { name="xdg_config", method="script", function="setup_xdg_config" } ]
+ubuntu = [ { name="xdg_config", method="script", function="setup_xdg_config" } ]
+
 # CLI command packages
 [zsh]
 type = "basic"
-arch = [ { name="zsh", method="pacman" } ]
-macos = [ { name="zsh", method="brew" } ]
-ubuntu = [ { name="zsh", method="apt" } ]
+arch = [ { name="zsh", method="pacman", function="setup_zsh" } ]
+macos = [ { name="zsh", method="brew", function="setup_zsh" } ]
+ubuntu = [ { name="zsh", method="apt", function="setup_zsh" } ]
 
 [bash]
 type = "basic"
 arch = [ { name="bash", method="pacman" } ]
 macos = [ { name="bash", method="brew" } ]
 ubuntu = [ { name="bash", method="apt" } ]
+
+[fzf]
+type = "basic"
+arch = [ { name="fzf", method="script", function="setup_fzf" } ]
+macos = [ { name="fzf", method="script", function="setup_fzf" } ]
+ubuntu = [ { name="fzf", method="script", function="setup_fzf" } ]
+
 
 [coreutils]
 type = "basic"
@@ -120,18 +134,18 @@ ubuntu = [ { name="trash-cli", method="apt" } ]
 
 [tmux]
 type = "basic"
-arch = [ { name="tmux", method="pacman" } ]
+arch = [ { name="tmux", method="pacman", function="setup_tmux" } ]
 macos = [
-  { name="tmux", method="brew" },
-  { name="ncurses", method="brew", comment="for tmux-256 color" }  # for tmux-256 color
+  { name="tmux", method="brew", function="setup_tmux" },
+  { name="ncurses", method="brew" }  # for tmux-256 color
 ]
-ubuntu = [ { name="tmux", method="apt" } ]
+ubuntu = [ { name="tmux", method="script", function="setup_tmux"  } ]
 
 [git]
 type = "basic"
-arch = [ { name="git", method="pacman" } ]
-macos = [ { name="git", method="brew" } ]
-ubuntu = [ { name="git", method="apt" } ]
+arch = [ { name="git", method="pacman", function="setup_git" } ]
+macos = [ { name="git", method="brew", function="setup_git" } ]
+ubuntu = [ { name="git", method="apt", function="setup_git" } ]
 
 [sheldon]
 type = "basic"
@@ -153,9 +167,9 @@ ubuntu = [ { name="fd-find", method="cargo" } ]
 
 [ripgrep]
 type = "basic"
-arch = [ { name="ripgrep", method="cargo" } ]
-macos = [ { name="ripgrep", method="cargo" } ]
-ubuntu = [ { name="ripgrep", method="cargo" } ]
+arch = [ { name="ripgrep", method="cargo", function="setup_ripgrep" } ]
+macos = [ { name="ripgrep", method="cargo", function="setup_ripgrep" } ]
+ubuntu = [ { name="ripgrep", method="cargo", function="setup_ripgrep" } ]
 
 [git-delta]
 type = "basic"
@@ -189,15 +203,21 @@ ubuntu = [ { name="zoxide", method="cargo" } ]
 
 [navi]
 type = "basic"
-arch = [ { name="navi", method="cargo" } ]
-macos = [ { name="navi", method="cargo" } ]
-ubuntu = [ { name="navi", method="cargo" } ]
+arch = [ { name="navi", method="cargo", function="setup_navi" } ]
+macos = [ { name="navi", method="cargo", function="setup_navi" } ]
+ubuntu = [ { name="navi", method="cargo", function="setup_navi" } ]
 
 [lazygit]
 type = "basic"
-arch = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
-macos = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
-ubuntu = [ { name="github.com/jesseduffield/lazygit@latest", method="go" } ]
+arch = [ { name="github.com/jesseduffield/lazygit@latest", method="go", function="setup_lazygit" } ]
+macos = [ { name="github.com/jesseduffield/lazygit@latest", method="go", function="setup_lazygit" } ]
+ubuntu = [ { name="github.com/jesseduffield/lazygit@latest", method="go", function="setup_lazygit" } ]
+
+[docker]
+type = "basic"
+arch = [ { name="docker", method="script", function="setup_docker" } ]
+macos = [ { name="docker", method="script", function="setup_docker" } ]
+ubuntu = [ { name="docker", method="script", function="setup_docker" } ]
 
 ## security
 [openssl]
@@ -208,9 +228,9 @@ ubuntu = [ { name="openssl", method="apt" } ]
 
 [gnupg]
 type = "basic"
-arch = [ { name="gnupg", method="pacman" } ]
-macos = [ { name="gnupg", method="brew" } ]
-ubuntu = [ { name="gnupg", method="apt" } ]
+arch = [ { name="gnupg", method="pacman", function="setup_gpg" } ]
+macos = [ { name="gnupg", method="brew", function="setup_gpg" } ]
+ubuntu = [ { name="gnupg", method="apt", function="setup_gpg" } ]
 
 [macos-security]
 type = "basic"
@@ -263,16 +283,22 @@ ubuntu = [ { name="nvtop", method="apt" } ]
 # Editor
 [vim]
 type = "basic"
-arch = [ { name="vim", method="pacman" } ]
-macos = [ { name="vim", method="brew" } ]
-ubuntu = [ { name="vim", method="apt" } ]
+arch = [ { name="vim", method="pacman", function="setup_vim" } ]
+macos = [ { name="vim", method="brew", function="setup_vim" } ]
+ubuntu = [ { name="vim", method="apt", function="setup_vim" } ]
+
+[emacs]
+type = "basic"
+arch = [ { name="emacs", method="script", function="setup_emacs" } ]
+macos = [ { name="emacs", method="script", function="setup_emacs" } ]
+ubuntu = [ { name="emacs", method="script", function="setup_emacs" } ]
 
 # repository management
 [ghq]
 type = "basic"
-arch = [ { name="github.com/x-motemen/ghq@latest", method="go" } ]
-macos = [ { name="github.com/x-motemen/ghq@latest", method="go" } ]
-ubuntu = [ { name="github.com/x-motemen/ghq@latest", method="go" } ]
+arch = [ { name="github.com/x-motemen/ghq@latest", method="go", function="setup_ghq" } ]
+macos = [ { name="github.com/x-motemen/ghq@latest", method="go", function="setup_ghq" } ]
+ubuntu = [ { name="github.com/x-motemen/ghq@latest", method="go", function="setup_ghq" } ]
 
 # development packages
 ## shell script
@@ -286,9 +312,9 @@ ubuntu = [ { name="shellcheck", method="apt" } ]
 [python]
 type = "dev"
 arch = [
-  { name="python", method="pacman" },
-  { name="python-pip", method="pacman" },
-  { name="python-pipx", method="pacman" }
+  { name="python", method="pacman", function="setup_python" },
+  { name="python-pip", method="pacman", function="setup_python" },
+  { name="python-pipx", method="pacman", function="setup_python" }
 ]
 macos = [
   { name="python3", method="brew" },
@@ -304,9 +330,9 @@ ubuntu = [
 ## for python
 [ruff]
 type = "dev"
-arch = [ { name="ruff", method="pipx" } ]
-macos = [ { name="ruff", method="pipx" } ]
-ubuntu = [ { name="ruff", method="pipx" } ]
+arch = [ { name="ruff", method="pipx", function="setup_ruff" } ]
+macos = [ { name="ruff", method="pipx", function="setup_ruff" } ]
+ubuntu = [ { name="ruff", method="pipx", function="setup_ruff" } ]
 
 [pyright]
 type = "dev"
@@ -316,15 +342,15 @@ ubuntu = [ { name="pyright", method="pipx" } ]
 
 [jupyterlab]
 type = "dev"
-arch = [ { name="jupyterlab", method="pipx" } ]
-macos = [ { name="jupyterlab", method="pipx" } ]
-ubuntu = [ { name="jupyterlab", method="pipx" } ]
+arch = [ { name="jupyterlab", method="pipx", function="setup_jupyterlab" } ]
+macos = [ { name="jupyterlab", method="pipx", function="setup_jupyterlab" } ]
+ubuntu = [ { name="jupyterlab", method="pipx", function="setup_jupyterlab" } ]
 
 [poetry]
 type = "dev"
-arch = [ { name="poetry", method="pipx" } ]
-macos = [ { name="poetry", method="pipx" } ]
-ubuntu = [ { name="poetry", method="pipx" } ]
+arch = [ { name="poetry", method="pipx", function="setup_poetry" } ]
+macos = [ { name="poetry", method="pipx", function="setup_poetry" } ]
+ubuntu = [ { name="poetry", method="pipx", function="setup_poetry" } ]
 
 ## hugo
 [hugo]
@@ -335,9 +361,9 @@ macos = [ { name="hugo", method="brew" } ]
 ## rtx-cli
 [rtx-cli]
 type = "dev"
-arch = [ { name="rtx-cli", method="cargo" } ]
-macos = [ { name="rtx-cli", method="cargo" } ]
-ubuntu = [ { name="rtx-cli", method="cargo" } ]
+arch = [ { name="rtx-cli", method="cargo", function="setup_rtx" } ]
+macos = [ { name="rtx-cli", method="cargo", function="setup_rtx" } ]
+ubuntu = [ { name="rtx-cli", method="cargo", function="setup_rtx" } ]
 
 ## nodejs
 [nodejs]
@@ -383,8 +409,8 @@ ubuntu = [ { name="typescript", method="npm" } ]
 ## tex
 [latex]
 type = "gui"
-arch = [ { name="texlive", method="pacman" } ]
-macos = [ { name="basictex", method="cask" } ]
+arch = [ { name="texlive", method="pacman", function="setup_latex" } ]
+macos = [ { name="basictex", method="cask", function="setup_latex" } ]
 
 ## communication tools
 [slack]
@@ -453,7 +479,7 @@ macos = [ { name="1352778147", method="mas" } ]
 type = "gui"
 arch = [ { name="wezterm", method="pacman" } ]
 macos = [
-  { name="wezterm", method="cask" },
+  { name="wezterm", method="cask", function="setup_wezterm" },
   { name="font-cica", method="cask" },
   { name="font-plemol-jp-nf", method="cask" }
 ]
@@ -493,7 +519,7 @@ arch = [ { name="ddcci-driver-linux-dkms", method="aur" } ]
 [sway]
 type = "gui"
 arch = [
-  { name="sway", method="pacman" },
+  { name="sway", method="pacman", function="setup_sway" },
   { name="xorg-xwayland", method="pacman" },
   { name="qt5-wayland", method="pacman" },
   { name="qt6-wayland", method="pacman" },
@@ -504,6 +530,7 @@ arch = [
   { name="xdg-desktop-portal", method="pacman" },
   { name="waybar", method="pacman" },
   { name="wl-clipboard", method="pacman" },
+  { name="mako", method="pacman", function="setup_mako" },
   { name="lightdm", method="pacman" },
   { name="lightdm-gtk-greeter", method="pacman" },
   { name="network-manager-applet", method="pacman" },
@@ -533,7 +560,7 @@ arch = [
   { name="gtk2", method="pacman" },
   { name="autotiling-rs", method="pacman" },
   { name="python-i3ipc", method="pacman" },  # for inactive-windows-transparency.py
-  { name="noto-fonts", method="pacman" },
+  { name="noto-fonts", method="pacman", function="setup_noto_font" },
   { name="noto-fonts-cjk", method="pacman" },
   { name="noto-fonts-emoji", method="pacman" },
   { name="noto-fonts-extra", method="pacman" },
@@ -546,30 +573,48 @@ arch = [
   { name="fcitx5-skk", method="pacman" },
   { name="clipman", method="aur" },
   { name="nwg-look", method="aur" },
-  { name="nordic-theme", method="aur" }
+  { name="nordic-theme", method="aur" },
+  { name="xwindow", method="script", function="setup_xwindow"}
 
 ]
 
 [yabai]
 type = "gui"
 macos = [
-  { name="koekeishiya/formulae/yabai", method="brew"},
+  { name="koekeishiya/formulae/yabai", method="brew", function="setup_yabai_skhd_sketchybar"},
   { name="koekeishiya/formulae/skhd", method="brew" },
   { name="FelixKratz/formulae/sketchybar", method="brew" },
   { name="font-hack-nerd-font", method="cask" },
-  { name="aquaskk", method="cask" }
+  { name="aquaskk", method="cask", function="setup_aquaskk" }
 ]
+
+[skk]
+type = "gui"
+arch = [ { name="skk", method="script", function="setup_skk" } ]
+macos = [ { name="skk", method="script", function="setup_skk" } ]
+
+
+## programing font
+[programing_font]
+type = "gui"
+arch = [ { name="programing_font", method="script", function="setup_prograing_font" } ]
 
 ## key remapper
 [key-remap]
 type = "gui"
-macos = [ { name="karabiner-elements", method="cask" }]
-arch = [ { name="xremap --features wlroots", method="cargo" } ]
+macos = [ { name="karabiner-elements", method="cask", function="setup_karabiner" } ]
+arch = [ { name="xremap --features wlroots", method="cargo", function="setup_xremap" } ]
+
+## mail notifier
+[goimapnotify]
+type = "gui"
+arch = [ { name="gitlab.com/shackra/goimapnotify@latest", method="go" } ]
+macos = [ { name="gitlab.com/shackra/goimapnotify@latest", method="go" } ]
 
 ## backup tools
 [borg]
 type = "gui"
-arch = [ { name="borg", method="pacman" } ]
+arch = [ { name="borg", method="pacman", function="setup_borg" } ]
 
 ## dvd writing
 [growisofs]
@@ -588,3 +633,7 @@ macos = [
 [WireGuard]
 type = "gui"
 macos = [ { name="1451685025", method="mas" } ]
+
+[macos]
+type = "gui"
+macos = [ { name="macos", method="script", function="setup_macos" } ]

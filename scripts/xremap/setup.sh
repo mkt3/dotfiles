@@ -2,7 +2,7 @@
 
 set -eu
 
-setup_xremap() {
+post_setup_xremap() {
     title "Setting up xremap"
     local xremap_file_dir="${CONFIGS_DIR}/xremap"
 

@@ -2,8 +2,8 @@
 
 set -eu
 
-setup_xdg_config() {
-    title "Setting up XDG Direcotry"
+pre_setup_xdg_config() {
+    title "Pre setting up XDG Direcotry"
     mkdir -p "$XDG_CONFIG_HOME"
     mkdir -p "$XDG_CACHE_HOME"
     mkdir -p "$XDG_DATA_HOME"

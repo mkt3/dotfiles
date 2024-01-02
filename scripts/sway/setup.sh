@@ -2,7 +2,7 @@
 
 set -eu
 
-setup_sway() {
+pre_setup_sway() {
     title "Setting up sway"
     local sway_file_dir="${CONFIGS_DIR}/sway"
     local swaylock_file_dir="${CONFIGS_DIR}/swaylock"

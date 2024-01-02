@@ -2,7 +2,7 @@
 
 set -eu
 
-setup_emacs() {
+pre_setup_emacs() {
     title "Setting up emacs"
     local emacs_file_dir="$CONFIGS_DIR/emacs"
     local skk_record_file="${XDG_CONFIG_HOME}/emacs/ddskk.d/skk-record"
@@ -22,15 +22,12 @@ setup_emacs() {
         touch "$skk_record_file"
     fi
 
-    if [ "$UI" = "gui" ]; then
+    if [ "$DEV_ENV" = "y" ]; then
         mkdir -p "${XDG_CONFIG_HOME}/msmtp"
         ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
     fi
     if [ "$OS" = "Darwin" ]; then
         ln -sfn "$HOME/.local/src/emacs/nextstep/Emacs.app" /Applications
-
-        go install gitlab.com/shackra/goimapnotify@latest
-
         ln -sfn /usr/bin/open "${HOME}/.local/bin/xdg-open"
     fi
 }

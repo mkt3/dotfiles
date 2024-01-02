@@ -2,7 +2,7 @@
 
 set -eu
 
-setup_karabiner() {
+pre_setup_karabiner() {
     title "Setting up karabiner"
 
     info "Creating symlink for karabiner"

@@ -2,8 +2,8 @@
 
 set -eu
 
-setup_wezterm() {
-    title "Setting up wezterm"
+pre_setup_wezterm() {
+    title "Pre setting up wezterm"
     local wezterm_file_dir="${CONFIGS_DIR}/wezterm"
 
     info "Creating symlink for wezterm"
