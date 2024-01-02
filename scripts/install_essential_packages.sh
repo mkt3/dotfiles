@@ -53,6 +53,10 @@ install_linux() {
     case $distro in
         Arch)
             sudo pacman -S --needed --noconfirm git jq wget base-devel
+            if ! (type yay > /dev/null 2>&1); then
+                local yay_repo_dir="${HOME}/.local/src/yay"
+                git clone https://aur.archlinux.org/yay.git "$yay_repo_dir" && cd "$yay_repo_dir" && makepkg -si
+            fi
             ;;
         Ubuntu)
             sudo apt-get -y install git jq wget make nodejs
@@ -69,7 +73,7 @@ install_linux() {
 
 install_rust() {
     mkdir -p "$CARGO_HOME"
-    ln -sfn "./files/rust/cargo/config" "${CARGO_HOME}/config"
+    ln -sfn "${REPO_DIR}/files/rust/cargo/config" "${CARGO_HOME}/config"
 
     if (type rustup > /dev/null 2>&1); then
         rustup self update
