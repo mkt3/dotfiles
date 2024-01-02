@@ -10,4 +10,4 @@ else
     git clone https://github.com/mkt3/dotfiles "$INSTALL_DIR"
 fi
 
-/usr/bin/env bash "$INSTALL_DIR/scripts/setup.sh" "$@"
+cd "$INSTALL_DIR" && make

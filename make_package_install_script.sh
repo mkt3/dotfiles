@@ -9,7 +9,7 @@ case "$DISTRO" in
     "Arch") os_name="arch" ;;
     "Ubuntu") os_name="ubuntu" ;;
     "Darwin") os_name="macos" ;;
-    *) echo "${DISTRO} is not supported."; exit 1 ;;
+    *) echo "${os_name} is not supported."; exit 1 ;;
 esac
 
 dev_env=${DEV_ENV:-n}
@@ -21,14 +21,14 @@ methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
 common_methods=("cargo" "pipx" "go" "npm")
 
-toml_file="./packages.toml"
-install_script_path="./results/install_packages.sh"
+toml_file=${TOML_FILE:-"./toml_file"}
+install_script_path=${INSTALL_SCRIPT:-"./results/install_packages.sh"}
 
-brew_file="./results/Brewfile"
+brew_file="${REPO_DIR:-.}/results/Brewfile"
 
 json_content=$(yj -t < "$toml_file")
 
-setup_files="./scripts/**/setup.sh"
+setup_files="${REPO_DIR:-.}/scripts/**/setup.sh"
 for filepath in $setup_files; do
     . "$filepath"
 done
@@ -41,7 +41,6 @@ cat << 'EOF' > "$install_script_path"
 set -eu
 
 # variable
-REPO_DIR="$(cd "$(dirname "$0")/.."; pwd)"
 CONFIGS_DIR="${REPO_DIR}/files"
 
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
