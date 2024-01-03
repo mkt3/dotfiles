@@ -87,7 +87,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
         continue
     fi
 
-    if ["$method" != "brew" ] &&  ["$method" != "brew" ] && ["$method" != "mas" ]; then
+    if [ "$method" != "brew" ] &&  [ "$method" != "brew" ] && [ "$method" != "mas" ]; then
         echo "title \"Install packages from ${method}\""  >> "$install_script_path"
     fi
     install_cmd=""
