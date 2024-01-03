@@ -20,7 +20,7 @@ This repository contains configuration files and scripts for my personal use. Th
    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
    ```
 
-   During the initial installation process, you will be prompted to specify the environment type. Choose 'y' if you are setting up a development environment, and 'y' if you are configuring a graphical user interface environment.
+   When setting up the environment during the initial installation, you will be prompted to specify if it's a development environment. Answer with 'y' for yes or 'n' for no. Similarly, for the GUI environment setup, respond with 'y' or 'n' when prompted.
 
 
 ## Update
