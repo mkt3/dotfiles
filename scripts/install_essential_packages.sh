@@ -60,7 +60,7 @@ install_linux() {
             ;;
         Ubuntu)
             sudo apt-get -y install git jq wget make nodejs
-            curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - &&
+            curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash -
             ;;
         *)
             echo "${distro} is not supported."
