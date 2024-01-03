@@ -349,12 +349,12 @@ arch = [ { name="poetry", method="pipx", function="setup_poetry" } ]
 macos = [ { name="poetry", method="pipx", function="setup_poetry" } ]
 ubuntu = [ { name="poetry", method="pipx", function="setup_poetry" } ]
 
-## rtx-cli
-[rtx-cli]
+## mise
+[mise]
 type = "dev"
-arch = [ { name="rtx-cli", method="cargo", function="setup_rtx" } ]
-macos = [ { name="rtx-cli", method="cargo", function="setup_rtx" } ]
-ubuntu = [ { name="rtx-cli", method="cargo", function="setup_rtx" } ]
+arch = [ { name="mise", method="cargo", function="setup_mise" } ]
+macos = [ { name="mise", method="cargo", function="setup_mise" } ]
+ubuntu = [ { name="mise", method="cargo", function="setup_mise" } ]
 
 ## nodejs
 [nodejs]

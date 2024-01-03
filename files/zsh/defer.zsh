@@ -1,5 +1,5 @@
-# rtx
-(( ${+commands[rtx]} )) && eval "$(rtx activate zsh)"
+# mise
+(( ${+commands[mise]} )) && eval "$(mise activate zsh)"
 
 # rehash
 zstyle ":completion:*:commands" rehash 1

@@ -61,6 +61,7 @@ IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | jq --arg os "$os
 echo "# pre functions" >> "$install_script_path"
 for func in "${functions[@]}"; do
     if type "pre_${func}" &> /dev/null; then
+        echo "title \"Pre-setup ${func#*_}\""  >> "$install_script_path"
         echo "pre_${func}" >> "$install_script_path"
     fi
 done
@@ -148,6 +149,7 @@ done
 echo "# post functions" >> "$install_script_path"
 for func in "${functions[@]}"; do
     if type "post_${func}" &> /dev/null; then
+        echo "title \"Post-setup ${func#*_}\""  >> "$install_script_path"
         echo "post_${func}" >> "$install_script_path"
     fi
 done
