@@ -8,9 +8,6 @@ pre_setup_mise() {
 
     info "Creating symlink for mise"
     ln -sfn "$mise_dir" "${XDG_CONFIG_HOME}"
-
-    info "Linking completion"
-    "${CARGO_HOME}/bin/mise" completion zsh > "${ZSH_COMPLETION_DIR}/_mise"
 }
 
 post_setup_mise() {
