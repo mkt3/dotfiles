@@ -15,33 +15,19 @@ This repository contains configuration files and scripts for my personal use. Th
    - Sign in to the App Store manually.
    - Run `xcode-select --install` in the terminal.
 2. Run one of the following:
-  - CUI environment only
-    ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui
-    ```
-  - CUI development environment only
-    ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui dev
-    ```
-  - GUI & CUI development environment
-    ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui dev
-    ```
+
+   ```bash
+   curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+   ```
+
+   During the initial installation process, you will be prompted to specify the environment type. Choose 'y' if you are setting up a development environment, and 'y' if you are configuring a graphical user interface environment.
+
 
 ## Update
 1. Run one of the following:
-  - CUI environment only
-    ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui
-    ```
-  - CUI development environment only
-    ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s cui dev
-    ```
-  - GUI & CUI development environment
-    ```bash
-    curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh -s gui dev
-    ```
+   ```bash
+   curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+   ```
 
 ## Link
 [emacs conf](./files/emacs)
