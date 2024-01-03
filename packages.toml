@@ -7,10 +7,7 @@ ubuntu = [{name="build-essential", method = "apt" }]
 type = "basic"
 arch = [ { name="cmake", method = "pacman" } ]
 macos = [ { name="cmake", method = "brew" } ]
-ubuntu = [
-  { name="cmake", method = "apt" },
-  { name="gmake", method = "apt" }
-]
+ubuntu = [ { name="cmake", method = "apt" } ]
 
 # package management tool
 [go] # for goimapnotify and ghq
