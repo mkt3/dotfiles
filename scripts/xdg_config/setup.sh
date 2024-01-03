@@ -3,7 +3,8 @@
 set -eu
 
 pre_setup_xdg_config() {
-    title "Pre setting up XDG Direcotry"
+    info "Making xdg directories..."
+
     mkdir -p "$XDG_CONFIG_HOME"
     mkdir -p "$XDG_CACHE_HOME"
     mkdir -p "$XDG_DATA_HOME"

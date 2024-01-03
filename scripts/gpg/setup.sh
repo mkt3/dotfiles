@@ -3,7 +3,7 @@
 set -eu
 
 pre_setup_gpg() {
-    title "Pre detting up GPG"
+    info "Creating symlink for gpg-agent.conf"
 
     mkdir -p "$GNUPGHOME"
     chmod 700 "$GNUPGHOME"
@@ -18,11 +18,10 @@ pre_setup_gpg() {
 }
 
 post_setup_gpg() {
-    title "Post setting up GPG"
-
     local gpg_file_dir="${CONFIGS_DIR}/gpg"
 
     if [ "$GUI_ENV" = "n" ]; then
+        info "Disable gpg-agent.service"
         systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket
         ln -sfn "${gpg_file_dir}/gpg.conf" "${GNUPGHOME}/gpg.conf"
     fi

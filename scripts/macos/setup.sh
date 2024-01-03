@@ -3,7 +3,6 @@
 set -eu
 
 post_setup_macos() {
-    title "Setting up macos"
 
     info "Changing macos config"
     bash -l "${CONFIGS_DIR}/macos/setup_macOS.sh"

@@ -3,7 +3,6 @@
 set -eu
 
 pre_setup_emacs() {
-    title "Setting up emacs"
     local emacs_file_dir="$CONFIGS_DIR/emacs"
     local skk_record_file="${XDG_CONFIG_HOME}/emacs/ddskk.d/skk-record"
 

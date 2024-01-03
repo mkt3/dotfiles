@@ -3,7 +3,6 @@
 set -eu
 
 setup_textlint() {
-    title "Setting up textlint"
 
     local textlint_file_dir="${CONFIGS_DIR}/textlint"
 

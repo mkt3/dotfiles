@@ -3,7 +3,6 @@
 set -eu
 
 post_setup_yabai_skhd_sketchybar() {
-    title "Setting up yabai & skhd"
 
     info "Creating symlink for yabai & skhd"
     ln -sfn "${CONFIGS_DIR}/yabai" "${XDG_CONFIG_HOME}/yabai"

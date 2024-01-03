@@ -3,7 +3,6 @@
 set -eu
 
 pre_setup_zsh() {
-    title "Pre setting up zsh"
     local zsh_file_dir="${CONFIGS_DIR}/zsh"
 
     info "Creating symlink for zsh"

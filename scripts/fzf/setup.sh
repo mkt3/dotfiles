@@ -3,7 +3,6 @@
 set -eu
 
 pre_setup_fzf() {
-    title "Pre setting up fzf"
 
     local git_url="https://github.com/junegunn/fzf.git"
     local install_dir="${XDG_DATA_HOME}/fzf"

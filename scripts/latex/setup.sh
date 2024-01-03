@@ -3,8 +3,7 @@
 set -eu
 
 post_setup_latex() {
-    title "Post setting up latex"
-
+    info "Installing dvisvgm"
     if ! (type dvisvgm > /dev/null 2>&1); then
         sudo tlmgr update --self --all
         sudo tlmgr paper a4

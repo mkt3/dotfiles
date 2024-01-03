@@ -3,7 +3,6 @@
 set -eu
 
 post_setup_xremap() {
-    title "Setting up xremap"
     local xremap_file_dir="${CONFIGS_DIR}/xremap"
 
     info "Creating symlink for xremap"

@@ -3,7 +3,6 @@
 set -eu
 
 post_setup_noto_font() {
-    title "Setting up font"
 
     info "Noto font"
     mkdir -p "${XDG_CONFIG_HOME}/fontconfig/conf.d"
@@ -12,7 +11,6 @@ post_setup_noto_font() {
 }
 
 pre_setup_programing_font() {
-    title "Setting up font"
 
     info "Add cica font"
     local cica_font_dir="${XDG_DATA_HOME}/fonts/Cica"

@@ -3,7 +3,6 @@
 set -eu
 
 pre_setup_tmux() {
-    title "Pre setting up tmux"
     local tmux_dir="$CONFIGS_DIR/tmux"
 
     info "Creating symlink for tmux"
@@ -22,15 +21,15 @@ pre_setup_tmux() {
 }
 
 post_setup_tmux() {
-    title "Post setting up tmux"
-
     local tmux_dir="$CONFIGS_DIR/tmux"
 
     if [[ "$OS" == "Linux" ]] && ! (type tmux > /dev/null 2>&1); then
+        info "Buliding tmux"
         "${tmux_dir}/build_tmux.sh"
     fi
 
     if [[ "$OS" == "Darwin" ]] && ! infocmp tmux-256color >/dev/null 2>&1; then
+        info "Making tmux-256color"
         tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
         trap 'rm -f "$tmpfile"' EXIT
         if [[ "$ARCH" == 'arm64' ]]; then

@@ -34,7 +34,6 @@ post_setup_jupyterlab() {
 }
 
 post_setup_python() {
-    title "Setting up python"
     local python_file_dir="$CONFIGS_DIR/python"
 
     info "Creating symlink for matplotlib"

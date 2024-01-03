@@ -6,10 +6,12 @@ set -eu
 # variable
 CONFIGS_DIR="${REPO_DIR}/files"
 
+. "${REPO_DIR}/scripts/common.sh"
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
 
 install_essential_packages() {
+    title "Install essential packages"
     case "$OS" in
         Darwin)
             install_macos
@@ -80,7 +82,6 @@ install_rust() {
         rustup self update
         rustup update
     else
-        info "Installing rustup"
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y
     fi
 

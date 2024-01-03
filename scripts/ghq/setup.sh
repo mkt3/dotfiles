@@ -3,7 +3,6 @@
 set -eu
 
 post_setup_ghq() {
-    title "Post setting up ghq"
-
+    info "Setting gpg.root"
     git config --global ghq.root "${HOME}/workspace/ghq"
 }

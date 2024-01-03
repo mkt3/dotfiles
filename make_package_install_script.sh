@@ -73,6 +73,7 @@ if [[ "$os_name" == "macos" ]]; then
     echo -n > "$brew_file"
 
     {
+        echo "title \"Install packages from homebrew\""  >> "$install_script_path"
         echo "brew bundle --file $brew_file"
         echo "brew upgrade"
         echo "brew cleanup"
@@ -86,6 +87,9 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
         continue
     fi
 
+    if ["$method" != "brew" ] &&  ["$method" != "brew" ] && ["$method" != "mas" ]; then
+        echo "title \"Install packages from ${method}\""  >> "$install_script_path"
+    fi
     install_cmd=""
     update_cmd=""
     case "$method" in

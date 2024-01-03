@@ -3,7 +3,6 @@
 set -eu
 
 post_setup_git() {
-    title "Post setting up Git"
     local git_file_dir="$CONFIGS_DIR/git"
     local git_config_dir="${XDG_CONFIG_HOME}/git"
 

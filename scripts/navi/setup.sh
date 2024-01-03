@@ -3,7 +3,6 @@
 set -eu
 
 post_setup_navi() {
-    title "Setting up navi"
     local navi_dir="$CONFIGS_DIR/navi"
 
     info "Creating symlink for navi"
