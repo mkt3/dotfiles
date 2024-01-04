@@ -1,4 +1,4 @@
-REPO_DIR := $(CURDIR)
+REPO_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 RESULTS_DIR := $(REPO_DIR)/results
 TOML_FILE := $(REPO_DIR)/packages.toml
 ENV_FILE := $(RESULTS_DIR)/env_settings
