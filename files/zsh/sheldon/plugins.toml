@@ -74,5 +74,4 @@ use = ["init.sh"]
 apply = ["defer"]
 hooks.post = '''
 ENHANCD_FILTER="fzf-tmux -p80%"
-ENHANCD_HOOK_AFTER_CD=ls
 '''
