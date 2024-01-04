@@ -1,18 +1,18 @@
-REPO_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+REPO_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 RESULTS_DIR := $(REPO_DIR)/results
 TOML_FILE := $(REPO_DIR)/packages.toml
 ENV_FILE := $(RESULTS_DIR)/env_settings
 INSTALL_SCRIPT := $(RESULTS_DIR)/install_packages.sh
+MAKE_INSTALL_SCRIPT := $(REPO_DIR)/scripts/make_package_install_script.sh
 DISTRO := $(shell uname -s)
 ifeq ($(DISTRO),Linux)
     DISTRO := $(shell awk '{print $$1; exit}' /etc/issue)
 endif
 
+all: clone_repository $(ENV_FILE) install_essential_packages $(INSTALL_SCRIPT) install_packages
 
-all: clone_repository $(ENV_FILE) install_essential_packages $(INSTALL_SCRIPT) install-packages
-
-.PHONY: install-packages
-install-packages:
+.PHONY: install_packages
+install_packages:
 	@$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@REPO_DIR=$(REPO_DIR) DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) \
@@ -27,12 +27,12 @@ install_essential_packages:
 clone_repository:
 	@git -C "$(REPO_DIR)" pull || git clone https://github.com/mkt3/dotfiles "$(REPO_DIR)"
 
-$(INSTALL_SCRIPT): $(ENV_FILE) $(TOML_FILE) $(REPO_DIR)/make_package_install_script.sh
+$(INSTALL_SCRIPT): $(ENV_FILE) $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
 	@$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@DISTRO=$(DISTRO) DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV)  REPO_DIR=$(REPO_DIR) \
 	TOML_FILE=$(TOML_FILE) INSTALL_SCRIPT=$(INSTALL_SCRIPT) \
-    /usr/bin/env bash "$(REPO_DIR)/make_package_install_script.sh"
+	/usr/bin/env bash $(MAKE_INSTALL_SCRIPT)
 
 $(ENV_FILE):
 	@if [ ! -f $(ENV_FILE) ]; then \
@@ -43,3 +43,7 @@ $(ENV_FILE):
 .PHONY: clean
 clean:
 	rm -rf $(RESULTS_DIR)
+
+.PHONY: fix_toml_format
+fix_toml_format:
+	taplo fmt --config $(REPO_DIR)/taplo.toml $(TOML_FILE)

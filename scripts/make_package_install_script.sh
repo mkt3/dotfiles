@@ -21,15 +21,16 @@ methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
 common_methods=("cargo" "pipx" "go" "npm")
 
-toml_file=${TOML_FILE:-"./toml_file"}
-install_script_path=${INSTALL_SCRIPT:-"./results/install_packages.sh"}
+toml_file=${TOML_FILE:-"../toml_file"}
+install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
-brew_file="${REPO_DIR:-.}/results/Brewfile"
+brew_file="${REPO_DIR:-..}/results/Brewfile"
 
 json_content=$(yj -t < "$toml_file")
 
-setup_files="${REPO_DIR:-.}/scripts/**/setup.sh"
+setup_files="${REPO_DIR:-..}/scripts/**/setup.sh"
 for filepath in $setup_files; do
+     # shellcheck disable=SC1090
     . "$filepath"
 done
 
@@ -49,6 +50,7 @@ CONFIGS_DIR="${REPO_DIR}/files"
 
 setup_files="${REPO_DIR}/scripts/**/setup.sh"
 for filepath in $setup_files; do
+    # shellcheck disable=SC1090
     . "$filepath"
 done
 
@@ -67,13 +69,13 @@ for func in "${functions[@]}"; do
 done
 
 # packages
-echo "# package install commands" >> "$install_script_path"
+echo "# package install/update commands" >> "$install_script_path"
 
 if [[ "$os_name" == "macos" ]]; then
     echo -n > "$brew_file"
 
     {
-        echo "title \"Install packages from homebrew\""  >> "$install_script_path"
+        echo "title \"Install/Update packages from homebrew\""
         echo "brew bundle --file $brew_file"
         echo "brew upgrade"
         echo "brew cleanup"
@@ -87,8 +89,8 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
         continue
     fi
 
-    if [ "$method" != "brew" ] &&  [ "$method" != "brew" ] && [ "$method" != "mas" ]; then
-        echo "title \"Install packages from ${method}\""  >> "$install_script_path"
+    if [ "$method" != "brew" ] &&  [ "$method" != "cask" ] && [ "$method" != "mas" ]; then
+        echo "title \"Install/Update packages from ${method}\""  >> "$install_script_path"
     fi
     install_cmd=""
     update_cmd=""
@@ -114,7 +116,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             update_cmd="pipx upgrade --include-injected"
             ;;
         "npm")
-            install_cmd="sudo npm install -g"
+            install_cmd="npm install -g"
             package_names=("${package_names[@]/%/@latest}")
             ;;
     esac
@@ -157,3 +159,5 @@ for func in "${functions[@]}"; do
         echo "post_${func}" >> "$install_script_path"
     fi
 done
+
+echo "success \"Complete!\""  >> "$install_script_path"

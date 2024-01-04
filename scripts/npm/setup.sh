@@ -4,11 +4,5 @@ set -eu
 
 pre_setup_npm() {
     info "Creating symlink for npm"
-    ## npm conf
-    ln -sfn "${CONFIGS_DIR}/files/npm" "${XDG_CONFIG_HOME}/npm"
-}
-
-post_setup_npm() {
-
-    npm config set prefix "${XDG_DATA_HOME}/npm"
+    ln -sfn "${CONFIGS_DIR}/npm" "${XDG_CONFIG_HOME}/npm"
 }

@@ -16,6 +16,9 @@ export CVSEDITOR="$EDITOR"
 export SVN_EDITOR="$EDITOR"
 export GIT_EDITOR="$EDITOR"
 
+# less
+export LESS='-g -i -M -R -S -W -x4'
+
 # Pager
 export PAGER=less
 
@@ -87,7 +90,7 @@ export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 
 # node path
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
-export PATH="${PATH}:${XDG_DATA_HOME}/npm/bin:${XDG_DATA_HOME}/node/bin"
+export PATH="${PATH}:${XDG_DATA_HOME}/npm/bin"
 
 # cuda path
 if [[ "$OS" == 'Linux' ]];then
@@ -120,7 +123,7 @@ export NAVI_CONFIG="${HOME}/.config/navi/config.yaml"
 export PATH="${PATH}:/Library/TeX/texbin"
 
 # GnuPG
-## default value is ~/.gnupg.  If use non-default GnuPG #Home directory, need to edit all socket files.
+## default value is ~/.gnupg.  If use non-default GnuPG Home directory, need to edit all socket files.
 export GNUPGHOME="${HOME}/.gnupg"
 export GPG_TTY=$(tty)
 
