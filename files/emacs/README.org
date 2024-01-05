@@ -1808,6 +1808,7 @@
    #+begin_src emacs-lisp
      (use-package consult-recoll
        :ensure t
+       :if (executable-find "recoll")
        :config
        (if (eq system-type 'darwin)
            (setq exec-path (append '("/usr/local/Cellar/recoll/1.35.0/recoll.app/Contents/MacOS") exec-path)))
