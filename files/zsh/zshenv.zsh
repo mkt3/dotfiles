@@ -61,6 +61,7 @@ if [[ "$OS" == 'Darwin' ]];then
         export PATH="/usr/local/opt/texinfo/bin:${PATH}"
     fi
     export PATH="${HOME}/.local/src/emacs/nextstep/Emacs.app/Contents/MacOS/bin:${PATH}"
+    export PATH="${PATH}:/Applications/recoll.app/Contents/MacOS"
 elif [[ "$OS" == 'Linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
@@ -162,3 +163,6 @@ export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.toml"
 export MISE_DATA_DIR="${XDG_DATA_HOME}/mise"
 export MISE_CACHE_DIR="${XDG_CACHE_HOME}/mise"
 export MISE_USE_TOML=1
+
+# recoll
+export RECOLL_CONFDIR="$XDG_CONFIG_HOME/recoll"

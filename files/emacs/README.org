@@ -1258,7 +1258,7 @@
          :custom
          (consult-org-roam-grep-func #'consult-ripgrep)
          :bind (("C-c n b" . consult-org-roam-backlinks)
-                ("C-c n s" . consult-org-roam-search)))
+                ("C-c n g" . consult-org-roam-search)))
 
        (use-package citar
          :ensure t
@@ -1803,4 +1803,13 @@
               :render
               (gts-buffer-render)))
        (setq gts-buffer-follow-p t))
+   #+end_src
+** recoll
+   #+begin_src emacs-lisp
+     (use-package consult-recoll
+       :ensure t
+       :config
+       (if (eq system-type 'darwin)
+           (setq exec-path (append '("/usr/local/Cellar/recoll/1.35.0/recoll.app/Contents/MacOS") exec-path)))
+       :bind (("C-c n s" . consult-recoll)))
    #+end_src

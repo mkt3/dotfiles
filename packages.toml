@@ -586,6 +586,15 @@ type = "gui"
 arch = [{ name = "skk", method = "script", function = "setup_skk" }]
 macos = [{ name = "skk", method = "script", function = "setup_skk" }]
 
+## recoll
+[recoll]
+type = "gui"
+arch = [{ name = "recoll", method = "pacman" }]
+macos = [
+  { name = "nailuoGG/recoll/recoll", method = "brew", function = "setup_recoll" },
+  { name = "poppler", method = "brew" },
+]
+
 ## hugo
 [hugo]
 type = "gui"

@@ -32,6 +32,7 @@ yabai -m config right_padding                0
 yabai -m config window_gap                   6
 
 # Rules
+yabai -m rule --add app="^recoll$"                        manage=off
 yabai -m rule --add app="^Dictionaries$"                  manage=off
 yabai -m rule --add app="^Disk Utility$"                  manage=off
 yabai -m rule --add app="^System Settings$"               manage=off
