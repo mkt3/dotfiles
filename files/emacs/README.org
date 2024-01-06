@@ -1808,9 +1808,14 @@
    #+begin_src emacs-lisp
      (use-package consult-recoll
        :ensure t
+       :demand t
        :if (executable-find "recoll")
+       :bind (("C-c n s" . consult-recoll))
        :config
        (if (eq system-type 'darwin)
            (setq exec-path (append '("/usr/local/Cellar/recoll/1.35.0/recoll.app/Contents/MacOS") exec-path)))
-       :bind (("C-c n s" . consult-recoll)))
+       (when (display-graphic-p)
+         (run-at-time 0 (* 5 60)
+                      (lambda ()
+                        (start-process "recollindex" nil "recollindex" "-c" (expand-file-name "~/.config/recoll") )))))
    #+end_src
