@@ -18,5 +18,12 @@ post_setup_recoll() {
         if [[ "$recoll_app_path" == "$recoll_dir"/* ]]; then
             ln -sfn "$recoll_app_path" /Applications/
         fi
+        info "Downloding rclorgmode.py"
+        # https://framagit.org/medoc92/recoll/-/issues/38
+        rclorgmode_path="${recoll_app_path}/Contents/Resources/filters/rclorgmode.py"
+        wget https://framagit.org/medoc92/recoll/-/raw/master/src/filters/rclorgmode.py -O "$rclorgmode_path"
+
+        chmod a+x "$rclorgmode_path"
     fi
+
 }
