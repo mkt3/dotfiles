@@ -11,7 +11,7 @@ ifeq ($(DISTRO),Linux)
 endif
 
 .PHONY: all
-all: setup_env clone_repository install_essential_packages install_packages
+all: setup_env update_repository install_essential_packages install_packages
 
 .PHONY: create_env_file
 create_env_file:
@@ -25,9 +25,9 @@ setup_env: create_env_file
 	@$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 
-.PHONY: clone_repository
-clone_repository:
-	@git -C "$(REPO_DIR)" pull || git clone https://github.com/mkt3/dotfiles "$(REPO_DIR)"
+.PHONY: update_repository
+update_repository:
+	@git -C "$(REPO_DIR)" pull
 
 .PHONY: install_essential_packages
 install_essential_packages:
