@@ -2,8 +2,7 @@
 
 set -eu
 
-setup_mako() {
-    title "Setting up mako"
+pre_setup_mako() {
     local mako_file_dir="${CONFIGS_DIR}/mako"
 
     info "Creating symlink for mako"

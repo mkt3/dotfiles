@@ -2,8 +2,7 @@
 
 set -eu
 
-setup_zsh() {
-    title "Setting up zsh"
+pre_setup_zsh() {
     local zsh_file_dir="${CONFIGS_DIR}/zsh"
 
     info "Creating symlink for zsh"

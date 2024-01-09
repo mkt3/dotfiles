@@ -2,8 +2,7 @@
 
 set -eu
 
-setup_git() {
-    title "Setting up Git"
+post_setup_git() {
     local git_file_dir="$CONFIGS_DIR/git"
     local git_config_dir="${XDG_CONFIG_HOME}/git"
 

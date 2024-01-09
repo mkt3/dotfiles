@@ -2,8 +2,7 @@
 
 set -eu
 
-setup_borg() {
-    title "Setting up borg"
+pre_setup_borg() {
     local borg_file_dir="${CONFIGS_DIR}/borg"
 
     info "Creating symlink for borg"

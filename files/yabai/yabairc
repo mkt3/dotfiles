@@ -32,6 +32,7 @@ yabai -m config right_padding                0
 yabai -m config window_gap                   6
 
 # Rules
+yabai -m rule --add app="^recoll$"                        manage=off
 yabai -m rule --add app="^Dictionaries$"                  manage=off
 yabai -m rule --add app="^Disk Utility$"                  manage=off
 yabai -m rule --add app="^System Settings$"               manage=off
@@ -40,8 +41,9 @@ yabai -m rule --add app="^Karabiner-Elements$"            manage=off
 yabai -m rule --add app="^Karabiner-MultitouchExtension$" manage=off
 yabai -m rule --add app="^Stats$"                         manage=off
 yabai -m rule --add app="^Vivaldi$" title="Bitwarden - Vivaldi"  manage=off
-yabai -m rule --add title="^Emacs$"                       manage=on
 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+
+yabai -m rule --add app="^Emacs$" manage=on
 
 echo "yabai configuration loaded.."

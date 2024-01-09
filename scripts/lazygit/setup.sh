@@ -2,11 +2,7 @@
 
 set -eu
 
-setup_lazygit() {
-    title "Setting up lazygit"
-
-    info "Installing lazygit"
-    go install github.com/jesseduffield/lazygit@latest
+pre_setup_lazygit() {
 
     mkdir -p "${XDG_CONFIG_HOME}/lazygit"
     info "Creating symlink for lazygit"

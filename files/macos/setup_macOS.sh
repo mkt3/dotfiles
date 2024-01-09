@@ -155,4 +155,4 @@ defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
 defaults write .GlobalPreferences _HIHideMenuBar -int 1
 
 # Click wallpaper to show desktop items – Only in Stage Manager
-defaults write com.apple.WindowManager EnableStandardClickToShowDesktop 0
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false

@@ -2,9 +2,7 @@
 
 set -eu
 
-setup_textlint() {
-    title "Setting up textlint"
-
+post_setup_textlint() {
     local textlint_file_dir="${CONFIGS_DIR}/textlint"
 
     info "Creating symlink for textlint"

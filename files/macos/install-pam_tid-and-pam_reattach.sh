@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 if [[ -e /etc/pam.d/sudo_local ]]; then
-    echo "/etc/pam.d/sudo_local already exists. Exiting."
+    echo "/etc/pam.d/sudo_local already exists."
     exit 0
 fi
 

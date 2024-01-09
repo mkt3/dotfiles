@@ -2,8 +2,7 @@
 
 set -eu
 
-setup_skk() {
-    title "Setting up skk"
+post_setup_skk() {
 
     info "Creating symlink for zsh"
     local skk_rule_path="${XDG_CONFIG_HOME}/libskk/rules"

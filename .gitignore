@@ -6,7 +6,6 @@ files/borg/security
 *.zwc
 files/zsh/sheldon/sheldon.zsh
 .zcompdump
-Brewfile.lock.json
 key.json
 meta.json
-files/rtx/trusted-configs
+/results

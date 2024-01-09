@@ -2,54 +2,18 @@
 
 set -eu
 
-setup_pipx() {
-    info "Setting up pipx"
-
-    info "Installing/Updating pipx packages"
-    local package_list=(jupyterlab pyright ruff)
-    # local package_list=(pyright ruff)
-
-    local installed_list
-    installed_list=$(pipx list)
-
-    for package in "${package_list[@]}"; do
-        if [[ $installed_list =~ package\ "$package" ]]; then
-            info "Updating $package"
-            pipx upgrade --include-injected "$package"
-        else
-            info "Installing $package"
-            pipx install "$package"
-
-            if [ "$package" == "jupyterlab" ]; then
-                info "Installing jupyterlab template extention"
-               pipx inject jupyterlab jupyterlab_templates
-            fi
-        fi
-    done
-
-}
-
-setup_poetry() {
-    local poetry_path="${HOME}/.local/bin/poetry"
-    if [ ! -L "$poetry_path" ]; then
-        info "Installing poetry"
-        pipx install poetry
-    else
-        info "Updating poetry"
-        pipx upgrade --include-injected poetry
-
-    fi
-
+post_setup_poetry() {
     info "Setting global config"
-    $poetry_path config virtualenvs.in-project true
-    $poetry_path config virtualenvs.prefer-active-python true
+    poetry config virtualenvs.in-project true
+    poetry config virtualenvs.prefer-active-python true
 
     info "Enable completions"
-    $poetry_path completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
+    poetry completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
 }
 
+post_setup_jupyterlab() {
+    local python_file_dir="$CONFIGS_DIR/python"
 
-setup_jupyterlab() {
     info "Creating symlink for jupyterlab.sh"
     mkdir -p "${HOME}/.local/bin"
     ln -sfn "${python_file_dir}/jupyterlab.sh" "${HOME}/.local/bin/jupyterlab.sh"
@@ -69,23 +33,19 @@ setup_jupyterlab() {
 
 }
 
-setup_python() {
-    title "Setting up python"
+post_setup_python() {
     local python_file_dir="$CONFIGS_DIR/python"
 
     info "Creating symlink for matplotlib"
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
+}
 
+post_setup_ruff() {
     info "Creating symlink for ruff"
+    local python_file_dir="$CONFIGS_DIR/python"
     if [ "$OS" = "Darwin" ]; then
         eval "ln -sfn ${python_file_dir}/ruff \"${HOME}/Library/Application Support/\""
     else
         ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
     fi
-
-    setup_pipx
-
-    setup_poetry
-
-    setup_jupyterlab
 }

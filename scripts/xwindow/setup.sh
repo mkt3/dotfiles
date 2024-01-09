@@ -2,8 +2,7 @@
 
 set -eu
 
-setup_xwindow() {
-    title "Setting up X window"
+pre_setup_xwindow() {
     local xwindow_file_dir="${CONFIGS_DIR}/xwindow"
 
     info "Creating symlink for .xprofile"
