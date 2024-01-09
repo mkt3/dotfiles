@@ -22,7 +22,7 @@ pre_setup_emacs() {
         touch "$skk_record_file"
     fi
 
-    if [ "$DEV_ENV" = "y" ]; then
+    if [ "$GUI_ENV" = "y" ]; then
         mkdir -p "${XDG_CONFIG_HOME}/msmtp"
         ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
     fi

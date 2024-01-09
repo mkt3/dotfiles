@@ -3,7 +3,7 @@
 set -eu
 
 pre_setup_tmux() {
-    local tmux_dir="$CONFIGS_DIR/tmux"
+    local tmux_dir="${CONFIGS_DIR}/tmux"
 
     info "Creating symlink for tmux"
     ln -sfn "$tmux_dir" "${XDG_CONFIG_HOME}/tmux"
@@ -21,7 +21,7 @@ pre_setup_tmux() {
 }
 
 post_setup_tmux() {
-    local tmux_dir="$CONFIGS_DIR/tmux"
+    local tmux_dir="${CONFIGS_DIR}/tmux"
 
     if [[ "$OS" == "Linux" ]] && ! (type tmux > /dev/null 2>&1); then
         info "Buliding tmux"

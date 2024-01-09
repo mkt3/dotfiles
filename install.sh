@@ -6,7 +6,7 @@ if [ -d "$INSTALL_DIR" ]; then
     echo "Updating dotfiles..."
     git -C "$INSTALL_DIR" pull
 else
-    echo "Installing dotfiles..."
+    echo "Cloning dotfiles..."
     git clone https://github.com/mkt3/dotfiles "$INSTALL_DIR"
 fi
 

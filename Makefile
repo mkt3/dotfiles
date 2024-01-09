@@ -10,32 +10,36 @@ ifeq ($(DISTRO),Linux)
     DISTRO := $(shell awk '{print $$1; exit}' /etc/issue)
 endif
 
-all: clone_repository $(ENV_FILE) install_essential_packages $(INSTALL_SCRIPT) install_packages
+.PHONY: all
+all: setup_env clone_repository install_essential_packages install_packages
 
-.PHONY: install_packages
-install_packages: $(ENV_FILE)
-	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash "$(INSTALL_SCRIPT)"
+.PHONY: create_env_file
+create_env_file:
+	@if [ ! -f $(ENV_FILE) ]; then \
+		mkdir -p $(RESULTS_DIR); \
+		/usr/bin/env bash $(REPO_DIR)/scripts/setup_env.sh; \
+	fi
 
-.PHONY: install_essential_packages
-install_essential_packages:
-	@/usr/bin/env bash "$(REPO_DIR)/scripts/install_essential_packages.sh"
+.PHONY: setup_env
+setup_env: create_env_file
+	@$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
+	@$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 
 .PHONY: clone_repository
 clone_repository:
 	@git -C "$(REPO_DIR)" pull || git clone https://github.com/mkt3/dotfiles "$(REPO_DIR)"
 
+.PHONY: install_essential_packages
+install_essential_packages:
+	@/usr/bin/env bash "$(REPO_DIR)/scripts/install_essential_packages.sh"
+
 .PHONY: $(INSTALL_SCRIPT)
-$(INSTALL_SCRIPT): $(ENV_FILE) $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
+$(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
 	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash $(MAKE_INSTALL_SCRIPT)
 
-.PHONY: $(ENV_FILE)
-$(ENV_FILE):
-	@if [ ! -f $(ENV_FILE) ]; then \
-		mkdir -p $(RESULTS_DIR); \
-		/usr/bin/env bash $(REPO_DIR)/scripts/setup_env.sh; \
-	fi
-	@$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
-	@$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
+.PHONY: install_packages
+install_packages: $(INSTALL_SCRIPT)
+	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash "$(INSTALL_SCRIPT)"
 
 .PHONY: clean
 clean:

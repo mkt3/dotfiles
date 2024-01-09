@@ -1,6 +1,6 @@
 ;;; init.el --- Emacs init -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023  Makoto Morinaga
+;; Copyright (C) 2023 Makoto Morinaga
 
 ;; Author: Makoto Morinaga <makoto@mkt3.dev>
 

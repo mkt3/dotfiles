@@ -6,7 +6,7 @@ set -o pipefail
 # constant value
 OS=$(uname -s)
 UI=$1
-EMACS_REPO="https://github.com/mkt3/emacs.git"
+EMACS_REPO="https://github.com/emacs-mirror/emacs.git"
 EMACS_REPO_PATH="${HOME}/.local/src/emacs"
 ENCHANT_CONFIG_DIR="${HOME}/.config/enchant"
 BRANCH="master"
@@ -46,7 +46,7 @@ case "$OS" in
                     DEPENDENCIES="${DEPENDENCIES} libcairo2 libfontconfig1 libfreetype6 libgdk-pixbuf-2.0-0 libgif7 libglib2.0-0 libgtk-3-0 libharfbuzz0b libjpeg8 libm17n-0 libotf1 libpango-1.0-0 libpng16-16 libsvg2-2 libsm6 libtiff5 imagemagick"
                 fi
                 # shellcheck disable=SC2086
-                sudo apt install -y $DEPENDENCIES
+                sudo apt-get install -y $DEPENDENCIES
 
                 export CFLAGS='-I/usr/lib/gcc/x86_64-linux-gnu/12/include -L/usr/lib/gcc/x86_64-linux-gnu/12'
                 ;;
@@ -69,15 +69,14 @@ fi
 
 # clone
 if [ -d "$EMACS_REPO_PATH" ]; then
-    cd "$EMACS_REPO_PATH" || exit
-    make distclean
-    git switch "$BRANCH"
-    git pull
-else
-    git clone --depth 1 --branch "$BRANCH" "$EMACS_REPO" "$EMACS_REPO_PATH"
+    rm -rf "$EMACS_REPO_PATH"
 fi
+git clone --depth 1 --branch "$BRANCH" "$EMACS_REPO" "$EMACS_REPO_PATH"
 
 cd "$EMACS_REPO_PATH" || exit
+
+# Apply my patch file
+curl https://raw.githubusercontent.com/mkt3/dotfiles/main/files/emacs/personal_diff.patch | git apply
 
 ./autogen.sh
 
@@ -87,7 +86,7 @@ if [[ "$OS" == 'Linux' ]]; then
     if [[ "$UI" == 'cui' ]]; then
         BUILD_OPTIONS="--prefix=/usr/local ${BUILD_OPTIONS}"
     else
-        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets --with-imagemagick ${BUILD_OPTIONS}"
+        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets --with-imagemagick ${BUILD_OPT IONS}"
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
     BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns --with-xwidgets --with-imagemagick"
