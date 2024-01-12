@@ -1,8 +1,8 @@
 {
-    "rules": {
-        "alex": true,
-        "common-misspellings": true,
-        "ginger": true,
-        "write-good": true
-    }
+  "rules": {
+    "alex": true,
+    "common-misspellings": true,
+    "write-good": true,
+    "en-capitalization": true
+  }
 }

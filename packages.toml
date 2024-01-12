@@ -402,7 +402,10 @@ ubuntu = [{ name = "typescript", method = "npm" }]
 ## tex
 [latex]
 type = "gui"
-arch = [{ name = "texlive", method = "pacman", function = "setup_latex" }]
+arch = [
+  { name = "texlive", method = "pacman", function = "setup_latex" },
+  { name = "dvisvgm", method = "pacman" }
+]
 macos = [{ name = "basictex", method = "cask", function = "setup_latex" }]
 
 ## communication tools
@@ -589,7 +592,11 @@ macos = [{ name = "skk", method = "script", function = "setup_skk" }]
 ## recoll
 [recoll]
 type = "gui"
-arch = [{ name = "recoll", method = "pacman" }]
+arch = [
+  { name = "recoll", method = "pacman", function = "setup_recoll" },
+  { name = "aspell-en", method = "pacman" },
+  { name = "poppler", method = "pacman" }
+]
 macos = [
   { name = "nailuoGG/recoll/recoll", method = "brew", function = "setup_recoll" },
   { name = "poppler", method = "brew" },
@@ -627,6 +634,30 @@ arch = [{ name = "borg", method = "pacman", function = "setup_borg" }]
 [growisofs]
 type = "gui"
 arch = [{ name = "dvd+rw-tools", method = "pacman" }]
+
+## textlint
+[textlint]
+type = "gui"
+arch = [
+  { name = "textlint", method = "npm", function="setup_textlint" },
+  { name = "textlint-plugin-org", method = "npm" },
+  { name = "textlint-rule-preset-ja-technical-writing", method = "npm" },
+  { name = "textlint-rule-preset-ja-spacing", method = "npm" },
+  { name = "textlint-rule-alex", method = "npm" },
+  { name = "textlint-rule-en-capitalization", method = "npm" },
+  { name = "textlint-rule-common-misspellings", method = "npm" },
+  { name = "textlint-rule-write-good", method = "npm" },
+]
+macos = [
+  { name = "textlint", method = "npm", function="setup_textlint" },
+  { name = "textlint-plugin-org", method = "npm" },
+  { name = "textlint-rule-preset-ja-technical-writing", method = "npm" },
+  { name = "textlint-rule-preset-ja-spacing", method = "npm" },
+  { name = "textlint-rule-alex", method = "npm" },
+  { name = "textlint-rule-en-capitalization", method = "npm" },
+  { name = "textlint-rule-common-misspellings", method = "npm" },
+  { name = "textlint-rule-write-good", method = "npm" },
+]
 
 ## macos only
 [utils]

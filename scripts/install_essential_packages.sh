@@ -11,7 +11,7 @@ CONFIGS_DIR="${REPO_DIR}/files"
 
 
 install_essential_packages() {
-    title "Install essential packages"
+    title "Install/Update essential packages"
     case "$OS" in
         Darwin)
             install_macos

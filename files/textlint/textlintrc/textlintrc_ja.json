@@ -1,6 +1,21 @@
 {
   "rules": {
-    "preset-ja-technical-writing": true,
-    "preset-ja-spacing": true,
+    "preset-ja-technical-writing": {
+      "max-kanji-continuous-len": {
+        "max": 10
+      }
+    },
+    "preset-ja-spacing": {
+      "ja-nakaguro-or-halfwidth-space-between-katakana": true,
+      "ja-no-space-around-parentheses": true,
+      "ja-no-space-between-full-width": true,
+      "ja-space-between-half-and-full-width": {
+        "space": ["alphabets"]
+      },
+      "ja-space-after-exclamation": false,
+      "ja-space-after-question": false,
+      "ja-space-around-code": false,
+      "ja-space-around-link": false
+    }
   }
 }

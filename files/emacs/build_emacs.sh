@@ -35,7 +35,8 @@ case "$OS" in
                 DEPENDENCIES="gmp gnutls jansson lcms2 acl dbus gpm ncurses systemd-libs tree-sitter libxml2 zlib libgccjit marksman hunspell hunspell-en_us enchant"
 
                 if [[ "$UI" == "gui" ]]; then
-                    DEPENDENCIES="${DEPENDENCIES} alsa-lib fontconfig freetype2 gtk3 gdk-pixbuf2 giflib glib2 gtk3 harfbuzz libice libjpeg-turbo libotf pango libpng librsvg libsm sqlite libtiff libwebp lib32-libwebp libxfixes libxml2 m17n-lib sqlite imagemagick mu msmtp isync goimapnotify texlive"
+                    DEPENDENCIES="${DEPENDENCIES} alsa-lib fontconfig freetype2 gtk3 gdk-pixbuf2 giflib glib2 gtk3 harfbuzz libice libjpeg-turbo libotf pango libpng librsvg libsm sqlite libtiff libwebp lib32-libwebp libxfixes libxml2 m17n-lib sqlite imagemagick  msmtp isync goimapnotify texlive"
+                    yay -S --needed mu
                 fi
                 # shellcheck disable=SC2086
                 sudo pacman -S --needed $DEPENDENCIES
@@ -86,7 +87,7 @@ if [[ "$OS" == 'Linux' ]]; then
     if [[ "$UI" == 'cui' ]]; then
         BUILD_OPTIONS="--prefix=/usr/local ${BUILD_OPTIONS}"
     else
-        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets --with-imagemagick ${BUILD_OPT IONS}"
+        BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets --with-imagemagick ${BUILD_OPTIONS}"
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
     BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns --with-xwidgets --with-imagemagick"

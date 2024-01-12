@@ -48,7 +48,7 @@
        :if (display-graphic-p)
        :config
        (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
-       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID"))
+       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID" "RECOLL_CONFDIR"))
        (exec-path-from-shell-initialize))
    #+end_src
 ** Constant
@@ -780,7 +780,50 @@
        (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
        (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
    #+end_src
-* Programming Languages
+* Writing
+** Spell Checker
+*** textlint
+    #+begin_src emacs-lisp
+      (use-package jinx
+        :ensure t
+        :hook ((org-mode-hook markdown-mode-hook) . my:jinx-mode-enable)
+        :bind (("C-;" . jinx-correct)
+               ("C-x @ ;" . jinx-correct) ; for wezterm
+               ("C-M-$" . jinx-languages))
+        :init
+        (defun my:jinx-mode-enable ()
+          "Enable jinx mode if the current buffer does not contain Hiragana characters."
+          (interactive)
+          (unless (save-excursion
+                    (goto-char (point-min))
+                    (search-forward-regexp "[あ-ん]" nil t))
+            (jinx-mode))))
+    #+end_src
+*** textlint
+    #+begin_src emacs-lisp
+      (use-package flycheck
+        :ensure t
+        :hook ((markdown-mode-hook gfm-mode-hook org-mode-hook) . flycheck-mode)
+        :custom ((flycheck-display-errors-delay  0.3)
+                 (flycheck-indication-mode 'left-margin))
+        :config
+        (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
+        (flycheck-define-checker textlint
+          "A linter for text."
+          :command ("textlint.sh" source)
+          :error-patterns
+          ((warning line-start (file-name) ":" line ":" column ": "
+                    (id (one-or-more (not (any " "))))
+                    (message (one-or-more not-newline)
+                             (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+                    line-end))
+          :modes (text-mode markdown-mode gfm-mode org-mode)))
+
+      (use-package flycheck-inline
+        :ensure t
+        :hook (flycheck-mode-hook . flycheck-inline-mode))
+    #+end_src
+* Programming
 ** General
 *** makefile
     #+begin_src emacs-lisp
@@ -1721,15 +1764,6 @@
     (use-package eat
       :ensure t
       :hook (eshell-load-hook . eat-eshell-mode))
-  #+end_src
-* Spell Checker
-  #+begin_src emacs-lisp
-    (use-package jinx
-      :ensure t
-      :hook ((org-mode-hook markdown-mode-hook) . jinx-mode)
-      :bind (("C-;" . jinx-correct)
-             ("C-x @ ;" . jinx-correct) ; for wezterm
-             ("C-M-$" . jinx-languages)))
   #+end_src
 * External Collaboration
 ** Pdf

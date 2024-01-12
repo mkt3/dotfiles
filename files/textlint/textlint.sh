@@ -1,19 +1,25 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-FILENAME=$1
+set -eu
+set -o pipefail
 
-if grep -q "[ぁ-ん]" "$FILENAME"; then
-    TEXTLINTRC="${HOME}/.config/textlint/textlintrc/textlintrc_ja.json"
-else
-    TEXTLINTRC="${HOME}/.config/textlint/textlintrc/textlintrc_en.json"
+FILENAME="$1"
+EXTENSION="${FILENAME##*.}"
+
+determine_textlintrc() {
+    if grep -q "[ぁ-ん]" "$1"; then
+        echo "${HOME}/.config/textlint/textlintrc/textlintrc_ja.json"
+    else
+        echo "${HOME}/.config/textlint/textlintrc/textlintrc_en.json"
+    fi
+}
+
+TEXTLINTRC=$(determine_textlintrc "$FILENAME")
+
+ARGS=(--format unix --config "$TEXTLINTRC" "$FILENAME")
+
+if [ "$EXTENSION" = "org" ]; then
+    ARGS+=(--plugin org)
 fi
 
-EXTENTION=${FILENAME##*.}
-
-if [ "$EXTENTION" = "org" ]; then
-    PLUGIN="--plugin org"
-else
-    PLUGIN=""
-fi
-
-textlint --format unix --config "$TEXTLINTRC" "$PLUGIN" "$FILENAME"
+textlint "${ARGS[@]}"
