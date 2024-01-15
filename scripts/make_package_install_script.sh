@@ -3,6 +3,10 @@
 set -eu
 set -o pipefail
 
+. "${REPO_DIR}/scripts/common.sh"
+
+title "Making packages install script"
+
 os_name=""
 
 case "$DISTRO" in
@@ -25,6 +29,7 @@ toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
 brew_file="${REPO_DIR:-..}/results/Brewfile"
+
 
 json_content=$(yj -t < "$toml_file")
 
@@ -116,8 +121,30 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             update_cmd="pipx upgrade --include-injected"
             ;;
         "npm")
+            update_needed=()
             install_cmd="npm install -g"
-            package_names=("${package_names[@]/%/@latest}")
+            for package in "${package_names[@]}"; do
+                list_output=$(npm list -g "$package" --depth=0 || true)
+                if echo "$list_output" | grep -q "$package"; then
+                    current_version=$(echo "$list_output" | grep "$package" | cut -d "@" -f2)
+                else
+                    current_version=""
+                fi
+
+                latest_version=$(npm view "$package" version)
+
+                if [ "$current_version" != "$latest_version" ]; then
+                    update_needed+=("${package}@latest")
+                fi
+            done
+
+            package_names=("${update_needed[@]}")
+
+            if [ ${#package_names[@]} -eq 0 ]; then
+                echo "info \"All packages are up-to-date\""  >> "$install_script_path"
+                continue
+            fi
+
             ;;
     esac
 

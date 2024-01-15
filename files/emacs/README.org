@@ -782,7 +782,7 @@
    #+end_src
 * Writing
 ** Spell Checker
-*** textlint
+*** jinx
     #+begin_src emacs-lisp
       (use-package jinx
         :ensure t
@@ -1801,7 +1801,9 @@
      (use-package prodigy
        :ensure t
        :if (and (executable-find "goimapnotify") (file-directory-p my:d:nextcloud) (display-graphic-p))
+       :after consult
        :config
+       (add-to-list 'consult-buffer-filter "\\`\\*prodigy-.*\\*\\'")
        (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
   #+end_src
 ** openai
