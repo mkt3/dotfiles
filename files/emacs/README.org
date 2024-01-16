@@ -1853,5 +1853,5 @@
        (when (display-graphic-p)
          (run-at-time 0 (* 5 60)
                       (lambda ()
-                        (start-process "recollindex" nil "recollindex" "-c" (expand-file-name "~/.config/recoll") )))))
+                        (start-process "recollindex" nil "recollindex" "-c" (getenv "RECOLL_CONFDIR"))))))
    #+end_src

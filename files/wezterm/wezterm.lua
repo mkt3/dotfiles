@@ -48,8 +48,8 @@ return {
   adjust_window_size_when_changing_font_size = false,
   warn_about_missing_glyphs = true,
   window_padding = {
-    left = 0,
-    right = 0,
+    left = "0.5cell",
+    right = "0.5cell",
     top = 0,
     bottom = 0,
   },
