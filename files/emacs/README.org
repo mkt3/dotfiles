@@ -803,7 +803,7 @@
     #+begin_src emacs-lisp
       (use-package flycheck
         :ensure t
-        :hook ((markdown-mode-hook gfm-mode-hook org-mode-hook) . flycheck-mode)
+        :hook ((markdown-mode-hook gfm-mode-hook) . flycheck-mode)
         :custom ((flycheck-display-errors-delay  0.3)
                  (flycheck-indication-mode 'left-margin))
         :config
@@ -1001,6 +1001,7 @@
        (use-package org
          :bind (("C-c l" . org-store-link)
                 :map org-mode-map
+                ("C-c C-o" . my:org-open-url-with-default)
                 ("C-c i t" . org-insert-structure-template)
                 ("C-c C-'" . org-edit-special)
                 :map org-src-mode-map
@@ -1020,6 +1021,10 @@
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
          :config
+         (defun my:org-open-url-with-default ()
+           (interactive)
+           (let ((browse-url-browser-function 'browse-url-default-browser))
+             (org-open-at-point)))
          (advice-add 'org-edit-special :before (lambda (&rest args) (read-only-mode -1)))
          (defun my:enable-read-only ()
            "Enable read-only mode for certain conditions."
@@ -1544,21 +1549,10 @@
              (";" . quit-window)
              ("G" . end-of-buffer))
       :custom
+      (browse-url-browser-function 'eww-browse-url)
       (eww-search-prefix "https://www.google.com/search?q=")
       ;; (browse-url-browser-function 'eww)
       :config
-      (defun my:custom-browse-url (url &rest args)
-        "Open URL with eww if it does not contain below strings. Otherwise, use the default browser."
-        (let ((urls-to-match '("slack\\.com"
-                               "google\\.com"
-                               "linkedin\\.com"
-                               "notion\\.so"
-                               "figma\\.com"
-                               "github\\.com")))
-          (if (cl-some (lambda (pattern) (string-match-p pattern url)) urls-to-match)
-              (browse-url-default-browser url)
-            (eww-browse-url url))))
-      (setq browse-url-browser-function 'my:custom-browse-url)
       (defun eww-disable-images ()
         (interactive)
         (setq-local shr-put-image-function 'shr-put-image-alt)
@@ -1589,12 +1583,16 @@
              ("r" . elfeed-search-update--force)
              ("u" . elfeed-search-fetch)
              ("o" . elfeed-show-visit)
+             ("C-c C-o" . my:elfeed-show-default-browser)
              (";" . elfeed-kill-buffer))
       :custom
       (elfeed-db-directory (locate-user-emacs-file "elfeed"))
       :config
       (advice-add 'elfeed-search-fetch :after (lambda (&rest _) (message "RSS fetch completed.")))
-      )
+      (defun my:elfeed-show-default-browser ()
+               (interactive)
+               (let ((browse-url-browser-function 'browse-url-default-browser))
+                 (elfeed-show-visit))))
 
     (use-package elfeed-protocol
       :ensure t
@@ -1641,8 +1639,13 @@
               ("R" . mu4e-search-rerun)
               :map mu4e-view-mode-map
               ("C-m" . browse-url-at-point)
+              ("C-c C-o" . my:browse-url-at-point-with-default-browser)
               ("R" . mu4e-update-index))
        :config
+       (defun my:browse-url-at-point-with-default-browser ()
+         (interactive)
+         (let ((browse-url-browser-function  'browse-url-default-browser))
+           (browse-url-at-point)))
        (setq mu4e-headers-auto-update t)
        (setq mu4e-headers-skip-duplicates t)
        (setq mu4e-headers-sort-field :date)

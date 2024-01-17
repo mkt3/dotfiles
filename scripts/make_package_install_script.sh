@@ -134,7 +134,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
                 latest_version=$(npm view "$package" version)
 
                 if [ "$current_version" != "$latest_version" ]; then
-                    update_needed+=("${package}@latest")
+                    update_needed+=("${package}@${latest_version}")
                 fi
             done
 
