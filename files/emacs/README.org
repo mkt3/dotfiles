@@ -1336,7 +1336,7 @@
                (append org-roam-capture-templates
                        '(("p" "paper" plain "%?"
                           :if-new
-                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n** En\n   ${citar-abstract}\n** Ja\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n* References")
+                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n  ${citar-abstract}\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n")
                           :immediate-finish t
                           :unnarrowed t))))
          (setq citar-org-roam-capture-template-key "p"))
