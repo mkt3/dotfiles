@@ -880,6 +880,7 @@
         :hook (python-ts-mode-hook . eglot-ensure))
 
       (use-package reformatter
+        :ensure t
         :hook (python-ts-mode-hook . ruff-format-on-save-mode)
         :config
         (reformatter-define ruff-format
