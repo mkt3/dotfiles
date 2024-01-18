@@ -461,7 +461,7 @@ macos = [{ name = "zotero", method = "cask" }]
 
 [anki]
 type = "gui"
-arch = [{ name = "anki-official-binary-bundle", method = "aur" }]
+arch = [{ name = "anki-bin", method = "aur" }]
 macos = [{ name = "anki", method = "cask" }]
 
 ## password manager
