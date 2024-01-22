@@ -1,0 +1,10 @@
+% macos
+
+# Restart yabai
+yabai --restart-service
+
+# Restart skhd
+skhd --restart-service
+
+# Restart sketcybar
+brew services restart sketchybar

@@ -1,5 +1,8 @@
 % gpu
 
+# Don't use GPU
+export CUDA_VISIBLE_DEVICES="-1"
+
 # Use a specific number of GPUs
 export CUDA_VISIBLE_DEVICES="<number>"
 
