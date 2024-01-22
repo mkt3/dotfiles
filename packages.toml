@@ -404,7 +404,7 @@ ubuntu = [{ name = "typescript", method = "npm" }]
 type = "gui"
 arch = [
   { name = "texlive", method = "pacman", function = "setup_latex" },
-  { name = "dvisvgm", method = "pacman" }
+  { name = "dvisvgm", method = "pacman" },
 ]
 macos = [{ name = "basictex", method = "cask", function = "setup_latex" }]
 
@@ -595,7 +595,7 @@ type = "gui"
 arch = [
   { name = "recoll", method = "pacman", function = "setup_recoll" },
   { name = "aspell-en", method = "pacman" },
-  { name = "poppler", method = "pacman" }
+  { name = "poppler", method = "pacman" },
 ]
 macos = [
   { name = "nailuoGG/recoll/recoll", method = "brew", function = "setup_recoll" },
@@ -639,7 +639,7 @@ arch = [{ name = "dvd+rw-tools", method = "pacman" }]
 [textlint]
 type = "gui"
 arch = [
-  { name = "textlint", method = "npm", function="setup_textlint" },
+  { name = "textlint", method = "npm", function = "setup_textlint" },
   { name = "textlint-plugin-org", method = "npm" },
   { name = "textlint-rule-preset-ja-technical-writing", method = "npm" },
   { name = "textlint-rule-preset-ja-spacing", method = "npm" },
@@ -649,7 +649,7 @@ arch = [
   { name = "textlint-rule-write-good", method = "npm" },
 ]
 macos = [
-  { name = "textlint", method = "npm", function="setup_textlint" },
+  { name = "textlint", method = "npm", function = "setup_textlint" },
   { name = "textlint-plugin-org", method = "npm" },
   { name = "textlint-rule-preset-ja-technical-writing", method = "npm" },
   { name = "textlint-rule-preset-ja-spacing", method = "npm" },
