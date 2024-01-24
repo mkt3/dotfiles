@@ -473,7 +473,7 @@ macos = [{ name = "1352778147", method = "mas" }]
 ## terminal emulator
 [wezterm]
 type = "gui"
-arch = [{ name = "wezterm", method = "pacman" }]
+arch = [{ name = "wezterm", method = "pacman", function = "setup_wezterm" }]
 macos = [
   { name = "wezterm", method = "cask", function = "setup_wezterm" },
   { name = "font-cica", method = "cask" },
