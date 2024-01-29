@@ -1715,7 +1715,21 @@
 
        (add-hook 'emacs-startup-hook  (lambda ()
                                         (my:imapnotify-start-prodigy-services)
-                                        (mu4e))))
+                                        (mu4e)))
+       (setq mu4e-compose-signature-auto-include nil)
+       (defun message-insert-signature-at-point (pmode)
+         "Function to insert signature at point."
+         (when pmode (mu4e-compose-goto-top))
+         (interactive)
+         (require 'message)
+         (message-goto-body)
+         (save-restriction
+           (narrow-to-region (point) (point))
+           (message-insert-signature))
+         (mu4e-compose-goto-top))
+
+       (add-hook 'mu4e-compose-mode-hook (lambda () (message-insert-signature-at-point nil)) t)
+       (add-hook 'mu4e-compose-pre-hook (lambda () (message-insert-signature-at-point t)) t))
 
      (use-package mu4e-alert
        :ensure t
