@@ -1816,10 +1816,8 @@
      (use-package chatgpt-shell
        :ensure t
        :if (file-directory-p my:d:password-store)
-       :custom
-       (chatgpt-shell-openai-key
-         (lambda ()
-           (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key))))
+       :config
+       (setq chatgpt-shell-openai-key (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key)))
 
      (use-package org-ai
        :ensure t
@@ -1829,11 +1827,9 @@
        :init
        (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
        (org-ai-global-mode) ; installs global keybindings on C-c M-a
-       :custom
-       (org-ai-openai-api-token
-         (lambda ()
-           (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key)))
        :config
+       (setq org-ai-openai-api-token
+             (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key))
        (setq org-ai-default-chat-model "gpt-4")
        (setq org-roam-capture-templates
              (append org-roam-capture-templates
