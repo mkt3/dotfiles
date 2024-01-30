@@ -165,4 +165,8 @@ export MISE_CACHE_DIR="${XDG_CACHE_HOME}/mise"
 export MISE_USE_TOML=1
 
 # recoll
-export RECOLL_CONFDIR="$XDG_CONFIG_HOME/recoll"
+export RECOLL_CONFDIR="${XDG_CONFIG_HOME}/recoll"
+
+# kubernetes
+export KUBECONFIG="${XDG_CONFIG_HOME}/kube" 
+export KUBECACHEDIR="${XDG_CACHE_HOME}/kube"
