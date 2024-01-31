@@ -59,7 +59,7 @@ org-mode
 
 bash-ts-mode
 
-(shebang "#!/usr/bin/env bash" n n "set -eu" n "set -o pipefail" n q)
+(shebang "#!/usr/bin/env bash" n n "set -euo pipefail" n q)
 (if "if [ " p " ]" n "  then " p n "fi" q)
 (ife "if [ " p " ]" n "  then " p n "else" p n "fi" q)
 (cs "case " p " in" n> p " )" n> p n> ";;" n> q n "esac)")

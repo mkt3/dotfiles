@@ -1791,15 +1791,21 @@
        :ensure t
        :if (display-graphic-p)
        :demand t
+       :commands (open-pdf-in-external-app)
        :hook (pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1)))
        :bind (nil
               :map pdf-view-mode-map
-              ("C-s" . isearch-forward))
+              ("C-s" . isearch-forward)
+              ("C-c C-o" . open-pdf-in-external-app))
        :config
        (pdf-tools-install)
        (setq-default pdf-view-display-size 'fit-page)
        (setq pdf-view-incompatible-modes '(linum-mode linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode))
-       (setq pdf-annot-activate-created-annotations t))
+       (setq pdf-annot-activate-created-annotations t)
+       (defun open-pdf-in-external-app ()
+         (interactive)
+         (let ((pdf-file-path (buffer-file-name)))
+           (start-process "open-pdf-external" nil "xdg-open" pdf-file-path))))
    #+end_src
 ** atomic-chrome
    #+begin_src emacs-lisp
