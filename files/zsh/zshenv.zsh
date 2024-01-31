@@ -168,5 +168,5 @@ export MISE_USE_TOML=1
 export RECOLL_CONFDIR="${XDG_CONFIG_HOME}/recoll"
 
 # kubernetes
-export KUBECONFIG="${XDG_CONFIG_HOME}/kube" 
+export KUBECONFIG="${XDG_CONFIG_HOME}/kube/config" 
 export KUBECACHEDIR="${XDG_CACHE_HOME}/kube"
