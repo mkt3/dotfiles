@@ -372,16 +372,16 @@
        (define-key my:tab-bar-map (kbd "9") '(lambda () (interactive) (tab-bar-select-tab 9)))
        (define-key my:tab-bar-map (kbd "0") '(lambda () (interactive) (tab-bar-select-tab 0)))
 
-       (defun my:tab-bar-tab-name-truncated ()
-         "Custom: Generate tab name from the buffer of the selected window."
-         (let ((tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
-               (ellipsis (cond (tab-bar-tab-name-ellipsis)
-                               ((char-displayable-p ?…) "…")
-                               ("..."))))
-           (if (< (length tab-name) tab-bar-tab-name-truncated-max)
-               (format "%-12s" tab-name)
-             (propertize (truncate-string-to-width tab-name tab-bar-tab-name-truncated-max nil
-                                                   nil ellipsis) 'help-echo tab-name))))
+       ;; (defun my:tab-bar-tab-name-truncated ()
+       ;;   "Custom: Generate tab name from the buffer of the selected window."
+       ;;   (let ((tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
+       ;;         (ellipsis (cond (tab-bar-tab-name-ellipsis)
+       ;;                         ((char-displayable-p ?…) "…")
+       ;;                         ("..."))))
+       ;;     (if (< (length tab-name) tab-bar-tab-name-truncated-max)
+       ;;         (format "%-12s" tab-name)
+       ;;       (propertize (truncate-string-to-width tab-name tab-bar-tab-name-truncated-max nil
+       ;;                                             nil ellipsis) 'help-echo tab-name))))
        :custom
        (tab-bar-close-button-show      nil)
        (tab-bar-close-last-tab-choice  nil)
@@ -389,7 +389,7 @@
        (tab-bar-history-mode           nil)
        (tab-bar-new-tab-choice         "*scratch*")
        (tab-bar-new-button-show        nil)
-       (tab-bar-tab-name-function      'my:tab-bar-tab-name-truncated)
+       ;; (tab-bar-tab-name-function      'my:tab-bar-tab-name-truncated)
        (tab-bar-tab-name-truncated-max 12)
        (tab-bar-separator              "")
        :config
