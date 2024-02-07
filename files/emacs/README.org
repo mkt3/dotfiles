@@ -1396,6 +1396,14 @@
              (when recentf-active
                (recentf-mode 1)))))
      #+end_src
+**** org-pomodoro
+     #+begin_src emacs-lisp
+       (use-package org-pomodoro
+         :ensure t
+         :custom
+         (org-pomodoro-length 50)
+         (org-pomodoro-short-break-length 10))
+     #+end_src
 *** Markdown
     #+begin_src emacs-lisp
       (use-package markdown-mode
