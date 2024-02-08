@@ -23,6 +23,7 @@ local keys = {
   {key=";",mods="CTRL",action=wezterm.action.SendString "\x18@;"}, -- for emacs in terminal
   {key="j",mods="CTRL",action=wezterm.action.SendString "\x18@j"}, -- for emacs ddskk interminal
   {key="v",mods="OPT",action=wezterm.action.PasteFrom 'Clipboard'},
+  {key="t",mods="OPT",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
   {key="w",mods="OPT",action=wezterm.action.CloseCurrentTab{confirm=false}},
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={"./.config/wezterm/ssh.sh"},cwd = '~'}},
 }

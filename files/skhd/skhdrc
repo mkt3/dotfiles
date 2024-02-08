@@ -62,11 +62,8 @@ alt - space : yabai -m window --toggle zoom-fullscreen
 # navigate
 alt - 0x2B : yabai -m display --focus prev && yabai -m display --focus stack.prev
 alt - 0x2F : yabai -m display --focus next && yabai -m display --focus stack.next
-# toggle window split type
-alt - f : yabai -m window --toggle split
 # float / unfloat window and restore position
-# alt - t : yabai -m window --toggle float && /tmp/yabai-restore/$(yabai -m query --windows --window | jq -re '.id').restore 2>/dev/null || true
-alt - t : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
+alt - f : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
 
 # send window
 shift + alt - 0x2B : yabai -m window --display prev && yabai -m display --focus prev
