@@ -1161,6 +1161,20 @@
                (update-org-agenda-buffer)
              (error (message "Error updating *Org Agenda*: %s" (error-message-string err)))))
          (run-with-timer 0 60 'safe-update-org-agenda-buffer)
+
+         (defvar org-clock-current-task-file
+           (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
+
+         (defun org-clock-current-task-to-file ()
+           (with-temp-file org-clock-current-task-file
+             (insert (or org-clock-current-task ""))))
+
+         (defun org-clock-clear-file-after-clock-out ()
+           (with-temp-file org-clock-current-task-file
+             (insert "")))
+
+         (add-hook 'org-clock-in-hook 'org-clock-current-task-to-file)
+         (add-hook 'org-clock-out-hook 'org-clock-clear-file-after-clock-out)
          )
 
        (use-package org-super-agenda
