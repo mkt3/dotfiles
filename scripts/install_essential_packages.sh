@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck source=/dev/null
 
 set -eu
 
@@ -7,11 +6,15 @@ set -eu
 CONFIGS_DIR="${REPO_DIR}/files"
 
 . "${REPO_DIR}/scripts/common.sh"
+# shellcheck source=/dev/null
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
 
 install_essential_packages() {
     title "Install/Update essential packages"
+
+    mkdir -p "${HOME}/.local/bin"
+
     case "$OS" in
         Darwin)
             install_macos
@@ -62,7 +65,7 @@ install_linux() {
             ;;
         Ubuntu)
             curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash -
-            sudo apt-get -y install git jq wget make nodejs
+            sudo apt-get -y install git jq wget make nodejs libssl-dev
             ;;
         *)
             echo "${distro} is not supported."
@@ -85,6 +88,7 @@ install_rust() {
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y
     fi
 
+    mkdir -p "$ZSH_COMPLETION_DIR"
     "${CARGO_HOME}/bin/rustup" completions zsh > "${ZSH_COMPLETION_DIR}/_rustup"
 }
 

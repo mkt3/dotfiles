@@ -3,7 +3,12 @@
 set -eu
 set -o pipefail
 
+# variable
+CONFIGS_DIR="${REPO_DIR}/files"
+
 . "${REPO_DIR}/scripts/common.sh"
+# shellcheck source=/dev/null
+. "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
 title "Making packages install script"
 
