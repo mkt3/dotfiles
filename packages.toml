@@ -135,7 +135,11 @@ macos = [
   { name = "tmux", method = "brew", function = "setup_tmux" },
   { name = "ncurses", method = "brew" }, # for tmux-256 color
 ]
-ubuntu = [{ name = "tmux", method = "script", function = "setup_tmux" }]
+ubuntu = [
+  { name = "libevent-dev", method = "apt" },
+  { name = "bison", method = "apt" },
+  { name = "tmux", method = "script", function = "setup_tmux" }
+]
 
 [git]
 type = "basic"
