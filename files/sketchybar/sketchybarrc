@@ -60,6 +60,12 @@ sketchybar -m --default \
            icon.padding_left=4 \
            label.padding_right=4
 
+##### Adding Center Items #####
+sketchybar --add item task left                              \
+           --set task   update_freq=60                        \
+                         icon=                                \
+                         script="$PLUGIN_DIR/org-task.sh"      
+
 ##### Adding Right Items #####
 sketchybar --add item clock right                              \
            --set clock   update_freq=10                        \
