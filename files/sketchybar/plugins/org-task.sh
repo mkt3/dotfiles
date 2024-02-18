@@ -1,3 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-sketchybar --set $NAME label="$(cat ~/.config/emacs/org-clock-current-task.txt)"
+TASK=$(cat ~/.config/emacs/org-clock-current-task.txt)
+
+if [[ "$TASK" != "" ]]; then
+    ICON=""
+	  LABEL="$TASK"
+else
+    ICON="󰀦"
+	  LABEL="No task"
+fi
+
+sketchybar --set "$NAME" icon="$ICON" label="$LABEL"

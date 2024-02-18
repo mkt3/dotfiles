@@ -6,7 +6,7 @@ if [[ $VPN != "" ]]; then
 	LABEL=$VPN
 elif [[ $IP_ADDRESS != "" ]]; then
 	ICON=
-	LABEL=$IP_ADDRESS
+	LABEL=""
 else
 	ICON=
 	LABEL="Not Connected"
