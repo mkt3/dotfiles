@@ -1786,12 +1786,6 @@
                   epe-path-style 'full
                   eshell-prompt-function 'epe-theme-multiline-with-status))
 
-    (use-package eshell-toggle
-      :ensure t
-      ;; :bind* ("C-t" . eshell-toggle)
-      :custom
-      (eshell-toggle-size-fraction 2))
-
     (use-package eat
       :ensure t
       :hook (eshell-load-hook . eat-eshell-mode))
