@@ -62,7 +62,7 @@ sketchybar -m --default \
 
 ##### Adding Center Items #####
 sketchybar --add item task center                              \
-           --set task    update_freq=60                        \
+           --set task    update_freq=30                        \
                          script="$PLUGIN_DIR/org-task.sh"
 
 ##### Adding Right Items #####
