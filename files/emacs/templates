@@ -50,6 +50,7 @@ org-mode
 (quote "#+begin_quote" n> r> n> "#+end_quote")
 (example "#+begin_example" n> r> n> "#+end_example")
 (comment "#+begin_comment" n> r> n> "#+end_comment")
+(cgpt "#+begin_ai" n> r> n> "#+end_ai")
 (verse "#+begin_verse" n> r> n> "#+end_verse")
 (src "#+begin_src " p n> r> n> "#+end_src" :post (org-edit-src-code))
 (python "#+begin_src python" n> r> n> "#+end_src" :post (org-edit-src-code))
