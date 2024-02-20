@@ -1011,7 +1011,6 @@
          (org-log-done 'time)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
-         (org-agenda-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
          :config
          (defun my:org-open-url-with-default ()
            (interactive)
@@ -1082,6 +1081,7 @@
          (org-agenda-custom-commands '(("t" todo "TODO")
                                        ("A" todo)))
          :config
+         (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
          (add-to-list 'org-modules 'org-habit t)
          (setq org-agenda-prefix-format
              '((agenda . " %i %-15:c%?-12t% s")
@@ -1164,6 +1164,14 @@
 
          (add-hook 'org-clock-in-hook 'org-clock-current-task-to-file)
          (add-hook 'org-clock-out-hook 'org-clock-clear-file-after-clock-out)
+
+         (add-hook 'org-after-todo-state-change-hook
+                   'org-clock-todo-change)
+         (defun org-clock-todo-change ()
+           (if (string= org-state "IN PROGRESS")
+               (org-clock-in)
+             (org-clock-out)))
+
          )
 
        (use-package org-super-agenda
@@ -1266,7 +1274,7 @@
                                         :unnarrowed t)
                                        ))
          (org-roam-dailies-capture-templates  '(("j" "journal" entry
-                                                 "** IN PROGRESS <%<%Y-%m-%d %a %H:%M>> %?"
+                                                 "** TODO <%<%Y-%m-%d %a %H:%M>> %?"
                                                  :target (file+head+olp "%<%Y-%m>.org"
                                                                         "#+title: %<%Y-%m>\n"
                                                                         ("%<%Y-%m-%d %a>")))))
