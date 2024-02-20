@@ -735,10 +735,11 @@
 ** eglot
    #+begin_src emacs-lisp
      (use-package eglot
-       :bind (nil
-              :map eglot-mode-map
-              ("C-c a" . eglot-code-actions))
+       ;; :bind (nil
+       ;;        :map eglot-mode-map
+       ;;        ("C-c a" . eglot-code-actions))
        :config
+       ;; (add-to-list eglot-stay-out-of '(flymake))
        (defun my/eglot-capf ()
          (setq-local completion-at-point-functions
                      (list (cape-capf-super
@@ -749,26 +750,50 @@
                            #'cape-file)
                      ))
        (add-hook 'eglot-managed-mode-hook #'my/eglot-capf))
+
+
+     (use-package flycheck-eglot
+       :ensure t
+       :after (flycheck eglot)
+       :custom (flycheck-eglot-exclusive nil)
+       :config
+       (global-flycheck-eglot-mode 1))
    #+end_src
 ** Flymake
    #+begin_src emacs-lisp
-     (use-package flymake
-       :ensure t
-       :bind (nil
-              :map flymake-mode-map
-              ("C-c C-p" . flymake-goto-prev-error)
-              ("C-c C-n" . flymake-goto-next-error))
-       ;; :config
-       ;; (set-face-background 'flymake-errline "red4")
-       ;; (set-face-background 'flymake-warnline "DarkOrange")
-       )
+     ;; (use-package flymake
+     ;;   :ensure t
+     ;;   :bind (nil
+     ;;          :map flymake-mode-map
+     ;;          ("C-c C-p" . flymake-goto-prev-error)
+     ;;          ("C-c C-n" . flymake-goto-next-error))
+     ;;   ;; :config
+     ;;   ;; (set-face-background 'flymake-errline "red4")
+     ;;   ;; (set-face-background 'flymake-warnline "DarkOrange")
+     ;;   )
 
-     (use-package flymake-diagnostic-at-point
+     ;; (use-package flymake-diagnostic-at-point
+     ;;   :ensure t
+     ;;   :after flymake
+     ;;   :config
+     ;;   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
+     ;;   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+   #+end_src
+** Flycheck
+   #+begin_src emacs-lisp
+     (use-package flycheck
        :ensure t
-       :after flymake
+       :custom
+       (flycheck-display-errors-delay 0.3)
+       (flycheck-indication-mode 'left-margin)
+       :init
+       (global-flycheck-mode)
        :config
-       (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
-       (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+       (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode))
+
+     (use-package flycheck-inline
+       :ensure t
+       :hook (flycheck-mode-hook . flycheck-inline-mode))
    #+end_src
 * Writing
 ** Spell Checker
@@ -843,10 +868,10 @@
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup)))
 
-      (use-package magit-delta
-        :ensure t
-        :after magit
-        :hook (magit-mode-hook))
+      ;; (use-package magit-delta
+      ;;   :ensure t
+      ;;   :after magit
+      ;;   :hook (magit-mode-hook))
 
       (use-package diff-hl
         :ensure t
@@ -866,7 +891,9 @@
 *** Python
     #+begin_src emacs-lisp
       (use-package python
-        :custom (python-indent-guess-indent-offset-verbose . nil)
+        :custom
+        (python-indent-guess-indent-offset-verbose . nil)
+        (flycheck-python-ruff-config '("ruff.toml" ".ruff.toml"))
         :hook (python-ts-mode-hook . eglot-ensure))
 
       (use-package reformatter
@@ -877,13 +904,13 @@
           :program "ruff"
           :args `("format" "--stdin-filename" ,buffer-file-name "-")))
 
-      (use-package flymake-ruff
-        :ensure t
-        :hook (eglot-managed-mode-hook . (lambda ()
-                                           (when (derived-mode-p 'python-mode 'python-ts-mode)
-                                             (flymake-ruff-load))))
-        :config
-        (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
+      ;; (use-package flymake-ruff
+      ;;   :ensure t
+      ;;   :hook (eglot-managed-mode-hook . (lambda ()
+      ;;                                      (when (derived-mode-p 'python-mode 'python-ts-mode)
+      ;;                                        (flymake-ruff-load))))
+      ;;   :config
+      ;;   (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
 
       (use-package ruff-fix
         :vc (:url "https://github.com/mkt3/ruff-fix.el.git"
