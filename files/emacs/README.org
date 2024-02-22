@@ -1477,10 +1477,6 @@
       (setq tramp-remote-path '(tramp-default-remote-path
                                 "~/.local/bin/"))
       (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-      (setq vc-ignore-dir-regexp
-            (format "\\(%s\\)\\|\\(%s\\)"
-                    vc-ignore-dir-regexp
-                    tramp-file-name-regexp))
       (setq tramp-default-method "ssh")
       (setq tramp-auto-save-directory
             (expand-file-name "tramp-auto-save" user-emacs-directory))
