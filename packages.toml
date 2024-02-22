@@ -352,6 +352,12 @@ arch = [{ name = "jupyterlab", method = "pipx", function = "setup_jupyterlab" }]
 macos = [{ name = "jupyterlab", method = "pipx", function = "setup_jupyterlab" }]
 ubuntu = [{ name = "jupyterlab", method = "pipx", function = "setup_jupyterlab" }]
 
+[uv]
+type = "dev"
+arch = [{ name = "uv", method = "pipx" }]
+macos = [{ name = "uv", method = "pipx" }]
+ubuntu = [{ name = "uv", method = "pipx" }]
+
 [poetry]
 type = "dev"
 arch = [{ name = "poetry", method = "pipx", function = "setup_poetry" }]
