@@ -786,6 +786,7 @@
        :custom
        (flycheck-display-errors-delay 0.3)
        (flycheck-indication-mode 'left-margin)
+       (flycheck-textlint-plugin-alist ())
        :init
        (global-flycheck-mode)
        :config
