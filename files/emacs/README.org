@@ -1277,15 +1277,8 @@
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ))
-         (org-roam-dailies-capture-templates  '(("j" "journal" entry
-                                                 "** TODO Anki\n   SCHEDULED: <%<%Y-%m-%d %a>>\n** TODO Speak\n   SCHEDULED: <%<%Y-%m-%d %a>>\n** TODO Hanon of English\n   SCHEDULED: <%<%Y-%m-%d %a>>\n** TODO Research Paper\n   SCHEDULED: <%<%Y-%m-%d %a>>\n** TODO Anews & RSS\n   SCHEDULED: <%<%Y-%m-%d %a>>\n"
-                                                 :jump-to-captured t
-                                                 :immediate-finish t
-                                                 :unnarrowed t
-                                                 :target (file+head+olp "%<%Y-%m>.org"
-                                                                        "#+title: %<%Y-%m>\n"
-                                                                        ("%<%Y-%m-%d %a>")))))
          :config
+         (load (expand-file-name "personal_config/emacs/journal.el" my:d:nextcloud))
          (defun my:org-roam-read-only ()
            "Enable read-only mode for org-roam files."
            (when (and (buffer-file-name)
