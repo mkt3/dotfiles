@@ -1082,7 +1082,7 @@
          (org-agenda-todo-ignore-scheduled 'feature)
          (org-agenda-skip-deadline-prewarning-if-scheduled t)
          (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
-                              (sequence "WAITNING(w)" "SOMEDAY(s)" "|" "CANCELLED(c/!)")))
+                              (sequence "WAITING(w)" "SOMEDAY(s)" "|" "CANCELLED(c/!)")))
          (org-agenda-custom-commands '(("t" todo "TODO")
                                        ("A" todo)))
          :config
