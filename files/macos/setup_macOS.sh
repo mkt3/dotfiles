@@ -149,7 +149,7 @@ defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 1
 defaults write com.apple.dock "mru-spaces" -bool "false"
 
 # Disable nap mode for Emacs
-defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
+#defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
 
 # Enable Automatically hide and show the menubar for sketchybar
 defaults write .GlobalPreferences _HIHideMenuBar -int 1
