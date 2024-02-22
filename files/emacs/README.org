@@ -829,9 +829,10 @@
       (use-package treesit-auto
         :ensure t
         :custom
-        (treesit-font-lock-level 4)
+        (treesit-font-lock-level 3)
+        (treesit-auto-install 'prompt)
         :config
-        (setq treesit-auto-install 'prompt)
+        (treesit-auto-add-to-auto-mode-alist 'all)
         (global-treesit-auto-mode))
     #+end_src
 *** git
