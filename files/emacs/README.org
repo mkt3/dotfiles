@@ -378,13 +378,49 @@
        (tab-bar-history-mode           nil)
        (tab-bar-new-tab-choice         "*scratch*")
        (tab-bar-new-button-show        nil)
-       ;; (tab-bar-tab-name-function      'my:tab-bar-tab-name-truncated)
-       (tab-bar-tab-name-truncated-max 12)
+       (tab-bar-tab-name-truncated-max 25)
        (tab-bar-separator              "")
        :config
+       (defun my:name-tab-by-project-or-default ()
+         "Return project name with hostname if in a project, or default tab-bar name if not.
+     The default tab-bar name uses the buffer name."
+         (let* ((project-current (project-current))
+                (project-name (if project-current
+                                  (project-name project-current)
+                                nil)))
+           (if project-name
+               (let* ((dir (car (last project-current)))
+                      (host-name (if (tramp-tramp-file-p dir)
+                                     (tramp-file-name-host (tramp-dissect-file-name dir))
+                                   "local"))
+                      (full-name (if (string= host-name "")
+                                     project-name
+                                   (format "%s@%s" project-name host-name))))
+                 full-name)
+             (tab-bar-tab-name-current))))
+       (setq tab-bar-tab-name-function #'my:name-tab-by-project-or-default)
        (setq tab-bar-select-tab-modifiers '(meta))
        (setq tab-bar-tab-hints t)
        (tab-bar-mode +1))
+
+     (use-package project-tab-groups
+       :ensure t
+       :config
+       (defun my:project-tab-groups-tab-group-name-advice (orig-fun &rest args)
+         "Advise `project-tab-groups-tab-group-name' to include the hostname."
+         (with-temp-buffer
+           (let* ((dir (car args))
+                  (default-directory dir)
+                  (raw-name (apply orig-fun args))
+                  (host-name (if (tramp-tramp-file-p dir)
+                                 (tramp-file-name-host (tramp-dissect-file-name dir))
+                               ""))
+                  (name (if (string= host-name "")
+                            raw-name
+                          (format "%s@%s" raw-name host-name))))
+             name)))
+       (advice-add 'project-tab-groups-tab-group-name :around #'my:project-tab-groups-tab-group-name-advice)
+       (project-tab-groups-mode 1))
    #+end_src
 ** dimmer
    Visually highlight the selected buffer.
