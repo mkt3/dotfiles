@@ -402,7 +402,6 @@
        (setq tab-bar-select-tab-modifiers '(meta))
        (setq tab-bar-tab-hints t)
        (tab-bar-mode +1))
-
      (use-package project-tab-groups
        :ensure t
        :config
