@@ -1569,15 +1569,7 @@
       (customize-set-variable 'tramp-ssh-controlmaster-options
                               (concat
                                "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
-                               "-o ControlMaster=auto -o ControlPersist=yes"))
-
-      (defun sudo ()
-        "Use TRAMP to `sudo' the current buffer."
-        (interactive)
-        (when buffer-file-name
-          (find-alternate-file
-           (concat "/sudo:root@localhost:"
-                   buffer-file-name)))))
+                               "-o ControlMaster=auto -o ControlPersist=yes")))
   #+end_src
 * Filer
   #+begin_src emacs-lisp
