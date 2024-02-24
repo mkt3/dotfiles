@@ -1549,7 +1549,6 @@
   #+begin_src emacs-lisp
     (use-package tramp
       :init
-      ;; Disable version control on tramp buffers to avoid freezes.
       (setq tramp-remote-path '(tramp-default-remote-path
                                 "~/.local/bin/"))
       (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
@@ -1559,8 +1558,14 @@
       (setq tramp-persistency-file-name
             (expand-file-name "tramp-connection-history" user-emacs-directory))
       (setq password-cache-expiry nil)
-      (setq tramp-use-ssh-controlmaster-options nil)
       :config
+      ; https://github.com/alexluigit/dirvish/blob/main/docs/CUSTOMIZING.org#tramp-integration
+      (add-to-list 'tramp-connection-properties
+                   (list (regexp-quote "/ssh:")
+                         "direct-async-process" t))
+      (setq tramp-verbose 0)
+      (setq tramp-chunksize 2000)
+      (setq tramp-use-ssh-controlmaster-options nil)
       (customize-set-variable 'tramp-ssh-controlmaster-options
                               (concat
                                "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
@@ -1605,6 +1610,13 @@
       (setq delete-by-moving-to-trash t)
       (setq dired-listing-switches
             "-l --human-readable --group-directories-first --no-group")
+      (defun my:project-find-dir-dirvish (dir)
+        "Use dirvish instead of dired in `project-find-dir'."
+        (dirvish dir))
+      (advice-add 'project-find-dir :around
+                  (lambda (orig-fun &rest args)
+                    (cl-letf (((symbol-function 'dired) #'my:project-find-dir-dirvish))
+                      (apply orig-fun args))))
       :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
       (("C-c f" . dirvish-fd)
        ("C-x d" . dirvish)
