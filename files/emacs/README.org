@@ -1822,7 +1822,10 @@
          (mu4e-compose-goto-top))
 
        (add-hook 'mu4e-compose-mode-hook (lambda () (message-insert-signature-at-point nil)) t)
-       (add-hook 'mu4e-compose-pre-hook (lambda () (message-insert-signature-at-point t)) t))
+       (add-hook 'mu4e-compose-pre-hook (lambda () (message-insert-signature-at-point t)) t)
+       (add-hook 'mu4e-compose-mode-hook (lambda ()
+                                           (use-hard-newlines -1)
+                                           (turn-off-auto-fill))))
 
      (use-package mu4e-alert
        :ensure t
