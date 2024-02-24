@@ -1737,14 +1737,14 @@
               :map mu4e-headers-mode-map
               ("R" . mu4e-search-rerun)
               :map mu4e-view-mode-map
-              ("C-m" . browse-url-at-point)
+              ("C-m" . shr-browse-url)
               ("C-c C-o" . my:browse-url-at-point-with-default-browser)
               ("R" . mu4e-update-index))
        :config
        (defun my:browse-url-at-point-with-default-browser ()
          (interactive)
-         (let ((browse-url-browser-function  'browse-url-default-browser))
-           (browse-url-at-point)))
+         (let ((browse-url-browser-function 'browse-url-default-browser))
+           (shr-browse-url)))
        (setq mu4e-headers-auto-update t)
        (setq mu4e-headers-skip-duplicates t)
        (setq mu4e-headers-sort-field :date)
