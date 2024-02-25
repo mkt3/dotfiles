@@ -142,9 +142,6 @@ export SSB_HOME="${XDG_DATA_HOME}/zoom"
 # gtk2
 export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
 
-# mu
-export XAPIAN_CJK_NGRAM=1
-
 # sqlite
 export SQLITE_HISTORY="${XDG_DATA_HOME}/sqlite_history"
 

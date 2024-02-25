@@ -1777,39 +1777,6 @@
              message-sendmail-extra-arguments '("--read-envelope-from")
              message-send-mail-function 'message-send-mail-with-sendmail)
        (load (expand-file-name "personal_config/emacs_mail/mu4e_config.el" my:d:nextcloud))
-
-       (defun my:break-word-into-bigrams (word)
-         "Break word into list of bi-grams if non-ascii characters."
-         (cond ((or (<= (length word) 2)
-                    (equal (length word) (string-bytes word)))
-                word)
-               ((string-match ":" word)
-                (let ((pos (string-match ":" word)))
-                  (concat (substring word 0 (+ 1 pos))
-                          (my:break-word-into-bigrams (substring word (+ 1 pos))))))
-               ((memq 'ascii (find-charset-string word))
-                (let ((ascii-parts (split-string word "\\([^[:ascii:]]+\\)" t)))
-                  (mapconcat (lambda (part)
-                               (if (string-match-p "[[:ascii:]]" part)
-                                   part
-                                 (my:break-word-into-bigrams part)))
-                             ascii-parts "")))
-               (t
-                (let ((char-list (split-string word "" t))
-                      (br-word ""))
-                  (while (cdr char-list)
-                    (setq br-word (concat br-word (concat (car char-list) (cadr char-list)) " "))
-                    (setq char-list (cdr char-list)))
-                  br-word))))
-
-       (defun my:break-query-into-bigrams (expr)
-         "Break strings into bi-grams in query."
-         (let ((word-list (split-string expr " " t))
-               (new ""))
-           (dolist (word word-list new)
-             (setq new (concat new (my:break-word-into-bigrams word) " ")))))
-       (setq mu4e-query-rewrite-function 'my:break-query-into-bigrams)
-
        (add-hook 'emacs-startup-hook  (lambda ()
                                         (my:imapnotify-start-prodigy-services)
                                         (mu4e)))
