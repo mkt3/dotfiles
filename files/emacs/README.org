@@ -1733,14 +1733,9 @@
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
               ("C-j" . skk-kakutei)
-              :map mu4e-main-mode-map
-              ("R" . mu4e-update-index)
-              :map mu4e-headers-mode-map
-              ("R" . mu4e-search-rerun)
               :map mu4e-view-mode-map
               ("C-m" . browse-url-at-point)
-              ("C-c C-o" . my:browse-url-at-point-with-default-browser)
-              ("R" . mu4e-update-index))
+              ("C-c C-o" . my:browse-url-at-point-with-default-browser))
        :config
        (defun my:browse-url-at-point-with-default-browser ()
          (interactive)
