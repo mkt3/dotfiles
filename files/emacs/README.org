@@ -241,7 +241,8 @@
       enable-recursive-minibuffers t
       ring-bell-function 'ignore
       text-quoting-style 'straight
-      user-full-name (getenv "NAME"))
+      user-full-name (getenv "NAME")
+      completion-lazy-hilit t)
 
      (use-package simple
        :demand t
