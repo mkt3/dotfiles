@@ -1738,14 +1738,18 @@
               :map mu4e-headers-mode-map
               ("R" . mu4e-search-rerun)
               :map mu4e-view-mode-map
-              ("C-m" . shr-browse-url)
+              ("C-m" . browse-url-at-point)
               ("C-c C-o" . my:browse-url-at-point-with-default-browser)
               ("R" . mu4e-update-index))
        :config
        (defun my:browse-url-at-point-with-default-browser ()
          (interactive)
-         (let ((browse-url-browser-function 'browse-url-default-browser))
-           (shr-browse-url)))
+         (let ((link (get-text-property (point) 'shr-url))
+               (browse-url-browser-function 'browse-url-default-browser))
+           (if link
+               (shr-browse-url)
+             (when (thing-at-point 'url)
+               (browse-url (thing-at-point 'url))))))
        (setq mu4e-headers-auto-update t)
        (setq mu4e-headers-skip-duplicates t)
        (setq mu4e-headers-sort-field :date)
@@ -1792,7 +1796,6 @@
            (narrow-to-region (point) (point))
            (message-insert-signature))
          (mu4e-compose-goto-top))
-
        (add-hook 'mu4e-compose-mode-hook (lambda () (message-insert-signature-at-point nil)) t)
        (add-hook 'mu4e-compose-pre-hook (lambda () (message-insert-signature-at-point t)) t)
        (add-hook 'mu4e-compose-mode-hook (lambda ()
