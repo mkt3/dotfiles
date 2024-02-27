@@ -611,7 +611,7 @@
                ("M-g i" . consult-imenu)
                ("M-g I" . consult-imenu-multi)
                ;; M-s bindings in `search-map'
-               ("M-s d" . consult-find)
+               ("M-s d" . consult-fd)
                ("M-s c" . consult-locate)
                ("M-s g" . consult-grep)
                ("M-s G" . consult-git-grep)
@@ -862,11 +862,11 @@
        :ensure t
        :custom
        (flycheck-display-errors-delay 0.3)
-       (flycheck-indication-mode 'left-margin)
        (flycheck-textlint-plugin-alist ())
        :init
        (global-flycheck-mode)
        :config
+       (setq-default flycheck-indication-mode 'left-margin)
        (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode))
 
      (use-package flycheck-inline
@@ -923,16 +923,12 @@
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup)))
 
-      ;; (use-package magit-delta
-      ;;   :ensure t
-      ;;   :after magit
-      ;;   :hook (magit-mode-hook))
-
       (use-package diff-hl
         :ensure t
-        :init
+        :demand t
+        :config
         (global-diff-hl-mode)
-        (unless (window-system) (diff-hl-margin-mode))
+        (diff-hl-margin-mode)
         :hook ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
                (magit-post-refresh-hook . diff-hl-magit-post-refresh)
                (dired-mode-hook . diff-hl-dired-mode)))
@@ -1853,6 +1849,7 @@
        :demand t
        :commands (open-pdf-in-external-app)
        :hook (pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1)))
+       :mode (("\\.pdf\\'" . pdf-view-mode))
        :bind (nil
               :map pdf-view-mode-map
               ("C-s" . isearch-forward)
