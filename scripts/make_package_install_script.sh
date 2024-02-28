@@ -34,7 +34,7 @@ toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
 brew_file="${REPO_DIR:-..}/results/Brewfile"
-
+home_manager_dir="${HOME}/.config/home-manager"
 
 json_content=$(yj -t < "$toml_file")
 
@@ -81,8 +81,14 @@ done
 # packages
 echo "# package install/update commands" >> "$install_script_path"
 
-echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
-echo "home-manager switch" >> "$install_script_path"
+
+if ! (type home-manager > /dev/null 2>&1); then
+    echo "title \"Install packages from nix\"" >> "$install_script_path"
+    echo "nix run home-manager/master -- init --switch" >> "$install_script_path"
+else
+    echo "title \"Update packages from nix\"" >> "$install_script_path"
+    echo "nix flake update --flake ${home_manager_dir}" >> "$install_script_path"
+fi
 
 if [[ "$os_name" == "macos" ]]; then
     echo -n > "$brew_file"
@@ -129,13 +135,13 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             username="$USER"
             homeDirectory="$HOME"
 
-            nix_packages_path="${HOME}/.config/home-manager/packages_dev-${dev_env}_gui-${gui_env}.nix"
+            mkdir -p "$home_manager_dir"
+            nix_packages_path="${home_manager_dir}/home.nix"
             printf '{ config, pkgs, ... }:\n\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  # Let Home Manager install and manage itself.\n  programs.home-manager.enable = true;\n}\n' \
                    "${username}" \
                    "${homeDirectory}" \
                    "${packages}" \
                    > "$nix_packages_path"
-            cp -rf "$nix_packages_path" "${HOME}/.config/home-manager/packages.nix"
             ;;
         brew|cask)
             for package in "${package_names[@]}"; do

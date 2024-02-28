@@ -4,11 +4,39 @@ set -eu
 
 pre_setup_nix() {
     info "Creating symlink for nix"
-    local nix_dir="$CONFIGS_DIR/nix"
-    local home_manager_dir="${nix_dir}/home-manager"
+    local nix_dir="${CONFIGS_DIR}/nix"
+    local home_manager_dir="${XDG_CONFIG_HOME}/home-manager"
 
     mkdir -p "${XDG_CONFIG_HOME}/nix"
     ln -sfn "${nix_dir}/nix.conf" "${XDG_CONFIG_HOME}/nix/"
 
-    ln -sfn "$home_manager_dir" "${XDG_CONFIG_HOME}/"
+    mkdir -p "$home_manager_dir"
+
+    local nix_platform="$(uname -m)-$(uname -s)"
+
+    cat << EOF > "${home_manager_dir}/flake.nix"
+{
+  description = "Home Manager configuration";
+
+  inputs = {
+    # Specify the source of Home Manager and Nixpkgs.
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { nixpkgs, home-manager, ... }:
+    let
+      system = "$nix_platform";
+      pkgs = nixpkgs.legacyPackages.\${system};
+    in {
+      homeConfigurations."$USER" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./packages.nix ];
+      };
+    };
+}
+EOF
 }
