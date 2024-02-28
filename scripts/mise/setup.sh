@@ -12,5 +12,5 @@ pre_setup_mise() {
 
 post_setup_mise() {
     info "Linking completion"
-    "${CARGO_HOME}/bin/mise" completion zsh > "${ZSH_COMPLETION_DIR}/_mise"
+    mise completion zsh > "${ZSH_COMPLETION_DIR}/_mise"
 }

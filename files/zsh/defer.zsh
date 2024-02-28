@@ -111,5 +111,11 @@ if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/nul
     yaskkserv2 --google-japanese-input=disable "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
 fi
 
-#for kubectl
+# for kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+# for fzf
+if [ -n "${commands[fzf-share]}" ]; then
+  source "$(fzf-share)/key-bindings.zsh"
+  source "$(fzf-share)/completion.zsh"
+fi

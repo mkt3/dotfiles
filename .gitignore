@@ -9,3 +9,5 @@ files/zsh/sheldon/sheldon.zsh
 key.json
 meta.json
 /results
+files/nix/home-manager/packages.nix
+files/nix/home-manager/flake.lock
