@@ -39,8 +39,8 @@ ubuntu = [{ name = "zsh", method = "nix", function = "setup_zsh" }]
 
 [bash]
 type = "basic"
-arch = [{ name = "bash", method = "nix" }]
-macos = [{ name = "bash", method = "nix" }]
+# arch = [{ name = "bash", method = "nix" }]
+# macos = [{ name = "bash", method = "nix" }]
 ubuntu = [{ name = "bash", method = "nix" }]
 
 [fzf]

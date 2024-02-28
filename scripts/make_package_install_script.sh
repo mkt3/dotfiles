@@ -88,6 +88,7 @@ if ! (type home-manager > /dev/null 2>&1); then
 else
     echo "title \"Update packages from nix\"" >> "$install_script_path"
     echo "nix flake update --flake ${home_manager_dir}" >> "$install_script_path"
+    echo "home-manager switch" >> "$install_script_path"
 fi
 
 if [[ "$os_name" == "macos" ]]; then
