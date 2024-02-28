@@ -12,7 +12,7 @@ pre_setup_nix() {
 
     mkdir -p "$home_manager_dir"
 
-    local nix_platform="$(uname -m)-$(uname -s)"
+    local nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
 
     cat << EOF > "${home_manager_dir}/flake.nix"
 {
