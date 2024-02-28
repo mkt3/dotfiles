@@ -34,7 +34,7 @@ pre_setup_nix() {
     in {
       homeConfigurations."$USER" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./packages.nix ];
+        modules = [ ./home.nix ];
       };
     };
 }

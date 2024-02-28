@@ -274,10 +274,10 @@ type = "basic"
 arch = [{ name = "iotop", method = "nix" }]
 ubuntu = [{ name = "iotop", method = "nix" }]
 
-[nvtop]
-type = "dev"
-arch = [{ name = "nvtop", method = "nix" }]
-ubuntu = [{ name = "nvtop", method = "nix" }]
+# [nvtop]
+# type = "dev"
+# arch = [{ name = "nvtop", method = "nix" }]
+# ubuntu = [{ name = "nvtop", method = "nix" }]
 
 # Editor
 [vim]
