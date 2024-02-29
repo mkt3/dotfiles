@@ -11,14 +11,6 @@ arch = [{ name = "cmake", method = "nix" }]
 macos = [{ name = "cmake", method = "nix" }]
 ubuntu = [{ name = "cmake", method = "nix" }]
 
-[build-essential]
-type = "basic"
-ubuntu = [{ name = "build-essential", method = "apt" }]
-
-[pacman-contrib] # for paccache
-type = "basic"
-arch = [{ name = "pacman-contrib", method = "pacman" }]
-
 [mas]
 type = "basic"
 macos = [{ name = "mas", method = "nix" }]
@@ -33,27 +25,21 @@ ubuntu = [{ name = "xdg_config", method = "script", function = "setup_xdg_config
 # CLI command packages
 [zsh]
 type = "basic"
-arch = [{ name = "zsh", method = "nix", function = "setup_zsh" }]
+arch = [{ name = "zsh", method = "pacman", function = "setup_zsh" }]
 macos = [{ name = "zsh", method = "nix", function = "setup_zsh" }]
-ubuntu = [{ name = "zsh", method = "nix", function = "setup_zsh" }]
+ubuntu = [{ name = "zsh", method = "apt", function = "setup_zsh" }]
 
-[bash]
+[coreutils]
 type = "basic"
-# arch = [{ name = "bash", method = "nix" }]
-# macos = [{ name = "bash", method = "nix" }]
-ubuntu = [{ name = "bash", method = "nix" }]
+arch = [{ name = "coreutils", method = "pacman" }]
+macos = [{ name = "coreutils", method = "nix" }]
+ubuntu = [{ name = "coreutils", method = "apt" }]
 
 [fzf]
 type = "basic"
 arch = [{ name = "fzf", method = "nix" }]
 macos = [{ name = "fzf", method = "nix" }]
 ubuntu = [{ name = "fzf", method = "nix" }]
-
-[coreutils]
-type = "basic"
-arch = [{ name = "coreutils", method = "pacman" }]
-macos = [{ name = "coreutils", method = "brew" }]
-ubuntu = [{ name = "coreutils", method = "apt" }]
 
 [findutils]
 type = "basic"
@@ -84,6 +70,12 @@ type = "basic"
 arch = [{ name = "less", method = "nix" }]
 macos = [{ name = "less", method = "nix" }]
 ubuntu = [{ name = "less", method = "nix" }]
+
+[yj]
+type = "basic"
+arch = [{ name = "yj", method = "nix" }]
+macos = [{ name = "yj", method = "nix" }]
+ubuntu = [{ name = "yj", method = "nix" }]
 
 [jq]
 type = "basic"
@@ -211,7 +203,6 @@ arch = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
 macos = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
 ubuntu = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
 
-
 [docker]
 type = "basic"
 arch = [{ name = "docker", method = "script", function = "setup_docker" }]
@@ -289,8 +280,46 @@ ubuntu = [{ name = "vim", method = "nix", function = "setup_vim" }]
 [emacs]
 type = "basic"
 arch = [{ name = "emacs", method = "script", function = "setup_emacs" }]
-macos = [{ name = "emacs", method = "script", function = "setup_emacs" }]
+macos = [{ name = "emacs", method = "script", function = "setup_emacs" },
+  { name = "gnumake", method = "nix" },
+  { name = "autoconf", method = "nix" },
+  { name = "gnused", method = "nix" },
+  { name = "gnutar", method = "nix" },
+  { name = "gnugrep", method = "nix" },
+  { name = "gawk", method = "nix" },
+  { name = "coreutils", method = "nix" },
+  { name = "xz", method = "nix" },
+  { name = "librsvg", method = "nix" },
+  { name = "xz", method = "nix" },
+  { name = "lcms", method = "nix" },
+  { name = "tree-sitter", method = "nix" },
+  { name = "libwebp", method = "nix" },
+  { name = "harfbuzz", method = "nix" },
+  { name = "libxml2", method = "nix" },
+  { name = "libtiff", method = "nix" },
+  { name = "giflib", method = "nix" },
+  { name = "mailutils", method = "nix" },
+  { name = "gcc", method = "nix" },
+  { name = "gmp", method = "nix" },
+  { name = "libjpeg", method = "nix" },
+  { name = "libpng", method = "nix" },
+  { name = "zlib", method = "nix" },
+  { name = "isync", method = "nix" },
+  { name = "msmtp", method = "nix" },
+  { name = "mu", method = "nix" },
+  { name = "terminal-notifier", method = "nix" },
+  { name = "imagemagick", method = "nix" },
+  { name = "hunspell", method = "nix" },
+  { name = "hunspellDicts.en-us", method = "nix" },
+  { name = "enchant", method = "nix" },
+  { name = "texinfo", method = "nix" },
+  { name = "libgccjit", method = "nix" },
+  { name = "pkg-config", method = "nix" },
+  { name = "jansson", method = "nix" },
+  { name = "gnutls", method = "nix" },
+]
 ubuntu = [{ name = "emacs", method = "script", function = "setup_emacs" }]
+
 
 # repository management
 [ghq]
@@ -406,23 +435,23 @@ arch = [
   { name = "texlive", method = "pacman", function = "setup_latex" },
   { name = "dvisvgm", method = "pacman" },
 ]
-macos = [{ name = "basictex", method = "cask", function = "setup_latex" }]
+macos = [{ name = "texliveMedium", method = "nix", function = "setup_latex" }]
 
 ## communication tools
 [slack]
 type = "gui"
-arch = [{ name = "slack-desktop", method = "aur" }]
-macos = [{ name = "803453959", method = "mas" }]
+arch = [{ name = "slack", method = "nix" }]
+macos = [{ name = "slack", method = "nix" }]
 
 [discord]
 type = "gui"
-arch = [{ name = "discord", method = "pacman" }]
-macos = [{ name = "discord", method = "cask" }]
+arch = [{ name = "discord", method = "nix" }]
+macos = [{ name = "discord", method = "nix" }]
 
 [zoom]
 type = "gui"
-arch = [{ name = "zoom", method = "aur" }]
-macos = [{ name = "zoom", method = "cask" }]
+arch = [{ name = "zoom-us", method = "nix" }]
+macos = [{ name = "zoom-us", method = "nix" }]
 
 [MeetingBar]
 type = "gui"
@@ -432,14 +461,14 @@ macos = [{ name = "1532419400", method = "mas" }]
 [vivaldi]
 type = "gui"
 arch = [
-  { name = "vivaldi", method = "pacman" },
-  { name = "vivaldi-ffmpeg-codecs", method = "pacman" },
+  { name = "vivaldi", method = "nix" },
+  { name = "vivaldi-ffmpeg-codecs", method = "nix" },
 ]
 macos = [{ name = "vivaldi", method = "cask" }]
 
 [firefox]
 type = "gui"
-arch = [{ name = "firefox", method = "pacman" }]
+arch = [{ name = "firefox", method = "nix" }]
 macos = [{ name = "firefox", method = "cask" }]
 
 ## media
@@ -462,7 +491,7 @@ macos = [{ name = "zotero", method = "cask" }]
 [anki]
 type = "gui"
 arch = [{ name = "anki-bin", method = "aur" }]
-macos = [{ name = "anki", method = "cask" }]
+macos = [{ name = "anki-bin", method = "nix" }]
 
 ## password manager
 [bitwarden]
@@ -473,7 +502,7 @@ macos = [{ name = "1352778147", method = "mas" }]
 ## terminal emulator
 [wezterm]
 type = "gui"
-arch = [{ name = "wezterm", method = "pacman", function = "setup_wezterm" }]
+arch = [{ name = "wezterm", method = "nix", function = "setup_wezterm" }]
 macos = [
   { name = "wezterm", method = "cask", function = "setup_wezterm" },
   { name = "font-cica", method = "cask" },
@@ -497,9 +526,9 @@ arch = [{ name = "libreoffice-fresh", method = "pacman" }]
 macos = [{ name = "libreoffice", method = "cask" }]
 
 ## launcher
-[alfred]
+[raycast]
 type = "gui"
-macos = [{ name = "alfred", method = "cask" }]
+macos = [{ name = "raycast", method = "nix" }]
 
 [rofi]
 type = "gui"
@@ -508,7 +537,7 @@ arch = [{ name = "rofi-lbonn-wayland-git", method = "aur", function = "setup_rof
 ## external monitor control
 [monitorcontrol]
 type = "gui"
-macos = [{ name = "monitorcontrol", method = "cask" }]
+macos = [{ name = "monitorcontrol", method = "nix" }]
 arch = [{ name = "ddcci-driver-linux-dkms", method = "aur" }]
 
 ## window manager
@@ -622,7 +651,7 @@ arch = [{ name = "programing_font", method = "script", function = "setup_prograi
 ## key remapper
 [keyremap]
 type = "gui"
-macos = [{ name = "karabiner-elements", method = "cask", function = "setup_karabiner" }]
+macos = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
 arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setup_xremap" }]
 
 ## mail notifier
@@ -669,8 +698,8 @@ arch = [{ name = "dvd+rw-tools", method = "pacman" }]
 [utils]
 type = "gui"
 macos = [
-  { name = "stats", method = "cask" },
-  { name = "appcleaner", method = "cask" },
+  { name = "stats", method = "nix" },
+  { name = "appcleaner", method = "nix" },
 ]
 
 [WireGuard]

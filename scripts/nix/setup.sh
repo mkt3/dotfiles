@@ -29,8 +29,7 @@ pre_setup_nix() {
 
   outputs = { nixpkgs, home-manager, ... }:
     let
-      system = "$nix_platform";
-      pkgs = nixpkgs.legacyPackages.\${system};
+      pkgs = import nixpkgs { system = "$nix_platform"; config.allowUnfree = true; };
     in {
       homeConfigurations."$USER" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;

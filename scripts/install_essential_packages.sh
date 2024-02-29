@@ -41,15 +41,11 @@ install_macos() {
 
     if ! (type brew > /dev/null 2>&1); then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        brew install bash
     else
         brew update
     fi
 
-    if ! (type yj > /dev/null 2>&1); then
-        brew install yj
-    else
-        brew upgrade yj
-    fi
 }
 
 install_linux() {
@@ -59,23 +55,25 @@ install_linux() {
     # distribution
     case $distro in
         Arch)
-            sudo pacman -S --needed --noconfirm git jq wget curl xz base-devel
+            sudo pacman -S --needed --noconfirm git jq wget curl xz base-devel pacman-contrib
             if ! (type yay > /dev/null 2>&1); then
                 local yay_repo_dir="${HOME}/.local/src/yay"
                 git clone https://aur.archlinux.org/yay.git "$yay_repo_dir" && cd "$yay_repo_dir" && makepkg -si
             fi
             ;;
         Ubuntu)
-            sudo apt-get -y install git curl xz-utils jq wget make libssl-dev
+            sudo apt-get -y install git curl xz-utils jq wget make libssl-dev build-essential
             ;;
         *)
             echo "${distro} is not supported."
             exit 1
     esac
 
-    local yj_path="${HOME}/.local/bin/yj"
-    wget https://github.com/sclevine/yj/releases/latest/download/yj-linux-amd64 -O "$yj_path"
-    chmod +x "$yj_path"
+    if ! (type yj > /dev/null 2>&1); then
+        local yj_path="${HOME}/.local/bin/yj"
+        wget https://github.com/sclevine/yj/releases/latest/download/yj-linux-amd64 -O "$yj_path"
+        chmod +x "$yj_path"
+    fi
 }
 
 install_nix() {

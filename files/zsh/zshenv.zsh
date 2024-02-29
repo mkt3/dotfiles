@@ -74,6 +74,9 @@ export PATH="${HOME}/.local/bin:${PATH}"
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
     . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
+export CFLAGS="-I${HOME}/.local/state/nix/profile/include"
+export LDFLAGS="-L${HOME}/.local/state/nix/profile/lib"
+export PKG_CONFIG_PATH="${HOME}/.local/state/nix/profile/lib/pkgconfig"
 
 # Python
 export PYTHONUSERBASE="${HOME}/.local"
@@ -170,5 +173,5 @@ export MISE_USE_TOML=1
 export RECOLL_CONFDIR="${XDG_CONFIG_HOME}/recoll"
 
 # kubernetes
-export KUBECONFIG="${XDG_CONFIG_HOME}/kube/config" 
+export KUBECONFIG="${XDG_CONFIG_HOME}/kube/config"
 export KUBECACHEDIR="${XDG_CACHE_HOME}/kube"

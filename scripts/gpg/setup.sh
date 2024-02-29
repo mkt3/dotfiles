@@ -12,6 +12,7 @@ pre_setup_gpg() {
 
     if [ "$OS" = "Darwin" ]; then
         ln -sfn "${gpg_file_dir}/gpg-agent_for_macos.conf" "${GNUPGHOME}/gpg-agent.conf"
+        eval "ln -sfn \"${HOME}/Applications/Home Manager Apps/pinentry-mac.app/Contents/MacOS/pinentry-mac\" /usr/local/bin/"
     elif [ "$OS" = "Linux" ]; then
         ln -sfn "${gpg_file_dir}/gpg-agent_for_linux.conf" "${GNUPGHOME}/gpg-agent.conf"
     fi

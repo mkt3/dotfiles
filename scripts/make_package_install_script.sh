@@ -138,7 +138,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
 
             mkdir -p "$home_manager_dir"
             nix_packages_path="${home_manager_dir}/home.nix"
-            printf '{ config, pkgs, ... }:\n\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  # Let Home Manager install and manage itself.\n  programs.home-manager.enable = true;\n}\n' \
+            printf '{ config, pkgs, ... }:\n\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev" "mu4e"];\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  programs.home-manager.enable = true;\n}\n' \
                    "${username}" \
                    "${homeDirectory}" \
                    "${packages}" \

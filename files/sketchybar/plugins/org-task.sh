@@ -7,7 +7,7 @@ if [[ "$TASK" != "" ]]; then
 	  LABEL="$TASK"
 else
     ICON="󰀦"
-	  LABEL="No task"
+	  LABEL="No assigned task"
 fi
 
 sketchybar --set "$NAME" icon="$ICON" label="$LABEL"

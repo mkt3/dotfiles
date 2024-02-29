@@ -23,9 +23,9 @@ esac
 # Install library
 case "$OS" in
     Darwin)
-        DPENDENCIES="make autoconf gnu-sed gnu-tar grep awk coreutils pkg-config texinfo xz gnutls librsvg little-cms2 jansson tree-sitter webp giflib mailutils libgccjit gcc gmp libjpeg zlib isync msmtp mu terminal-notifier imagemagick  hunspell enchant"
-        # shellcheck disable=SC2086
-        brew install $DPENDENCIES
+        # DPENDENCIES="make autoconf gnu-sed gnu-tar grep awk coreutils pkg-config texinfo xz gnutls librsvg little-cms2 jansson tree-sitter webp giflib mailutils libgccjit gcc gmp libjpeg zlib isync msmtp mu terminal-notifier imagemagick  hunspell enchant"
+        # # shellcheck disable=SC2086
+    # brew install $DPENDENCIES
         ;;
     Linux)
         DISTRO=$(awk '{print $1; exit}' /etc/issue)
@@ -81,7 +81,7 @@ curl https://raw.githubusercontent.com/mkt3/dotfiles/main/files/emacs/personal_d
 
 ./autogen.sh
 
-BUILD_OPTIONS="--with-native-compilation=aot --with-tree-sitter --without-x --without-pop --with-mailutils --with-xml2"
+BUILD_OPTIONS="--with-native-compilation=aot --with-tree-sitter --without-x --without-pop --with-mailutils --with-xml2 --with-modules"
 
 if [[ "$OS" == 'Linux' ]]; then
     if [[ "$UI" == 'cui' ]]; then
@@ -90,7 +90,7 @@ if [[ "$OS" == 'Linux' ]]; then
         BUILD_OPTIONS="--prefix=/usr/local --with-pgtk --with-xwidgets --with-imagemagick ${BUILD_OPTIONS}"
     fi
 elif [[ "$OS" == 'Darwin' ]]; then
-    BUILD_OPTIONS="${BUILD_OPTIONS} --with-ns --with-xwidgets --with-imagemagick"
+    BUILD_OPTIONS="CC=/usr/bin/clang ${BUILD_OPTIONS} --with-ns --with-xwidgets --with-imagemagick"
 fi
 
 # shellcheck disable=SC2086
