@@ -28,6 +28,8 @@ install_essential_packages() {
         ;;
     esac
 
+    install_nix
+
     ## rust for cargo
     install_rust
 }
@@ -57,15 +59,14 @@ install_linux() {
     # distribution
     case $distro in
         Arch)
-            sudo pacman -S --needed --noconfirm git jq wget base-devel
+            sudo pacman -S --needed --noconfirm git jq wget curl xz base-devel
             if ! (type yay > /dev/null 2>&1); then
                 local yay_repo_dir="${HOME}/.local/src/yay"
                 git clone https://aur.archlinux.org/yay.git "$yay_repo_dir" && cd "$yay_repo_dir" && makepkg -si
             fi
             ;;
         Ubuntu)
-            curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash -
-            sudo apt-get -y install git jq wget make nodejs libssl-dev
+            sudo apt-get -y install git curl xz-utils jq wget make libssl-dev
             ;;
         *)
             echo "${distro} is not supported."
@@ -75,6 +76,14 @@ install_linux() {
     local yj_path="${HOME}/.local/bin/yj"
     wget https://github.com/sclevine/yj/releases/latest/download/yj-linux-amd64 -O "$yj_path"
     chmod +x "$yj_path"
+}
+
+install_nix() {
+    if ! (type nix > /dev/null 2>&1); then
+        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    else
+        sudo -i nix upgrade-nix
+    fi
 }
 
 install_rust() {

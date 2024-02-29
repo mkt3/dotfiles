@@ -28,13 +28,13 @@ declare -A methods
 methods["ubuntu"]="apt"
 methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
-common_methods=("cargo" "pipx" "go" "npm")
+common_methods=("cargo" "nix")
 
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
 brew_file="${REPO_DIR:-..}/results/Brewfile"
-
+home_manager_dir="${HOME}/.config/home-manager"
 
 json_content=$(yj -t < "$toml_file")
 
@@ -81,6 +81,16 @@ done
 # packages
 echo "# package install/update commands" >> "$install_script_path"
 
+
+if ! (type home-manager > /dev/null 2>&1); then
+    echo "title \"Install packages from nix\"" >> "$install_script_path"
+    echo "nix run home-manager/master -- init --switch" >> "$install_script_path"
+else
+    echo "title \"Update packages from nix\"" >> "$install_script_path"
+    echo "nix flake update --flake ${home_manager_dir}" >> "$install_script_path"
+    echo "home-manager switch" >> "$install_script_path"
+fi
+
 if [[ "$os_name" == "macos" ]]; then
     echo -n > "$brew_file"
 
@@ -118,42 +128,22 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             # shellcheck disable=SC2016
             install_cmd='"${CARGO_HOME}/bin/rustup" run stable cargo install'
             ;;
-        "go")
-            install_cmd="go install"
-            ;;
-        "pipx")
-            install_cmd="pipx install"
-            update_cmd="pipx upgrade --include-injected"
-            ;;
-        "npm")
-            update_needed=()
-            install_cmd="npm install -g"
-            for package in "${package_names[@]}"; do
-                list_output=$(npm list -g "$package" --depth=0 || true)
-                if echo "$list_output" | grep -q "$package"; then
-                    current_version=$(echo "$list_output" | grep "$package" | cut -d "@" -f2)
-                else
-                    current_version=""
-                fi
-
-                latest_version=$(npm view "$package" version)
-
-                if [ "$current_version" != "$latest_version" ]; then
-                    update_needed+=("${package}@${latest_version}")
-                fi
-            done
-
-            package_names=("${update_needed[@]}")
-
-            if [ ${#package_names[@]} -eq 0 ]; then
-                echo "info \"All packages are up-to-date\""  >> "$install_script_path"
-                continue
-            fi
-
-            ;;
     esac
 
     case "$method" in
+        nix)
+            packages=$(printf '    %s\n' "${package_names[@]}")
+            username="$USER"
+            homeDirectory="$HOME"
+
+            mkdir -p "$home_manager_dir"
+            nix_packages_path="${home_manager_dir}/home.nix"
+            printf '{ config, pkgs, ... }:\n\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  # Let Home Manager install and manage itself.\n  programs.home-manager.enable = true;\n}\n' \
+                   "${username}" \
+                   "${homeDirectory}" \
+                   "${packages}" \
+                   > "$nix_packages_path"
+            ;;
         brew|cask)
             for package in "${package_names[@]}"; do
                 echo "${method} \"${package}\"" >> "$brew_file"
@@ -164,13 +154,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
                 echo "${method} \"${package}\", id: ${package}" >> "$brew_file"
             done
             ;;
-        pipx)
-            for package in "${package_names[@]}"; do
-                echo "${update_cmd} ${package} || ${install_cmd} ${package}"  >> "$install_script_path"
-            done
-
-            ;;
-        go|cargo)
+        cargo)
             for package in "${package_names[@]}"; do
                 echo "${install_cmd} ${package}" >> "$install_script_path"
             done

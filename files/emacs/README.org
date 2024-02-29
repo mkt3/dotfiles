@@ -939,6 +939,12 @@
       (use-package sh-script
         :hook (bash-ts-mode-hook . eglot-ensure))
     #+end_src
+*** Nix
+    #+begin_src emacs-lisp
+      (use-package nix-mode
+        :ensure t
+        :mode "\\.nix\\'")
+    #+end_src
 *** Python
     #+begin_src emacs-lisp
       (use-package python
