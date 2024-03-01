@@ -68,7 +68,7 @@ EOF
 
 
 # pre functions
-IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | jq --arg os "$os_name" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select(.value[$os] != null and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) |  .value[$os][] | .function | select(. != null)' && printf '\0')
+IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | jq --arg os "$os_name" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select((.value["common"] != null or .value[$os] != null) and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | (.value["common"][]?, .value[$os][]?) | .function | select(. != null)' && printf '\0')
 
 echo "# pre functions" >> "$install_script_path"
 for func in "${functions[@]}"; do
@@ -80,7 +80,6 @@ done
 
 # packages
 echo "# package install/update commands" >> "$install_script_path"
-
 
 if ! (type home-manager > /dev/null 2>&1); then
     echo "title \"Install packages from nix\"" >> "$install_script_path"
@@ -103,7 +102,7 @@ if [[ "$os_name" == "macos" ]]; then
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
-    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | jq --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select(.value[$os] != null and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | .value[$os][] | select(.method == $method) | .name | select(. != null)' && printf '\0')
+    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | jq --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select((.value["common"] != null or .value[$os] != null) and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | (.value["common"][]?, .value[$os][]?) | select(.method == $method) | .name | select(. != null)' && printf '\0')
 
     if [ ${#package_names[@]} -eq 0 ]; then
         continue
@@ -137,10 +136,13 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             homeDirectory="$HOME"
 
             mkdir -p "$home_manager_dir"
+            nix_user_path="${home_manager_dir}/user.nix"
             nix_packages_path="${home_manager_dir}/home.nix"
-            printf '{ config, pkgs, ... }:\n\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev" "mu4e"];\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  programs.home-manager.enable = true;\n}\n' \
+            printf '{ config, pkgs, ... }:\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev" "mu4e"];\n}\n' \
                    "${username}" \
                    "${homeDirectory}" \
+                   > "$nix_user_path"
+                        printf '{ config, pkgs, ... }:\n{\n  imports = [\n    ./user.nix\n  ];\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  programs.home-manager.enable = true;\n}\n' \
                    "${packages}" \
                    > "$nix_packages_path"
             ;;

@@ -1,0 +1,39 @@
+diff --git a/etc/emacs.desktop b/etc/emacs.desktop
+index 0d7cac14da5..4c7203a18b3 100644
+--- a/etc/emacs.desktop
++++ b/etc/emacs.desktop
+@@ -3,7 +3,7 @@ Name=Emacs
+ GenericName=Text Editor
+ Comment=Edit text
+ MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+-Exec=emacs %F
++Exec=env COLORTERM=truecolor env GTK_IM_MODULE=xim emacs %F
+ Icon=emacs
+ Type=Application
+ Terminal=false
+diff --git a/lisp/org/ol.el b/lisp/org/ol.el
+index ac0c308da21..3b37bda885b 100644
+--- a/lisp/org/ol.el
++++ b/lisp/org/ol.el
+@@ -1919,7 +1919,7 @@ Use TAB to complete link prefixes, then RET for type-specific completion support
+     ;; Check if we can/should use a relative path.  If yes, simplify
+     ;; the link.
+     (let ((case-fold-search nil))
+-      (when (string-match "\\`\\(file\\|docview\\):" link)
++      (when (string-match "\\`\\(file\\|nov\\|docview\\):" link)
+ 	(let* ((type (match-string-no-properties 0 link))
+ 	       (path-start (match-end 0))
+ 	       (search (and (string-match "::\\(.*\\)\\'" link)
+diff --git a/src/nsterm.m b/src/nsterm.m
+index f094b145fe3..980941f7a31 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -9461,7 +9461,7 @@ - (id)accessibilityAttributeValue:(NSString *)attribute
+   NSTRACE ("[EmacsWindow accessibilityAttributeValue:]");
+ 
+   if ([attribute isEqualToString:NSAccessibilityRoleAttribute])
+-    return NSAccessibilityTextFieldRole;
++    return NSAccessibilityWindowRole;
+ 
+   if ([attribute isEqualToString:NSAccessibilitySelectedTextAttribute]
+       && curbuf && ! NILP (BVAR (curbuf, mark_active)))

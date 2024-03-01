@@ -1,15 +1,11 @@
 # build package
 [nix]
 type = "basic"
-arch = [{ name = "nix", method = "script", function = "setup_nix" }]
-macos = [{ name = "nix", method = "script", function = "setup_nix" }]
-ubuntu = [{ name = "nix", method = "script", function = "setup_nix" }]
+common = [{ name = "nix", method = "script", function = "setup_nix" }]
 
 [cmake]
 type = "basic"
-arch = [{ name = "cmake", method = "nix" }]
-macos = [{ name = "cmake", method = "nix" }]
-ubuntu = [{ name = "cmake", method = "nix" }]
+common = [{ name = "cmake", method = "nix" }]
 
 [mas]
 type = "basic"
@@ -18,9 +14,7 @@ macos = [{ name = "mas", method = "nix" }]
 # common
 [xdg_config]
 type = "basic"
-arch = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
-macos = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
-ubuntu = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
+common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
 
 # CLI command packages
 [zsh]
@@ -37,190 +31,128 @@ ubuntu = [{ name = "coreutils", method = "apt" }]
 
 [fzf]
 type = "basic"
-arch = [{ name = "fzf", method = "nix" }]
-macos = [{ name = "fzf", method = "nix" }]
-ubuntu = [{ name = "fzf", method = "nix" }]
+common = [{ name = "fzf", method = "nix" }]
 
 [findutils]
 type = "basic"
-arch = [{ name = "findutils", method = "nix" }]
-macos = [{ name = "findutils", method = "nix" }]
-ubuntu = [{ name = "findutils", method = "nix" }]
+common = [{ name = "findutils", method = "nix" }]
 
 [grep]
 type = "basic"
-arch = [{ name = "gnugrep", method = "nix" }]
-macos = [{ name = "gnugrep", method = "nix" }]
-ubuntu = [{ name = "gnugrep", method = "nix" }]
+common = [{ name = "gnugrep", method = "nix" }]
 
 [sed]
 type = "basic"
-arch = [{ name = "gnused", method = "nix" }]
-macos = [{ name = "gnused", method = "nix" }]
-ubuntu = [{ name = "gnused", method = "nix" }]
+common = [{ name = "gnused", method = "nix" }]
 
 [gawk]
 type = "basic"
-arch = [{ name = "gawk", method = "nix" }]
-macos = [{ name = "gawk", method = "nix" }]
-ubuntu = [{ name = "gawk", method = "nix" }]
+common = [{ name = "gawk", method = "nix" }]
 
 [less]
 type = "basic"
-arch = [{ name = "less", method = "nix" }]
-macos = [{ name = "less", method = "nix" }]
-ubuntu = [{ name = "less", method = "nix" }]
+common = [{ name = "less", method = "nix" }]
 
 [yj]
 type = "basic"
-arch = [{ name = "yj", method = "nix" }]
-macos = [{ name = "yj", method = "nix" }]
-ubuntu = [{ name = "yj", method = "nix" }]
+common = [{ name = "yj", method = "nix" }]
 
 [jq]
 type = "basic"
-arch = [{ name = "jq", method = "nix" }]
-macos = [{ name = "jq", method = "nix" }]
-ubuntu = [{ name = "jq", method = "nix" }]
+common = [{ name = "jq", method = "nix" }]
 
 [tree]
 type = "basic"
-arch = [{ name = "tree", method = "nix" }]
-macos = [{ name = "tree", method = "nix" }]
-ubuntu = [{ name = "tree", method = "nix" }]
+common = [{ name = "tree", method = "nix" }]
 
 [duf]
 type = "basic"
-arch = [{ name = "duf", method = "nix" }]
-macos = [{ name = "duf", method = "nix" }]
-ubuntu = [{ name = "duf", method = "nix" }]
+common = [{ name = "duf", method = "nix" }]
 
 [neofetch]
 type = "basic"
-arch = [{ name = "neofetch", method = "nix" }]
-macos = [{ name = "neofetch", method = "nix" }]
-ubuntu = [{ name = "neofetch", method = "nix" }]
+common = [{ name = "neofetch", method = "nix" }]
 
 [unarchiver]
 type = "basic"
-arch = [{ name = "unar", method = "nix" }]
-macos = [{ name = "unar", method = "nix" }]
-ubuntu = [{ name = "unar", method = "nix" }]
+common = [{ name = "unar", method = "nix" }]
 
 [rsync]
 type = "basic"
-arch = [{ name = "rsync", method = "nix" }]
-macos = [{ name = "rsync", method = "nix" }]
-ubuntu = [{ name = "rsync", method = "nix" }]
+common = [{ name = "rsync", method = "nix" }]
 
 [trash-cli]
 type = "basic"
-arch = [{ name = "trash-cli", method = "nix" }]
-macos = [{ name = "trash-cli", method = "nix" }]
-ubuntu = [{ name = "trash-cli", method = "nix" }]
+common = [{ name = "trash-cli", method = "nix" }]
 
 [tmux]
 type = "basic"
-arch = [{ name = "tmux", method = "nix", function = "setup_tmux" }]
-macos = [{ name = "tmux", method = "nix", function = "setup_tmux" }]
-ubuntu = [{ name = "tmux", method = "nix", function = "setup_tmux" }]
+comon = [{ name = "tmux", method = "nix", function = "setup_tmux" }]
 
 [git]
 type = "basic"
-arch = [{ name = "git", method = "nix", function = "setup_git" }]
-macos = [{ name = "git", method = "nix", function = "setup_git" }]
-ubuntu = [{ name = "git", method = "nix", function = "setup_git" }]
+common = [{ name = "git", method = "nix", function = "setup_git" }]
 
 [sheldon]
 type = "basic"
-arch = [{ name = "sheldon", method = "cargo" }]
-macos = [{ name = "sheldon", method = "cargo" }]
-ubuntu = [{ name = "sheldon", method = "cargo" }]
+common = [{ name = "sheldon", method = "cargo" }]
 
 [procs]
 type = "basic"
-arch = [{ name = "procs", method = "nix" }]
-macos = [{ name = "procs", method = "nix" }]
-ubuntu = [{ name = "procs", method = "nix" }]
+common = [{ name = "procs", method = "nix" }]
 
 [bat]
 type = "basic"
-arch = [{ name = "bat", method = "nix" }]
-macos = [{ name = "bat", method = "nix" }]
-ubuntu = [{ name = "bat", method = "nix" }]
+common = [{ name = "bat", method = "nix" }]
 
 [fd]
 type = "basic"
-arch = [{ name = "fd", method = "nix" }]
-macos = [{ name = "fd", method = "nix" }]
-ubuntu = [{ name = "fd", method = "nix" }]
+common = [{ name = "fd", method = "nix" }]
 
 [ripgrep]
 type = "basic"
-arch = [{ name = "ripgrep", method = "nix", function = "setup_ripgrep" }]
-macos = [{ name = "ripgrep", method = "nix", function = "setup_ripgrep" }]
-ubuntu = [{ name = "ripgrep", method = "nix", function = "setup_ripgrep" }]
+common = [{ name = "ripgrep", method = "nix", function = "setup_ripgrep" }]
 
 [delta]
 type = "basic"
-arch = [{ name = "delta", method = "nix" }]
-macos = [{ name = "delta", method = "nix" }]
-ubuntu = [{ name = "delta", method = "nix" }]
+common = [{ name = "delta", method = "nix" }]
 
 [lsd]
 type = "basic"
-arch = [{ name = "lsd", method = "nix" }]
-macos = [{ name = "lsd", method = "nix" }]
-ubuntu = [{ name = "lsd", method = "nix" }]
+common = [{ name = "lsd", method = "nix" }]
 
 [dust]
 type = "basic"
-arch = [{ name = "dust", method = "nix" }]
-macos = [{ name = "dust", method = "nix" }]
-ubuntu = [{ name = "dust", method = "nix" }]
+common = [{ name = "dust", method = "nix" }]
 
 [csview]
 type = "basic"
-arch = [{ name = "csview", method = "nix" }]
-macos = [{ name = "csview", method = "nix" }]
-ubuntu = [{ name = "csview", method = "nix" }]
+common = [{ name = "csview", method = "nix" }]
 
 [zoxide]
 type = "basic"
-arch = [{ name = "zoxide", method = "nix" }]
-macos = [{ name = "zoxide", method = "nix" }]
-ubuntu = [{ name = "zoxide", method = "nix" }]
+common = [{ name = "zoxide", method = "nix" }]
 
 [navi]
 type = "basic"
-arch = [{ name = "navi", method = "nix", function = "setup_navi" }]
-macos = [{ name = "navi", method = "nix", function = "setup_navi" }]
-ubuntu = [{ name = "navi", method = "nix", function = "setup_navi" }]
+common = [{ name = "navi", method = "nix", function = "setup_navi" }]
 
 [lazygit]
 type = "basic"
-arch = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
-macos = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
-ubuntu = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
+common = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
 
 [docker]
 type = "basic"
-arch = [{ name = "docker", method = "script", function = "setup_docker" }]
-macos = [{ name = "docker", method = "script", function = "setup_docker" }]
-ubuntu = [{ name = "docker", method = "script", function = "setup_docker" }]
+common = [{ name = "docker", method = "script", function = "setup_docker" }]
 
 ## security
 [openssl]
 type = "basic"
-arch = [{ name = "openssl_3_2", method = "nix" }]
-macos = [{ name = "openssl_3_2", method = "nix" }]
-ubuntu = [{ name = "openssl_3_2", method = "nix" }]
+common = [{ name = "openssl_3_2", method = "nix" }]
 
 [gnupg]
 type = "basic"
-arch = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
-macos = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
-ubuntu = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
+common = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
 
 [macos-security]
 type = "basic"
@@ -237,28 +169,20 @@ macos = [{ name = "darwin.iproute2mac", method = "nix" }]
 ## downloader
 [wget]
 type = "basic"
-arch = [{ name = "wget", method = "nix" }]
-macos = [{ name = "wget", method = "nix" }]
-ubuntu = [{ name = "wget", method = "nix" }]
+common = [{ name = "wget", method = "nix" }]
 
 [curl]
 type = "basic"
-arch = [{ name = "curl", method = "nix" }]
-macos = [{ name = "curl", method = "nix" }]
-ubuntu = [{ name = "curl", method = "nix" }]
+common = [{ name = "curl", method = "nix" }]
 
 [aria2]
 type = "basic"
-arch = [{ name = "aria", method = "nix" }]
-macos = [{ name = "aria", method = "nix" }]
-ubuntu = [{ name = "aria", method = "nix" }]
+common = [{ name = "aria", method = "nix" }]
 
 ## top series
 [htop]
 type = "basic"
-arch = [{ name = "htop", method = "nix" }]
-macos = [{ name = "htop", method = "nix" }]
-ubuntu = [{ name = "htop", method = "nix" }]
+common = [{ name = "htop", method = "nix" }]
 
 [iotop]
 type = "basic"
@@ -273,185 +197,176 @@ ubuntu = [{ name = "iotop", method = "nix" }]
 # Editor
 [vim]
 type = "basic"
-arch = [{ name = "vim", method = "nix", function = "setup_vim" }]
-macos = [{ name = "vim", method = "nix", function = "setup_vim" }]
-ubuntu = [{ name = "vim", method = "nix", function = "setup_vim" }]
+common = [{ name = "vim", method = "nix", function = "setup_vim" }]
 
-[emacs]
+# [emacs-basic]
+# type = "basic"
+# common = [
+#   { name = "emacs", method = "script", function = "setup_emacs" },
+#   { name = "gnumake", method = "nix" },
+#   { name = "autoconf", method = "nix" },
+#   { name = "gnused", method = "nix" },
+#   { name = "gnutar", method = "nix" },
+#   { name = "gnugrep", method = "nix" },
+#   { name = "gawk", method = "nix" },
+#   { name = "coreutils", method = "nix" },
+#   { name = "pkg-config", method = "nix" },
+#   { name = "texinfo", method = "nix" },
+#   { name = "xz", method = "nix" },
+#   { name = "gnutls", method = "nix" },
+#   { name = "lcms", method = "nix" },
+#   { name = "jansson", method = "nix" },
+#   { name = "tree-sitter", method = "nix" },
+#   { name = "libgccjit", method = "nix" },
+#   { name = "libxml2", method = "nix" },
+#   { name = "gcc", method = "nix" },
+#   { name = "gmp", method = "nix" },
+#   { name = "zlib", method = "nix" },
+#   { name = "hunspell", method = "nix" },
+#   { name = "hunspellDicts.en-us", method = "nix" },
+#   { name = "enchant", method = "nix" },
+#   { name = "marksman", method = "nix" },
+#   { name = "ncurses", method = "nix" },
+# ]
+# arch = [
+#   { name = "acl", method = "nix" },
+#   { name = "bdus", method = "nix" },
+#   { name = "gpm", method = "nix" },
+#   { name = "systemdLibs", method = "nix" },
+
+# ]
+# [emacs-gui]
+# type = "gui"
+# macos = [
+#   { name = "librsvg", method = "nix" },
+#   { name = "libwebp", method = "nix" },
+#   { name = "harfbuzz", method = "nix" },
+#   { name = "libtiff", method = "nix" },
+#   { name = "giflib", method = "nix" },
+#   { name = "libjpeg", method = "nix" },
+#   { name = "libpng", method = "nix" },
+#   { name = "mailutils", method = "nix" },
+#   { name = "isync", method = "nix" },
+#   { name = "msmtp", method = "nix" },
+#   { name = "mu", method = "nix" },
+#   { name = "terminal-notifier", method = "nix" },
+#   { name = "imagemagick", method = "nix" },
+# ]
+# arch = [
+#   { name = "alsa-lib", method = "nix" },
+#   { name = "fontconfig", method = "nix" },
+#   { name = "freetype", method = "nix" },
+#   { name = "gtk3", method = "nix" },
+# ]
+
+[emacs-basic]
 type = "basic"
-arch = [{ name = "emacs", method = "script", function = "setup_emacs" }]
-macos = [{ name = "emacs", method = "script", function = "setup_emacs" },
-  { name = "gnumake", method = "nix" },
-  { name = "autoconf", method = "nix" },
-  { name = "gnused", method = "nix" },
-  { name = "gnutar", method = "nix" },
-  { name = "gnugrep", method = "nix" },
-  { name = "gawk", method = "nix" },
-  { name = "coreutils", method = "nix" },
-  { name = "xz", method = "nix" },
-  { name = "librsvg", method = "nix" },
-  { name = "xz", method = "nix" },
-  { name = "lcms", method = "nix" },
-  { name = "tree-sitter", method = "nix" },
-  { name = "libwebp", method = "nix" },
-  { name = "harfbuzz", method = "nix" },
-  { name = "libxml2", method = "nix" },
-  { name = "libtiff", method = "nix" },
-  { name = "giflib", method = "nix" },
-  { name = "mailutils", method = "nix" },
-  { name = "gcc", method = "nix" },
-  { name = "gmp", method = "nix" },
-  { name = "libjpeg", method = "nix" },
-  { name = "libpng", method = "nix" },
-  { name = "zlib", method = "nix" },
+macos = [
+  { name = "patched-emacs", method = "nix" },
+  { name = "hunspell", method = "nix" },
+  { name = "hunspellDicts.en-us", method = "nix" },
+  { name = "enchant", method = "nix" },
+]
+
+[emacs-gui]
+type = "gui"
+macos = [
   { name = "isync", method = "nix" },
   { name = "msmtp", method = "nix" },
   { name = "mu", method = "nix" },
   { name = "terminal-notifier", method = "nix" },
-  { name = "imagemagick", method = "nix" },
-  { name = "hunspell", method = "nix" },
-  { name = "hunspellDicts.en-us", method = "nix" },
-  { name = "enchant", method = "nix" },
-  { name = "texinfo", method = "nix" },
-  { name = "libgccjit", method = "nix" },
-  { name = "pkg-config", method = "nix" },
-  { name = "jansson", method = "nix" },
-  { name = "gnutls", method = "nix" },
+  { name = "goimapnotify", method = "nix" }
 ]
-ubuntu = [{ name = "emacs", method = "script", function = "setup_emacs" }]
-
 
 # repository management
 [ghq]
 type = "basic"
-arch = [{ name = "ghq", method = "nix", function = "setup_ghq" }]
-macos = [{ name = "ghq", method = "nix", function = "setup_ghq" }]
-ubuntu = [{ name = "ghq", method = "nix", function = "setup_ghq" }]
+common = [{ name = "ghq", method = "nix", function = "setup_ghq" }]
 
 # development packages
 ## shell script
 [shellcheck]
 type = "dev"
-arch = [{ name = "shellcheck-minimal", method = "nix" }]
-macos = [{ name = "shellcheck-minimal", method = "nix" }]
-ubuntu = [{ name = "shellcheck-minimal", method = "nix" }]
+common = [{ name = "shellcheck-minimal", method = "nix" }]
 
 ## python
 [python]
 type = "dev"
-arch = [
-  { name = "python311Full", method = "nix", function = "setup_python" } ]
-macos = [
-  { name = "python311Full", method = "nix", function = "setup_python" } ]
-ubuntu = [
-  { name = "python311Full", method = "nix", function = "setup_python" } ]
+common = [{ name = "python311Full", method = "nix", function = "setup_python" }]
 
 ## for python
 [ruff]
 type = "dev"
-arch = [{ name = "ruff", method = "nix", function = "setup_ruff" }]
-macos = [{ name = "ruff", method = "nix", function = "setup_ruff" }]
-ubuntu = [{ name = "ruff", method = "nix", function = "setup_ruff" }]
+common = [{ name = "ruff", method = "nix", function = "setup_ruff" }]
 
 [pyright]
 type = "dev"
-arch = [{ name = "nodePackages.pyright", method = "nix" }]
-macos = [{ name = "nodePackages.pyright", method = "nix" }]
-ubuntu = [{ name = "nodePackages.pyright", method = "nix" }]
+common = [{ name = "nodePackages.pyright", method = "nix" }]
 
 [jupyterlab]
 type = "dev"
-arch = [{ name = "python311Packages.jupyterlab", method = "nix", function = "setup_jupyterlab" }]
-macos = [{ name = "python311Packages.jupyterlab", method = "nix", function = "setup_jupyterlab" }]
-ubuntu = [{ name = "python311Packages.jupyterlab", method = "nix", function = "setup_jupyterlab" }]
+common = [{ name = "python311Packages.jupyterlab", method = "nix", function = "setup_jupyterlab" }]
 
 [uv]
 type = "dev"
-arch = [{ name = "uv", method = "nix" }]
-macos = [{ name = "uv", method = "nix" }]
-ubuntu = [{ name = "uv", method = "nix" }]
+common = [{ name = "uv", method = "nix" }]
 
 [poetry]
 type = "dev"
-arch = [{ name = "poetry", method = "nix", function = "setup_poetry" }]
-macos = [{ name = "poetry", method = "nix", function = "setup_poetry" }]
-ubuntu = [{ name = "poetry", method = "nix", function = "setup_poetry" }]
+comon = [{ name = "poetry", method = "nix", function = "setup_poetry" }]
 
 ## mise
 [mise]
 type = "dev"
-arch = [{ name = "mise", method = "nix", function = "setup_mise" }]
-macos = [{ name = "mise", method = "nix", function = "setup_mise" }]
-ubuntu = [{ name = "mise", method = "nix", function = "setup_mise" }]
+common = [{ name = "mise", method = "nix", function = "setup_mise" }]
 
 ## nodejs
 [nodejs]
 type = "dev"
-arch = [
-  { name = "npm",method = "script", function = "setup_npm" },
-]
-macos = [{ name = "npm", method = "script", function = "setup_npm" }]
-ubuntu = [{ name = "npm", method = "script", function = "setup_npm" }]
+common = [{ name = "npm",method = "script", function = "setup_npm" }]
 
 ## for bash
 [bash-language-server]
 type = "dev"
-arch = [{ name = "nodePackages.bash-language-server", method = "nix" }]
-macos = [{ name = "nodePackages.bash-language-server", method = "nix" }]
-ubuntu = [{ name = "nodePackages.bash-language-server", method = "nix" }]
+common = [{ name = "nodePackages.bash-language-server", method = "nix" }]
 
 ## for markdown eslint json
 [vscode-langservers-extracted]
 type = "dev"
-arch = [{ name = "nodePackages.vscode-langservers-extracted", method = "nix" }]
-macos = [{ name = "nodePackages.vscode-langservers-extracted", method = "nix" }]
-ubuntu = [{ name = "nodePackages.vscode-langservers-extracted", method = "nix" }]
+common = [{ name = "nodePackages.vscode-langservers-extracted", method = "nix" }]
 
 ## for typescript
 [typescript-language-server]
 type = "dev"
-arch = [{ name = "nodePackages.typescript-language-server", method = "nix" }]
-macos = [{ name = "nodePackages.typescript-language-server", method = "nix" }]
-ubuntu = [{ name = "nodePackages.typescript-language-server", method = "nix" }]
+common = [{ name = "nodePackages.typescript-language-server", method = "nix" }]
 
 [typescript]
 type = "dev"
-arch = [{ name = "typescript", method = "nix" }]
-macos = [{ name = "typescript", method = "nix" }]
-ubuntu = [{ name = "typescript", method = "nix" }]
+common = [{ name = "typescript", method = "nix" }]
 
 ## google cloud sdk
 [google-cloud-sdk]
 type = "dev"
-arch = [{ name = "google-cloud-sdk", method = "nix" }]
-macos = [{ name = "google-cloud-sdk", method = "nix" }]
-ubuntu = [{ name = "google-cloud-sdk", method = "nix" }]
+common = [{ name = "google-cloud-sdk", method = "nix" }]
 
 # gui packages
 ## tex
 [latex]
 type = "gui"
-arch = [
-  { name = "texlive", method = "pacman", function = "setup_latex" },
-  { name = "dvisvgm", method = "pacman" },
-]
-macos = [{ name = "texliveMedium", method = "nix", function = "setup_latex" }]
+common = [{ name = "texliveMedium", method = "nix", function = "setup_latex" }]
 
 ## communication tools
 [slack]
 type = "gui"
-arch = [{ name = "slack", method = "nix" }]
-macos = [{ name = "slack", method = "nix" }]
+common = [{ name = "slack", method = "nix" }]
 
 [discord]
 type = "gui"
-arch = [{ name = "discord", method = "nix" }]
-macos = [{ name = "discord", method = "nix" }]
+common = [{ name = "discord", method = "nix" }]
 
 [zoom]
 type = "gui"
-arch = [{ name = "zoom-us", method = "nix" }]
-macos = [{ name = "zoom-us", method = "nix" }]
+common = [{ name = "zoom-us", method = "nix" }]
 
 [MeetingBar]
 type = "gui"
@@ -485,13 +400,12 @@ macos = [{ name = "vlc", method = "cask" }]
 ## research
 [zotero]
 type = "gui"
-arch = [{ name = "zotero-bin", method = "aur" }]
+arch = [{ name = "zotero", method = "nix" }]
 macos = [{ name = "zotero", method = "cask" }]
 
 [anki]
 type = "gui"
-arch = [{ name = "anki-bin", method = "aur" }]
-macos = [{ name = "anki-bin", method = "nix" }]
+common = [{ name = "anki-bin", method = "nix" }]
 
 ## password manager
 [bitwarden]
@@ -615,33 +529,26 @@ macos = [
 
 [skk-dict]
 type = "gui"
-arch = [{ name = "skk", method = "script", function = "setup_skk" }]
-macos = [{ name = "skk", method = "script", function = "setup_skk" }]
+common = [{ name = "skk", method = "script", function = "setup_skk" }]
 
 ## recoll
 [recoll]
 type = "gui"
-arch = [
+commmon = [
   { name = "recoll", method = "nix", function = "setup_recoll" },
   { name = "aspellDicts.en", method = "nix" },
-  { name = "poppler", method = "nix" },
-]
-macos = [
-  { name = "recoll", method = "nix", function = "setup_recoll" },
   { name = "poppler", method = "nix" },
 ]
 
 ## hugo
 [hugo]
 type = "gui"
-arch = [{ name = "hugo", method = "nix" }]
-macos = [{ name = "hugo", method = "nix" }]
+common = [{ name = "hugo", method = "nix" }]
 
 ## gatsby
 [gatsby-cli]
 type = "gui"
-arch = [{ name = "nodePackages.gatsby-cli", method = "nix" }]
-macos = [{ name = "nodePackages.gatsby-cli", method = "nix" }]
+common = [{ name = "nodePackages.gatsby-cli", method = "nix" }]
 
 ## programing font
 [programing_font]
@@ -653,12 +560,6 @@ arch = [{ name = "programing_font", method = "script", function = "setup_prograi
 type = "gui"
 macos = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
 arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setup_xremap" }]
-
-## mail notifier
-[goimapnotify]
-type = "gui"
-arch = [{ name = "goimapnotify", method = "nix" }]
-macos = [{ name = "goimapnotify", method = "nix" }]
 
 ## backup tools
 [borg]

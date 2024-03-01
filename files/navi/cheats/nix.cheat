@@ -1,0 +1,4 @@
+% nix
+
+# Delete old files
+nix-collect-garbage --delete-old

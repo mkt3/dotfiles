@@ -11,6 +11,17 @@ pre_setup_nix() {
     ln -sfn "${nix_dir}/nix.conf" "${XDG_CONFIG_HOME}/nix/"
 
     mkdir -p "$home_manager_dir"
+    cp -rf "${nix_dir}/home-manager/overlays" "$home_manager_dir"
+
+    if [ "$OS" = "Darwin" ]; then
+        mv "${home_manager_dir}/overlays/patched-emacs/emacs-git.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+    elif [ "$OS" = "Linux" ]; then
+        if [ "$GUI_ENV" = "y" ]; then
+            mv "${home_manager_dir}/overlays/patched-emacs/emacs-pgtk.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+        else
+            mv "${home_manager_dir}/overlays/patched-emacs/emacs-git-nox.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+        fi
+    fi
 
     local nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
 
@@ -25,15 +36,19 @@ pre_setup_nix() {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, emacs-overlay, ... }:
     let
       pkgs = import nixpkgs { system = "$nix_platform"; config.allowUnfree = true; };
     in {
       homeConfigurations."$USER" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./home.nix ];
+        modules = [
+           ({ config, pkgs, ... }: { nixpkgs.overlays = [ emacs-overlay.overlays.emacs (import ./overlays/patched-emacs)]; })
+           ./home.nix
+        ];
       };
     };
 }
