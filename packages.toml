@@ -87,7 +87,7 @@ common = [{ name = "trash-cli", method = "nix" }]
 
 [tmux]
 type = "basic"
-comon = [{ name = "tmux", method = "nix", function = "setup_tmux" }]
+common = [{ name = "tmux", method = "nix", function = "setup_tmux" }]
 
 [git]
 type = "basic"
@@ -199,70 +199,9 @@ ubuntu = [{ name = "iotop", method = "nix" }]
 type = "basic"
 common = [{ name = "vim", method = "nix", function = "setup_vim" }]
 
-# [emacs-basic]
-# type = "basic"
-# common = [
-#   { name = "emacs", method = "script", function = "setup_emacs" },
-#   { name = "gnumake", method = "nix" },
-#   { name = "autoconf", method = "nix" },
-#   { name = "gnused", method = "nix" },
-#   { name = "gnutar", method = "nix" },
-#   { name = "gnugrep", method = "nix" },
-#   { name = "gawk", method = "nix" },
-#   { name = "coreutils", method = "nix" },
-#   { name = "pkg-config", method = "nix" },
-#   { name = "texinfo", method = "nix" },
-#   { name = "xz", method = "nix" },
-#   { name = "gnutls", method = "nix" },
-#   { name = "lcms", method = "nix" },
-#   { name = "jansson", method = "nix" },
-#   { name = "tree-sitter", method = "nix" },
-#   { name = "libgccjit", method = "nix" },
-#   { name = "libxml2", method = "nix" },
-#   { name = "gcc", method = "nix" },
-#   { name = "gmp", method = "nix" },
-#   { name = "zlib", method = "nix" },
-#   { name = "hunspell", method = "nix" },
-#   { name = "hunspellDicts.en-us", method = "nix" },
-#   { name = "enchant", method = "nix" },
-#   { name = "marksman", method = "nix" },
-#   { name = "ncurses", method = "nix" },
-# ]
-# arch = [
-#   { name = "acl", method = "nix" },
-#   { name = "bdus", method = "nix" },
-#   { name = "gpm", method = "nix" },
-#   { name = "systemdLibs", method = "nix" },
-
-# ]
-# [emacs-gui]
-# type = "gui"
-# macos = [
-#   { name = "librsvg", method = "nix" },
-#   { name = "libwebp", method = "nix" },
-#   { name = "harfbuzz", method = "nix" },
-#   { name = "libtiff", method = "nix" },
-#   { name = "giflib", method = "nix" },
-#   { name = "libjpeg", method = "nix" },
-#   { name = "libpng", method = "nix" },
-#   { name = "mailutils", method = "nix" },
-#   { name = "isync", method = "nix" },
-#   { name = "msmtp", method = "nix" },
-#   { name = "mu", method = "nix" },
-#   { name = "terminal-notifier", method = "nix" },
-#   { name = "imagemagick", method = "nix" },
-# ]
-# arch = [
-#   { name = "alsa-lib", method = "nix" },
-#   { name = "fontconfig", method = "nix" },
-#   { name = "freetype", method = "nix" },
-#   { name = "gtk3", method = "nix" },
-# ]
-
 [emacs-basic]
 type = "basic"
 macos = [
-  { name = "patched-emacs", method = "nix" },
   { name = "hunspell", method = "nix" },
   { name = "hunspellDicts.en-us", method = "nix" },
   { name = "enchant", method = "nix" },
@@ -275,7 +214,8 @@ macos = [
   { name = "msmtp", method = "nix" },
   { name = "mu", method = "nix" },
   { name = "terminal-notifier", method = "nix" },
-  { name = "goimapnotify", method = "nix" }
+  { name = "goimapnotify", method = "nix" },
+  { name = "emacsPackages.pdf-tools", method = "nix" },
 ]
 
 # repository management
@@ -323,7 +263,7 @@ common = [{ name = "mise", method = "nix", function = "setup_mise" }]
 ## nodejs
 [nodejs]
 type = "dev"
-common = [{ name = "npm",method = "script", function = "setup_npm" }]
+common = [{ name = "npm", method = "script", function = "setup_npm" }]
 
 ## for bash
 [bash-language-server]

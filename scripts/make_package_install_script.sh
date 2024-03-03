@@ -142,7 +142,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
                    "${username}" \
                    "${homeDirectory}" \
                    > "$nix_user_path"
-                        printf '{ config, pkgs, ... }:\n{\n  imports = [\n    ./user.nix\n  ];\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  programs.home-manager.enable = true;\n}\n' \
+                        printf '{ config, pkgs, ... }:\n{\n  imports = [\n    ./user.nix\n  ];\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  programs.home-manager.enable = true;\n  programs.emacs = {\n    enable = true;\n    package = pkgs.patched-emacs;\n    extraPackages = epkgs: [\n       epkgs.pdf-tools\n       epkgs.mu4e\n       epkgs.jinx\n    ];\n  };\n}\n' \
                    "${packages}" \
                    > "$nix_packages_path"
             ;;

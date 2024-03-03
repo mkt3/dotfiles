@@ -30,7 +30,7 @@ case "${OS}" in
         (( ${+commands[gfind]} )) && alias find='gfind'
         (( ${+commands[gdirname]} )) && alias dirname='gdirname'
         (( ${+commands[gxargs]} )) && alias xargs='gxargs'
-        alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
+        alias emacs='${HOME}/Applications/Home\ Manager\ Apps/Emacs.app/Contents/MacOS/Emacs -nw'
         ;;
     Linux)
         alias open="xdg-open"

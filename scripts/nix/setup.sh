@@ -14,12 +14,12 @@ pre_setup_nix() {
     cp -rf "${nix_dir}/home-manager/overlays" "$home_manager_dir"
 
     if [ "$OS" = "Darwin" ]; then
-        mv "${home_manager_dir}/overlays/patched-emacs/emacs-git.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+        cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
     elif [ "$OS" = "Linux" ]; then
         if [ "$GUI_ENV" = "y" ]; then
-            mv "${home_manager_dir}/overlays/patched-emacs/emacs-pgtk.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-pgtk.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
         else
-            mv "${home_manager_dir}/overlays/patched-emacs/emacs-git-nox.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git-nox.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
         fi
     fi
 
