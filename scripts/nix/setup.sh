@@ -12,6 +12,7 @@ pre_setup_nix() {
 
     mkdir -p "$home_manager_dir"
     cp -rf "${nix_dir}/home-manager/overlays" "$home_manager_dir"
+    cp -rf "${nix_dir}/home-manager/programs" "$home_manager_dir"
 
     if [ "$OS" = "Darwin" ]; then
         cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"

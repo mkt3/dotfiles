@@ -1,7 +1,9 @@
 # fzf
-[ -f ~/.config/fzf/fzf.zsh ] && source ~/.config/fzf/fzf.zsh
+if [ -n "${commands[fzf-share]}" ]; then
+  . "$(fzf-share)/key-bindings.zsh"
+  . "$(fzf-share)/completion.zsh"
+fi
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-#export FZF_DEFAULT_OPTS='--height 40% --reverse --border --ansi'
 export FZF_DEFAULT_OPTS='--reverse --border --ansi'
 
 export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --ignore-file=$XDG_CONFIG_HOME/ripgrep/ignore"

@@ -5,6 +5,7 @@ files/borg/security
 !.gitkeep
 *.zwc
 files/zsh/sheldon/sheldon.zsh
+files/navi/navi.log
 .zcompdump
 key.json
 meta.json

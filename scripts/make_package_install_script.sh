@@ -28,13 +28,14 @@ declare -A methods
 methods["ubuntu"]="apt"
 methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
-common_methods=("cargo" "nix")
+common_methods=("cargo" "nix" "nix-program")
 
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
 brew_file="${REPO_DIR:-..}/results/Brewfile"
 home_manager_dir="${HOME}/.config/home-manager"
+mkdir -p "$home_manager_dir"
 
 json_content=$(yj -t < "$toml_file")
 
@@ -132,19 +133,24 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
     case "$method" in
         nix)
             packages=$(printf '    %s\n' "${package_names[@]}")
-            username="$USER"
-            homeDirectory="$HOME"
 
-            mkdir -p "$home_manager_dir"
-            nix_user_path="${home_manager_dir}/user.nix"
-            nix_packages_path="${home_manager_dir}/home.nix"
-            printf '{ config, pkgs, ... }:\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev" "mu4e"];\n}\n' \
-                   "${username}" \
-                   "${homeDirectory}" \
-                   > "$nix_user_path"
-                        printf '{ config, pkgs, ... }:\n{\n  imports = [\n    ./user.nix\n  ];\n\n  home.packages = with pkgs; [\n%s\n  ];\n\n  programs.home-manager.enable = true;\n  programs.emacs = {\n    enable = true;\n    package = pkgs.patched-emacs;\n    extraPackages = epkgs: [\n       epkgs.pdf-tools\n       epkgs.mu4e\n       epkgs.jinx\n    ];\n  };\n}\n' \
+            packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages_${os_name}-dev-${dev_env}-gui-${gui_env}.nix"
+            printf '{ config, pkgs, ... }:\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev"];\n\n  imports = [\n    ./packages.nix\n    ./program_list.nix\n  ];\n\n  programs.home-manager.enable = true;\n\n}' \
+                   "${USER}" \
+                   "${HOME}" \
+                   > "${home_manager_dir}/home.nix"
+            printf '{ config, pkgs, ... }:\n{\n  home.packages = with pkgs; [\n%s\n  ];\n}\n' \
                    "${packages}" \
-                   > "$nix_packages_path"
+                   > "$packages_nix_path"
+            cp -rf "$packages_nix_path" "${home_manager_dir}/packages.nix"
+            ;;
+        nix-program)
+            packages=$(printf '    ./programs/%s.nix\n' "${package_names[@]}")
+            nix_program_list_path="${CONFIGS_DIR}/nix/home-manager/program_list_${os_name}-dev-${dev_env}-gui-${gui_env}.nix"
+            printf '{ config, pkgs, ... }:\n{\n  imports = [\n%s\n  ];\n\n}\n' \
+                   "${packages}" \
+                   > "$nix_program_list_path"
+            cp -rf "$nix_program_list_path" "${home_manager_dir}/program_list.nix"
             ;;
         brew|cask)
             for package in "${package_names[@]}"; do

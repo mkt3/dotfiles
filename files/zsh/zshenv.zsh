@@ -60,8 +60,6 @@ if [[ "$OS" == 'Darwin' ]];then
         export PATH="/usr/local/bin:${MAC_DEFAULT_PATH}"
         export PATH="/usr/local/opt/texinfo/bin:${PATH}"
     fi
-    export PATH="${HOME}/.local/src/emacs/nextstep/Emacs.app/Contents/MacOS/bin:${PATH}"
-    export PATH="${PATH}:/Applications/recoll.app/Contents/MacOS"
 elif [[ "$OS" == 'Linux' ]];then
     LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
     export PATH="$LINUX_DEFAULT_PATH"
@@ -127,9 +125,6 @@ export PATH="$PATH:${GOPATH}/bin"
 
 # navi
 export NAVI_CONFIG="${HOME}/.config/navi/config.yaml"
-
-# latex
-export PATH="${PATH}:/Library/TeX/texbin"
 
 # GnuPG
 ## default value is ~/.gnupg.  If use non-default GnuPG Home directory, need to edit all socket files.

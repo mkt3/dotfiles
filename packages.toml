@@ -11,7 +11,7 @@ common = [{ name = "cmake", method = "nix" }]
 type = "basic"
 macos = [{ name = "mas", method = "nix" }]
 
-# common
+# xdg config
 [xdg_config]
 type = "basic"
 common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
@@ -201,7 +201,8 @@ common = [{ name = "vim", method = "nix", function = "setup_vim" }]
 
 [emacs-basic]
 type = "basic"
-macos = [
+common = [
+  { name = "emacs", method = "nix-program" },
   { name = "hunspell", method = "nix" },
   { name = "hunspellDicts.en-us", method = "nix" },
   { name = "enchant", method = "nix" },
@@ -209,13 +210,12 @@ macos = [
 
 [emacs-gui]
 type = "gui"
-macos = [
+common = [
   { name = "isync", method = "nix" },
   { name = "msmtp", method = "nix" },
   { name = "mu", method = "nix" },
   { name = "terminal-notifier", method = "nix" },
   { name = "goimapnotify", method = "nix" },
-  { name = "emacsPackages.pdf-tools", method = "nix" },
 ]
 
 # repository management
@@ -293,7 +293,7 @@ common = [{ name = "google-cloud-sdk", method = "nix" }]
 ## tex
 [latex]
 type = "gui"
-common = [{ name = "texliveMedium", method = "nix", function = "setup_latex" }]
+common = [{ name = "texliveMedium", method = "nix" }]
 
 ## communication tools
 [slack]
@@ -357,11 +357,7 @@ macos = [{ name = "1352778147", method = "mas" }]
 [wezterm]
 type = "gui"
 arch = [{ name = "wezterm", method = "nix", function = "setup_wezterm" }]
-macos = [
-  { name = "wezterm", method = "cask", function = "setup_wezterm" },
-  { name = "font-cica", method = "cask" },
-  { name = "font-plemol-jp-nf", method = "cask" },
-]
+macos = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
 
 ## cloud storage
 [nextcloud-client]
@@ -464,6 +460,8 @@ macos = [
   { name = "koekeishiya/formulae/skhd", method = "brew", function = "setup_skhd" },
   { name = "FelixKratz/formulae/sketchybar", method = "brew", function = "setup_sketchybar" },
   { name = "font-hack-nerd-font", method = "cask" },
+  { name = "font-cica", method = "cask" },
+  { name = "font-plemol-jp-nf", method = "cask" },
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
 ]
 
@@ -474,11 +472,7 @@ common = [{ name = "skk", method = "script", function = "setup_skk" }]
 ## recoll
 [recoll]
 type = "gui"
-commmon = [
-  { name = "recoll", method = "nix", function = "setup_recoll" },
-  { name = "aspellDicts.en", method = "nix" },
-  { name = "poppler", method = "nix" },
-]
+common = [{ name = "recoll", method = "nix", function = "setup_recoll" }]
 
 ## hugo
 [hugo]

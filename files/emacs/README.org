@@ -1224,20 +1224,20 @@
          (advice-add 'org-todo-list :before #'my:org-agenda-update-files)
          (advice-add 'org-refile :before #'my:org-agenda-update-files)
 
-         (defun update-org-agenda-buffer ()
-           "Update the *Org Agenda* buffer if it exists."
-           (when (get-buffer "*Org Agenda*")
-             (with-current-buffer "*Org Agenda*"
-               (let ((current-position (point)))
-                 (org-agenda-redo)
-                 (goto-char current-position)))))
+         ;; (defun update-org-agenda-buffer ()
+         ;;   "Update the *Org Agenda* buffer if it exists."
+         ;;   (when (get-buffer "*Org Agenda*")
+         ;;     (with-current-buffer "*Org Agenda*"
+         ;;       (let ((current-position (point)))
+         ;;         (org-agenda-redo)
+         ;;         (goto-char current-position)))))
 
-         (defun safe-update-org-agenda-buffer ()
-           "Safely update the *Org Agenda* buffer and handle any errors."
-           (condition-case err
-               (update-org-agenda-buffer)
-             (error (message "Error updating *Org Agenda*: %s" (error-message-string err)))))
-         (run-with-timer 0 60 'safe-update-org-agenda-buffer)
+         ;; (defun safe-update-org-agenda-buffer ()
+         ;;   "Safely update the *Org Agenda* buffer and handle any errors."
+         ;;   (condition-case err
+         ;;       (update-org-agenda-buffer)
+         ;;     (error (message "Error updating *Org Agenda*: %s" (error-message-string err)))))
+         ;; (run-with-timer 0 60 'safe-update-org-agenda-buffer)
 
          (defvar org-clock-current-task-file
            (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
@@ -1730,6 +1730,7 @@
              ("i" . elfeed-webkit-toggle)))
   #+end_src
 * Mail
+  This uses natively-compiled code, I install this alongside emacs via nix.
 ** mu4e
    #+begin_src emacs-lisp
      (use-package mu4e
@@ -1851,19 +1852,18 @@
   #+end_src
 * External Collaboration
 ** Pdf
+   This uses natively-compiled code, I install this alongside emacs via nix.
    #+begin_src emacs-lisp
      (use-package pdf-tools
        :if (display-graphic-p)
        :demand t ; load-path has already been set by nix
        :commands (open-pdf-in-external-app)
        :hook (pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1)))
-       ;; :mode (("\\.pdf\\'" . pdf-view-mode))
        :bind (nil
               :map pdf-view-mode-map
               ("C-s" . isearch-forward)
               ("C-c C-o" . open-pdf-in-external-app))
        :config
-       (setq pdf-info-epdfinfo-program (expand-file-name ".local/state/nix/profile/share/emacs/site-lisp/elpa/pdf-tools-20230611.239/epdfinfo" (getenv "HOME")))
        (pdf-loader-install)
        (setq-default pdf-view-display-size 'fit-page)
        (setq pdf-view-incompatible-modes '(linum-mode linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode))
