@@ -75,6 +75,7 @@ fi
 export CFLAGS="-I${HOME}/.local/state/nix/profile/include"
 export LDFLAGS="-L${HOME}/.local/state/nix/profile/lib"
 export PKG_CONFIG_PATH="${HOME}/.local/state/nix/profile/lib/pkgconfig"
+export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
 
 # Python
 export PYTHONUSERBASE="${HOME}/.local"
