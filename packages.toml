@@ -7,10 +7,6 @@ common = [{ name = "nix", method = "script", function = "setup_nix" }]
 type = "basic"
 common = [{ name = "cmake", method = "nix" }]
 
-[mas]
-type = "basic"
-macos = [{ name = "mas", method = "nix" }]
-
 # xdg config
 [xdg_config]
 type = "basic"
@@ -76,6 +72,7 @@ common = [{ name = "neofetch", method = "nix" }]
 [unarchiver]
 type = "basic"
 common = [{ name = "unar", method = "nix" }]
+macos = [{ name = "\"The Unarchiver\" = 425424353", method = "mas" }]
 
 [rsync]
 type = "basic"
@@ -310,7 +307,7 @@ common = [{ name = "zoom-us", method = "nix" }]
 
 [MeetingBar]
 type = "gui"
-macos = [{ name = "1532419400", method = "mas" }]
+macos = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
 
 ## browser
 [vivaldi]
@@ -351,7 +348,7 @@ common = [{ name = "anki-bin", method = "nix" }]
 [bitwarden]
 type = "gui"
 arch = [{ name = "bitwarden", method = "pacman" }]
-macos = [{ name = "1352778147", method = "mas" }]
+macos = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 
 ## terminal emulator
 [wezterm]
@@ -539,7 +536,7 @@ macos = [
 
 [WireGuard]
 type = "gui"
-macos = [{ name = "1451685025", method = "mas" }]
+macos = [{ name = "\"WireGuard\" = 1451685025", method = "mas" }]
 
 [macos]
 type = "gui"

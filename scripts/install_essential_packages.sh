@@ -41,11 +41,10 @@ install_macos() {
 
     if ! (type brew > /dev/null 2>&1); then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        brew install bash
+        brew install bash jq yj
     else
         brew update
     fi
-
 }
 
 install_linux() {
@@ -79,8 +78,6 @@ install_linux() {
 install_nix() {
     if ! (type nix > /dev/null 2>&1); then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-    else
-        sudo -i nix upgrade-nix
     fi
 }
 

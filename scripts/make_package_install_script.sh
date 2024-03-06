@@ -6,6 +6,7 @@ set -o pipefail
 # variable
 CONFIGS_DIR="${REPO_DIR}/files"
 
+# shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
 # shellcheck source=/dev/null
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
@@ -32,10 +33,6 @@ common_methods=("cargo" "nix" "nix-program")
 
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
-
-brew_file="${REPO_DIR:-..}/results/Brewfile"
-home_manager_dir="${HOME}/.config/home-manager"
-mkdir -p "$home_manager_dir"
 
 json_content=$(yj -t < "$toml_file")
 
@@ -82,24 +79,31 @@ done
 # packages
 echo "# package install/update commands" >> "$install_script_path"
 
-if ! (type home-manager > /dev/null 2>&1); then
-    echo "title \"Install packages from nix\"" >> "$install_script_path"
-    echo "nix run home-manager/master -- init --switch" >> "$install_script_path"
-else
-    echo "title \"Update packages from nix\"" >> "$install_script_path"
-    echo "nix flake update --flake ${home_manager_dir}" >> "$install_script_path"
-    echo "home-manager switch" >> "$install_script_path"
-fi
-
+# nix
 if [[ "$os_name" == "macos" ]]; then
-    echo -n > "$brew_file"
+    nix_homebrew_apps_file="${CONFIGS_DIR}/nix/nix-darwin/modules/homebrew-apps.nix"
+    cp -rf "${CONFIGS_DIR}/nix/nix-darwin/modules/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
+    home_manager_dir="${HOME}/.config/nix-darwin/home-manager"
+    mkdir -p "$home_manager_dir"
 
-    {
-        echo "title \"Install/Update packages from homebrew\""
-        echo "brew bundle --file $brew_file"
-        echo "brew upgrade"
-        echo "brew cleanup"
-    } >> "$install_script_path"
+    echo "title \"Setup with nix-darwin\"" >> "$install_script_path"
+    if ! (type darwin-rebuild > /dev/null 2>&1); then
+        echo "nix run nix-darwin -- switch --flake ${HOME}/.config/nix-darwin" >> "$install_script_path"
+    else
+        echo "darwin-rebuild switch --flake ${HOME}/.config/nix-darwin" >> "$install_script_path"
+    fi
+
+elif [[ "$os_name" == "ubuntu" ]] || [[ "$os_name" == "arch" ]]; then
+    home_manager_dir="${HOME}/.config/home-manager"
+    mkdir -p "$home_manager_dir"
+
+    echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
+    if ! (type home-manager > /dev/null 2>&1); then
+        echo "nix run home-manager/master -- init --switch --show-trace" >> "$install_script_path"
+    else
+        echo "nix flake update --flake ${home_manager_dir} --show-trace" >> "$install_script_path"
+        echo "home-manager switch" >> "$install_script_path"
+    fi
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
@@ -109,11 +113,10 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
         continue
     fi
 
-    if [ "$method" != "brew" ] &&  [ "$method" != "cask" ] && [ "$method" != "mas" ]; then
+    if [ "$method" != "brew" ] &&  [ "$method" != "cask" ] && [ "$method" != "mas" ] && [ "$method" != "nix" ] && [ "$method" != "nix-program" ]; then
         echo "title \"Install/Update packages from ${method}\""  >> "$install_script_path"
     fi
     install_cmd=""
-    update_cmd=""
     case "$method" in
         "apt")
             install_cmd="sudo apt-get -y install"
@@ -135,11 +138,11 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             packages=$(printf '    %s\n' "${package_names[@]}")
 
             packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages_${os_name}-dev-${dev_env}-gui-${gui_env}.nix"
-            printf '{ config, pkgs, ... }:\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev"];\n\n  imports = [\n    ./packages.nix\n    ./program_list.nix\n  ];\n\n  programs.home-manager.enable = true;\n\n}' \
+            printf '{ pkgs, ... }:\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev"];\n\n  imports = [\n    ./packages.nix\n    ./program_list.nix\n  ];\n\n  programs.home-manager.enable = true;\n\n}' \
                    "${USER}" \
                    "${HOME}" \
                    > "${home_manager_dir}/home.nix"
-            printf '{ config, pkgs, ... }:\n{\n  home.packages = with pkgs; [\n%s\n  ];\n}\n' \
+            printf '{ pkgs, ... }:\n{\n  home.packages = with pkgs; [\n%s\n  ];\n}\n' \
                    "${packages}" \
                    > "$packages_nix_path"
             cp -rf "$packages_nix_path" "${home_manager_dir}/packages.nix"
@@ -152,15 +155,20 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
                    > "$nix_program_list_path"
             cp -rf "$nix_program_list_path" "${home_manager_dir}/program_list.nix"
             ;;
-        brew|cask)
-            for package in "${package_names[@]}"; do
-                echo "${method} \"${package}\"" >> "$brew_file"
-            done
+        brew)
+            brew_packages=$(printf '__n__      "%s"' "${package_names[@]}")
+            /usr/bin/sed -i "" "s|__BREW_PACKAGES__|$brew_packages|g" "$nix_homebrew_apps_file"
+            /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
+            ;;
+        cask)
+            cask_packages=$(printf '__n__      "%s"' "${package_names[@]}")
+            /usr/bin/sed -i "" "s|__CASK_PACKAGES__|$cask_packages|g" "$nix_homebrew_apps_file"
+            /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
             ;;
         mas)
-            for package in "${package_names[@]}"; do
-                echo "${method} \"${package}\", id: ${package}" >> "$brew_file"
-            done
+            mas_packages=$(printf '__n__      %s;' "${package_names[@]}")
+            /usr/bin/sed -i "" "s|__MAS_PACKAGES__|$mas_packages|g" "$nix_homebrew_apps_file"
+            /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
             ;;
         cargo)
             for package in "${package_names[@]}"; do
