@@ -35,7 +35,6 @@
         // {
           inherit platform username hostname homeDirectory;
         };
-
     in
       {
         # Build darwin flake using:

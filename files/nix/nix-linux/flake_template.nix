@@ -11,7 +11,7 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = { nixpkgs, home-manager, emacs-overlay, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, emacs-overlay, ... }:
     let
       platform = "__SYSTEM__";
       username = "__USERNAME__";
@@ -20,15 +20,15 @@
          config.allowUnfree = true;
          system = platform;
          overlays = [ emacs-overlay.overlays.emacs
-                     (import ./home-manager/overlays/patched-emacs)
+                     (import ./overlays/patched-emacs)
                     ];
        };
 
     in {
       homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs username homeDirectory;
+        inherit pkgs;
         modules = [
-           ../home-manager/home.nix
+          (import ./home.nix { inherit pkgs username homeDirectory; })
         ];
       };
     };

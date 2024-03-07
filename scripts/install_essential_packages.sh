@@ -5,6 +5,7 @@ set -eu
 # variable
 CONFIGS_DIR="${REPO_DIR}/files"
 
+# shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
 # shellcheck source=/dev/null
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
@@ -78,6 +79,10 @@ install_linux() {
 install_nix() {
     if ! (type nix > /dev/null 2>&1); then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    else
+        if [[ "$OS" == "Linux" ]]; then
+            sudo -i nix upgrade-nix
+        fi
     fi
 }
 
