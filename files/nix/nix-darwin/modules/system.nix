@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
   ###################################################################################
   #
@@ -72,13 +72,18 @@
     };
   };
 
-  # Add ability to used TouchID for sudo authentication
-  # security.pam.enableSudoTouchIdAuth = true;
-
   # Create /etc/zshrc that loads the nix-darwin environment.
   # this is required if you want to use darwin's default shell - zsh
-  programs.zsh.enable = true;
+  programs.zsh.enable = false;
   programs.zsh.enableCompletion = false;
   programs.bash.enable = false;
 
+  # Add ability to used TouchID for sudo authentication in tmux
+  environment = {
+    etc."pam.d/sudo_local".text = ''
+      # Managed by Nix Darwin
+      auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so ignore_ssh
+      auth       sufficient     pam_tid.so
+    '';
+  };
 }

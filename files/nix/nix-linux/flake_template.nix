@@ -13,13 +13,20 @@
 
   outputs = { nixpkgs, home-manager, emacs-overlay, ... }:
     let
-      system = "__SYSTEM__";
+      platform = "__SYSTEM__";
       username = "__USERNAME__";
-      homeDirectory = "/Users/${username}";
-    in
-    {
-      homeConfigurations."__USERNAME__" = home-manager.lib.homeManagerConfiguration {
-        inherit nixpkgs system emacs-overlay username homeDirectory;
+      homeDirectory = "/home/${username}";
+      pkgs = import nixpkgs {
+         config.allowUnfree = true;
+         system = platform;
+         overlays = [ emacs-overlay.overlays.emacs
+                     (import ./home-manager/overlays/patched-emacs)
+                    ];
+       };
+
+    in {
+      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs username homeDirectory;
         modules = [
            ../home-manager/home.nix
         ];

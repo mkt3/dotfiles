@@ -74,7 +74,7 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 fi
 if [[ "$OS" == 'Darwin' ]];then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
-    export PATH="/etc/profiles/per-user/${USERNAME}/bin:${PATH}"
+    export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"
     export NIX_PATH="darwin-config=$HOME/.conifg/nix-darwin/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
     export NIX_SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
     export TERMINFO_DIRS="/run/current-system/sw/share/terminfo:/nix/var/nix/profiles/default/share/terminfo:${TERMINFO_DIRS}"

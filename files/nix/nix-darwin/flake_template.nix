@@ -22,7 +22,7 @@
       username = "__USERNAME__";
       homeDirectory = "/Users/${username}";
 
-       pkgs = import  nixpkgs {
+       pkgs = import nixpkgs {
          config.allowUnfree = true;
          system = platform;
          overlays = [ emacs-overlay.overlays.emacs
