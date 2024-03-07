@@ -87,14 +87,12 @@ if [[ "$os_name" == "macos" ]]; then
     mkdir -p "$home_manager_dir"
 
     echo "title \"Setup with nix-darwin\"" >> "$install_script_path"
-    nix flake update
     if ! (type darwin-rebuild > /dev/null 2>&1); then
         echo "nix run nix-darwin -- switch --flake ${HOME}/.config/nix-darwin" >> "$install_script_path"
     else
-        echo "nix flake update --flake ${HOME}/.config/nix-darwin" >> "$install_script_path"
+        echo "cd ${HOME}/.config/nix-darwin && nix flake update && cd -" >> "$install_script_path"
         echo "darwin-rebuild switch --flake ${HOME}/.config/nix-darwin" >> "$install_script_path"
     fi
-
 elif [[ "$os_name" == "ubuntu" ]] || [[ "$os_name" == "arch" ]]; then
     home_manager_dir="${HOME}/.config/home-manager"
     mkdir -p "$home_manager_dir"

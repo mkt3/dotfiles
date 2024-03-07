@@ -12,10 +12,6 @@ post_setup_macos() {
         touch "$macos_configured_flag"
     fi
 
-    if command -v brew > /dev/null; then
-        bash -l "${CONFIGS_DIR}/macos/install-pam_tid-and-pam_reattach.sh"
-    fi
-
     info "Creating symlink for samba"
     ln -sfn "${CONFIGS_DIR}/macos/nsmb.conf" "${HOME}/Library/Preferences/nsmb.conf"
 }

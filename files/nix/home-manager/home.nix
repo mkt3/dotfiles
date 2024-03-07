@@ -8,6 +8,7 @@
   imports = [
     ./packages.nix
     ./program_list.nix
+    ./services
   ];
 
   programs.home-manager.enable = true;

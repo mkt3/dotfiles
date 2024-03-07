@@ -28,6 +28,7 @@
       NSGlobalDomain.AppleShowAllExtensions = true;
       NSGlobalDomain.InitialKeyRepeat = 15;
       NSGlobalDomain.KeyRepeat = 2;
+      NSGlobalDomain.AppleKeyboardUIMode = 3;
       NSGlobalDomain."com.apple.trackpad.scaling" = 3.0;
       trackpad.TrackpadThreeFingerDrag = true;
 
@@ -50,6 +51,8 @@
       NSGlobalDomain.AppleMeasurementUnits = "Centimeters";
       NSGlobalDomain.AppleMetricUnits = 1;
       NSGlobalDomain.AppleTemperatureUnit = "Celsius";
+
+      NSGlobalDomain._HIHideMenuBar = true;
 
       universalaccess.reduceTransparency = true;
 
