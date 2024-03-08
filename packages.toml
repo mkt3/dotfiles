@@ -145,11 +145,12 @@ common = [{ name = "docker", method = "script", function = "setup_docker" }]
 ## security
 [openssl]
 type = "basic"
-common = [{ name = "openssl_3_2", method = "nix" }]
+macos = [{ name = "openssl_3_2", method = "nix" }]
 
 [gnupg]
 type = "basic"
-common = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
+arch = [{ name = "gnupg", method = "pacman", function = "setup_gpg" }]
+macos = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
 
 [macos-security]
 type = "basic"
@@ -211,9 +212,9 @@ common = [
   { name = "isync", method = "nix" },
   { name = "msmtp", method = "nix" },
   { name = "mu", method = "nix" },
-  { name = "terminal-notifier", method = "nix" },
   { name = "goimapnotify", method = "nix" },
 ]
+macos = [{ name = "terminal-notifier", method = "nix" }]
 
 # repository management
 [ghq]
@@ -327,10 +328,10 @@ macos = [{ name = "firefox", method = "cask" }]
 [vlc]
 type = "gui"
 arch = [
-  { name = "vlc", method = "pacman" },
-  { name = "libdvdread", method = "pacman" },
-  { name = "libdvdnav", method = "pacman" },
-  { name = "libdvdcss", method = "pacman" },
+  { name = "vlc", method = "nix" },
+  { name = "libdvdread", method = "nix" },
+  { name = "libdvdnav", method = "nix" },
+  { name = "libdvdcss", method = "nix" },
 ]
 macos = [{ name = "vlc", method = "cask" }]
 
@@ -353,7 +354,7 @@ macos = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 ## terminal emulator
 [wezterm]
 type = "gui"
-arch = [{ name = "wezterm", method = "nix", function = "setup_wezterm" }]
+arch = [{ name = "wezterm", method = "pacman", function = "setup_wezterm" }]
 macos = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
 
 ## cloud storage
@@ -369,8 +370,8 @@ macos = [{ name = "google-drive", method = "cask" }]
 ## libreoffice
 [libreoffice]
 type = "gui"
-arch = [{ name = "libreoffice-fresh", method = "pacman" }]
-macos = [{ name = "libreoffice", method = "cask" }]
+arch = [{ name = "libreoffice-fresh", method = "nix" }]
+macos = [{ name = "libreoffice-bin", method = "nix" }]
 
 ## launcher
 [raycast]
@@ -495,12 +496,12 @@ arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setu
 ## backup tools
 [borg]
 type = "gui"
-arch = [{ name = "borg", method = "pacman", function = "setup_borg" }]
+arch = [{ name = "borgbackup", method = "nix", function = "setup_borg" }]
 
 ## dvd writing
 [growisofs]
 type = "gui"
-arch = [{ name = "dvd+rw-tools", method = "pacman" }]
+common = [{ name = "dvdplusrwtools", method = "nix" }]
 
 ## textlint
 # [textlint]

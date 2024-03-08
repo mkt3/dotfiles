@@ -5,15 +5,15 @@ let
   lib = pkgs.lib;
 in
 {
-  services.gpg-agent = lib.mkIf (isLinux && isGUI) {
-    enable = true;
-    maxCacheTtl = 60480000;
-    maxCacheTtlSsh = 60480000;
-    defaultCacheTtl = 60480000;
-    defaultCacheTtlSsh = 60480000;
-  };
+  # services.gpg-agent = lib.mkIf (isLinux && isGUI) {
+  #   enable = true;
+  #   maxCacheTtl = 60480000;
+  #   maxCacheTtlSsh = 60480000;
+  #   defaultCacheTtl = 60480000;
+  #   defaultCacheTtlSsh = 60480000;
+  # };
 
-  home.file.".gnupg/gpg-agent.conf" = lib.mkIf (!isLinux || isCUI) {
+  home.file.".gnupg/gpg-agent.conf" = {
     text = ''
          max-cache-ttl 60480000
          default-cache-ttl 60480000
