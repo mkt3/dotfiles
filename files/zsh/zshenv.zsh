@@ -72,6 +72,7 @@ export PATH="${HOME}/.local/bin:${PATH}"
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
     . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
+export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 if [[ "$OS" == 'Darwin' ]];then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"

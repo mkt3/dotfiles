@@ -7,6 +7,7 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+
     };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
@@ -16,6 +17,9 @@
       platform = "__SYSTEM__";
       username = "__USERNAME__";
       homeDirectory = "/home/${username}";
+      isGUI = __ISGUI__;
+      isCUI = __ISCUI__;
+
       pkgs = import nixpkgs {
          config.allowUnfree = true;
          system = platform;
@@ -28,7 +32,7 @@
       homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
-          (import ./home.nix { inherit pkgs username homeDirectory; })
+          (import ./home.nix { inherit pkgs username homeDirectory isGUI isCUI;})
         ];
       };
     };

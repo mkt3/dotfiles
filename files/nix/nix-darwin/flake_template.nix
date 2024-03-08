@@ -18,17 +18,18 @@
     let
       platform = "__SYSTEM__"; # aarch64-darwin or x86_64-darwin
       hostname = "__HOSTNAME__";
-
       username = "__USERNAME__";
       homeDirectory = "/Users/${username}";
+      isGUI = __ISGUI__;
+      isCUI = __ISCUI__;
 
-       pkgs = import nixpkgs {
-         config.allowUnfree = true;
-         system = platform;
-         overlays = [ emacs-overlay.overlays.emacs
+      pkgs = import nixpkgs {
+        config.allowUnfree = true;
+        system = platform;
+        overlays = [ emacs-overlay.overlays.emacs
                      (import ./home-manager/overlays/patched-emacs)
-                    ];
-       };
+                   ];
+      };
 
       specialArgs =
         inputs
@@ -51,7 +52,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users."${username}" = import ./home-manager/home.nix {
-                inherit username homeDirectory;
+                inherit pkgs username homeDirectory isGUI isCUI;
               };
             }
           ];

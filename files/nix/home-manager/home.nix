@@ -1,4 +1,4 @@
-{ username, homeDirectory, ... }:
+{ pkgs, username, homeDirectory, isGUI, isCUI, ... }:
  {
   home.username = username;
   home.homeDirectory = homeDirectory;
@@ -8,7 +8,7 @@
   imports = [
     ./packages.nix
     ./program_list.nix
-    ./services
+    (import ./services/default.nix {inherit pkgs isGUI isCUI;})
   ];
 
   programs.home-manager.enable = true;

@@ -42,7 +42,7 @@ install_macos() {
 
     if ! (type brew > /dev/null 2>&1); then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        brew install bash jq yj
+        brew install bash jq yj gnu-sed
     else
         brew update
     fi
