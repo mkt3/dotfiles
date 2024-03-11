@@ -25,7 +25,6 @@
       "wezterm"
       "nextcloud"
       "google-drive"
-      "libreoffice"
       "font-hack-nerd-font"
       "font-cica"
       "font-plemol-jp-nf"

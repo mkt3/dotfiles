@@ -47,8 +47,8 @@
     isync
     msmtp
     mu
-    terminal-notifier
     goimapnotify
+    terminal-notifier
     ghq
     shellcheck-minimal
     python311Full
@@ -67,12 +67,14 @@
     discord
     zoom-us
     anki-bin
+    libreoffice-bin
     raycast
     monitorcontrol
     recoll
     hugo
     nodePackages.gatsby-cli
     karabiner-elements
+    dvdplusrwtools
     stats
     appcleaner
   ];
