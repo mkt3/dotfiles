@@ -25,9 +25,9 @@ pre_setup_emacs() {
     if [ "$GUI_ENV" = "y" ]; then
         mkdir -p "${XDG_CONFIG_HOME}/msmtp"
         ln -sfn "${HOME}/Nextcloud/personal_config/emacs_mail/msmtprc" "${XDG_CONFIG_HOME}/msmtp/config"
+        ln -sfn "${HOME}/Nextcloud/personal_config/enchant/dict/en_US.dic" "${XDG_CONFIG_HOME}/enchant"
     fi
     if [ "$OS" = "Darwin" ]; then
-        ln -sfn "$HOME/.local/src/emacs/nextstep/Emacs.app" /Applications
         ln -sfn /usr/bin/open "${HOME}/.local/bin/xdg-open"
     fi
 }

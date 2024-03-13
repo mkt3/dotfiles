@@ -145,11 +145,14 @@ common = [{ name = "docker", method = "script", function = "setup_docker" }]
 ## security
 [openssl]
 type = "basic"
+arch = [{ name="openssl", method="pacman" }]
 macos = [{ name = "openssl_3_2", method = "nix" }]
+ubuntu = [{ name="openssl", method="apt"}]
 
 [gnupg]
 type = "basic"
 arch = [{ name = "gnupg", method = "pacman", function = "setup_gpg" }]
+ubuntu = [{ name = "gnupg", method = "apt", function = "setup_gpg" }]
 macos = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
 
 [macos-security]
@@ -200,7 +203,7 @@ common = [{ name = "vim", method = "nix", function = "setup_vim" }]
 [emacs-basic]
 type = "basic"
 common = [
-  { name = "emacs", method = "nix-program" },
+  { name = "emacs", method = "nix-program", function = "setup_emacs" },
   { name = "hunspell", method = "nix" },
   { name = "hunspellDicts.en-us", method = "nix" },
   { name = "enchant", method = "nix" },
