@@ -38,6 +38,7 @@
        :config
        (setq auto-package-update-delete-old-versions t)
        (setq auto-package-update-hide-results t)
+       (setq auto-package-update-excluded-packages '(pdf-tools jinx mu4e))
        (auto-package-update-maybe))
    #+end_src
 * Initialize
