@@ -254,7 +254,7 @@ common = [{ name = "uv", method = "nix" }]
 
 [poetry]
 type = "dev"
-comon = [{ name = "poetry", method = "nix", function = "setup_poetry" }]
+common = [{ name = "poetry", method = "nix", function = "setup_poetry" }]
 
 ## mise
 [mise]
