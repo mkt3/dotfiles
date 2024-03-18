@@ -25,7 +25,7 @@ function get_source_list() {
 }
 
 function get_selected_source() {
-    get_source_list | "${HOME}/.local/share/fzf/bin/fzf" --height 100% | cut -d' ' -f2-
+    get_source_list | fzf --height 100% | cut -d' ' -f2-
 }
 
 function set_session() {
