@@ -14,7 +14,7 @@ while IFS= read -r line; do
 done < "$ssh_config_file"
 
 
-ssh_host=$(echo -e "$host_list" | ~/.local/share/fzf/bin/fzf --reverse --border --ansi --prompt='Server:' | cut -d: -f1)
+ssh_host=$(echo -e "$host_list" | fzf --reverse --border --ansi --prompt='Server:' | cut -d: -f1)
 if [[ "$ssh_host" = "" ]]; then
     :
 else

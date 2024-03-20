@@ -49,6 +49,7 @@
     nodePackages.pyright
     python311Packages.jupyterlab
     uv
+    poetry
     mise
     nodePackages.bash-language-server
     nodePackages.vscode-langservers-extracted
