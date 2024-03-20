@@ -207,6 +207,7 @@ common = [
   { name = "hunspell", method = "nix" },
   { name = "hunspellDicts.en-us", method = "nix" },
   { name = "enchant", method = "nix" },
+  { name = "emacs-lsp-booster", method = "nix" },
 ]
 
 [emacs-gui]

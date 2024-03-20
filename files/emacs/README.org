@@ -243,7 +243,8 @@
       ring-bell-function 'ignore
       text-quoting-style 'straight
       user-full-name (getenv "NAME")
-      completion-lazy-hilit t)
+      completion-lazy-hilit t
+      process-adaptive-read-buffering t)
 
      (use-package simple
        :demand t
@@ -802,16 +803,10 @@
    #+end_src
 * Garbage collection
   #+begin_src emacs-lisp
-    (use-package gcmh
-      :ensure t
-      :delight
-      :custom
-      (gcmh-verbose t)
-      (gcmh-idle-delay 120)
-      (gcmh-high-cons-threshold #x80000000)
-      (garbage-collection-messages t)
-      :config
-      (gcmh-mode 1))
+    (setq gc-cons-percentage 0.2
+          gc-cons-threshold (* 1024 1024 1024)
+          garbage-collection-messages t)
+    (add-hook 'focus-out-hook #'garbage-collect)
   #+end_src
 * LSP
 ** eglot
@@ -821,7 +816,6 @@
        ;;        :map eglot-mode-map
        ;;        ("C-c a" . eglot-code-actions))
        :config
-       ;; (add-to-list eglot-stay-out-of '(flymake))
        (defun my/eglot-capf ()
          (setq-local completion-at-point-functions
                      (list (cape-capf-super
@@ -833,13 +827,25 @@
                      ))
        (add-hook 'eglot-managed-mode-hook #'my/eglot-capf))
 
-
      (use-package flycheck-eglot
        :ensure t
        :after (flycheck eglot)
        :custom (flycheck-eglot-exclusive nil)
        :config
        (global-flycheck-eglot-mode 1))
+
+     (use-package jsonrpc
+       :ensure t
+       :defer t
+       :config
+       (setq jsonrpc-default-request-timeout 3000)
+       (fset #'jsonrpc--log-event #'ignore))
+
+     (use-package eglot-booster
+       :vc (:url "https://github.com/jdtsmith/eglot-booster" :branch "main")
+       :after eglot
+       :config
+       (eglot-booster-mode))
    #+end_src
 ** Flymake
    #+begin_src emacs-lisp
@@ -939,6 +945,20 @@
                (dired-mode-hook . diff-hl-dired-mode)))
     #+end_src
 ** languages
+*** emacs lisp
+    #+begin_src emacs-lisp
+      (use-package aggressive-indent
+        :ensure t
+        :hook (emacs-lisp-mode-hook . aggressive-indent-mode))
+
+      (use-package highlight-defined
+        :ensure t
+        :hook (emacs-lisp-mode-hook . highlight-defined-mode))
+
+      (use-package highlight-quoted
+        :ensure t
+        :hook (emacs-lisp-mode-hook . highlight-quoted-mode))
+    #+end_src
 *** Shell Script
     #+begin_src emacs-lisp
       (use-package sh-script
@@ -975,8 +995,7 @@
       ;;   (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
 
       (use-package ruff-fix
-        :vc (:url "https://github.com/mkt3/ruff-fix.el.git"
-                  :branch "main")
+        :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :branch "main")
         :hook (before-save-hook . ruff-fix-before-save))
     #+end_src
 *** Rust
@@ -1026,8 +1045,7 @@
 **** jsx-mode
      #+begin_src emacs-lisp
        (use-package jtsx
-         :vc (:url "https://github.com/llemaitre19/jtsx"
-                   :branch "master")
+         :vc (:url "https://github.com/llemaitre19/jtsx" :branch "master")
          :mode (("\\.jsx?\\'" . jsx-mode)
                 ("\\.tsx?\\'" . tsx-mode))
          :commands jtsx-install-treesit-language

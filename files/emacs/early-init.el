@@ -14,10 +14,6 @@
 ;; (setq init-file-debug t)
 ;; (setq messages-buffer-max-lines 100000)
 
-;; Defer garbage collection further back in the startup process.
-;; `gcmh' will clean things up later.
-(setq gc-cons-threshold most-positive-fixnum)
-
 ;; Disable `package' in favor of `use-package'.
 (setq package-enable-at-startup nil)
 

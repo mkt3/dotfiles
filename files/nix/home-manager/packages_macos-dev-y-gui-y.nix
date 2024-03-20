@@ -44,6 +44,7 @@
     hunspell
     hunspellDicts.en-us
     enchant
+    emacs-lsp-booster
     isync
     msmtp
     mu
