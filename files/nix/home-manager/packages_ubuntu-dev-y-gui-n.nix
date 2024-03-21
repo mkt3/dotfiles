@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     cmake
@@ -18,6 +18,7 @@
     trash-cli
     tmux
     git
+    sheldon
     procs
     bat
     fd
@@ -29,8 +30,6 @@
     zoxide
     navi
     lazygit
-    openssl_3_2
-    gnupg
     wget
     curl
     aria
@@ -40,13 +39,14 @@
     hunspell
     hunspellDicts.en-us
     enchant
+    emacs-lsp-booster
     ghq
     shellcheck-minimal
     python311Full
     ruff
     nodePackages.pyright
-    python311Packages.jupyterlab
     uv
+    poetry
     mise
     nodePackages.bash-language-server
     nodePackages.vscode-langservers-extracted
