@@ -1,5 +1,5 @@
 {
-  description = "Darwin system flake";
+  description = "Nix system flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -19,7 +19,7 @@
       platform = "__SYSTEM__"; # aarch64-darwin or x86_64-darwin
       hostname = "__HOSTNAME__";
       username = "__USERNAME__";
-      homeDirectory = "/Users/${username}";
+      homeDirectory = "__HOMEDIRECTORY__";
       isGUI = __ISGUI__;
       isCUI = __ISCUI__;
 
@@ -38,15 +38,28 @@
         };
     in
       {
-        # Build darwin flake using:
-        # $ darwin-rebuild build --flake .#simple
+        nixosConfigurations."${hostname}"= nixpkgs.lib.nixosSystem {
+          inherit pkgs specialArgs;
+          modules = [
+            ./modules/common/host-users.nix
+            ./modules/nixos/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users."${username}" = import ./home-manager/home.nix {
+                inherit pkgs username homeDirectory isGUI isCUI;
+              };
+            }
+          ];
+        };
         darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
           inherit pkgs specialArgs;
           modules = [
-            ./modules/nix-core.nix
-            ./modules/system.nix
-            ./modules/homebrew-apps.nix
-            ./modules/host-users.nix
+            ./modules/common/nix-core.nix
+            ./modules/common/host-users.nix
+            ./modules/darwin/system.nix
+            ./modules/darwin/homebrew-apps.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -55,6 +68,12 @@
                 inherit pkgs username homeDirectory isGUI isCUI;
               };
             }
+          ];
+        };
+        homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            (import ./home-manager/home.nix { inherit pkgs username homeDirectory isGUI isCUI;})
           ];
         };
       };

@@ -16,8 +16,9 @@ title "Making packages install script"
 os_name=""
 
 case "$DISTRO" in
-    "Arch") os_name="arch" ;;
+    "Arch Linux") os_name="arch" ;;
     "Ubuntu") os_name="ubuntu" ;;
+    "NixOS") os_name="nixos" ;;
     "Darwin") os_name="macos" ;;
     *) echo "${os_name} is not supported."; exit 1 ;;
 esac
@@ -29,6 +30,7 @@ declare -A methods
 methods["ubuntu"]="apt"
 methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
+methods["nixos"]=""
 common_methods=("cargo" "nix" "nix-program")
 
 toml_file=${TOML_FILE:-"../toml_file"}
@@ -80,28 +82,30 @@ done
 echo "# package install/update commands" >> "$install_script_path"
 
 # nix
+nix_dir="~/.config/nix"
+home_manager_dir="${CONFIGS_DIR}/nix/home-manager"
+cp -rf "${CONFIGS_DIR}/nix" "$XDG_CONFIG_HOME"
 if [[ "$os_name" == "macos" ]]; then
-    nix_homebrew_apps_file="${CONFIGS_DIR}/nix/nix-darwin/modules/homebrew-apps.nix"
-    cp -rf "${CONFIGS_DIR}/nix/nix-darwin/modules/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
-    home_manager_dir="${HOME}/.config/nix-darwin/home-manager"
-    mkdir -p "$home_manager_dir"
+    nix_homebrew_apps_file="${CONFIGS_DIR}/nix/modules/darwin/homebrew-apps.nix"
+    cp -rf "${CONFIGS_DIR}/nix/modules/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
 
     echo "title \"Setup with nix-darwin\"" >> "$install_script_path"
     if ! (type darwin-rebuild > /dev/null 2>&1); then
-        echo "nix run nix-darwin -- switch --flake ${HOME}/.config/nix-darwin" >> "$install_script_path"
+        echo "nix run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
     else
-        echo "cd ${HOME}/.config/nix-darwin && nix flake update && cd -" >> "$install_script_path"
-        echo "darwin-rebuild switch --flake ${HOME}/.config/nix-darwin" >> "$install_script_path"
+        echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
+        echo "darwin-rebuild switch --flake ${ix_dir}" >> "$install_script_path"
     fi
+elif [[ "$os_name" == "nixos" ]]; then
+    echo "title \"Setup nix\"" >> "$install_script_path"
+    echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
+    echo "sudo nixos-rebuild switch --flake ${nix_dir}" >> "$install_script_path"
 elif [[ "$os_name" == "ubuntu" ]] || [[ "$os_name" == "arch" ]]; then
-    home_manager_dir="${HOME}/.config/home-manager"
-    mkdir -p "$home_manager_dir"
-
     echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
     if ! (type home-manager > /dev/null 2>&1); then
         echo "nix run home-manager/master -- init --switch" >> "$install_script_path"
     else
-        echo "nix flake update --flake ${home_manager_dir}" >> "$install_script_path"
+        echo "nix flake update --flake ${nix_dir}" >> "$install_script_path"
         echo "home-manager switch" >> "$install_script_path"
     fi
 fi
@@ -138,10 +142,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             packages=$(printf '    %s\n' "${package_names[@]}")
 
             packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages_${os_name}-dev-${dev_env}-gui-${gui_env}.nix"
-            printf '{ pkgs, ... }:\n{\n  home.username = \"%s\";\n  home.homeDirectory = \"%s\";\n  home.stateVersion = \"23.11\";\n  home.extraOutputsToInstall = ["dev"];\n\n  imports = [\n    ./packages.nix\n    ./program_list.nix\n  ];\n\n  programs.home-manager.enable = true;\n\n}' \
-                   "${USER}" \
-                   "${HOME}" \
-                   > "${home_manager_dir}/home.nix"
+
             printf '{ pkgs, ... }:\n{\n  home.packages = with pkgs; [\n%s\n  ];\n}\n' \
                    "${packages}" \
                    > "$packages_nix_path"

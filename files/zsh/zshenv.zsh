@@ -25,6 +25,10 @@ export PAGER=less
 # Paltform Arch
 export OS=`uname -s`
 export ARCH=`uname -m`
+DISTRO="$OS"
+if [[ "$DISTRO" == "Linux" ]];then
+    DISTRO=$(grep -oP '(?<=^NAME=).+' /etc/os-release | tr -d '"')
+fi
 
 # XDG Base directory
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -42,12 +46,16 @@ export LISTMAX=1000
 
 # sheldon
 export SHELDON_CONFIG_DIR="$ZDOTDIR/sheldon"
+export SHELDON_DATA_DIR="$XDG_DATA_HOME/sheldon"
 
 # password store
 [ -d "${HOME}/Nextcloud/personal_config/password-store" ] && export PASSWORD_STORE_DIR="${HOME}/Nextcloud/personal_config/password-store"
 
 # PATH
-if [[ "$OS" == 'Darwin' ]];then
+if [[ "$DISTRO" == 'NixOS' ]];then
+    export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
+    export PATH="${HOME}/.nix-profile/bin:/etc/profiles/per-user/${USER}/bin:/run/wrappers/bin:${PATH}"
+elif [[ "$DISTRO" == 'Darwin' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export SHELL_SESSIONS_DISABLE=1
 
@@ -60,20 +68,7 @@ if [[ "$OS" == 'Darwin' ]];then
         export PATH="/usr/local/bin:${MAC_DEFAULT_PATH}"
         export PATH="/usr/local/opt/texinfo/bin:${PATH}"
     fi
-elif [[ "$OS" == 'Linux' ]];then
-    LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
-    export PATH="$LINUX_DEFAULT_PATH"
-    # Rootless docker path
-    export DOCKER_HOST=unix:///run/user/`id $(whoami) | awk -F'[=()]' '{print $2}'`/docker.sock
-fi
-export PATH="${HOME}/.local/bin:${PATH}"
-
-# nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
-export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
-if [[ "$OS" == 'Darwin' ]];then
+    # nix
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"
     export NIX_PATH="darwin-config=$HOME/.conifg/nix-darwin/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
@@ -92,7 +87,18 @@ if [[ "$OS" == 'Darwin' ]];then
     if [ ! -w /nix/var/nix/db ]; then
         export NIX_REMOTE=daemon
     fi
+else # for linux (except NIXOS)
+    LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:"
+    export PATH="$LINUX_DEFAULT_PATH"
+
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    fi
+    export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+    # Rootless docker path
+    export DOCKER_HOST=unix:///run/user/`id $(whoami) | awk -F'[=()]' '{print $2}'`/docker.sock
 fi
+export PATH="${HOME}/.local/bin:${PATH}"
 
 # Python
 export PYTHONUSERBASE="${HOME}/.local"

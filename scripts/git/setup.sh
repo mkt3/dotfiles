@@ -20,7 +20,7 @@ post_setup_git() {
         local git_secrets_dir="${HOME}/.local/src/git-secrets"
         info "Installing git-secrets"
         git clone https://github.com/awslabs/git-secrets.git "$git_secrets_dir"
-        /bin/bash -c "$(cd "$git_secrets_dir" && PREFIX="${HOME}/.local" make install)"
+        /usr/bin/env bash  -c "$(cd "$git_secrets_dir" && PREFIX="${HOME}/.local" make install)"
 
         # for AWS
         git secrets --register-aws --global

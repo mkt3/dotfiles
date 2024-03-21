@@ -1,4 +1,4 @@
-{platform, hostname, username, homeDirectory, ... }:
+{platform, hostname, username, homeDirectory, pkgs,... }:
 
 #############################################################
 #
@@ -9,13 +9,19 @@
 {
   nixpkgs.hostPlatform = platform;
   networking.hostName = hostname;
-  networking.computerName = hostname;
-  system.defaults.smb.NetBIOSName = hostname;
 
   users.users."${username}"= {
     home = homeDirectory;
     description = username;
+    shell = pkgs.zsh;
   };
 
   nix.settings.trusted-users = [ username ];
+
+  # Create /etc/zshrc that loads the nix-darwin environment.
+  # this is required if you want to use darwin's default shell - zsh
+  programs.zsh = {
+    enable = true;
+    enableCompletion = false;
+  };
 }

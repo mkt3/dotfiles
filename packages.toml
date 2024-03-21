@@ -18,6 +18,7 @@ type = "basic"
 arch = [{ name = "zsh", method = "pacman", function = "setup_zsh" }]
 macos = [{ name = "zsh", method = "nix", function = "setup_zsh" }]
 ubuntu = [{ name = "zsh", method = "apt", function = "setup_zsh" }]
+nixos = [{ name = "zsh", method = "script", function = "setup_zsh" }]
 
 [coreutils]
 type = "basic"
@@ -92,7 +93,10 @@ common = [{ name = "git", method = "nix", function = "setup_git" }]
 
 [sheldon]
 type = "basic"
-common = [{ name = "sheldon", method = "cargo" }]
+macos = [{ name = "sheldon@0.7.3", method = "cargo" }]
+arch = [{ name = "sheldon", method = "nix" }]
+ubuntu = [{ name = "sheldon", method = "nix" }]
+nixos = [{ name = "sheldon", method = "nix" }]
 
 [procs]
 type = "basic"
@@ -244,10 +248,6 @@ common = [{ name = "ruff", method = "nix", function = "setup_ruff" }]
 [pyright]
 type = "dev"
 common = [{ name = "nodePackages.pyright", method = "nix" }]
-
-[jupyterlab]
-type = "dev"
-common = [{ name = "python311Packages.jupyterlab", method = "nix", function = "setup_jupyterlab" }]
 
 [uv]
 type = "dev"

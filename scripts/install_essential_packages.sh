@@ -29,10 +29,11 @@ install_essential_packages() {
         ;;
     esac
 
-    install_nix
-
     ## rust for cargo
-    install_rust
+    if [[ "$DISTRO" != "NixOS" ]]; then
+       install_nix
+       install_rust
+    fi 
 }
 
 install_macos() {
@@ -49,21 +50,20 @@ install_macos() {
 }
 
 install_linux() {
-    local distro
-    distro=$(awk '{print $1; exit}' /etc/issue)
-
     # distribution
-    case $distro in
-        Arch)
+    case "$DISTRO" in
+        "Arch Linux")
             sudo pacman -S --needed --noconfirm git jq wget curl xz base-devel pacman-contrib
             if ! (type yay > /dev/null 2>&1); then
                 local yay_repo_dir="${HOME}/.local/src/yay"
                 git clone https://aur.archlinux.org/yay.git "$yay_repo_dir" && cd "$yay_repo_dir" && makepkg -si
             fi
             ;;
-        Ubuntu)
+        "Ubuntu")
             sudo apt-get -y install git curl xz-utils jq wget make libssl-dev build-essential
             ;;
+        "NixOS")
+	    ;;
         *)
             echo "${distro} is not supported."
             exit 1

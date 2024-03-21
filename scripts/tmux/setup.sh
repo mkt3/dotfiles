@@ -23,11 +23,6 @@ pre_setup_tmux() {
 post_setup_tmux() {
     local tmux_dir="${CONFIGS_DIR}/tmux"
 
-    if [[ "$OS" == "Linux" ]] && ! (type tmux > /dev/null 2>&1); then
-        info "Buliding tmux"
-        "${tmux_dir}/build_tmux.sh"
-    fi
-
     if [[ "$OS" == "Darwin" ]] && ! infocmp tmux-256color >/dev/null 2>&1; then
         info "Making tmux-256color"
         tmpfile=$(mktemp /tmp/tempfile.XXXXXX)

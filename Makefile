@@ -7,7 +7,7 @@ INSTALL_SCRIPT := $(RESULTS_DIR)/install_packages.sh
 MAKE_INSTALL_SCRIPT := $(REPO_DIR)/scripts/make_package_install_script.sh
 DISTRO := $(shell uname -s)
 ifeq ($(DISTRO),Linux)
-    DISTRO := $(shell awk '{print $$1; exit}' /etc/issue)
+    DISTRO := $(shell grep -oP '(?<=^NAME=).+' /etc/os-release | tr -d '"')
 endif
 
 .PHONY: all
