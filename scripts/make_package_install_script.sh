@@ -94,7 +94,7 @@ if [[ "$os_name" == "macos" ]]; then
         echo "nix run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
     else
         echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
-        echo "darwin-rebuild switch --flake ${ix_dir}" >> "$install_script_path"
+        echo "darwin-rebuild switch --flake ${nix_dir}" >> "$install_script_path"
     fi
 elif [[ "$os_name" == "nixos" ]]; then
     echo "title \"Setup nix\"" >> "$install_script_path"

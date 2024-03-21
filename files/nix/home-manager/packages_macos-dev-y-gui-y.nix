@@ -55,7 +55,6 @@
     python311Full
     ruff
     nodePackages.pyright
-    python311Packages.jupyterlab
     uv
     poetry
     mise

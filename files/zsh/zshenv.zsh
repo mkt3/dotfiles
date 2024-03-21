@@ -1,6 +1,4 @@
-if [ -n "$BASH_VERSION" ];then
-    echo "Loading zshenv from setup script"
-else
+if [ -z "$BASH_VERSION" ];then
     setopt no_global_rcs
 fi
 

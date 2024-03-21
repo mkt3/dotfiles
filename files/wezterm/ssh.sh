@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. ~/.zshenv
+
 ssh_config_file=$(bash -c "ls ~/.ssh/config" 2> /dev/null)
 host_list=""
 
