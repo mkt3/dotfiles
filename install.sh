@@ -7,4 +7,4 @@ if [ ! -d "$INSTALL_DIR" ]; then
     git clone https://github.com/mkt3/dotfiles "$INSTALL_DIR"
 fi
 
-cd "$INSTALL_DIR" && make
+make -C "$INSTALL_DIR"

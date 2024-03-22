@@ -9,6 +9,7 @@ This repository contains configuration files and scripts for my personal use. Th
 - macOS
 - Ubuntu
 - Arch Linux
+- NixOS
 
 ## Install
 1. **macOS Users:**
@@ -17,7 +18,7 @@ This repository contains configuration files and scripts for my personal use. Th
 2. Run one of the following:
 
    ```bash
-   curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+   sh <(curl -sSL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh)
    ```
 
    When setting up the environment during the initial installation, you will be prompted to specify if it's a development environment. Answer with 'y' for yes or 'n' for no. Similarly, for the GUI environment setup, respond with 'y' or 'n' when prompted.
@@ -26,7 +27,7 @@ This repository contains configuration files and scripts for my personal use. Th
 ## Update
 1. Run one of the following:
    ```bash
-   curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+   sh <(curl -sSL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh)
    ```
 
 ## Link

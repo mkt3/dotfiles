@@ -20,7 +20,7 @@ case "$DISTRO" in
     "Ubuntu") os_name="ubuntu" ;;
     "NixOS") os_name="nixos" ;;
     "Darwin") os_name="macos" ;;
-    *) echo "${os_name} is not supported."; exit 1 ;;
+    *) echo "${DISTRO} is not supported."; exit 1 ;;
 esac
 
 dev_env=${DEV_ENV:-n}
@@ -82,7 +82,7 @@ done
 echo "# package install/update commands" >> "$install_script_path"
 
 # nix
-nix_dir="~/.config/nix"
+nix_dir="${HOME}/.config/nix"
 home_manager_dir="${CONFIGS_DIR}/nix/home-manager"
 cp -rf "${CONFIGS_DIR}/nix" "$XDG_CONFIG_HOME"
 if [[ "$os_name" == "macos" ]]; then
@@ -102,11 +102,11 @@ elif [[ "$os_name" == "nixos" ]]; then
     echo "sudo nixos-rebuild switch --flake ${nix_dir}" >> "$install_script_path"
 elif [[ "$os_name" == "ubuntu" ]] || [[ "$os_name" == "arch" ]]; then
     echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
-    if ! (type home-manager > /dev/null 2>&1); then
-        echo "nix run home-manager/master -- init --switch" >> "$install_script_path"
-    else
+    if (type home-manager > /dev/null 2>&1); then
         echo "nix flake update --flake ${nix_dir}" >> "$install_script_path"
-        echo "home-manager switch" >> "$install_script_path"
+        echo "home-manager switch ${nix_dir}" >> "$install_script_path"
+    else
+        echo "nix run home-manager/master -- init --switch ${nix_dir}" >> "$install_script_path"
     fi
 fi
 

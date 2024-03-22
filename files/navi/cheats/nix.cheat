@@ -1,4 +1,4 @@
 % nix
 
-# Delete old files
-nix-collect-garbage --delete-old
+# Delete old generation
+nix store gc

@@ -4,14 +4,17 @@ set -eu
 
 pre_setup_nix() {
     info "Creating symlink for nix"
-    local nix_dir="${CONFIGS_DIR}/nix"
-    local nix_main_flake_dir
-    local home_manager_dir
+    local nix_config_dir="${CONFIGS_DIR}/nix"
+
+    local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
+    local home_manager_dir="${nix_main_flake_dir}/home-manager"
+    local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
+    local nix_main_flake="${nix_main_flake_dir}/flake.nix"
+    local nix_platform
     local host_name
-    nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
-    home_manager_dir="${nix_main_flake_dir}/home-manager"
-    nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
-    nix_main_flake="${nix_main_flake_dir}/flake.nix"
+    local is_gui
+    local is_cui
+
     if [ "$OS" = "Darwin" ]; then
         sed_command="gsed"
         host_name=$(hostname | sed "s/\.local//g")
@@ -20,10 +23,8 @@ pre_setup_nix() {
         host_name=$(hostnamectl status --static)
     fi
 
-    local nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
+    nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
 
-    local is_gui
-    local is_cui
     if [ "$GUI_ENV" = "y" ]; then
         is_gui="true"
         is_cui="false"
@@ -32,7 +33,7 @@ pre_setup_nix() {
         is_cui="true"
     fi
 
-    cp -rf "${nix_dir}" "${XDG_CONFIG_HOME}"
+    cp -rf "${nix_config_dir}" "${XDG_CONFIG_HOME}"
     cp -rf "$nix_main_template_flake" "$nix_main_flake"
     if [ "$DISTRO" = "NixOS" ]; then
        cp -rf "/etc/nixos/hardware-configuration.nix" "$nix_main_flake_dir/modules/nixos"

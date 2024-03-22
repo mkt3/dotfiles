@@ -65,7 +65,7 @@ install_linux() {
         "NixOS")
 	    ;;
         *)
-            echo "${distro} is not supported."
+            echo "${DISTRO} is not supported."
             exit 1
     esac
 

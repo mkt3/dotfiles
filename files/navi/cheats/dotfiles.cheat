@@ -1,4 +1,4 @@
 % dotfiles
 
 # Apply dotfiles
-curl -sL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh | sh
+sh (curl -sSL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh)
