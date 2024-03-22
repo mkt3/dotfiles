@@ -17,6 +17,7 @@
     rsync
     trash-cli
     tmux
+    tmux-mem-cpu-load
     git
     sheldon
     procs

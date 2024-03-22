@@ -26,14 +26,14 @@ install_essential_packages() {
         *)
             echo "${OS} is not supported."
             exit 1
-        ;;
+            ;;
     esac
 
     ## rust for cargo
     if [[ "$DISTRO" != "NixOS" ]]; then
        install_nix
        install_rust
-    fi 
+    fi
 }
 
 install_macos() {
@@ -62,11 +62,8 @@ install_linux() {
         "Ubuntu")
             sudo apt-get -y install git curl xz-utils jq wget make libssl-dev build-essential
             ;;
-        "NixOS")
-	    ;;
         *)
-            echo "${DISTRO} is not supported."
-            exit 1
+            ;;
     esac
 
     if ! (type yj > /dev/null 2>&1); then

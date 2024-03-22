@@ -20,7 +20,7 @@ case "$DISTRO" in
     "Ubuntu") os_name="ubuntu" ;;
     "NixOS") os_name="nixos" ;;
     "Darwin") os_name="macos" ;;
-    *) echo "${DISTRO} is not supported."; exit 1 ;;
+    *) os_name="otherlinux" ;;
 esac
 
 dev_env=${DEV_ENV:-n}
@@ -31,6 +31,7 @@ methods["ubuntu"]="apt"
 methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
 methods["nixos"]=""
+methods["otherlinux"]=""
 common_methods=("cargo" "nix" "nix-program")
 
 toml_file=${TOML_FILE:-"../toml_file"}
@@ -100,13 +101,13 @@ elif [[ "$os_name" == "nixos" ]]; then
     echo "title \"Setup nix\"" >> "$install_script_path"
     echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
     echo "sudo nixos-rebuild switch --flake ${nix_dir}" >> "$install_script_path"
-elif [[ "$os_name" == "ubuntu" ]] || [[ "$os_name" == "arch" ]]; then
+else
     echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
     if (type home-manager > /dev/null 2>&1); then
         echo "nix flake update --flake ${nix_dir}" >> "$install_script_path"
-        echo "home-manager switch ${nix_dir}" >> "$install_script_path"
+        echo "home-manager switch --flake ${nix_dir}" >> "$install_script_path"
     else
-        echo "nix run home-manager/master -- init --switch ${nix_dir}" >> "$install_script_path"
+        echo "nix run home-manager/master switch --flake ${nix_dir}" >> "$install_script_path"
     fi
 fi
 

@@ -2,3 +2,6 @@
 
 # Delete old generation
 nix store gc
+
+# Develop project
+nix develop -c $SHELL

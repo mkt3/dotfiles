@@ -85,7 +85,10 @@ common = [{ name = "trash-cli", method = "nix" }]
 
 [tmux]
 type = "basic"
-common = [{ name = "tmux", method = "nix", function = "setup_tmux" }]
+common = [
+  { name = "tmux", method = "nix", function = "setup_tmux" },
+  { name = "tmux-mem-cpu-load", method = "nix" },
+]
 
 [git]
 type = "basic"
@@ -97,6 +100,7 @@ macos = [{ name = "sheldon@0.7.3", method = "cargo" }]
 arch = [{ name = "sheldon", method = "nix" }]
 ubuntu = [{ name = "sheldon", method = "nix" }]
 nixos = [{ name = "sheldon", method = "nix" }]
+otherlinux = [{ name = "sheldon", method = "nix" }]
 
 [procs]
 type = "basic"
@@ -193,6 +197,7 @@ common = [{ name = "htop", method = "nix" }]
 type = "basic"
 arch = [{ name = "iotop", method = "nix" }]
 ubuntu = [{ name = "iotop", method = "nix" }]
+otherlinux = [{ name = "iotop", method = "nix" }]
 
 # [nvtop]
 # type = "dev"
