@@ -3,10 +3,6 @@
 type = "basic"
 common = [{ name = "nix", method = "script", function = "setup_nix" }]
 
-[cmake]
-type = "basic"
-common = [{ name = "cmake", method = "nix" }]
-
 # xdg config
 [xdg_config]
 type = "basic"

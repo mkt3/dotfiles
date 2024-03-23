@@ -19,6 +19,7 @@
     rsync
     trash-cli
     tmux
+    tmux-mem-cpu-load
     git
     procs
     bat
