@@ -11,5 +11,7 @@ key.json
 meta.json
 /results
 files/nix/home-manager/packages.nix
+files/nix/home-manager/nix_system_packages.nix
 files/nix/home-manager/program_list.nix
 files/nix/home-manager/flake.lock
+files/nix/modules/nixos/packages.nix

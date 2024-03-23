@@ -30,9 +30,9 @@ declare -A methods
 methods["ubuntu"]="apt"
 methods["macos"]="brew cask mas"
 methods["arch"]="pacman aur"
-methods["nixos"]=""
+methods["nixos"]="nix nix-program"
 methods["otherlinux"]=""
-common_methods=("cargo" "nix" "nix-program")
+common_methods=("cargo" "nix-hm" "nix-hm-program")
 
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
@@ -84,7 +84,6 @@ echo "# package install/update commands" >> "$install_script_path"
 
 # nix
 nix_dir="${HOME}/.config/nix"
-home_manager_dir="${CONFIGS_DIR}/nix/home-manager"
 cp -rf "${CONFIGS_DIR}/nix" "$XDG_CONFIG_HOME"
 if [[ "$os_name" == "macos" ]]; then
     nix_homebrew_apps_file="${CONFIGS_DIR}/nix/modules/darwin/homebrew-apps.nix"
@@ -141,21 +140,37 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
     case "$method" in
         nix)
             packages=$(printf '    %s\n' "${package_names[@]}")
+            if [[ "$DISTRO" == "NixOS" ]]; then
+                packages_nix_path="${CONFIGS_DIR}/nix/modules/nixos/packages.nix"
+                package_prefix="environment.systemPackages"
+            else
+                packages_nix_path="${CONFIGS_DIR}/nix/home-manager/nix_system_packages.nix"
+                package_prefix="home.packages"
+            fi
 
-            packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages_${os_name}-dev-${dev_env}-gui-${gui_env}.nix"
+            printf '{ pkgs, ... }:\n{\n  %s = with pkgs; [\n%s\n  ];\n}\n' \
+                   "${package_prefix}" \
+                   "${packages}" \
+                   > "$packages_nix_path"
+            ;;
+        nix-hm)
+            packages=$(printf '    %s\n' "${package_names[@]}")
+            packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages.nix"
 
             printf '{ pkgs, ... }:\n{\n  home.packages = with pkgs; [\n%s\n  ];\n}\n' \
                    "${packages}" \
                    > "$packages_nix_path"
-            cp -rf "$packages_nix_path" "${home_manager_dir}/packages.nix"
+
+            if [ ! -f "${CONFIGS_DIR}/nix/home-manager/nix_system_packages.nix" ]; then
+               printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/home-manager/nix_system_packages.nix"
+            fi
             ;;
-        nix-program)
+        nix-hm-program)
             packages=$(printf '    ./programs/%s.nix\n' "${package_names[@]}")
-            nix_program_list_path="${CONFIGS_DIR}/nix/home-manager/program_list_${os_name}-dev-${dev_env}-gui-${gui_env}.nix"
+            nix_program_list_path="${CONFIGS_DIR}/nix/home-manager/program_list.nix"
             printf '{ config, pkgs, ... }:\n{\n  imports = [\n%s\n  ];\n\n}\n' \
                    "${packages}" \
                    > "$nix_program_list_path"
-            cp -rf "$nix_program_list_path" "${home_manager_dir}/program_list.nix"
             ;;
         brew)
             brew_packages=$(printf '__n__      "%s"' "${package_names[@]}")

@@ -1,10 +1,10 @@
 { username, config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./packages.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -48,13 +48,13 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-    wget
-    curl
-    gcc
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   git
+  #   vim
+  #   wget
+  #   curl
+  #   gcc
+  # ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -3,6 +3,10 @@
 type = "basic"
 common = [{ name = "nix", method = "script", function = "setup_nix" }]
 
+[gcc]
+type = "basic"
+nixos = [{ name = "gcc", method = "nix-hm"}]
+
 # xdg config
 [xdg_config]
 type = "basic"
@@ -12,35 +16,35 @@ common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config
 [zsh]
 type = "basic"
 arch = [{ name = "zsh", method = "pacman", function = "setup_zsh" }]
-macos = [{ name = "zsh", method = "nix", function = "setup_zsh" }]
+macos = [{ name = "zsh", method = "nix-hm", function = "setup_zsh" }]
 ubuntu = [{ name = "zsh", method = "apt", function = "setup_zsh" }]
 nixos = [{ name = "zsh", method = "script", function = "setup_zsh" }]
 
 [coreutils]
 type = "basic"
 arch = [{ name = "coreutils", method = "pacman" }]
-macos = [{ name = "coreutils", method = "nix" }]
+macos = [{ name = "coreutils", method = "nix-hm" }]
 ubuntu = [{ name = "coreutils", method = "apt" }]
 
 [fzf]
 type = "basic"
-common = [{ name = "fzf", method = "nix" }]
+common = [{ name = "fzf", method = "nix-hm" }]
 
 [findutils]
 type = "basic"
-common = [{ name = "findutils", method = "nix" }]
+common = [{ name = "findutils", method = "nix-hm" }]
 
 [grep]
 type = "basic"
-common = [{ name = "gnugrep", method = "nix" }]
+common = [{ name = "gnugrep", method = "nix-hm" }]
 
 [sed]
 type = "basic"
-common = [{ name = "gnused", method = "nix" }]
+common = [{ name = "gnused", method = "nix-hm" }]
 
 [gawk]
 type = "basic"
-common = [{ name = "gawk", method = "nix" }]
+common = [{ name = "gawk", method = "nix-hm" }]
 
 [less]
 type = "basic"
@@ -48,99 +52,99 @@ common = [{ name = "less", method = "nix" }]
 
 [yj]
 type = "basic"
-common = [{ name = "yj", method = "nix" }]
+common = [{ name = "yj", method = "nix-hm" }]
 
 [jq]
 type = "basic"
-common = [{ name = "jq", method = "nix" }]
+common = [{ name = "jq", method = "nix-hm" }]
 
 [tree]
 type = "basic"
-common = [{ name = "tree", method = "nix" }]
+common = [{ name = "tree", method = "nix-hm" }]
 
 [duf]
 type = "basic"
-common = [{ name = "duf", method = "nix" }]
+common = [{ name = "duf", method = "nix-hm" }]
 
 [neofetch]
 type = "basic"
-common = [{ name = "neofetch", method = "nix" }]
+common = [{ name = "neofetch", method = "nix-hm" }]
 
 [unarchiver]
 type = "basic"
-common = [{ name = "unar", method = "nix" }]
+common = [{ name = "unar", method = "nix-hm" }]
 macos = [{ name = "\"The Unarchiver\" = 425424353", method = "mas" }]
 
 [rsync]
 type = "basic"
-common = [{ name = "rsync", method = "nix" }]
+common = [{ name = "rsync", method = "nix-hm" }]
 
 [trash-cli]
 type = "basic"
-common = [{ name = "trash-cli", method = "nix" }]
+common = [{ name = "trash-cli", method = "nix-hm" }]
 
 [tmux]
 type = "basic"
 common = [
-  { name = "tmux", method = "nix", function = "setup_tmux" },
-  { name = "tmux-mem-cpu-load", method = "nix" },
+  { name = "tmux", method = "nix-hm", function = "setup_tmux" },
+  { name = "tmux-mem-cpu-load", method = "nix-hm" },
 ]
 
 [git]
 type = "basic"
-common = [{ name = "git", method = "nix", function = "setup_git" }]
+common = [{ name = "git", method = "nix-hm", function = "setup_git" }]
 
 [sheldon]
 type = "basic"
 macos = [{ name = "sheldon@0.7.3", method = "cargo" }]
-arch = [{ name = "sheldon", method = "nix" }]
-ubuntu = [{ name = "sheldon", method = "nix" }]
-nixos = [{ name = "sheldon", method = "nix" }]
-otherlinux = [{ name = "sheldon", method = "nix" }]
+arch = [{ name = "sheldon", method = "nix-hm" }]
+ubuntu = [{ name = "sheldon", method = "nix-hm" }]
+nixos = [{ name = "sheldon", method = "nix-hm" }]
+otherlinux = [{ name = "sheldon", method = "nix-hm" }]
 
 [procs]
 type = "basic"
-common = [{ name = "procs", method = "nix" }]
+common = [{ name = "procs", method = "nix-hm" }]
 
 [bat]
 type = "basic"
-common = [{ name = "bat", method = "nix" }]
+common = [{ name = "bat", method = "nix-hm" }]
 
 [fd]
 type = "basic"
-common = [{ name = "fd", method = "nix" }]
+common = [{ name = "fd", method = "nix-hm" }]
 
 [ripgrep]
 type = "basic"
-common = [{ name = "ripgrep", method = "nix", function = "setup_ripgrep" }]
+common = [{ name = "ripgrep", method = "nix-hm", function = "setup_ripgrep" }]
 
 [delta]
 type = "basic"
-common = [{ name = "delta", method = "nix" }]
+common = [{ name = "delta", method = "nix-hm" }]
 
 [lsd]
 type = "basic"
-common = [{ name = "lsd", method = "nix" }]
+common = [{ name = "lsd", method = "nix-hm" }]
 
 [dust]
 type = "basic"
-common = [{ name = "dust", method = "nix" }]
+common = [{ name = "dust", method = "nix-hm" }]
 
 [csview]
 type = "basic"
-common = [{ name = "csview", method = "nix" }]
+common = [{ name = "csview", method = "nix-hm" }]
 
 [zoxide]
 type = "basic"
-common = [{ name = "zoxide", method = "nix" }]
+common = [{ name = "zoxide", method = "nix-hm" }]
 
 [navi]
 type = "basic"
-common = [{ name = "navi", method = "nix", function = "setup_navi" }]
+common = [{ name = "navi", method = "nix-hm", function = "setup_navi" }]
 
 [lazygit]
 type = "basic"
-common = [{ name = "lazygit", method = "nix", function = "setup_lazygit" }]
+common = [{ name = "lazygit", method = "nix-hm", function = "setup_lazygit" }]
 
 [docker]
 type = "basic"
@@ -150,55 +154,55 @@ common = [{ name = "docker", method = "script", function = "setup_docker" }]
 [openssl]
 type = "basic"
 arch = [{ name="openssl", method="pacman" }]
-macos = [{ name = "openssl_3_2", method = "nix" }]
+macos = [{ name = "openssl_3_2", method = "nix-hm" }]
 ubuntu = [{ name="openssl", method="apt"}]
 
 [gnupg]
 type = "basic"
 arch = [{ name = "gnupg", method = "pacman", function = "setup_gpg" }]
 ubuntu = [{ name = "gnupg", method = "apt", function = "setup_gpg" }]
-macos = [{ name = "gnupg", method = "nix", function = "setup_gpg" }]
+macos = [{ name = "gnupg", method = "nix-hm", function = "setup_gpg" }]
 
 [macos-security]
 type = "basic"
 macos = [
-  { name = "pinentry_mac", method = "nix" },
-  { name = "pam-reattach", method = "nix" },
+  { name = "pinentry_mac", method = "nix-hm" },
+  { name = "pam-reattach", method = "nix-hm" },
 ]
 
 ## network
 [iproute2mac]
 type = "basic"
-macos = [{ name = "darwin.iproute2mac", method = "nix" }]
+macos = [{ name = "darwin.iproute2mac", method = "nix-hm" }]
 
 ## downloader
 [wget]
 type = "basic"
-common = [{ name = "wget", method = "nix" }]
+common = [{ name = "wget", method = "nix-hm" }]
 
 [curl]
 type = "basic"
-common = [{ name = "curl", method = "nix" }]
+common = [{ name = "curl", method = "nix-hm" }]
 
 [aria2]
 type = "basic"
-common = [{ name = "aria", method = "nix" }]
+common = [{ name = "aria", method = "nix-hm" }]
 
 ## top series
 [htop]
 type = "basic"
-common = [{ name = "htop", method = "nix" }]
+common = [{ name = "htop", method = "nix-hm" }]
 
 [iotop]
 type = "basic"
-arch = [{ name = "iotop", method = "nix" }]
-ubuntu = [{ name = "iotop", method = "nix" }]
-otherlinux = [{ name = "iotop", method = "nix" }]
+arch = [{ name = "iotop", method = "nix-hm" }]
+ubuntu = [{ name = "iotop", method = "nix-hm" }]
+otherlinux = [{ name = "iotop", method = "nix-hm" }]
 
 # [nvtop]
 # type = "dev"
-# arch = [{ name = "nvtop", method = "nix" }]
-# ubuntu = [{ name = "nvtop", method = "nix" }]
+# arch = [{ name = "nvtop", method = "nix-hm" }]
+# ubuntu = [{ name = "nvtop", method = "nix-hm" }]
 
 # Editor
 [vim]
@@ -208,60 +212,60 @@ common = [{ name = "vim", method = "nix", function = "setup_vim" }]
 [emacs-basic]
 type = "basic"
 common = [
-  { name = "emacs", method = "nix-program", function = "setup_emacs" },
-  { name = "hunspell", method = "nix" },
-  { name = "hunspellDicts.en-us", method = "nix" },
-  { name = "enchant", method = "nix" },
-  { name = "emacs-lsp-booster", method = "nix" },
+  { name = "emacs", method = "nix-hm-program", function = "setup_emacs" },
+  { name = "hunspell", method = "nix-hm" },
+  { name = "hunspellDicts.en-us", method = "nix-hm" },
+  { name = "enchant", method = "nix-hm" },
+  { name = "emacs-lsp-booster", method = "nix-hm" },
 ]
 
 [emacs-gui]
 type = "gui"
 common = [
-  { name = "isync", method = "nix" },
-  { name = "msmtp", method = "nix" },
-  { name = "mu", method = "nix" },
-  { name = "goimapnotify", method = "nix" },
+  { name = "isync", method = "nix-hm" },
+  { name = "msmtp", method = "nix-hm" },
+  { name = "mu", method = "nix-hm" },
+  { name = "goimapnotify", method = "nix-hm" },
 ]
-macos = [{ name = "terminal-notifier", method = "nix" }]
+macos = [{ name = "terminal-notifier", method = "nix-hm" }]
 
 # repository management
 [ghq]
 type = "basic"
-common = [{ name = "ghq", method = "nix", function = "setup_ghq" }]
+common = [{ name = "ghq", method = "nix-hm", function = "setup_ghq" }]
 
 # development packages
 ## shell script
 [shellcheck]
 type = "dev"
-common = [{ name = "shellcheck-minimal", method = "nix" }]
+common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
 
 ## python
 [python]
 type = "dev"
-common = [{ name = "python311Full", method = "nix", function = "setup_python" }]
+common = [{ name = "python311Full", method = "nix-hm", function = "setup_python" }]
 
 ## for python
 [ruff]
 type = "dev"
-common = [{ name = "ruff", method = "nix", function = "setup_ruff" }]
+common = [{ name = "ruff", method = "nix-hm", function = "setup_ruff" }]
 
 [pyright]
 type = "dev"
-common = [{ name = "nodePackages.pyright", method = "nix" }]
+common = [{ name = "nodePackages.pyright", method = "nix-hm" }]
 
 [uv]
 type = "dev"
-common = [{ name = "uv", method = "nix" }]
+common = [{ name = "uv", method = "nix-hm" }]
 
 [poetry]
 type = "dev"
-common = [{ name = "poetry", method = "nix", function = "setup_poetry" }]
+common = [{ name = "poetry", method = "nix-hm", function = "setup_poetry" }]
 
 ## mise
 [mise]
 type = "dev"
-common = [{ name = "mise", method = "nix", function = "setup_mise" }]
+common = [{ name = "mise", method = "nix-hm", function = "setup_mise" }]
 
 ## nodejs
 [nodejs]
@@ -271,45 +275,45 @@ common = [{ name = "npm", method = "script", function = "setup_npm" }]
 ## for bash
 [bash-language-server]
 type = "dev"
-common = [{ name = "nodePackages.bash-language-server", method = "nix" }]
+common = [{ name = "nodePackages.bash-language-server", method = "nix-hm" }]
 
 ## for markdown eslint json
 [vscode-langservers-extracted]
 type = "dev"
-common = [{ name = "nodePackages.vscode-langservers-extracted", method = "nix" }]
+common = [{ name = "nodePackages.vscode-langservers-extracted", method = "nix-hm" }]
 
 ## for typescript
 [typescript-language-server]
 type = "dev"
-common = [{ name = "nodePackages.typescript-language-server", method = "nix" }]
+common = [{ name = "nodePackages.typescript-language-server", method = "nix-hm" }]
 
 [typescript]
 type = "dev"
-common = [{ name = "typescript", method = "nix" }]
+common = [{ name = "typescript", method = "nix-hm" }]
 
 ## google cloud sdk
 [google-cloud-sdk]
 type = "dev"
-common = [{ name = "google-cloud-sdk", method = "nix" }]
+common = [{ name = "google-cloud-sdk", method = "nix-hm" }]
 
 # gui packages
 ## tex
 [latex]
 type = "gui"
-common = [{ name = "texliveMedium", method = "nix" }]
+common = [{ name = "texliveMedium", method = "nix-hm" }]
 
 ## communication tools
 [slack]
 type = "gui"
-common = [{ name = "slack", method = "nix" }]
+common = [{ name = "slack", method = "nix-hm" }]
 
 [discord]
 type = "gui"
-common = [{ name = "discord", method = "nix" }]
+common = [{ name = "discord", method = "nix-hm" }]
 
 [zoom]
 type = "gui"
-common = [{ name = "zoom-us", method = "nix" }]
+common = [{ name = "zoom-us", method = "nix-hm" }]
 
 [MeetingBar]
 type = "gui"
@@ -319,36 +323,36 @@ macos = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
 [vivaldi]
 type = "gui"
 arch = [
-  { name = "vivaldi", method = "nix" },
-  { name = "vivaldi-ffmpeg-codecs", method = "nix" },
+  { name = "vivaldi", method = "nix-hm" },
+  { name = "vivaldi-ffmpeg-codecs", method = "nix-hm" },
 ]
 macos = [{ name = "vivaldi", method = "cask" }]
 
 [firefox]
 type = "gui"
-arch = [{ name = "firefox", method = "nix" }]
+arch = [{ name = "firefox", method = "nix-hm" }]
 macos = [{ name = "firefox", method = "cask" }]
 
 ## media
 [vlc]
 type = "gui"
 arch = [
-  { name = "vlc", method = "nix" },
-  { name = "libdvdread", method = "nix" },
-  { name = "libdvdnav", method = "nix" },
-  { name = "libdvdcss", method = "nix" },
+  { name = "vlc", method = "nix-hm" },
+  { name = "libdvdread", method = "nix-hm" },
+  { name = "libdvdnav", method = "nix-hm" },
+  { name = "libdvdcss", method = "nix-hm" },
 ]
 macos = [{ name = "vlc", method = "cask" }]
 
 ## research
 [zotero]
 type = "gui"
-arch = [{ name = "zotero", method = "nix" }]
+arch = [{ name = "zotero", method = "nix-hm" }]
 macos = [{ name = "zotero", method = "cask" }]
 
 [anki]
 type = "gui"
-common = [{ name = "anki-bin", method = "nix" }]
+common = [{ name = "anki-bin", method = "nix-hm" }]
 
 ## password manager
 [bitwarden]
@@ -375,13 +379,13 @@ macos = [{ name = "google-drive", method = "cask" }]
 ## libreoffice
 [libreoffice]
 type = "gui"
-arch = [{ name = "libreoffice-fresh", method = "nix" }]
-macos = [{ name = "libreoffice-bin", method = "nix" }]
+arch = [{ name = "libreoffice-fresh", method = "nix-hm" }]
+macos = [{ name = "libreoffice-bin", method = "nix-hm" }]
 
 ## launcher
 [raycast]
 type = "gui"
-macos = [{ name = "raycast", method = "nix" }]
+macos = [{ name = "raycast", method = "nix-hm" }]
 
 [rofi]
 type = "gui"
@@ -390,7 +394,7 @@ arch = [{ name = "rofi-lbonn-wayland-git", method = "aur", function = "setup_rof
 ## external monitor control
 [monitorcontrol]
 type = "gui"
-macos = [{ name = "monitorcontrol", method = "nix" }]
+macos = [{ name = "monitorcontrol", method = "nix-hm" }]
 arch = [{ name = "ddcci-driver-linux-dkms", method = "aur" }]
 
 ## window manager
@@ -475,17 +479,17 @@ common = [{ name = "skk", method = "script", function = "setup_skk" }]
 ## recoll
 [recoll]
 type = "gui"
-common = [{ name = "recoll", method = "nix", function = "setup_recoll" }]
+common = [{ name = "recoll", method = "nix-hm", function = "setup_recoll" }]
 
 ## hugo
-[hugo]
-type = "gui"
-common = [{ name = "hugo", method = "nix" }]
+# [hugo]
+# type = "gui"
+# common = [{ name = "hugo", method = "nix-hm" }]
 
 ## gatsby
 [gatsby-cli]
 type = "gui"
-common = [{ name = "nodePackages.gatsby-cli", method = "nix" }]
+common = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
 
 ## programing font
 [programing_font]
@@ -495,49 +499,25 @@ arch = [{ name = "programing_font", method = "script", function = "setup_prograi
 ## key remapper
 [keyremap]
 type = "gui"
-macos = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
+macos = [{ name = "karabiner-elements", method = "nix-hm", function = "setup_karabiner" }]
 arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setup_xremap" }]
 
 ## backup tools
 [borg]
 type = "gui"
-arch = [{ name = "borgbackup", method = "nix", function = "setup_borg" }]
+arch = [{ name = "borgbackup", method = "nix-hm", function = "setup_borg" }]
 
 ## dvd writing
 [growisofs]
 type = "gui"
-common = [{ name = "dvdplusrwtools", method = "nix" }]
-
-## textlint
-# [textlint]
-# type = "gui"
-# arch = [
-#   { name = "nodePackages.textlint", method = "npm", function = "setup_textlint" },
-#   { name = "nodePackages.textlint-plugin-org", method = "npm" },
-#   { name = "nodePackages.textlint-rule-preset-ja-technical-writing", method = "npm" },
-#   { name = "nodePackages.textlint-rule-preset-ja-spacing", method = "npm" },
-#   { name = "nodePackages.textlint-rule-alex", method = "npm" },
-#   { name = "nodePackages.textlint-rule-en-capitalization", method = "npm" },
-#   { name = "textlint-rule-common-misspellings", method = "npm" },
-#   { name = "textlint-rule-write-good", method = "npm" },
-# ]
-# macos = [
-#   { name = "textlint", method = "npm", function = "setup_textlint" },
-#   { name = "textlint-plugin-org", method = "npm" },
-#   { name = "textlint-rule-preset-ja-technical-writing", method = "npm" },
-#   { name = "textlint-rule-preset-ja-spacing", method = "npm" },
-#   { name = "textlint-rule-alex", method = "npm" },
-#   { name = "textlint-rule-en-capitalization", method = "npm" },
-#   { name = "textlint-rule-common-misspellings", method = "npm" },
-#   { name = "textlint-rule-write-good", method = "npm" },
-# ]
+common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 
 ## macos only
 [utils]
 type = "gui"
 macos = [
-  { name = "stats", method = "nix" },
-  { name = "appcleaner", method = "nix" },
+  { name = "stats", method = "nix-hm" },
+  { name = "appcleaner", method = "nix-hm" },
 ]
 
 [WireGuard]
