@@ -841,11 +841,11 @@
        (setq jsonrpc-default-request-timeout 3000)
        (fset #'jsonrpc--log-event #'ignore))
 
-     (use-package eglot-booster
-       :vc (:url "https://github.com/jdtsmith/eglot-booster" :branch "main")
-       :after eglot
-       :config
-       (eglot-booster-mode))
+     ;; (use-package eglot-booster
+     ;;   :vc (:url "https://github.com/jdtsmith/eglot-booster" :branch "main")
+     ;;   :after eglot
+     ;;   :config
+     ;;   (eglot-booster-mode))
    #+end_src
 ** Flymake
    #+begin_src emacs-lisp

@@ -268,8 +268,8 @@ for_window [class="Enpass"] {
 exec enpass -minimize
 assign [class="Slack"] workspace $ws2
 exec slack
-assign [class="Vivaldi-stable"] workspace $ws1
-exec vivaldi-stable
+assign [class="Vivaldi"] workspace $ws1
+exec vivaldi
 assign [app_id="org.wezfurlong.wezterm"] workspace $ws1
 exec wezterm
 assign [app_id="emacs"] workspace $ws9
