@@ -212,9 +212,9 @@ common = [{ name = "vim", method = "nix", function = "setup_vim" }]
 [emacs-basic]
 type = "basic"
 common = [
-  { name = "emacs", method = "nix-hm-program", function = "setup_emacs" },
-  { name = "hunspell", method = "nix-hm" },
-  { name = "hunspellDicts.en-us", method = "nix-hm" },
+  { name = "emacs", method = "nix-hm", function = "setup_emacs" },
+  { name = "hunspell", method = "nix" },
+  { name = "hunspellDicts.en_US", method = "nix" },
   { name = "enchant", method = "nix-hm" },
   { name = "emacs-lsp-booster", method = "nix-hm" },
 ]
@@ -470,6 +470,13 @@ macos = [
   { name = "font-cica", method = "cask" },
   { name = "font-plemol-jp-nf", method = "cask" },
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
+]
+
+[hyprland]
+type = "gui"
+nixos = [
+  { name = "hyprland", method = "nix" },
+  { name = "hyprland", method = "nix-hm" },
 ]
 
 [skk-dict]

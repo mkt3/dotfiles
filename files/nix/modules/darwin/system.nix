@@ -12,7 +12,7 @@
   networking.computerName = hostname;
   environment.shells = [ pkgs.zsh ];
   programs.bash.enable = false;
-
+  environment.pathsToLink = ["/share/hunspell"];
   system = {
     defaults.smb.NetBIOSName = hostname;
     # activationScripts are executed every time you boot the system or run `nixos-rebuild` / `darwin-rebuild`.

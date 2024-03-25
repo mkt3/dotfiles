@@ -8,7 +8,6 @@
   imports = [
     ./nix_system_packages.nix
     ./packages.nix
-    ./program_list.nix
     (import ./services/default.nix {inherit pkgs isGUI isCUI;})
   ];
 
