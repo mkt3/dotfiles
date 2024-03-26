@@ -16,14 +16,14 @@ common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config
 [zsh]
 type = "basic"
 arch = [{ name = "zsh", method = "pacman", function = "setup_zsh" }]
-macos = [{ name = "zsh", method = "nix-hm", function = "setup_zsh" }]
+darwin = [{ name = "zsh", method = "nix-hm", function = "setup_zsh" }]
 ubuntu = [{ name = "zsh", method = "apt", function = "setup_zsh" }]
 nixos = [{ name = "zsh", method = "script", function = "setup_zsh" }]
 
 [coreutils]
 type = "basic"
 arch = [{ name = "coreutils", method = "pacman" }]
-macos = [{ name = "coreutils", method = "nix-hm" }]
+darwin = [{ name = "coreutils", method = "nix-hm" }]
 ubuntu = [{ name = "coreutils", method = "apt" }]
 
 [fzf]
@@ -73,7 +73,7 @@ common = [{ name = "neofetch", method = "nix-hm" }]
 [unarchiver]
 type = "basic"
 common = [{ name = "unar", method = "nix-hm" }]
-macos = [{ name = "\"The Unarchiver\" = 425424353", method = "mas" }]
+darwin = [{ name = "\"The Unarchiver\" = 425424353", method = "mas" }]
 
 [rsync]
 type = "basic"
@@ -96,7 +96,7 @@ common = [{ name = "git", method = "nix-hm", function = "setup_git" }]
 
 [sheldon]
 type = "basic"
-macos = [{ name = "sheldon@0.7.3", method = "cargo" }]
+darwin = [{ name = "sheldon@0.7.3", method = "cargo" }]
 arch = [{ name = "sheldon", method = "nix-hm" }]
 ubuntu = [{ name = "sheldon", method = "nix-hm" }]
 nixos = [{ name = "sheldon", method = "nix-hm" }]
@@ -154,18 +154,18 @@ common = [{ name = "docker", method = "script", function = "setup_docker" }]
 [openssl]
 type = "basic"
 arch = [{ name="openssl", method="pacman" }]
-macos = [{ name = "openssl_3_2", method = "nix-hm" }]
+darwin = [{ name = "openssl_3_2", method = "nix-hm" }]
 ubuntu = [{ name="openssl", method="apt"}]
 
 [gnupg]
 type = "basic"
 arch = [{ name = "gnupg", method = "pacman", function = "setup_gpg" }]
 ubuntu = [{ name = "gnupg", method = "apt", function = "setup_gpg" }]
-macos = [{ name = "gnupg", method = "nix-hm", function = "setup_gpg" }]
+darwin = [{ name = "gnupg", method = "nix-hm", function = "setup_gpg" }]
 
 [macos-security]
 type = "basic"
-macos = [
+darwin = [
   { name = "pinentry_mac", method = "nix-hm" },
   { name = "pam-reattach", method = "nix-hm" },
 ]
@@ -173,7 +173,7 @@ macos = [
 ## network
 [iproute2mac]
 type = "basic"
-macos = [{ name = "darwin.iproute2mac", method = "nix-hm" }]
+darwin = [{ name = "darwin.iproute2mac", method = "nix-hm" }]
 
 ## downloader
 [wget]
@@ -227,7 +227,7 @@ common = [
   { name = "mu", method = "nix-hm" },
   { name = "goimapnotify", method = "nix-hm" },
 ]
-macos = [{ name = "terminal-notifier", method = "nix-hm" }]
+darwin = [{ name = "terminal-notifier", method = "nix-hm" }]
 
 # repository management
 [ghq]
@@ -317,7 +317,7 @@ common = [{ name = "zoom-us", method = "nix-hm" }]
 
 [MeetingBar]
 type = "gui"
-macos = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
+darwin = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
 
 ## browser
 [vivaldi]
@@ -326,12 +326,12 @@ arch = [
   { name = "vivaldi", method = "nix-hm" },
   { name = "vivaldi-ffmpeg-codecs", method = "nix-hm" },
 ]
-macos = [{ name = "vivaldi", method = "cask" }]
+darwin = [{ name = "vivaldi", method = "cask" }]
 
 [firefox]
 type = "gui"
 arch = [{ name = "firefox", method = "nix-hm" }]
-macos = [{ name = "firefox", method = "cask" }]
+darwin = [{ name = "firefox", method = "cask" }]
 
 ## media
 [vlc]
@@ -342,13 +342,13 @@ arch = [
   { name = "libdvdnav", method = "nix-hm" },
   { name = "libdvdcss", method = "nix-hm" },
 ]
-macos = [{ name = "vlc", method = "cask" }]
+darwin = [{ name = "vlc", method = "cask" }]
 
 ## research
 [zotero]
 type = "gui"
 arch = [{ name = "zotero", method = "nix-hm" }]
-macos = [{ name = "zotero", method = "cask" }]
+darwin = [{ name = "zotero", method = "cask" }]
 
 [anki]
 type = "gui"
@@ -358,34 +358,34 @@ common = [{ name = "anki-bin", method = "nix-hm" }]
 [bitwarden]
 type = "gui"
 arch = [{ name = "bitwarden", method = "pacman" }]
-macos = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
+darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 
 ## terminal emulator
 [wezterm]
 type = "gui"
 arch = [{ name = "wezterm", method = "pacman", function = "setup_wezterm" }]
-macos = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
+darwin = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
 
 ## cloud storage
 [nextcloud-client]
 type = "gui"
 arch = [{ name = "nextcloud-client", method = "pacman" }]
-macos = [{ name = "nextcloud", method = "cask" }]
+darwin = [{ name = "nextcloud", method = "cask" }]
 
 [google-drive]
 type = "gui"
-macos = [{ name = "google-drive", method = "cask" }]
+darwin = [{ name = "google-drive", method = "cask" }]
 
 ## libreoffice
 [libreoffice]
 type = "gui"
 arch = [{ name = "libreoffice-fresh", method = "nix-hm" }]
-macos = [{ name = "libreoffice-bin", method = "nix-hm" }]
+darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
 
 ## launcher
 [raycast]
 type = "gui"
-macos = [{ name = "raycast", method = "nix-hm" }]
+darwin = [{ name = "raycast", method = "nix-hm" }]
 
 [rofi]
 type = "gui"
@@ -394,7 +394,7 @@ arch = [{ name = "rofi-lbonn-wayland-git", method = "aur", function = "setup_rof
 ## external monitor control
 [monitorcontrol]
 type = "gui"
-macos = [{ name = "monitorcontrol", method = "nix-hm" }]
+darwin = [{ name = "monitorcontrol", method = "nix-hm" }]
 arch = [{ name = "ddcci-driver-linux-dkms", method = "aur" }]
 
 ## window manager
@@ -462,7 +462,7 @@ arch = [
 
 [yabai]
 type = "gui"
-macos = [
+darwin = [
   { name = "koekeishiya/formulae/yabai", method = "brew", function = "setup_yabai" },
   { name = "koekeishiya/formulae/skhd", method = "brew", function = "setup_skhd" },
   { name = "FelixKratz/formulae/sketchybar", method = "brew", function = "setup_sketchybar" },
@@ -506,7 +506,7 @@ arch = [{ name = "programing_font", method = "script", function = "setup_prograi
 ## key remapper
 [keyremap]
 type = "gui"
-macos = [{ name = "karabiner-elements", method = "nix-hm", function = "setup_karabiner" }]
+darwin = [{ name = "karabiner-elements", method = "nix-hm", function = "setup_karabiner" }]
 arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setup_xremap" }]
 
 ## backup tools
@@ -522,15 +522,15 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 ## macos only
 [utils]
 type = "gui"
-macos = [
+darwin = [
   { name = "stats", method = "nix-hm" },
   { name = "appcleaner", method = "nix-hm" },
 ]
 
 [WireGuard]
 type = "gui"
-macos = [{ name = "\"WireGuard\" = 1451685025", method = "mas" }]
+darwin = [{ name = "\"WireGuard\" = 1451685025", method = "mas" }]
 
-[macos]
+[darwin]
 type = "gui"
-macos = [{ name = "macos", method = "script", function = "setup_macos" }]
+darwin = [{ name = "macos", method = "script", function = "setup_macos" }]

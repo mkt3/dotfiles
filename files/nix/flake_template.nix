@@ -41,8 +41,8 @@
         nixosConfigurations."${hostname}"= nixpkgs.lib.nixosSystem {
           inherit pkgs specialArgs;
           modules = [
-            ./modules/common/host-users.nix
-            ./modules/nixos/configuration.nix
+            ./systems/common/host-users.nix
+            ./systems/nixos/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -56,10 +56,11 @@
         darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
           inherit pkgs specialArgs;
           modules = [
-            ./modules/common/nix-core.nix
-            ./modules/common/host-users.nix
-            ./modules/darwin/system.nix
-            ./modules/darwin/homebrew-apps.nix
+            ./systems/common/nix-core.nix
+            ./systems/common/host-users.nix
+            ./systems/darwin/system.nix
+            ./systems/darwin/system_packages.nix
+            ./systems/darwin/homebrew-apps.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

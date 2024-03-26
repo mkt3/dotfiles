@@ -6,7 +6,7 @@
   home.extraOutputsToInstall = ["dev"];
 
   imports = [
-    ./nix_system_packages.nix
+    ./system_packages.nix
     ./packages.nix
     (import ./services/default.nix {inherit pkgs isGUI isCUI;})
   ];

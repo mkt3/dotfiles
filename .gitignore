@@ -11,5 +11,6 @@ key.json
 meta.json
 /results
 files/nix/home-manager/packages.nix
-files/nix/home-manager/nix_system_packages.nix
-files/nix/modules/nixos/packages.nix
+files/nix/home-manager/system_packages.nix
+files/nix/systems/darwin/system_packages.nix
+files/nix/systems/nixos/system_packages.nix

@@ -19,7 +19,7 @@ case "$DISTRO" in
     "Arch Linux") os_name="arch" ;;
     "Ubuntu") os_name="ubuntu" ;;
     "NixOS") os_name="nixos" ;;
-    "Darwin") os_name="macos" ;;
+    "Darwin") os_name="darwin" ;;
     *) os_name="otherlinux" ;;
 esac
 
@@ -28,7 +28,7 @@ gui_env=${GUI_ENV:-n}
 
 declare -A methods
 methods["ubuntu"]="apt"
-methods["macos"]="brew cask mas"
+methods["darwin"]="brew cask mas"
 methods["arch"]="pacman aur"
 methods["nixos"]=""
 methods["otherlinux"]=""
@@ -84,10 +84,13 @@ echo "# package install/update commands" >> "$install_script_path"
 
 # nix
 nix_dir="${HOME}/.config/nix"
-cp -rf "${CONFIGS_DIR}/nix" "$XDG_CONFIG_HOME"
-if [[ "$os_name" == "macos" ]]; then
-    nix_homebrew_apps_file="${CONFIGS_DIR}/nix/modules/darwin/homebrew-apps.nix"
-    cp -rf "${CONFIGS_DIR}/nix/modules/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
+
+printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
+printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+
+if [[ "$os_name" == "darwin" ]]; then
+    nix_homebrew_apps_file="${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
+    cp -rf "${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
 
     echo "title \"Setup with nix-darwin\"" >> "$install_script_path"
     if ! (type darwin-rebuild > /dev/null 2>&1); then
@@ -140,23 +143,21 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
     case "$method" in
         nix|nix-hm)
             if [[ "$method" == "nix" ]]; then
-                if [[ "$DISTRO" == "NixOS" ]]; then
-                    packages_nix_path="${CONFIGS_DIR}/nix/modules/nixos/packages.nix"
+                if [[ "$DISTRO" == "NixOS" ]] ||  [[ "$DISTRO" == "Darwin" ]] ; then
+                    packages_nix_path="${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
                     package_prefix="environment.systemPackages"
-                    module_nix_dir="${CONFIGS_DIR}/nix/modules/nixos/modules"
+                    module_nix_dir="${CONFIGS_DIR}/nix/systems/${os_name}/modules"
+                    mkdir -p module"$module_nix_dir"
                 else
-                    packages_nix_path="${CONFIGS_DIR}/nix/home-manager/nix_system_packages.nix"
+                    packages_nix_path="${CONFIGS_DIR}/nix/home-manager/system_packages.nix"
                     package_prefix="home.packages"
                     module_nix_dir="${CONFIGS_DIR}/nix/home-manager/modules"
                 fi
+
             elif [[ "$method" == "nix-hm" ]]; then
                 packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages.nix"
                 package_prefix="home.packages"
                 module_nix_dir="${CONFIGS_DIR}/nix/home-manager/modules"
-
-                if [ ! -f "${CONFIGS_DIR}/nix/home-manager/nix_system_packages.nix" ]; then
-                    printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/home-manager/nix_system_packages.nix"
-                fi
             fi
 
             package_list=()
