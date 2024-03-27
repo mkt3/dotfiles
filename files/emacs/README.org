@@ -244,7 +244,8 @@
       text-quoting-style 'straight
       user-full-name (getenv "NAME")
       completion-lazy-hilit t
-      process-adaptive-read-buffering t)
+      process-adaptive-read-buffering t
+      require-final-newline t)
 
      (use-package simple
        :demand t
@@ -1758,6 +1759,9 @@
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
               ("C-j" . skk-kakutei)
+              :map mu4e-thread-mode-map
+              ("C-<tab>" . tab-next)
+              ("C-i" . mu4e-thread-fold-toggle)
               :map mu4e-view-mode-map
               ("C-m" . browse-url-at-point)
               ("C-c C-o" . my:browse-url-at-point-with-default-browser))
@@ -1799,7 +1803,7 @@
              message-sendmail-f-is-evil t
              message-sendmail-extra-arguments '("--read-envelope-from")
              message-send-mail-function 'message-send-mail-with-sendmail)
-       (load (expand-file-name "personal_config/emacs_mail/mu4e_config.el" my:d:nextcloud))
+       (load (expand-file-name "personal_config/emacs/mail/mu4e_config.el" my:d:nextcloud))
        (add-hook 'emacs-startup-hook  (lambda ()
                                         (my:imapnotify-start-prodigy-services)
                                         (mu4e)))
@@ -1814,6 +1818,15 @@
        ;;   (message-goto-body))
        ;; (add-hook 'mu4e-compose-mode-hook (lambda () (message-insert-signature-at-point)) t)
        ;; (add-hook 'mu4e-compose-pre-hook (lambda () (message-insert-signature-at-point t)) t)
+
+       (add-hook 'mu4e-compose-mode-hook
+                 (lambda()
+                   (let* ((ctx (mu4e-context-current))
+                          (mail (cdr (assoc 'user-mail-address (mu4e-context-vars ctx)))))
+                     (when mail
+                       (save-excursion
+                         (message-add-header (concat "Bcc: " mail "\n")))))))
+
        (add-hook 'mu4e-compose-mode-hook (lambda ()
                                            (use-hard-newlines -1)
                                            (turn-off-auto-fill))))
@@ -1910,7 +1923,7 @@
        :after consult
        :config
        (add-to-list 'consult-buffer-filter "\\`\\*prodigy-.*\\*\\'")
-       (load (expand-file-name "personal_config/emacs_mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
+       (load (expand-file-name "personal_config/emacs/mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
   #+end_src
 ** openai
    #+begin_src emacs-lisp
