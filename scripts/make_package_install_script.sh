@@ -85,7 +85,9 @@ echo "# package install/update commands" >> "$install_script_path"
 # nix
 nix_dir="${HOME}/.config/nix"
 
-printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
+if [[ "$DISTRO" == "NixOS" ]] ||  [[ "$DISTRO" == "Darwin" ]] ; then
+    printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
+fi
 printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/home-manager/system_packages.nix"
 
 if [[ "$os_name" == "darwin" ]]; then
