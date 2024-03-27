@@ -149,29 +149,30 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
                     packages_nix_path="${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
                     package_prefix="environment.systemPackages"
                     module_nix_dir="${CONFIGS_DIR}/nix/systems/${os_name}/modules"
-                    mkdir -p module"$module_nix_dir"
                 else
                     packages_nix_path="${CONFIGS_DIR}/nix/home-manager/system_packages.nix"
                     package_prefix="home.packages"
                     module_nix_dir="${CONFIGS_DIR}/nix/home-manager/modules"
                 fi
-
             elif [[ "$method" == "nix-hm" ]]; then
                 packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages.nix"
                 package_prefix="home.packages"
                 module_nix_dir="${CONFIGS_DIR}/nix/home-manager/modules"
             fi
+            mkdir -p "$module_nix_dir"
 
+            file_list=()
             package_list=()
             module_list=()
 
             while IFS= read -r -d '' file
             do
-                file_list+=("$(basename -s .extension "$file")")
+                file_list+=("$(basename -s .nix "$file")")
             done < <(find "$module_nix_dir" -type f -print0)
 
             for package in "${package_names[@]}"; do
-                if [[ " ${file_list[*]} " =~ ${package} ]]; then
+                package_name=" $package "
+                if [[ " ${file_list[*]} " =~ $package_name ]]; then
                     module_list+=("$package")
                 else
                     package_list+=("$package")

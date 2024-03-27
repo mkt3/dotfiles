@@ -161,7 +161,8 @@ ubuntu = [{ name="openssl", method="apt"}]
 type = "basic"
 arch = [{ name = "gnupg", method = "pacman", function = "setup_gpg" }]
 ubuntu = [{ name = "gnupg", method = "apt", function = "setup_gpg" }]
-darwin = [{ name = "gnupg", method = "nix-hm", function = "setup_gpg" }]
+darwin = [{ name = "gnupg", method = "nix-hm" }]
+nixos = [{ name = "gnupg", method = "nix" }]
 
 [macos-security]
 type = "basic"
