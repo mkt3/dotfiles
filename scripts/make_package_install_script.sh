@@ -111,7 +111,7 @@ else
         echo "nix flake update --flake ${nix_dir}" >> "$install_script_path"
         echo "home-manager switch --flake ${nix_dir}" >> "$install_script_path"
     else
-        echo "nix run home-manager/master switch --flake ${nix_dir}" >> "$install_script_path"
+        echo "nix run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
     fi
 fi
 
