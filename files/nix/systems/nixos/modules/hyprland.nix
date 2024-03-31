@@ -9,6 +9,9 @@
 
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-hyprland
+    waybar
+    mako
+    wofi
   ];
 
   security.polkit.enable = true;

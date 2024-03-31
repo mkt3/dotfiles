@@ -327,6 +327,10 @@ arch = [
   { name = "vivaldi", method = "nix-hm" },
   { name = "vivaldi-ffmpeg-codecs", method = "nix-hm" },
 ]
+nixos = [
+  { name = "vivaldi", method = "nix-hm" },
+  { name = "vivaldi-ffmpeg-codecs", method = "nix-hm" },
+]
 darwin = [{ name = "vivaldi", method = "cask" }]
 
 [firefox]
@@ -366,6 +370,7 @@ darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 type = "gui"
 arch = [{ name = "wezterm", method = "pacman", function = "setup_wezterm" }]
 darwin = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
+nixos = [{ name = "wezterm", method = "nix-hm", function = "setup_wezterm" }]
 
 ## cloud storage
 [nextcloud-client]
