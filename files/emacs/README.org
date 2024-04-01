@@ -596,7 +596,7 @@
       (use-package consult
         :ensure t
         :demand t
-        :bind (("C-s" . my:consult-line)
+        :bind (("C-s" . consult-line)
                ("C-c M-x" . consult-mode-command)
                ("C-c h" . consult-history)
                ([remap Info-search] . consult-info)
@@ -642,12 +642,6 @@
                 ("C-z" . consult-imenu))
         :hook (completion-list-mode . consult-preview-at-point-mode)
         :init
-        (defun my:consult-line
-            (&optional
-             at-point)
-          (interactive "P")
-          (if at-point (consult-line (thing-at-point 'symbol))
-            (consult-line)))
         (setq xref-show-xrefs-function #'consult-xref
               xref-show-definitions-function #'consult-xref)
         :custom
@@ -659,7 +653,16 @@
         (cl-nsubstitute-if
          '(consult-ripgrep "Find regexp")
          (pcase-lambda (`(,cmd _)) (eq cmd #'project-find-regexp))
-         project-switch-commands))
+         project-switch-commands)
+        (consult-customize
+         consult-theme :preview-key '(:debounce 0.2 any)
+         consult-ripgrep consult-git-grep consult-grep
+         consult-bookmark consult-xref consult-recent-file
+         consult--source-bookmark consult--source-file-register
+         consult--source-project-recent-file
+         ;; :preview-key "M-."
+         :preview-key '(:debounce 0.4 any)
+         consult--source-recent-file :preview-key nil))
     #+end_src
 *** marginalia
     #+begin_src emacs-lisp

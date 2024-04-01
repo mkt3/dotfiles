@@ -5,7 +5,7 @@ common = [{ name = "nix", method = "script", function = "setup_nix" }]
 
 [gcc]
 type = "basic"
-nixos = [{ name = "gcc", method = "nix-hm"}]
+nixos = [{ name = "gcc", method = "nix-hm" }]
 
 # xdg config
 [xdg_config]
@@ -146,6 +146,10 @@ common = [{ name = "navi", method = "nix-hm", function = "setup_navi" }]
 type = "basic"
 common = [{ name = "lazygit", method = "nix-hm", function = "setup_lazygit" }]
 
+[taplo]
+type = "basic"
+common = [{ name = "taplo", method = "nix-hm" }]
+
 [docker]
 type = "basic"
 common = [{ name = "docker", method = "script", function = "setup_docker" }]
@@ -153,9 +157,9 @@ common = [{ name = "docker", method = "script", function = "setup_docker" }]
 ## security
 [openssl]
 type = "basic"
-arch = [{ name="openssl", method="pacman" }]
+arch = [{ name = "openssl", method = "pacman" }]
 darwin = [{ name = "openssl_3_2", method = "nix-hm" }]
-ubuntu = [{ name="openssl", method="apt"}]
+ubuntu = [{ name = "openssl", method = "apt" }]
 
 [gnupg]
 type = "basic"
@@ -364,6 +368,7 @@ common = [{ name = "anki-bin", method = "nix-hm" }]
 type = "gui"
 arch = [{ name = "bitwarden", method = "pacman" }]
 darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
+nixos = [{ name = "bitwarden-desktop", method = "nixg" }]
 
 ## terminal emulator
 [wezterm]
@@ -377,6 +382,7 @@ nixos = [{ name = "wezterm", method = "nix-hm", function = "setup_wezterm" }]
 type = "gui"
 arch = [{ name = "nextcloud-client", method = "pacman" }]
 darwin = [{ name = "nextcloud", method = "cask" }]
+nixos = [{ name = "nextcloud-client", method = "nix" }]
 
 [google-drive]
 type = "gui"
@@ -404,6 +410,18 @@ darwin = [{ name = "monitorcontrol", method = "nix-hm" }]
 arch = [{ name = "ddcci-driver-linux-dkms", method = "aur" }]
 
 ## window manager
+[hyprland]
+type = "gui"
+
+nixos = [
+  { name = "hyprland", method = "nix" },
+  { name = "hyprland", method = "nix-hm" },
+  { name = "xdg-desktop-portal-hyprland", method = "nix-hm" },
+  { name = "waybar", method = "nix", function = "setup_waybar" },
+  { name = "mako", method = "nix", function = "setup_mako" },
+  { name = "wofi", method = "nix", function = "setup_wofi" },
+]
+
 [sway]
 type = "gui"
 arch = [
@@ -463,7 +481,6 @@ arch = [
   { name = "nwg-look", method = "aur" },
   { name = "nordic-theme", method = "aur" },
   { name = "xwindow", method = "script", function = "setup_xwindow" },
-
 ]
 
 [yabai]
@@ -478,13 +495,6 @@ darwin = [
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
 ]
 
-[hyprland]
-type = "gui"
-nixos = [
-  { name = "hyprland", method = "nix" },
-  { name = "hyprland", method = "nix-hm" },
-]
-
 [skk-dict]
 type = "gui"
 common = [{ name = "skk", method = "script", function = "setup_skk" }]
@@ -494,10 +504,10 @@ common = [{ name = "skk", method = "script", function = "setup_skk" }]
 type = "gui"
 common = [{ name = "recoll", method = "nix-hm", function = "setup_recoll" }]
 
-## hugo
-# [hugo]
-# type = "gui"
-# common = [{ name = "hugo", method = "nix-hm" }]
+# hugo
+[hugo]
+type = "gui"
+common = [{ name = "hugo", method = "nix-hm" }]
 
 ## gatsby
 [gatsby-cli]
@@ -508,6 +518,7 @@ common = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
 [programing_font]
 type = "gui"
 arch = [{ name = "programing_font", method = "script", function = "setup_prograing_font" }]
+nixos = [{ name = "programing_font", method = "script", function = "setup_prograing_font" }]
 
 ## key remapper
 [keyremap]
@@ -519,6 +530,7 @@ arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setu
 [borg]
 type = "gui"
 arch = [{ name = "borgbackup", method = "nix-hm", function = "setup_borg" }]
+nixos = [{ name = "borgbackup", method = "nix-hm", function = "setup_borg" }]
 
 ## dvd writing
 [growisofs]
