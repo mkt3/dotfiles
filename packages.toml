@@ -412,11 +412,10 @@ arch = [{ name = "ddcci-driver-linux-dkms", method = "aur" }]
 ## window manager
 [hyprland]
 type = "gui"
-
 nixos = [
   { name = "hyprland", method = "nix" },
   { name = "hyprland", method = "nix-hm" },
-  { name = "xdg-desktop-portal-hyprland", method = "nix-hm" },
+  { name = "xdg-desktop-portal-hyprland", method = "nix" },
   { name = "waybar", method = "nix", function = "setup_waybar" },
   { name = "mako", method = "nix", function = "setup_mako" },
   { name = "wofi", method = "nix", function = "setup_wofi" },
