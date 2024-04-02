@@ -1,5 +1,17 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, ... }:
 {
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = ''
+          ${pkgs.greetd.tuigreet}/bin/tuigreet --time --asterisk --cmd Hyprland
+        '';
+        user = username;
+      };
+    };
+  };
 
   imports = [
     ./gui_component
