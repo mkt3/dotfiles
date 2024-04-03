@@ -909,15 +909,24 @@
     #+end_src
 *** tree-sitter
     #+begin_src emacs-lisp
-      ;; (use-package treesit-auto
-      ;;   :ensure t
-      ;;   :custom
-      ;;   (treesit-font-lock-level 3)
-      ;;   (treesit-auto-install 'prompt)
-      ;;   :config
-      ;;   ;; (treesit-auto-add-to-auto-mode-alist 'all)
-      ;;   (treesit-auto-add-to-auto-mode-alist '(rust python toml json yaml))
-      ;;   (global-treesit-auto-mode))
+      (use-package treesit
+        :custom
+        (treesit-font-lock-level 3)
+        :config
+        (setq major-mode-remap-alist
+              '((yaml-mode . yaml-ts-mode)
+                (json-mode . json-ts-mode)
+                (toml-mode . toml-ts-mode)
+                (bash-mode . bash-ts-mode)
+                (js2-mode . js-ts-mode)
+                (typescript-mode . typescript-ts-mode)
+                (tsx-mode . tsx-ts-mode)
+                (css-mode . css-ts-mode)
+                (cmake-mode . cmake-ts-mode)
+                (dockerfile-mode . dockerfile-ts-mode)
+                (rust-mode . rust-ts-mode)
+                (lua-mode . lua-ts-mode)
+                (python-mode . python-ts-mode))))
     #+end_src
 *** git
     #+begin_src emacs-lisp
