@@ -7,6 +7,7 @@
        epkgs.pdf-tools
        epkgs.mu4e
        epkgs.jinx
+       epkgs.treesit-grammars.with-all-grammars
     ];
   };
 }
