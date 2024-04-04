@@ -33,8 +33,11 @@ pre_setup_nix() {
         is_cui="true"
     fi
 
-    #rm -rf  "${XDG_CONFIG_HOME}/nix" # need flake.lock
-    cp -rf "${nix_config_dir}" "${XDG_CONFIG_HOME}"
+    if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
+        cp -rf "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
+    fi
+    rm -rf  "${XDG_CONFIG_HOME}/nix"
+    cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"
     mv "$nix_main_template_flake" "$nix_main_flake"
     if [ "$DISTRO" = "NixOS" ]; then
        cp -rf "/etc/nixos/hardware-configuration.nix" "$nix_main_flake_dir/systems/nixos"
