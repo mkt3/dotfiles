@@ -60,7 +60,7 @@ install_linux() {
             fi
             ;;
         "Ubuntu")
-            sudo apt-get -y install git curl xz-utils jq wget make libssl-dev build-essential
+            sudo apt-get -y install git jq make
             ;;
         *)
             ;;
