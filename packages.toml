@@ -92,7 +92,9 @@ common = [
 
 [git]
 type = "basic"
-common = [{ name = "git", method = "nix-hm", function = "setup_git" }]
+common = [
+  { name = "git", method = "nix-hm", function = "setup_git" },
+  { name = "git-secrets", method = "nix-hm", function = "setup_git-secrets" }]
 
 [sheldon]
 type = "basic"
