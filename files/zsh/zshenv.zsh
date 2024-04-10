@@ -69,17 +69,14 @@ elif [[ "$DISTRO" == 'Darwin' ]];then
     # nix
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"
-    export NIX_PATH="darwin-config=$HOME/.conifg/nix-darwin/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
+    export NIX_PATH="darwin-config=$HOME/.conifg/nix/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
     export NIX_SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
     export TERMINFO_DIRS="/run/current-system/sw/share/terminfo:/nix/var/nix/profiles/default/share/terminfo:${TERMINFO_DIRS}"
     export XDG_CONFIG_DIRS=":/run/current-system/sw/etc/xdg:/nix/var/nix/profiles/default/etc/xdg"
     export XDG_DATA_DIRS="/run/current-system/sw/share:/nix/var/nix/profiles/default/share"
     export TERM=$TERM
-    export NIX_USER_PROFILE_DIR="/nix/var/nix/profiles/per-user/${USER}"
+    export NIX_USER_PROFILE_DIR="/etc/profiles/per-user/${USER}"
     export NIX_PROFILES="/nix/var/nix/profiles/default /run/current-system/sw"
-    if [ -e "${HOME}/.nix-defexpr/channels" ]; then
-        export NIX_PATH="${HOME}/.nix-defexpr/channels${NIX_PATH:+:$NIX_PATH}"
-    fi
     # Set up secure multi-user builds: non-root users build through the
     # Nix daemon.
     if [ ! -w /nix/var/nix/db ]; then
