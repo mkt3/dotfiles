@@ -40,7 +40,7 @@ pre_setup_nix() {
     cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"
     mv "$nix_main_template_flake" "$nix_main_flake"
     if [ "$DISTRO" = "NixOS" ]; then
-       cp -rf "/etc/nixos/hardware-configuration.nix" "$nix_main_flake_dir/systems/nixos"
+       cp -rf "/etc/nixos/hardware-configuration.nix" "${nix_main_flake_dir}/systems/nixos"
     fi
 
     "$sed_command" -i "s|__SYSTEM__|${nix_platform}|g" "$nix_main_flake"

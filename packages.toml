@@ -1,3 +1,8 @@
+# xdg config
+[xdg_config]
+type = "basic"
+common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
+
 # build package
 [nix]
 type = "basic"
@@ -6,11 +11,6 @@ common = [{ name = "nix", method = "script", function = "setup_nix" }]
 [gcc]
 type = "basic"
 nixos = [{ name = "gcc", method = "nix-hm" }]
-
-# xdg config
-[xdg_config]
-type = "basic"
-common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
 
 # CLI command packages
 [zsh]
