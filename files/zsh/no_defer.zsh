@@ -1,7 +1,6 @@
 # fzf
-if [ -n "${commands[fzf-share]}" ]; then
-  . "$(fzf-share)/key-bindings.zsh"
-  . "$(fzf-share)/completion.zsh"
+if [ -n "${commands[fzf]}" ]; then
+    eval "$(fzf --zsh)"
 fi
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_DEFAULT_OPTS='--reverse --border --ansi'
