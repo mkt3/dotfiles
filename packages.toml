@@ -8,6 +8,10 @@ common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config
 type = "basic"
 common = [{ name = "nix", method = "script", function = "setup_nix" }]
 
+[direnv]
+type = "basic"
+common = [{ name = "direnv", method = "nix-hm" }]
+
 [gcc]
 type = "basic"
 nixos = [{ name = "gcc", method = "nix-hm" }]
@@ -206,11 +210,6 @@ arch = [{ name = "iotop", method = "nix-hm" }]
 ubuntu = [{ name = "iotop", method = "nix-hm" }]
 otherlinux = [{ name = "iotop", method = "nix-hm" }]
 
-# [nvtop]
-# type = "dev"
-# arch = [{ name = "nvtop", method = "nix-hm" }]
-# ubuntu = [{ name = "nvtop", method = "nix-hm" }]
-
 # Editor
 [vim]
 type = "basic"
@@ -250,7 +249,7 @@ common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
 ## python
 [python]
 type = "dev"
-common = [{ name = "python312Full", method = "nix-hm", function = "setup_python" }]
+common = [{ name = "python", method = "script", function = "setup_python" }]
 
 ## for python
 [ruff]
@@ -268,11 +267,6 @@ common = [{ name = "uv", method = "nix-hm" }]
 [poetry]
 type = "dev"
 common = [{ name = "poetry", method = "nix-hm", function = "setup_poetry" }]
-
-## mise
-[mise]
-type = "dev"
-common = [{ name = "mise", method = "nix-hm", function = "setup_mise" }]
 
 ## nodejs
 [nodejs]

@@ -1,5 +1,8 @@
 # mise
-(( ${+commands[mise]} )) && eval "$(mise activate zsh)"
+# (( ${+commands[mise]} )) && eval "$(mise activate zsh)"
+
+# direnv
+(( ${+commands[direnv]} )) && eval "$(direnv hook zsh)"
 
 # rehash
 zstyle ":completion:*:commands" rehash 1
