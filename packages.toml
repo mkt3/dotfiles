@@ -251,6 +251,24 @@ common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "python", method = "script", function = "setup_python" }]
 
+## for cuda
+[cuda]
+type = "dev"
+ubuntu = [
+  { name = "build-essential", method = "apt" },
+  { name = "libbz2-dev", method = "apt" },
+  { name = "libdb-dev", method = "apt" },
+  { name = "libreadline-dev", method = "apt" },
+  { name = "libffi-dev", method = "apt" },
+  { name = "libgdbm-dev", method = "apt" },
+  { name = "liblzma-dev", method = "apt" },
+  { name = "libncursesw5-dev", method = "apt" },
+  { name = "libsqlite3-dev", method = "apt" },
+  { name = "libssl-dev", method = "apt" },
+  { name = "zlib1g-dev", method = "apt" },
+  { name = "uuid-dev", method = "apt" },
+]
+
 ## for python
 [ruff]
 type = "dev"
@@ -259,6 +277,11 @@ common = [{ name = "ruff", method = "nix-hm", function = "setup_ruff" }]
 [pyright]
 type = "dev"
 common = [{ name = "nodePackages.pyright", method = "nix-hm" }]
+
+## mise
+[mise]
+type = "dev"
+common = [{ name = "mise", method = "nix-hm", function = "setup_mise" }]
 
 [uv]
 type = "dev"
