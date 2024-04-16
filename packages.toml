@@ -98,7 +98,8 @@ common = [
 type = "basic"
 common = [
   { name = "git", method = "nix-hm", function = "setup_git" },
-  { name = "git-secrets", method = "nix-hm", function = "setup_git-secrets" }]
+  { name = "git-secrets", method = "nix-hm", function = "setup_git-secrets" },
+]
 
 [sheldon]
 type = "basic"
@@ -251,9 +252,20 @@ common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "python", method = "script", function = "setup_python" }]
 
-## for cuda
-[cuda]
+## for python
+[ruff]
 type = "dev"
+common = [{ name = "ruff", method = "nix-hm", function = "setup_ruff" }]
+
+[pyright]
+type = "dev"
+common = [{ name = "nodePackages.pyright", method = "nix-hm" }]
+
+## mise
+[mise]
+type = "dev"
+common = [{ name = "mise", method = "nix-hm", function = "setup_mise" }]
+### for python build
 ubuntu = [
   { name = "build-essential", method = "apt" },
   { name = "libbz2-dev", method = "apt" },
@@ -268,20 +280,6 @@ ubuntu = [
   { name = "zlib1g-dev", method = "apt" },
   { name = "uuid-dev", method = "apt" },
 ]
-
-## for python
-[ruff]
-type = "dev"
-common = [{ name = "ruff", method = "nix-hm", function = "setup_ruff" }]
-
-[pyright]
-type = "dev"
-common = [{ name = "nodePackages.pyright", method = "nix-hm" }]
-
-## mise
-[mise]
-type = "dev"
-common = [{ name = "mise", method = "nix-hm", function = "setup_mise" }]
 
 [uv]
 type = "dev"

@@ -554,17 +554,17 @@
          )
        (setq viper-mode nil))
    #+end_src
-** smartparens
+** puni
    #+begin_src emacs-lisp
-     (use-package smartparens
+     (use-package puni
        :ensure t
-       :delight
-       :hook (after-init-hook . smartparens-global-strict-mode)
+       :defer t
+       :bind ("C-h" . puni-backward-delete-char)
+       :init
+       (puni-global-mode)
+       (add-hook 'term-mode-hook #'puni-disable-puni-mode)
        :custom
-       (electric-pair-mode nil)
-       :config
-       (sp-with-modes 'org-mode
-         (sp-local-pair "/" "/" :actions nil)))
+       (electric-pair-mode t))
       #+end_src
 ** Completion UI
 *** vertico

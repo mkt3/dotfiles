@@ -77,7 +77,7 @@ python-ts-mode
 toml-ts-mode
 
 (pyright "[tool.pyright]" n "exclude = [\".venv\"]" n "venvPath = \".\"" n "venv = \".venv\"" n "include = [\"src\"]")
-(mise-python "[tools]" n "python = {version='3.xx.x', virtualenv='.venv'}" n n "[env]" n "PYTHONPATH = \".\"" )
+(mise-python "[env]" n "PYTHONPATH = \".\"" n "_.python.venv = \".venv\"")
 
 ;; Local Variables:
 ;; mode: lisp-data
