@@ -1124,6 +1124,22 @@
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
          :config
+         (defun org-insert-clipboard-image ()
+           "Generate png file from a clipboard image and insert a link to current buffer."
+           (interactive)
+           (let* ((filename
+                   (concat (file-name-nondirectory (buffer-file-name))
+                           "_image/"
+                           (format-time-string "%Y%m%d_%H%M%S")
+                           ".png")))
+             (unless (file-exists-p (file-name-directory filename))
+               (make-directory (file-name-directory filename)))
+             (shell-command (concat "pngpaste " filename))
+             (if (file-exists-p filename)
+                 (insert (concat "[[file:" filename "]]")))
+             (org-display-inline-images)))
+         (bind-key "C-M-y" 'org-insert-clipboard-image)
+
          (defun my:org-open-url-with-default ()
            (interactive)
            (let ((browse-url-browser-function 'browse-url-default-browser))

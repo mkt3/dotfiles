@@ -12,4 +12,5 @@ pre_setup_xdg_config() {
     mkdir -p "${HOME}/.local/bin"
     mkdir -p "${HOME}/.local/src"
     mkdir -p "${HOME}/.ssh" && chmod 700 "${HOME}/.ssh"
+    mkdir -p "$GNUPGHOME" && chmod 700 "$GNUPGHOME"
 }
