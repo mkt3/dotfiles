@@ -11,6 +11,8 @@ CONFIGS_DIR="${REPO_DIR}/files"
 # shellcheck source=/dev/null
 . "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
+GITHUB_ACTIONS=${GITHUB_ACTIONS:-n}
+
 title "Making packages install script"
 
 os_name=""
@@ -200,6 +202,9 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
             ;;
         mas)
+            if [ "$GITHUB_ACTIONS" == "y" ]; then
+                continue
+            fi
             mas_packages=$(printf '__n__      %s;' "${package_names[@]}")
             /usr/bin/sed -i "" "s|__MAS_PACKAGES__|$mas_packages|g" "$nix_homebrew_apps_file"
             /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"

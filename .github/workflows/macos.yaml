@@ -1,0 +1,21 @@
+name: macos
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: cachix/install-nix-action@v26
+    - name: Run install.sh
+      run: |
+        mkdir -p ${GITHUB_WORKSPACE}/results
+        echo "DEV_ENV=y\nGUI_ENV=y" > ${GITHUB_WORKSPACE}/results/env_settings
+        echo "GITHUB_ACTIONS=y" >> ${GITHUB_WORKSPACE}/files/zsh/zshenv.zsh
+        INSTALL_DIR=${GITHUB_WORKSPACE} bash ${GITHUB_WORKSPACE}/install.sh

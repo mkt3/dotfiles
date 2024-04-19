@@ -11,7 +11,7 @@ ifeq ($(DISTRO),Linux)
 endif
 
 .PHONY: all
-all: lint setup_env update_repository install_essential_packages install_packages
+all: setup_env update_repository install_essential_packages install_packages lint
 
 .PHONY: create_env_file
 create_env_file:
@@ -47,7 +47,7 @@ clean:
 
 .PHONY: lint
 lint:
-	taplo fmt --config $(REPO_DIR)/taplo.toml $(TOML_FILE)
+	@RUST_LOG=warn taplo fmt --config $(REPO_DIR)/taplo.toml $(TOML_FILE)
 
 .PHONY: import_mkt3_public_key
 import_mkt3_public_key:
