@@ -203,7 +203,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             ;;
         mas)
             if [ "$GITHUB_ACTIONS" == "y" ]; then
-                mas_packages=$(printf '__n__      %s;' "")
+                mas_packages=""
             else
                 mas_packages=$(printf '__n__      %s;' "${package_names[@]}")
             fi
