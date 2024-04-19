@@ -144,6 +144,9 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             ;;
     esac
 
+    echo "${method}------------------------------------------"
+    echo "${#package_list[@]}"
+
     case "$method" in
         nix|nix-hm)
             if [[ "$method" == "nix" ]]; then
