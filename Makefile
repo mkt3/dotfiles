@@ -39,6 +39,9 @@ $(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
 
 .PHONY: install_packages
 install_packages: $(INSTALL_SCRIPT)
+	echo "env----------------------------"
+	echo $(DEV_ENV)
+	echo $(GUI_ENV)
 	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash "$(INSTALL_SCRIPT)"
 
 .PHONY: clean
