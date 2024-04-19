@@ -203,9 +203,10 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             ;;
         mas)
             if [ "$GITHUB_ACTIONS" == "y" ]; then
-                continue
+                mas_packages=$(printf '__n__      %s;' "")
+            else
+                mas_packages=$(printf '__n__      %s;' "${package_names[@]}")
             fi
-            mas_packages=$(printf '__n__      %s;' "${package_names[@]}")
             /usr/bin/sed -i "" "s|__MAS_PACKAGES__|$mas_packages|g" "$nix_homebrew_apps_file"
             /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
             ;;
