@@ -30,7 +30,7 @@ gui_env=${GUI_ENV:-n}
 
 declare -A methods
 methods["ubuntu"]="apt"
-methods["darwin"]="brew cask mas"
+methods["darwin"]="mas brew cask"
 methods["arch"]="pacman aur"
 methods["nixos"]=""
 methods["otherlinux"]=""
@@ -145,7 +145,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
     esac
 
     echo "${method}------------------------------------------"
-    echo "${#package_names[@]}"
+    echo "${package_names[@]}"
 
     case "$method" in
         nix|nix-hm)
