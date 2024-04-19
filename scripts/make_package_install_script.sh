@@ -195,6 +195,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             brew_packages=$(printf '__n__      "%s"' "${package_names[@]}")
             /usr/bin/sed -i "" "s|__BREW_PACKAGES__|$brew_packages|g" "$nix_homebrew_apps_file"
             /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
+            cat "$nix_homebrew_apps_file"
             ;;
         cask)
             cask_packages=$(printf '__n__      "%s"' "${package_names[@]}")
