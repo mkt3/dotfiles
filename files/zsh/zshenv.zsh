@@ -42,6 +42,11 @@ export LISTMAX=1000
 # personal env
 [ -d "${HOME}/Nextcloud/personal_config/env" ] && . "${HOME}/Nextcloud/personal_config/env/zshenv"
 
+# terminfo
+export TERMINFO="${XDG_DATA_HOME}/terminfo"
+export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+export COLORTERM="truecolor"
+
 # sheldon
 export SHELDON_CONFIG_DIR="$ZDOTDIR/sheldon"
 export SHELDON_DATA_DIR="$XDG_DATA_HOME/sheldon"
@@ -132,11 +137,6 @@ export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
 # enhancd
 export ENHANCD_DIR="${XDG_DATA_HOME}/enhancd"
-
-# terminfo
-export TERMINFO="${XDG_DATA_HOME}/terminfo"
-export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
-export COLORTERM="truecolor"
 
 # go
 export GOPATH="${XDG_DATA_HOME}/go"
