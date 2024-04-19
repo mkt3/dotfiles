@@ -47,7 +47,7 @@ install_macos() {
         brew update
     fi
 
-    if bash -lc "brew list | grep bash > /dev/null"; then
+    if ! (bash -lc "brew list | grep bash > /dev/null"); then
         brew install bash jq yj gnu-sed
     fi
 
