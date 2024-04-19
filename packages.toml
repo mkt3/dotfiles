@@ -8,6 +8,10 @@ common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config
 type = "basic"
 common = [{ name = "nix", method = "script", function = "setup_nix" }]
 
+[attic-client]
+type = "basic"
+common = [{ name = "attic-client", method = "nix-hm" }]
+
 [direnv]
 type = "basic"
 common = [{ name = "direnv", method = "nix-hm" }]
@@ -219,7 +223,7 @@ common = [{ name = "vim", method = "nix", function = "setup_vim" }]
 [emacs-basic]
 type = "basic"
 common = [
-  { name = "emacs", method = "nix-hm", function = "setup_emacs" },
+  # { name = "emacs", method = "nix-hm", function = "setup_emacs" },
   { name = "hunspell", method = "nix" },
   { name = "hunspellDicts.en_US", method = "nix" },
   { name = "enchant", method = "nix-hm" },
