@@ -1,4 +1,4 @@
-name: macos
+name: macos-intel
 
 on:
   workflow_dispatch:
@@ -17,7 +17,6 @@ jobs:
     - name: Run install.sh
       run: |
         sudo mv /etc/shells /etc/shells.bak
-        sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.bak
         mkdir -p ${GITHUB_WORKSPACE}/results
         echo -e "DEV_ENV=y\nGUI_ENV=y" > ${GITHUB_WORKSPACE}/results/env_settings
         echo "GITHUB_ACTIONS=y" >> ${GITHUB_WORKSPACE}/files/zsh/zshenv.zsh
