@@ -16,7 +16,6 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Run install.sh
       run: |
-        sudo mv /etc/shells /etc/shells.bak
         mkdir -p ${GITHUB_WORKSPACE}/results
         echo -e "DEV_ENV=y\nGUI_ENV=y" > ${GITHUB_WORKSPACE}/results/env_settings
         echo "GITHUB_ACTIONS=y" >> ${GITHUB_WORKSPACE}/files/zsh/zshenv.zsh
