@@ -8,6 +8,9 @@ post_setup_poetry() {
     poetry config virtualenvs.prefer-active-python true
 
     info "Enable completions"
+    echo $PATH
+    which poetry | true
+    which htop | true
     poetry completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
 }
 
