@@ -98,7 +98,8 @@ if [[ "$os_name" == "darwin" ]]; then
 
     echo "title \"Setup with nix-darwin\"" >> "$install_script_path"
     if ! (type darwin-rebuild > /dev/null 2>&1); then
-        sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
+        echo "sudo mv /etc/shells{,.bak}" >> "$install_script_path"
+        echo "sudo mv /etc/nix/nix.conf{,.bak}" >> "$install_script_path"
         echo "nix run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
     else
         echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
