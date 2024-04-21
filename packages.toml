@@ -102,7 +102,7 @@ common = [
 type = "basic"
 common = [
   { name = "git", method = "nix-hm", function = "setup_git" },
-  { name = "git-secrets", method = "nix-hm", function = "setup_git-secrets" },
+  # { name = "git-secrets", method = "nix-hm", function = "setup_git-secrets" },
 ]
 
 [sheldon]
