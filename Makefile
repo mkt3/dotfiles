@@ -11,7 +11,7 @@ ifeq ($(DISTRO),Linux)
 endif
 
 .PHONY: all
-all: setup_env update_repository install_essential_packages install_packages lint
+all: setup_env update_repository install_essential_packages install_packages
 
 .PHONY: create_env_file
 create_env_file:

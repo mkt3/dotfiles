@@ -4,9 +4,6 @@ set -eu
 
 post_setup_poetry() {
     info "Setting global config"
-    echo $PATH
-    which poetry | true
-    which htop | true
     poetry config virtualenvs.in-project true
     poetry config virtualenvs.prefer-active-python true
 
