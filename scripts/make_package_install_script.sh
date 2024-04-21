@@ -101,7 +101,7 @@ if [[ "$os_name" == "darwin" ]]; then
         echo "sudo mv /etc/shells{,.before-nix-darwin}" >> "$install_script_path"
         echo "sudo mv /etc/nix/nix.conf{,.before-nix-darwin}" >> "$install_script_path"
         # echo "sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificate
-        echo "nix --extra-experimental-features 'nix-command flakes' run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
+        echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
     else
         echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
         echo "darwin-rebuild switch --flake ${nix_dir}" >> "$install_script_path"
