@@ -62,14 +62,10 @@ elif [[ "$DISTRO" == 'Darwin' ]];then
     MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export SHELL_SESSIONS_DISABLE=1
 
-    export HOMEBREW_BUNDLE_FILE="${XDG_CONFIG_HOME}/homebrew/Brewfile"
-
     if [[ "$ARCH" == 'arm64' ]]; then
         export PATH="/opt/homebrew/bin:${MAC_DEFAULT_PATH}"
-        export PATH="/opt/homebrew/opt/texinfo/bin:${PATH}"
     elif [[ "$ARCH" == 'x86_64' ]]; then
         export PATH="/usr/local/bin:${MAC_DEFAULT_PATH}"
-        export PATH="/usr/local/opt/texinfo/bin:${PATH}"
     fi
     # nix
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
@@ -175,7 +171,7 @@ export OPAMROOT="${XDG_DATA_HOME}/opam"
 export PATH="${PATH}:${OPAMROOT}/default/bin:"
 
 # zoxide
-export _ZO_DATA_DIR=$XDG_DATA_HOME
+export _ZO_DATA_DIR="$XDG_DATA_HOME"
 
 # mise
 export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.toml"
