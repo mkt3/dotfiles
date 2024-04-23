@@ -45,10 +45,10 @@ post_setup_git-secrets() {
     local git_config_dir="${XDG_CONFIG_HOME}/git"
 
     # for AWS
-    git secrets --register-aws --global
+    git-secrets --register-aws --global
     # for GCP
-    git secrets --add 'private_key' --global || true
-    git secrets --add 'private_key_id' --global || true
-    git secrets --install "${git_config_dir}/git-templates/git-secrets" || true
+    git-secrets --add 'private_key' --global || true
+    git-secrets --add 'private_key_id' --global || true
+    git-secrets --install "${git_config_dir}/git-templates/git-secrets" || true
     git config --global init.templatedir "${git_config_dir}/git-templates/git-secrets"
 }
