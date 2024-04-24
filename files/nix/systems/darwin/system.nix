@@ -1,5 +1,9 @@
 { pkgs, hostname, ... }:
 {
+  nix.gc = {
+    automatic = true;
+    options = "--delete-older-than 7d";
+  };
   networking.computerName = hostname;
   environment.shells = [ pkgs.zsh ];
   programs.bash.enable = false;
