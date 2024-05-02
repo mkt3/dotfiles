@@ -1196,9 +1196,10 @@
            (find-file org-gtd-file))
          (when (display-graphic-p)
            (run-at-time 0 (* 5 60)
-                      (lambda ()
-                        (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud)))))
+                        (lambda ()
+                          (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud)))))
          :custom
+         (org-agenda-window-setup 'other-tab)
          (org-agenda-span 'day)
          (org-agenda-remove-tags t)
          (org-agenda-current-time-string "← now ───────────────────")
@@ -1212,10 +1213,10 @@
          (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
          (add-to-list 'org-modules 'org-habit t)
          (setq org-agenda-prefix-format
-             '((agenda . " %i %-15:c%?-12t% s")
-               (todo . " %i %-12:c")
-               (tags . " %i %-12:c")
-               (search . " %i %-12:c")))
+               '((agenda . " %i %-15:c%?-12t% s")
+                 (todo . " %i %-12:c")
+                 (tags . " %i %-12:c")
+                 (search . " %i %-12:c")))
 
          (setq my:roam-task-tag "todo")
          (defun my:org-roam-todo-entry-p ()
@@ -1254,10 +1255,10 @@
 
          (defun my:org-agenda-update-files (&rest _)
            "Update the value of `org-agenda-files' and and `my:refile-targets'."
-             (let ((task-files (my:org-roam-get-task-files)))
-               (setq org-agenda-files (append (list my:d:org-gtd) task-files))
-               (setq my:refile-targets (append (list org-gtd-file) task-files))
-               (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
+           (let ((task-files (my:org-roam-get-task-files)))
+             (setq org-agenda-files (append (list my:d:org-gtd) task-files))
+             (setq my:refile-targets (append (list org-gtd-file) task-files))
+             (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
 
          (add-hook 'before-save-hook #'my:org-roam-update-task-tag)
          (advice-add 'org-agenda :before #'my:org-agenda-update-files)
@@ -1299,7 +1300,6 @@
            (if (string= org-state "IN PROGRESS")
                (org-clock-in)
              (org-clock-out)))
-
          )
 
        (use-package org-super-agenda
