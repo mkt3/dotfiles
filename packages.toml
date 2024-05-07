@@ -70,9 +70,9 @@ common = [{ name = "tree", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "duf", method = "nix-hm" }]
 
-[neofetch]
+[fastfetch]
 type = "basic"
-common = [{ name = "neofetch", method = "nix-hm" }]
+common = [{ name = "fastfetch", method = "nix-hm" }]
 
 [unarchiver]
 type = "basic"
