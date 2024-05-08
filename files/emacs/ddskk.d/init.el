@@ -1,8 +1,8 @@
 ;;; init --- SKK init file  -*- mode: emacs-lisp; coding: utf-8 -*-
 
 ;; skk server dict
-(setq skk-server-host "localhost")
-(setq skk-server-portnum 1178)
+;; (setq skk-server-host "localhost")
+;; (setq skk-server-portnum 1178)
 
 ;; sticky shift
 (setq skk-sticky-key ";")

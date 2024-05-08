@@ -109,10 +109,5 @@ if [ -x "$(command -v google-drive-ocamlfuse)" ] && ! mountpoint -q "$GOOGLE_DRI
     google-drive-ocamlfuse "$GOOGLE_DRIVE"
 fi
 
-# for skkserv
-if command -v yaskkserv2 > /dev/null && ! pgrep -u "$USER" yaskkserv2 > /dev/null; then
-    yaskkserv2 --google-japanese-input=disable "${XDG_DATA_HOME}/yaskkserv2/dictionary.yaskkserv2"
-fi
-
 # for kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
