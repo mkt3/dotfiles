@@ -1851,15 +1851,15 @@
                                            (use-hard-newlines -1)
                                            (turn-off-auto-fill))))
 
-     (use-package mu4e-alert
-       :ensure t
-       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
-       :custom
-       (mu4e-alert-email-notification-types '(subjects))
-       :config
-       (if (eq system-type 'darwin) (mu4e-alert-set-default-style 'notifier) (mu4e-alert-set-default-style 'libnotify))
-       (mu4e-alert-enable-mode-line-display)
-       (mu4e-alert-enable-notifications))
+     ;; (use-package mu4e-alert
+     ;;   :ensure t
+     ;;   :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
+     ;;   :custom
+     ;;   (mu4e-alert-email-notification-types '(subjects))
+     ;;   :config
+     ;;   (if (eq system-type 'darwin) (mu4e-alert-set-default-style 'notifier) (mu4e-alert-set-default-style 'libnotify))
+     ;;   (mu4e-alert-enable-mode-line-display)
+     ;;   (mu4e-alert-enable-notifications))
    #+end_src
 * Shell
   #+begin_src emacs-lisp
@@ -1977,25 +1977,25 @@
    #+begin_src emacs-lisp
      (use-package go-translate
        :ensure t
-       :bind (("C-c t" . gts-do-translate))
+       :bind (("C-c t" . gt-do-translate))
        :config
-       (set-face-attribute 'gts-render-buffer-me-header-backgroud-face nil :foreground "black")
-       (setq gts-translate-list '(("ja" "en") ("en" "ja")))
+       (set-face-attribute 'gt-buffer-render-block-prefix-face nil :background "black")
+       (setq gt-langs '(ja en))
        (setq engine-list (list
-                          (gts-google-engine)
-                          (gts-bing-engine)))
+                          (gt-google-engine)
+                          (gt-bing-engine)))
        (when (file-directory-p my:d:password-store)
          (let ((deeplapi-key (plist-get (nth 0 (auth-source-search :app "deepl" :max 1)) :api-key)))
-           (setq engine-list (append (list (gts-deepl-engine :auth-key deeplapi-key :pro nil)) engine-list))))
-       (setq gts-default-translator
-             (gts-translator
-              :picker
-              (gts-prompt-picker)
-              :engines
-              engine-list
-              :render
-              (gts-buffer-render)))
+           (setq engine-list (append (list (gt-deepl-engine :key deeplapi-key :pro nil)) engine-list))))
+       (setq gt-default-translator
+             (gt-translator
+              :taker   (gt-taker :text 'word :pick 'paragraph)
+              :engines engine-list
+              :render  (gt-buffer-render)))
        (setq gts-buffer-follow-p t))
+
+                                             ; https://github.com/lorniu/go-translate?tab=readme-ov-file
+     ;; (use-package plz :ensure t)
    #+end_src
 ** recoll
    #+begin_src emacs-lisp

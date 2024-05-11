@@ -236,7 +236,6 @@ common = [
   { name = "goimapnotify", method = "nix-hm" },
 ]
 darwin = [
-  { name = "terminal-notifier", method = "nix-hm" },
   { name = "pngpaste", method = "nix-hm" },
 ]
 
