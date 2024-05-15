@@ -1050,11 +1050,14 @@
 **** jsx-mode
      #+begin_src emacs-lisp
        (use-package jtsx
-         :vc (:url "https://github.com/llemaitre19/jtsx" :branch "master")
-         :mode (("\\.jsx?\\'" . jsx-mode)
-                ("\\.tsx?\\'" . tsx-mode))
+         :ensure t
+         :mode (("\\.jsx?\\'" . jtsx-jsx-mode)
+                ("\\.tsx\\'" . jtsx-tsx-mode)
+                ("\\.ts\\'" . jtsx-typescript-mode))
          :commands jtsx-install-treesit-language
-         :hook ((jsx-mode-hook tsx-mode-hook) . hs-minor-mode)
+         :hook ((jtsx-jsx-mode . hs-minor-mode)
+                (jtsx-tsx-mode . hs-minor-mode)
+                (jtsx-typescript-mode . hs-minor-mode))
          :custom
          (js-indent-level 2)
          (typescript-ts-mode-indent-offset 2)
@@ -1078,10 +1081,10 @@
            (keymap-set mode-map "C-c j w" 'jtsx-wrap-in-jsx-element))
 
          (defun jtsx-bind-keys-to-jsx-mode-map ()
-             (jtsx-bind-keys-to-mode-map jsx-mode-map))
+           (jtsx-bind-keys-to-mode-map jsx-mode-map))
 
          (defun jtsx-bind-keys-to-tsx-mode-map ()
-             (jtsx-bind-keys-to-mode-map tsx-mode-map))
+           (jtsx-bind-keys-to-mode-map tsx-mode-map))
 
          (add-hook 'jsx-mode-hook 'jtsx-bind-keys-to-jsx-mode-map)
          (add-hook 'tsx-mode-hook 'jtsx-bind-keys-to-tsx-mode-map))
@@ -1376,7 +1379,7 @@
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
                                         :if-new
-                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Review\n\n* Memo\n\n* Table of contents\n")
+                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Review\n\n* Memo\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("w" "web" plain "%?"
@@ -1623,60 +1626,18 @@
     (use-package dired
       :custom
       (dired-dwim-target t)
-      (dired-recursive-copies 'always))
+      (dired-recursive-copies 'always)
+      :bind (nil
+             :map dired-mode-map
+             ("[" . dired-prev-subdir)
+             ("]" . dired-next-subdir)))
 
-    (use-package dirvish
+    (use-package casual-dired
       :ensure t
-      :custom
-      (dirvish-quick-access-entries ; It's a custom option, `setq' won't work
-       '(("h" "~/"                          "Home")
-         ("d" "~/Downloads/"                "Downloads")
-         ("b" "~/Nextcloud/book"            "Books")
-         ("t" "~/.local/share/Trash/files/" "TrashCan")))
-      :config
-      (dirvish-override-dired-mode)
-      ;; (dirvish-peek-mode) ; Preview files in minibuffer
-      ;; (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
-      (setq dirvish-mode-line-format
-            '(:left (sort symlink) :right (omit yank index)))
-      (setq dirvish-attributes
-            '(file-time file-size collapse subtree-state vc-state git-msg))
-      (setq dirvish-subtree-state-style 'nerd)
-      (setq dirvish-path-separators (list
-                                     (format "  %s " (nerd-icons-codicon "nf-cod-home"))
-                                     (format "  %s " (nerd-icons-codicon "nf-cod-root_folder"))
-                                     (format " %s " (nerd-icons-faicon "nf-fa-angle_right"))))
-      (setq delete-by-moving-to-trash t)
-      (setq dired-listing-switches
-            "-l --human-readable --group-directories-first --no-group")
-      (defun my:project-find-dir-dirvish (dir)
-        "Use dirvish instead of dired in `project-find-dir'."
-        (dirvish dir))
-      (advice-add 'project-find-dir :around
-                  (lambda (orig-fun &rest args)
-                    (cl-letf (((symbol-function 'dired) #'my:project-find-dir-dirvish))
-                      (apply orig-fun args))))
-      :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
-      (("C-c f" . dirvish-fd)
-       ("C-x d" . dirvish)
-       :map dirvish-mode-map ; Dirvish inherits `dired-mode-map'
-       ("a"   . dirvish-quick-access)
-       ("f"   . dirvish-file-info-menu)
-       ("y"   . dirvish-yank-menu)
-       ("N"   . dirvish-narrow)
-       ("^"   . dirvish-history-last)
-       ("h"   . dirvish-history-jump) ; remapped `describe-mode'
-       ("s"   . dirvish-quicksort)    ; remapped `dired-sort-toggle-or-edit'
-       ("v"   . dirvish-vc-menu)      ; remapped `dired-view-file'
-       ("TAB" . dirvish-subtree-toggle)
-       ("M-f" . dirvish-history-go-forward)
-       ("M-b" . dirvish-history-go-backward)
-       ("M-l" . dirvish-ls-switches-menu)
-       ("M-m" . dirvish-mark-menu)
-       ("M-t" . dirvish-layout-toggle)
-       ("M-s" . dirvish-setup-menu)
-       ("M-e" . dirvish-emerge-menu)
-       ("M-j" . dirvish-fd-jump)))
+      :bind (nil
+             :map
+             dired-mode-map
+             ("M-o" . casual-dired-tmenu)))
   #+end_src
 * Browser
   #+begin_src emacs-lisp
@@ -1947,12 +1908,6 @@
   #+end_src
 ** openai
    #+begin_src emacs-lisp
-     (use-package chatgpt-shell
-       :ensure t
-       :if (file-directory-p my:d:password-store)
-       :config
-       (setq chatgpt-shell-openai-key (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key)))
-
      (use-package org-ai
        :ensure t
        :if (file-directory-p my:d:password-store)
@@ -1964,7 +1919,7 @@
        :config
        (setq org-ai-openai-api-token
              (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key))
-       (setq org-ai-default-chat-model "gpt-4")
+       (setq org-ai-default-chat-model "gpt-4o")
        (setq org-roam-capture-templates
              (append org-roam-capture-templates
                      '(("a" "ai" plain "%?"
