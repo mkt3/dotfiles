@@ -560,7 +560,7 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 [utils]
 type = "gui"
 darwin = [
-  { name = "stats", method = "nix-hm" },
+#  { name = "stats", method = "nix-hm" },
   { name = "appcleaner", method = "nix-hm" },
 ]
 
