@@ -159,7 +159,10 @@ common = [{ name = "taplo", method = "nix-hm" }]
 
 [docker]
 type = "basic"
-common = [{ name = "docker", method = "script", function = "setup_docker" }]
+common = [
+  { name = "docker", method = "script", function = "setup_docker" },
+  { name = "oxker", method = "nix-hm", },
+]
 
 ## security
 [openssl]
