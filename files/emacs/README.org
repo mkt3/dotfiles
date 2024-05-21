@@ -1785,9 +1785,8 @@
              message-sendmail-extra-arguments '("--read-envelope-from")
              message-send-mail-function 'message-send-mail-with-sendmail)
        (load (expand-file-name "personal_config/emacs/mail/mu4e_config.el" my:d:nextcloud))
-       ;; (add-hook 'emacs-startup-hook  (lambda ()
-       ;;                                  (my:imapnotify-start-prodigy-services)
-       ;;                                  (mu4e)))
+       (add-hook 'emacs-startup-hook  (lambda ()
+                                        (my:imapnotify-start-prodigy-services)))
        (setq message-cite-reply-position 'bellow)
        ;; (defun message-insert-signature-at-point ()
        ;;   "Function to insert signature at point."

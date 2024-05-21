@@ -1,13 +1,15 @@
 % nix
 
+$ project_type: echo "minimal\npython"
+
 # Delete old generation
 nix store gc
 
 # Develop project
 nix develop -c $SHELL
 
-# Create a python project
-nix flake new <project_name> -t github:mkt3/flake-templates#python
+# Create a nix project
+nix flake new <project_name> -t github:mkt3/flake-templates#<project_type>
 
-# Initialize the python project
-nix flake init -t github:mkt3/flake-templates#python
+# Initialize the nix project
+nix flake init -t github:mkt3/flake-templates#<project_type>

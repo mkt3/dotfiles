@@ -1,6 +1,6 @@
 % btrfs
 
-$ mount_point:  mount | awk '$5=="btrfs"{print $3}'
+$ mount_point: mount | awk '$5=="btrfs"{print $3}'
 
 # Create a raid1 filesystem across multi drives(mkfs.btrfs -L "label name" -m raid1 -d raid1 /dev/sda /dev/sdb)
 sudo mkfs.btrfs -L "label name" -m raid1 -d raid1 "device list"
