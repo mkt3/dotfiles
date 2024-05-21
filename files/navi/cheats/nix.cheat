@@ -5,6 +5,9 @@ $ project_type: echo "minimal\npython"
 # Delete old generation
 nix store gc
 
+# Run a Nix application from the nixpkgs flake
+nix run nixpkgs#<package_name>
+
 # Develop project
 nix develop -c $SHELL
 
