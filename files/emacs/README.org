@@ -30,6 +30,10 @@
        (package-initialize)
        (setq use-package-hook-name-suffix nil)
        (use-package delight :ensure t))
+
+     (unless (package-installed-p 'vc-use-package)
+       (package-vc-install "https://github.com/slotThe/vc-use-package"))
+     (require 'vc-use-package)
    #+end_src
 ** Auto package update
    #+begin_src emacs-lisp
@@ -1000,7 +1004,8 @@
       ;;   (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
 
       (use-package ruff-fix
-        :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :branch "main")
+        ;; :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :branch "main")
+        :vc (:fetcher github :repo mkt3/ruff-fix.el.git)
         :hook (before-save-hook . ruff-fix-before-save))
     #+end_src
 *** Rust

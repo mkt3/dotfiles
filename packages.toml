@@ -248,6 +248,11 @@ type = "basic"
 common = [{ name = "ghq", method = "nix-hm", function = "setup_ghq" }]
 
 # development packages
+## SSO
+[saml2aws]
+type = "dev"
+common = [{ name = "saml2aws", method = "nix-hm" }]
+
 ## shell script
 [shellcheck]
 type = "dev"

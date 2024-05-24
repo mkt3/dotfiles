@@ -51,12 +51,12 @@ pre_setup_nix() {
     "$sed_command" -i "s|__ISCUI__|${is_cui}|g" "$nix_main_flake"
 
     if [ "$OS" = "Darwin" ]; then
-        cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+        cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-unstable.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
     elif [ "$OS" = "Linux" ]; then
         if [ "$GUI_ENV" = "y" ]; then
-            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git-pgtk.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-unstable-pgtk.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
         else
-            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git-nox.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
+            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-unstable-nox.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
         fi
     fi
 }
