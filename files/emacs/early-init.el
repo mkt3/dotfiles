@@ -23,6 +23,9 @@
 ;; Inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
 
+;; maximize gc-cons-threshold
+(setq gc-cons-threshold most-positive-fixnum)
+
 ;; Faster to disable these here (before they've been initialized)
 (push '(fullscreen . maximized) default-frame-alist)
 (push '(menu-bar-lines . nil) default-frame-alist)

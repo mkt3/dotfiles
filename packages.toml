@@ -208,6 +208,10 @@ common = [{ name = "aria", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "htop", method = "nix-hm" }]
 
+[bottom]
+type = "basic"
+common = [{ name = "bottom", method = "nix-hm" }]
+
 [iotop]
 type = "basic"
 arch = [{ name = "iotop", method = "nix-hm" }]
