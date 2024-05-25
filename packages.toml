@@ -333,6 +333,11 @@ common = [{ name = "typescript", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "google-cloud-sdk", method = "nix-hm" }]
 
+## aws cli
+[awscli2]
+type = "dev"
+common = [{ name = "awscli2", method = "nix-hm" }]
+
 # gui packages
 ## tex
 [latex]
@@ -572,7 +577,7 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 [utils]
 type = "gui"
 darwin = [
-#  { name = "stats", method = "nix-hm" },
+  #  { name = "stats", method = "nix-hm" },
   { name = "appcleaner", method = "nix-hm" },
 ]
 
