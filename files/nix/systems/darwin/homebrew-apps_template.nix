@@ -7,10 +7,6 @@
       autoUpdate = false;
     };
 
-    taps = [
-      "homebrew/cask-fonts"
-    ];
-
     brews = [__BREW_PACKAGES__
     ];
 

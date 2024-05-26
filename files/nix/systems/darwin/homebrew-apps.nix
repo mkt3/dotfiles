@@ -7,10 +7,6 @@
       autoUpdate = false;
     };
 
-    taps = [
-      "homebrew/cask-fonts"
-    ];
-
     brews = [
       "koekeishiya/formulae/yabai"
       "koekeishiya/formulae/skhd"
@@ -25,9 +21,6 @@
       "wezterm"
       "nextcloud"
       "google-drive"
-      "font-hack-nerd-font"
-      "font-cica"
-      "font-plemol-jp-nf"
       "aquaskk"
     ];
 
