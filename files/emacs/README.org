@@ -1388,7 +1388,7 @@
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
                                         :if-new
-                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Review\n\n* Memo\n")
+                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Facts\n\n* Interpretations\n\n* Actions\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("w" "web" plain "%?"
