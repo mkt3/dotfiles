@@ -525,9 +525,6 @@ darwin = [
   { name = "koekeishiya/formulae/yabai", method = "brew", function = "setup_yabai" },
   { name = "koekeishiya/formulae/skhd", method = "brew", function = "setup_skhd" },
   { name = "FelixKratz/formulae/sketchybar", method = "brew", function = "setup_sketchybar" },
-  # { name = "font-hack-nerd-font", method = "cask" },
-  # { name = "font-cica", method = "cask" },
-  # { name = "font-plemol-jp-nf", method = "cask" },
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
 ]
 
@@ -554,7 +551,6 @@ common = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
 [programing_font]
 type = "gui"
 arch = [{ name = "programing_font", method = "script", function = "setup_prograing_font" }]
-nixos = [{ name = "programing_font", method = "script", function = "setup_prograing_font" }]
 
 ## key remapper
 [keyremap]

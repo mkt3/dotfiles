@@ -2,7 +2,7 @@
  {
   home.username = username;
   home.homeDirectory = homeDirectory;
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
   home.extraOutputsToInstall = ["dev"];
 
   imports = [
