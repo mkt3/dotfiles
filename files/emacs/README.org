@@ -770,18 +770,18 @@
        :ensure t
        :bind ("C-x u" . vundo))
 
-     (use-package undo-fu
-       :ensure t
-       :bind (("C-/" . undo-fu-only-undo)
-              ("M-/" . undo-fu-only-redo))
-       :custom
-       (vundo-roll-back-on-quit nil))
+     ;; (use-package undo-fu
+     ;;   :ensure t
+     ;;   :bind (("C-/" . undo-fu-only-undo)
+     ;;          ("M-/" . undo-fu-only-redo))
+     ;;   :custom
+     ;;   (vundo-roll-back-on-quit nil))
 
-     (use-package undo-fu-session
-       :ensure t
-       :config
-       (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
-       (undo-fu-session-global-mode))
+     ;; (use-package undo-fu-session
+     ;;   :ensure t
+     ;;   :config
+     ;;   (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'" ""))
+     ;;   (undo-fu-session-global-mode))
    #+end_src
 ** mwim
    #+begin_src emacs-lisp
@@ -1356,7 +1356,8 @@
          :demand t
          :if (file-directory-p my:d:org-roam)
          :bind (("C-c n a" . org-roam-alias-add)
-                ("C-c n f" . org-roam-node-find)
+                ("C-c n f" . my:org-roam-node-find-excluding-dir)
+                ("C-c n 0" . my:org-roam-node-find-in-dir)
                 ("C-c n i" . org-roam-node-insert)
                 ("C-c n o" . org-id-get-create)
                 ("C-c n t" . org-roam-tag-add)
@@ -1383,27 +1384,38 @@
                                         :unnarrowed t)
                                        ("j" "project" plain "%?"
                                         :if-new
-                                        (file+head "project/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Tasks\n\n* Work log\n")
+                                        (file+head "project/${slug}.org"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Tasks\n\n* Work log\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
+                                       ("0" "zero second thinking" plain "%?"
+                                        :if-new
+                                        (file+head "zero_second_thinking/%<%Y%m%d>_${slug}.org"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* \n* \n* \n*")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
                                         :if-new
-                                        (file+head "reference/book/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Facts\n\n* Interpretations\n\n* Actions\n")
+                                        (file+head "reference/book/${slug}.org"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Facts\n\n* Interpretations\n\n* Actions\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("w" "web" plain "%?"
                                         :if-new
-                                        (file+head "reference/web/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        (file+head "reference/web/${slug}.org"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("c" "config" plain "%?"
                                         :if-new
-                                        (file+head "config/${slug}.org.gpg" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        (file+head "config/${slug}.org.gpg"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("r" "record" plain "%?"
                                         :if-new
-                                        (file+head "record/${slug}.org.gpg" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
+                                        (file+head "record/${slug}.org.gpg"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("m" "memo" plain "%?"
@@ -1437,8 +1449,28 @@
                   (file-relative-name (org-roam-node-file node) org-roam-directory))))
              (error "")))
          (setq org-roam-node-display-template
-               (concat "${type:15} ${title:60} " (propertize "${tags:30}" 'face 'org-tag)))
-         (org-roam-db-autosync-enable))
+               (concat "${type:22} ${title:60} " (propertize "${tags:30}" 'face 'org-tag)))
+         (org-roam-db-autosync-enable)
+
+         (defun my:org-roam-node-filter (node dir &optional exclude)
+           "Filter org-roam nodes by directory.
+       If EXCLUDE is non-nil, exclude nodes in DIR, otherwise include only nodes in DIR."
+           (let ((dir (file-truename (expand-file-name dir my:d:org-roam))))
+             (if exclude
+                 (not (string-prefix-p dir (file-truename (org-roam-node-file node))))
+               (string-prefix-p dir (file-truename (org-roam-node-file node))))))
+
+         (defun my:org-roam-node-find-in-dir ()
+           "Find and open an Org-roam node in the specified directory."
+           (interactive)
+           (org-roam-node-find nil nil
+                               (lambda (node) (my:org-roam-node-filter node "zero_" nil))))
+
+         (defun my:org-roam-node-find-excluding-dir ()
+           "Find and open an Org-roam node, excluding nodes in a specific directory."
+           (interactive)
+           (org-roam-node-find nil nil
+                               (lambda (node) (my:org-roam-node-filter node "zero_" t)))))
 
        (use-package org-roam-ui
          :ensure t
