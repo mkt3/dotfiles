@@ -127,7 +127,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
         continue
     fi
 
-    if [ "$method" != "brew" ] &&  [ "$method" != "cask" ] && [ "$method" != "mas" ] && [ "$method" != "nix" ] && [ "$method" != "nix-program" ]; then
+    if [ "$method" != "brew" ] &&  [ "$method" != "cask" ] && [ "$method" != "mas" ] && [ "$method" != "nix" ] && [ "$method" != "nix-hm" ]; then
         echo "title \"Install/Update packages from ${method}\""  >> "$install_script_path"
     fi
     install_cmd=""
