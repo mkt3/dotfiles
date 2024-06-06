@@ -2,15 +2,6 @@
 
 set -eu
 
-post_setup_poetry() {
-    info "Setting global config"
-    poetry config virtualenvs.in-project true
-    poetry config virtualenvs.prefer-active-python true
-
-    info "Enable completions"
-    poetry completions zsh > "${ZSH_COMPLETION_DIR}/_poetry"
-}
-
 post_setup_jupyterlab() {
     local python_file_dir="$CONFIGS_DIR/python"
 
