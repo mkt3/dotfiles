@@ -118,6 +118,8 @@ else
     else
         echo "nix run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
     fi
+    echo "__ETC_PROFILE_NIX_SOURCED=\"\"" >> "$install_script_path"
+    echo ". ${CONFIGS_DIR}/zsh/zshenv.zsh" >> "$install_script_path"
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
