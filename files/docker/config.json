@@ -1,6 +1,5 @@
 {
-  "detachKeys" : "ctrl-\\",
-  "auths" : {
-
-  }
+	"auths": {},
+	"detachKeys": "ctrl-\\",
+	"currentContext": "rootless"
 }
