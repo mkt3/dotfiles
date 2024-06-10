@@ -321,7 +321,7 @@ common = [{ name = "nodePackages.bash-language-server", method = "nix-hm" }]
 ## for markdown eslint json
 [vscode-langservers-extracted]
 type = "dev"
-common = [{ name = "nodePackages.vscode-langservers-extracted", method = "nix-hm" }]
+common = [{ name = "vscode-langservers-extracted", method = "nix-hm" }]
 
 ## for typescript
 [typescript-language-server]
