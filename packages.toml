@@ -274,7 +274,7 @@ common = [{ name = "ruff", method = "nix-hm", function = "setup_ruff" }]
 
 [pyright]
 type = "dev"
-common = [{ name = "nodePackages.pyright", method = "nix-hm" }]
+common = [{ name = "pyright", method = "nix-hm" }]
 
 ## mise
 [mise]
