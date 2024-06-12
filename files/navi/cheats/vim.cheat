@@ -5,3 +5,10 @@ set nonumber
 
 # Show line numbers
 set number
+
+# Disable autoindent
+set noautoindent
+
+# Enable autoindent
+set autoindent
+
