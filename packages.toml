@@ -316,7 +316,7 @@ common = [{ name = "npm", method = "script", function = "setup_npm" }]
 ## for bash
 [bash-language-server]
 type = "dev"
-common = [{ name = "nodePackages.bash-language-server", method = "nix-hm" }]
+common = [{ name = "bash-language-server", method = "nix-hm" }]
 
 ## for markdown eslint json
 [vscode-langservers-extracted]
