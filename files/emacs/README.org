@@ -30,10 +30,6 @@
        (package-initialize)
        (setq use-package-hook-name-suffix nil)
        (use-package delight :ensure t))
-
-     (unless (package-installed-p 'vc-use-package)
-       (package-vc-install "https://github.com/slotThe/vc-use-package"))
-     (require 'vc-use-package)
    #+end_src
 ** Auto package update
    #+begin_src emacs-lisp
@@ -856,7 +852,8 @@
        (fset #'jsonrpc--log-event #'ignore))
 
      (use-package eglot-booster
-       :vc (:fetcher github :repo jdtsmith/eglot-booster)
+       :if (= emacs-major-version 29)
+       :vc (:url "https://github.com/jdtsmith/eglot-booster" :rev :newest)
        :after eglot
        :config
        (eglot-booster-mode))
@@ -1019,8 +1016,8 @@
       ;;   (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
 
       (use-package ruff-fix
-        ;; :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :branch "main")
-        :vc (:fetcher github :repo mkt3/ruff-fix.el.git)
+        :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :rev :newest)
+        ;; :vc (:fetcher github :repo mkt3/ruff-fix.el.git)
         :hook (before-save-hook . ruff-fix-before-save))
     #+end_src
 *** Rust
