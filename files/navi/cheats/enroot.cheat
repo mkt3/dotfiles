@@ -1,0 +1,39 @@
+# enroot cheat sheet
+
+% enroot
+
+# Basic Usage
+
+## Import a Docker image from a registry
+enroot import docker://<docker-image><tag>
+
+## Import a Docker image from the Docker daemon
+enroot import dockerd://<docker-image>:<tag>
+
+## Import a Docker image as sqsh file from a registry
+enroot import -o <output.sqsh> docker://<docker-image><tag>
+
+## Import a Docker image as sqsh file from the Docker daemon
+enroot import -o <output.sqsh> dockerd://<docker-image>:<tag>
+
+##  Execute a command in an image as root
+enroot start --root <image.sqsh> <command>
+
+## Execute a command in an image
+enroot start <image.sqsh> <command>
+
+## List containers
+enroot list
+
+## Remove an container
+enroot remove <image-name>
+
+$ image-name: enroot list --column 1
+
+# Useful Commands
+
+## Set environment variables
+enroot start -e <KEY=VALUE> <image.sqsh> <command>
+
+## Mount host directory
+enroot start -m <host-dir>:<container-dir> <image.sqsh> <command>
