@@ -1001,11 +1001,16 @@
 
       (use-package reformatter
         :ensure t
-        :hook (python-ts-mode-hook . ruff-format-on-save-mode)
+        :hook ((python-ts-mode-hook . ruff-format-on-save-mode)
+               (python-ts-mode-hook . ruff-fix-on-save-mode))
         :config
         (reformatter-define ruff-format
           :program "ruff"
-          :args `("format" "--stdin-filename" ,buffer-file-name "-")))
+          :args `("format" "--stdin-filename" ,buffer-file-name "-"))
+        (reformatter-define ruff-fix
+          :program "ruff"
+          :args `("check" "--fix" "-e" "--stdin-filename" ,buffer-file-name  "-")
+          :group 'python))
 
       ;; (use-package flymake-ruff
       ;;   :ensure t
@@ -1015,10 +1020,10 @@
       ;;   :config
       ;;   (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
 
-      (use-package ruff-fix
-        :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :rev :newest)
-        ;; :vc (:fetcher github :repo mkt3/ruff-fix.el.git)
-        :hook (before-save-hook . ruff-fix-before-save))
+      ;; (use-package ruff-fix
+      ;;   :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :rev :newest)
+      ;;   ;; :vc (:fetcher github :repo mkt3/ruff-fix.el.git)
+      ;;   :hook (before-save-hook . ruff-fix-before-save))
     #+end_src
 *** Rust
     #+begin_src emacs-lisp

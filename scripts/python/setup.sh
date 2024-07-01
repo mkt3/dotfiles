@@ -36,7 +36,6 @@ post_setup_ruff() {
     local python_file_dir="$CONFIGS_DIR/python"
     if [ "$OS" = "Darwin" ]; then
         eval "ln -sfn ${python_file_dir}/ruff \"${HOME}/Library/Application Support/\""
-    else
-        ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
     fi
+    ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
 }
