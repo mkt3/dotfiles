@@ -771,24 +771,18 @@
        ;;                                      :foreground "#f1fa8c"))))
        )
    #+end_src
+** breadcrumb
+   #+begin_src emacs-lisp
+     (use-package breadcrumb
+       :ensure t
+       :custom (breadcrumb-mode t))
+   #+end_src
+
 ** undo
    #+begin_src emacs-lisp
      (use-package vundo
        :ensure t
        :bind ("C-x u" . vundo))
-
-     ;; (use-package undo-fu
-     ;;   :ensure t
-     ;;   :bind (("C-/" . undo-fu-only-undo)
-     ;;          ("M-/" . undo-fu-only-redo))
-     ;;   :custom
-     ;;   (vundo-roll-back-on-quit nil))
-
-     ;; (use-package undo-fu-session
-     ;;   :ensure t
-     ;;   :config
-     ;;   (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'" ""))
-     ;;   (undo-fu-session-global-mode))
    #+end_src
 ** mwim
    #+begin_src emacs-lisp
@@ -852,7 +846,6 @@
        (fset #'jsonrpc--log-event #'ignore))
 
      (use-package eglot-booster
-       :if (= emacs-major-version 29)
        :vc (:url "https://github.com/jdtsmith/eglot-booster" :rev :newest)
        :after eglot
        :config
@@ -1200,9 +1193,9 @@
          :bind
          ("C-c i l" . org-web-tools-insert-link-for-url))
 
-       (use-package org-sticky-header
-         :ensure t
-         :hook (org-mode-hook . org-sticky-header-mode))
+       ;; (use-package org-sticky-header
+       ;;   :ensure t
+       ;;   :hook (org-mode-hook . org-sticky-header-mode))
      #+end_src
 **** org gtd
      #+begin_src emacs-lisp
