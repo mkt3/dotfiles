@@ -678,8 +678,15 @@
       (use-package orderless
         :ensure t
         :custom
-        (completion-styles '(orderless basic))
-        (completion-category-overrides '((file (styles . (partial-completion))))))
+        (completion-styles '(orderless))
+        (completion-category-overrides nil))
+    #+end_src
+*** fussy
+    #+begin_src emacs-lisp
+      (use-package fussy
+        :ensure t
+        :config
+        (push 'fussy completion-styles))
     #+end_src
 *** embark
     #+begin_src emacs-lisp
