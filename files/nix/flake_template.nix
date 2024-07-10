@@ -12,9 +12,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    xremap.url = "github:xremap/nix-flake";
   };
 
-  outputs = inputs @ { self, nix-darwin, nixpkgs, emacs-overlay, home-manager, ...}:
+  outputs = inputs @ { self, nix-darwin, nixpkgs, emacs-overlay, home-manager, xremap, ...}:
     let
       platform = "__SYSTEM__"; # aarch64-darwin or x86_64-darwin
       hostname = "__HOSTNAME__";

@@ -21,7 +21,7 @@ local keys = {
   {key="?",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="?", mods="OPT"}}, -- for emacs
   {key="\\",mods="CMD|CTRL",action=wezterm.action.SendKey{key="\\", mods="OPT|CTRL"}}, -- for emacs
   {key=";",mods="CTRL",action=wezterm.action.SendString "\x18@;"}, -- for emacs in terminal
-  {key="j",mods="CTRL",action=wezterm.action.SendString "\x18@j"}, -- for emacs ddskk interminal
+  {key="j",mods="CTRL",action=wezterm.action.SendString "\x18@j"}, -- for emacs ddskk in terminal
   {key="v",mods="OPT",action=wezterm.action.PasteFrom 'Clipboard'},
   {key="t",mods="OPT",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
   {key="w",mods="OPT",action=wezterm.action.CloseCurrentTab{confirm=false}},
@@ -54,5 +54,6 @@ return {
     bottom = 0,
   },
   keys=keys,
+  enable_wayland = false,
   window_close_confirmation = 'NeverPrompt',
 }

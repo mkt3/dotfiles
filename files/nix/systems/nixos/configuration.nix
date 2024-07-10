@@ -1,9 +1,10 @@
-{ username, config, lib, pkgs, ... }:
+{ username, config, lib, pkgs, xremap, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./system_packages.nix
+    ./xremap.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -15,6 +16,16 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-skk
+      fcitx5-nord
+
+    ];
+    fcitx5.waylandFrontend = true;
+};
 
   users.users."${username}" = {
     isNormalUser = true;
@@ -31,17 +42,16 @@
   programs.mtr.enable = true;
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh.enable = false;
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 22 ];
   };
 
   # Create a symlink in XDG_DATA_HOME/fonts pointing to /run/current-system/sw/share/X11/fonts
   fonts.fontDir.enable = true;
 
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
   nix = {
     settings = {
       auto-optimise-store = true;

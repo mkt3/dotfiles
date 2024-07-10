@@ -16,6 +16,10 @@ common = [{ name = "direnv", method = "nix-hm" }]
 type = "basic"
 nixos = [{ name = "gcc", method = "nix-hm" }]
 
+[gnumake]
+type = "basic"
+nixos = [{ name = "gnumake", method = "nix-hm" }]
+
 # CLI command packages
 [zsh]
 type = "basic"
@@ -255,7 +259,7 @@ common = [{ name = "ghq", method = "nix-hm", function = "setup_ghq" }]
 ## SSO
 [saml2aws]
 type = "dev"
-common = [{ name = "saml2aws", method = "nix-hm" }]
+dawrin = [{ name = "saml2aws", method = "nix-hm" }]
 
 ## shell script
 [shellcheck]
@@ -335,12 +339,12 @@ common = [{ name = "typescript", method = "nix-hm" }]
 ## google cloud sdk
 [google-cloud-sdk]
 type = "dev"
-common = [{ name = "google-cloud-sdk", method = "nix-hm" }]
+darwin = [{ name = "google-cloud-sdk", method = "nix-hm" }]
 
 ## aws cli
 [awscli2]
 type = "dev"
-common = [{ name = "awscli2", method = "nix-hm" }]
+darwin = [{ name = "awscli2", method = "nix-hm" }]
 
 # gui packages
 ## tex
@@ -409,7 +413,7 @@ common = [{ name = "anki-bin", method = "nix-hm" }]
 type = "gui"
 arch = [{ name = "bitwarden", method = "pacman" }]
 darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
-nixos = [{ name = "bitwarden-desktop", method = "nixg" }]
+# nixos = [{ name = "bitwarden-desktop", method = "nix" }]
 
 ## terminal emulator
 [wezterm]
@@ -423,7 +427,7 @@ nixos = [{ name = "wezterm", method = "nix-hm", function = "setup_wezterm" }]
 type = "gui"
 arch = [{ name = "nextcloud-client", method = "pacman" }]
 darwin = [{ name = "nextcloud", method = "cask" }]
-nixos = [{ name = "nextcloud-client", method = "nix" }]
+# nixos = [{ name = "nextcloud-client", method = "nix-hm" }]
 
 [google-drive]
 type = "gui"
@@ -436,13 +440,11 @@ arch = [{ name = "libreoffice-fresh", method = "nix-hm" }]
 darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
 
 ## launcher
-[raycast]
+[launcher]
 type = "gui"
 darwin = [{ name = "raycast", method = "nix-hm" }]
-
-[rofi]
-type = "gui"
 arch = [{ name = "rofi-lbonn-wayland-git", method = "aur", function = "setup_rofi" }]
+nixos = [{ name = "rofi-wayland", method = "nix-hm", function = "setup_rofi" }]
 
 ## external monitor control
 [monitorcontrol]
@@ -460,9 +462,16 @@ nixos = [
   { name = "waybar", method = "nix", function = "setup_waybar" },
   { name = "mako", method = "nix", function = "setup_mako" },
   { name = "wofi", method = "nix", function = "setup_wofi" },
+  { name = "networkmanagerapplet", method = "nix"},
+  { name = "hyprshot", method = "nix-hm"},
+  { name = "playerctl", method = "nix-hm"},
+  { name = "pwvucontrol", method = "nix-hm"},
+  { name = "brightnessctl", method = "nix-hm"},
+  { name = "hyprcursor", method = "nix-hm"},
+  { name = "nordzy-cursor-theme", method = "nix-hm"},
 ]
 
-[sway]
+[sway] # arch linux
 type = "gui"
 arch = [
   { name = "sway", method = "pacman", function = "setup_sway" },

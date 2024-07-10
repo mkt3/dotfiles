@@ -25,4 +25,23 @@ in
   home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && isCUI) {
     text = "no-autostart";
   };
+
+  home.file.".gtkrc-2" = lib.mkIf (isLinux && isGUI) {
+    text = "gtk-im-module=\"fcitx\"";
+  };
+
+  home.file.".gtk-3.0/settings.ini" = lib.mkIf (isLinux && isGUI) {
+    text = ''
+         [Settings]
+         gtk-im-module=fcitx
+         gtk-application-prefer-dark-theme = true
+         '';
+  };
+  home.file.".gtk-4.0/settings.ini" = lib.mkIf (isLinux && isGUI) {
+    text = ''
+         [Settings]
+         gtk-im-module=fcitx
+         '';
+  };
+
 }

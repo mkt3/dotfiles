@@ -20,7 +20,7 @@
     border: none;
     border-radius: 3px;
     min-height: 0;
-    margin: 0.15em 0.2em;
+    margin: 0.10em 0.2em;
 }
 
 
@@ -28,8 +28,8 @@
 #waybar {
     background: @bg;
     color: @nord_light;
-    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 20px;
+    font-family: Nerd Font, Noto Sans CJK JP, sans-serif;
+    font-size: 14px;
 }
 
 
@@ -115,7 +115,7 @@
 
 #idle_inhibitor {
     background: @bg;
-    padding: 0 0;
+    padding: 0 0.6em;
 }
 
 #cpu {

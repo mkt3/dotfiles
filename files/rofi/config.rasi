@@ -1,15 +1,14 @@
 configuration {
   modes: "window:~/.config/rofi/scripts/window-select.sh,drun,combi,vpn:~/.config/rofi/scripts/vpn.sh,system:~/.config/rofi/scripts/system-menu.sh,bluetooth:~/.config/rofi/scripts/bluetooth-ctl.sh";
   combi-modes: [window,drun,vpn,system,bluetooth];
-  font: "cica 18";
+  font: "PlemolJP Console NF 16";
   sidebar-mode: true;
   show-icons: true;
   drun-display-format: "{icon} {name}";
   display-window: "  ";
-  display-drun: "󿔺  ";
+  display-drun: "  ";
   display-search: "  ";
-  display-bookmark: "󿗂  ";
-  display-vpn: "󿪁  ";
+  display-vpn: "󰖂  ";
   display-profile: "  ";
   display-system: "  ";
   display-bluetooth: " ";
