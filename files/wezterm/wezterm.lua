@@ -28,7 +28,7 @@ local keys = {
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={"./.config/wezterm/ssh.sh"},cwd = '~'}},
 }
 
-font_size = 18.0
+font_size = 20.0
 if wezterm.target_triple == 'x86_64-apple-darwin' then
   table.insert(keys, {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}})
   font_size = 16.0

@@ -427,7 +427,7 @@ nixos = [{ name = "wezterm", method = "nix-hm", function = "setup_wezterm" }]
 type = "gui"
 arch = [{ name = "nextcloud-client", method = "pacman" }]
 darwin = [{ name = "nextcloud", method = "cask" }]
-# nixos = [{ name = "nextcloud-client", method = "nix-hm" }]
+nixos = [{ name = "nextcloud-client", method = "nix-hm" }]
 
 [google-drive]
 type = "gui"

@@ -303,7 +303,7 @@
      (when (display-graphic-p)
        (if (eq system-type 'darwin)
            (add-to-list 'default-frame-alist '(font . "PlemolJP Console NF-18"))
-         (add-to-list 'default-frame-alist '(font . "PlemolJP Console NF-21"))))
+         (add-to-list 'default-frame-alist '(font . "PlemolJP Console NF-16"))))
 
      (use-package nerd-icons :ensure t)
 
@@ -1789,7 +1789,7 @@
 ** mu4e
    #+begin_src emacs-lisp
      (use-package mu4e
-       :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
+       :if (and (executable-find "mu") (file-directory-p "~/.config/mu4e") (display-graphic-p))
        :demand t  ; load-path has already been set by nix
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
@@ -1838,7 +1838,7 @@
              message-sendmail-f-is-evil t
              message-sendmail-extra-arguments '("--read-envelope-from")
              message-send-mail-function 'message-send-mail-with-sendmail)
-       (load (expand-file-name "personal_config/emacs/mail/mu4e_config.el" my:d:nextcloud))
+       (load "~/.config/mu4e/mu4e_config.el")
        (add-hook 'emacs-startup-hook  (lambda ()
                                         (my:imapnotify-start-prodigy-services)))
        (setq message-cite-reply-position 'bellow)
