@@ -26,22 +26,44 @@ in
     text = "no-autostart";
   };
 
-  home.file.".gtkrc-2" = lib.mkIf (isLinux && isGUI) {
-    text = "gtk-im-module=\"fcitx\"";
+  # home.file.".gtkrc-2" = lib.mkIf (isLinux && isGUI) {
+  #   text = "gtk-im-module=\"fcitx\"";
+  #   gtk-cursor-theme-name="Nordzy-cursors"
+  # };
+
+  # home.file.".gtk-3.0/settings.ini" = lib.mkIf (isLinux && isGUI) {
+  #   text = ''
+  #        [Settings]
+  #        gtk-im-module=fcitx
+  #        gtk-application-prefer-dark-theme=true
+  #        gtk-cursor-theme-name=Nordzy-cursors
+  #        '';
+  # };
+  # home.file.".gtk-4.0/settings.ini" = lib.mkIf (isLinux && isGUI) {
+  #   text = ''
+  #        [Settings]
+  #        gtk-im-module=fcitx
+  #        gtk-cursor-theme-name=Nordzy-cursors
+  #        '';
+  # };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    # x11.enable = true;
+    package = pkgs.nordzy-cursor-theme;
+    name = "Nordzy-cursors";
+    size = 24;
   };
 
-  home.file.".gtk-3.0/settings.ini" = lib.mkIf (isLinux && isGUI) {
-    text = ''
-         [Settings]
-         gtk-im-module=fcitx
-         gtk-application-prefer-dark-theme = true
-         '';
+  gtk = {
+    enable = true;
+    theme = {
+      package = pkgs.nordic;
+      name = "Nordic";
+    };
+    iconTheme = {
+      package = pkgs.nordzy-icon-theme;
+      name = "Nordzy";
+    };
   };
-  home.file.".gtk-4.0/settings.ini" = lib.mkIf (isLinux && isGUI) {
-    text = ''
-         [Settings]
-         gtk-im-module=fcitx
-         '';
-  };
-
 }

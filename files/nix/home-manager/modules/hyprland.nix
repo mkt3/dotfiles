@@ -114,13 +114,20 @@
       exec-once = [
         "brightnessctl set 80%"
         "fcitx5 -D"
+        "hypridle"
         "nm-applet --indicator"
         "waybar"
+        "nextcloud --background"
         "[workspace 1 silent] wezterm"
         "[workspace 1 silent] vivaldi --enable-wayland-ime"
         "[workspace 1 silent] zotero"
         "[workspace 2 silent] slack"
         "[workspace 9 silent] COLORTERM=truecolor GTK_IM_MODULE=xim emacs"
+      ];
+
+      windowrulev2 = [
+        "float ,title:(Bitwarden - Vivaldi)"
+        "float ,class:(com.nextcloud.desktopclient.nextcloud)"
       ];
 
       input = {
@@ -140,7 +147,7 @@
         gaps_in = 2;
         gaps_out = 2;
         border_size = 2;
-        "col.inactive_border" = "rgb(4C566A)";
+        "col.inactive_border" = "rgb(2E3440)";
         "col.active_border" = "rgb(4C566A)";
         resize_on_border = false;
         allow_tearing = false;
@@ -150,7 +157,7 @@
         rounding = 10;
 
         active_opacity = 1.0;
-        inactive_opacity = 0.8;
+        inactive_opacity = 1.0;
         drop_shadow = true;
         shadow_render_power = 3;
         "col.shadow" = "rgba(1a1a1aee)";
@@ -185,4 +192,87 @@
       };
     };
   };
+
+  home.file.".config/hypr/hypridle.conf".text = ''
+    general {
+        lock_cmd = pidof hyprlock || hyprlock       # avoid starting multiple hyprlock instances.
+        before_sleep_cmd = loginctl lock-session    # lock before suspend.
+        after_sleep_cmd = hyprctl dispatch dpms on  # to avoid having to press a key twice to turn on the display.
+    }
+
+    listener {
+        timeout = 150                                # 2.5min.
+        on-timeout = brightnessctl -s set 10         # set monitor backlight to minimum, avoid 0 on OLED monitor.
+        on-resume = brightnessctl -r                 # monitor backlight restore.
+    }
+
+    # turn off keyboard backlight, comment out this section if you dont have a keyboard backlight.
+    listener {
+        timeout = 150                                          # 2.5min.
+        on-timeout = brightnessctl -sd rgb:kbd_backlight set 0 # turn off keyboard backlight.
+        on-resume = brightnessctl -rd rgb:kbd_backlight        # turn on keyboard backlight.
+    }
+
+    listener {
+        timeout = 300                                 # 5min
+        on-timeout = loginctl lock-session            # lock screen when timeout has passed
+    }
+
+    listener {
+        timeout = 330                                 # 5.5min
+        on-timeout = hyprctl dispatch dpms off        # screen off when timeout has passed
+        on-resume = hyprctl dispatch dpms on          # screen on when activity is detected after timeout has fired.
+    }
+
+    listener {
+        timeout = 1800                                # 30min
+        on-timeout = systemctl suspend                # suspend pc
+    }
+  '';
+
+  home.file.".config/hypr/hyprlock.conf".text = ''
+    general {
+      ignore_empty_input = true
+    }
+
+    background {
+      monitor =
+      blur_passes = 0
+      blur_size = 7
+      noise = 0.0117
+      contrast = 0.8916
+      brightness = 0.8172
+      vibrancy = 0.1696
+      vibrancy_darkness = 0.0
+    }
+
+    label {
+      monitor =
+      text = $TIME
+      font_size = 175
+      position = 0, 325
+      halign = center
+      valing = top
+    }
+
+    input-field {
+      monitor =
+      size = 200, 30
+      outline_thickness = 3
+      dots_size = 0.15
+      dots_spacing = 0.25
+      dots_center = false
+      dots_rounding = -1
+      rounding = -1
+      inner_color = rgb(175, 175, 175)
+      placeholder_text = $USER
+      position = 0, 100
+      halign = center
+      valign = bottom
+      check_color = rgb(94, 213, 45)
+      fail_color = rgb(191, 354, 0)
+      fail_text = <span color="white">Failed $ATTEMPTS times</span>
+      hide_input = false
+    }
+  '';
 }

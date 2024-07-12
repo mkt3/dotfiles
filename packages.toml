@@ -461,14 +461,14 @@ nixos = [
   { name = "xdg-desktop-portal-hyprland", method = "nix" },
   { name = "waybar", method = "nix", function = "setup_waybar" },
   { name = "mako", method = "nix", function = "setup_mako" },
-  { name = "wofi", method = "nix", function = "setup_wofi" },
   { name = "networkmanagerapplet", method = "nix"},
   { name = "hyprshot", method = "nix-hm"},
   { name = "playerctl", method = "nix-hm"},
   { name = "pwvucontrol", method = "nix-hm"},
   { name = "brightnessctl", method = "nix-hm"},
-  { name = "hyprcursor", method = "nix-hm"},
-  { name = "nordzy-cursor-theme", method = "nix-hm"},
+  { name = "gnome-keyring", method = "nix-hm"},
+  { name = "libsecret", method = "nix-hm"},
+  { name = "seahorse", method = "nix-hm"},
 ]
 
 [sway] # arch linux

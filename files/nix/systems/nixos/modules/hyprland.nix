@@ -16,15 +16,41 @@
     ./gui_component
   ];
 
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-skk
+      fcitx5-nord
+
+    ];
+    fcitx5.waylandFrontend = true;
+};
+
   programs.hyprland.enable = true;
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
 
   security.polkit.enable = true;
+
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
+
   xdg.portal = {
     enable = true;
     wlr.enable = true;
   };
+
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+      thunar-media-tags-plugin
+    ];
+  };
+
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
 
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

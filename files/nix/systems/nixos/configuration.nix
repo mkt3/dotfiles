@@ -17,16 +17,6 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-skk
-      fcitx5-nord
-
-    ];
-    fcitx5.waylandFrontend = true;
-};
-
   users.users."${username}" = {
     isNormalUser = true;
     extraGroups = [
