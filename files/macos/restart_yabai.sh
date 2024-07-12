@@ -9,4 +9,4 @@
 
 . "${HOME}/.zshenv"
 
-yabai --restart-service
+launchctl kickstart -k gui/$(id -u)/org.nixos.yabai

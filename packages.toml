@@ -535,8 +535,8 @@ arch = [
 [yabai]
 type = "gui"
 darwin = [
-  { name = "koekeishiya/formulae/yabai", method = "brew", function = "setup_yabai" },
-  { name = "koekeishiya/formulae/skhd", method = "brew", function = "setup_skhd" },
+  # { name = "koekeishiya/formulae/yabai", method = "brew", function = "setup_yabai" },
+  # { name = "koekeishiya/formulae/skhd", method = "brew", function = "setup_skhd" },
   { name = "FelixKratz/formulae/sketchybar", method = "brew", function = "setup_sketchybar" },
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
 ]

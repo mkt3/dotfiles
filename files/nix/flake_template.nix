@@ -62,6 +62,7 @@
             ./systems/common/host-users.nix
             ./systems/darwin/system.nix
             ./systems/darwin/system_packages.nix
+            ./systems/darwin/yabai_skhd.nix
             ./systems/common/fonts.nix
             ./systems/darwin/homebrew-apps.nix
             home-manager.darwinModules.home-manager

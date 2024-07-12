@@ -14,8 +14,6 @@
       "xz"
       "zlib"
       "tcl-tk"
-      "koekeishiya/formulae/yabai"
-      "koekeishiya/formulae/skhd"
       "FelixKratz/formulae/sketchybar"
     ];
 
