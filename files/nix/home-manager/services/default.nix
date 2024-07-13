@@ -47,7 +47,7 @@ in
   #        '';
   # };
 
-  home.pointerCursor = {
+  home.pointerCursor = lib.mkIf (isLinux && isCUI) {
     gtk.enable = true;
     # x11.enable = true;
     package = pkgs.nordzy-cursor-theme;
@@ -55,7 +55,7 @@ in
     size = 24;
   };
 
-  gtk = {
+  gtk = lib.mkIf (isLinux && isCUI) {
     enable = true;
     theme = {
       package = pkgs.nordic;
