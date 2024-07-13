@@ -1,15 +1,28 @@
-{ username, config, lib, pkgs, xremap, ... }:
+{ username, config, lib, pkgs, xremap, lanzaboote, nixos-hardware,  ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./system_packages.nix
     ./xremap.nix
+    lanzaboote.nixosModules.lanzaboote
+    nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
   ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    initrd.systemd.enable = true;
+    loader.systemd-boot.enable = lib.mkForce false;
+    loader.efi.canTouchEfiVariables = true;
+
+    bootspec.enable = true;
+
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";

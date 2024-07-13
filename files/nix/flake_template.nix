@@ -13,9 +13,11 @@
     };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     xremap.url = "github:xremap/nix-flake";
+    lanzaboote.url = "github:nix-community/lanzaboote";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
-  outputs = inputs @ { self, nix-darwin, nixpkgs, emacs-overlay, home-manager, xremap, ...}:
+  outputs = inputs @ { self, nix-darwin, nixpkgs, emacs-overlay, home-manager, xremap, lanzaboote, nixos-hardware, ...}:
     let
       platform = "__SYSTEM__"; # aarch64-darwin or x86_64-darwin
       hostname = "__HOSTNAME__";
