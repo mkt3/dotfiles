@@ -87,9 +87,7 @@
         "QT_IM_MODULE, fcitx"
         "XMODkIFIERS, @im=fcitx"
         "GDK_SCALE, 1.5"
-        "HYPRCURSOR_SIZE, 24"
-        "HYPRCURSOR_THEME,Nordzy-cursors"
-      ];
+        ];
       monitor = [
         "eDP-1,preferred,auto-down,1.6"
         "DP-3,preferred,auto-up,1.5"
