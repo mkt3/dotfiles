@@ -7,7 +7,6 @@
     "modules-right": ["custom/vpn", "cpu", "memory", "pulseaudio", "backlight", "battery", "clock", "tray", "idle_inhibitor"],
     // Modules configuration
     "hyprland/workspaces": {
-        "all-outputs": false,
         "format": "{name} {icon}",
         "format-icons": {
             "1: main": "",
@@ -17,7 +16,7 @@
             "8: game": "",
             "10: media": "",
             "urgent": "",
-            "focused": "",
+            "active": "",
             "default": ""
         }
     },

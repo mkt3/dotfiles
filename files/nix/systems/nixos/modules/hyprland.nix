@@ -18,13 +18,14 @@
 
   i18n.inputMethod = {
     enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-skk
-      fcitx5-nord
-
-    ];
-    fcitx5.waylandFrontend = true;
-};
+    fcitx5 = {
+      addons = with pkgs; [
+        fcitx5-skk
+        fcitx5-nord
+      ];
+      waylandFrontend = true;
+    };
+  };
 
   programs.hyprland.enable = true;
   programs.hyprlock.enable = true;

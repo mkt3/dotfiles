@@ -126,6 +126,7 @@
       windowrulev2 = [
         "float ,title:(Bitwarden - Vivaldi)"
         "float ,class:(com.nextcloud.desktopclient.nextcloud)"
+        "float ,class:(com.saivert.pwvucontrol)"
       ];
 
       input = {
