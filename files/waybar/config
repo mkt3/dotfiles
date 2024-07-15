@@ -47,7 +47,7 @@
         }
     },
     "tray": {
-        "icon-size": 22,
+        "icon-size": 20,
         "spacing": 2
     },
     "clock": {
