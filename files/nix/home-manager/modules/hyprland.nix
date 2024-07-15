@@ -20,7 +20,7 @@
         "$mainMod SHIFT, m, exit"
         "$mainMod, q, killactive"
         "$mainMod, m, exit,"
-        "$mainMod, e, exec, $fileManager"
+        "$mainMod, e, exec, thunar"
         "$mainMod, v, togglefloating,"
         "$subMod, SPACE, exec, rofi -show combi"
         # bind = $mainMod, P, pseudo, # dwindle
