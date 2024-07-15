@@ -1,10 +1,9 @@
-{ username, config, lib, pkgs, xremap, lanzaboote, nixos-hardware,  ... }:
+{ username, config, lib, pkgs, lanzaboote, nixos-hardware,  ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./system_packages.nix
-    ./xremap.nix
     lanzaboote.nixosModules.lanzaboote
     nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
   ];
