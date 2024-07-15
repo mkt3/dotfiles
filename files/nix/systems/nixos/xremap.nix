@@ -94,6 +94,7 @@
           application.only = ["Vivaldi-stable"];
           remap = {
             "Super-s" = "C-f";
+            "Super-BTN_LEFT" = "C-BTN_LEFT";
           };
         }
       ];
