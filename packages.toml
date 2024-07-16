@@ -108,10 +108,7 @@ common = [
 [sheldon]
 type = "basic"
 darwin = [{ name = "sheldon@0.7.3", method = "cargo" }]
-arch = [{ name = "sheldon", method = "nix-hm" }]
-ubuntu = [{ name = "sheldon", method = "nix-hm" }]
-nixos = [{ name = "sheldon", method = "nix-hm" }]
-otherlinux = [{ name = "sheldon", method = "nix-hm" }]
+linux = [{ name = "sheldon", method = "nix-hm" }]
 
 [procs]
 type = "basic"
@@ -218,9 +215,7 @@ common = [{ name = "bottom", method = "nix-hm" }]
 
 [iotop]
 type = "basic"
-arch = [{ name = "iotop", method = "nix-hm" }]
-ubuntu = [{ name = "iotop", method = "nix-hm" }]
-otherlinux = [{ name = "iotop", method = "nix-hm" }]
+linux = [{ name = "iotop", method = "nix-hm" }]
 
 # Editor
 [vim]
@@ -330,7 +325,7 @@ common = [{ name = "vscode-langservers-extracted", method = "nix-hm" }]
 ## for typescript
 [typescript-language-server]
 type = "dev"
-common = [{ name = "nodePackages.typescript-language-server", method = "nix-hm" }]
+common = [{ name = "typescript-language-server", method = "nix-hm" }]
 
 [typescript]
 type = "dev"
@@ -372,11 +367,7 @@ darwin = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
 ## browser
 [vivaldi]
 type = "gui"
-arch = [
-  { name = "vivaldi", method = "nix-hm" },
-  { name = "vivaldi-ffmpeg-codecs", method = "nix-hm" },
-]
-nixos = [
+linux = [
   { name = "vivaldi", method = "nix-hm" },
   { name = "vivaldi-ffmpeg-codecs", method = "nix-hm" },
 ]
@@ -384,13 +375,13 @@ darwin = [{ name = "vivaldi", method = "cask" }]
 
 [firefox]
 type = "gui"
-arch = [{ name = "firefox", method = "nix-hm" }]
+linux = [{ name = "firefox", method = "nix-hm" }]
 darwin = [{ name = "firefox", method = "cask" }]
 
 ## media
 [vlc]
 type = "gui"
-arch = [
+linux = [
   { name = "vlc", method = "nix-hm" },
   { name = "libdvdread", method = "nix-hm" },
   { name = "libdvdnav", method = "nix-hm" },
@@ -401,7 +392,7 @@ darwin = [{ name = "vlc", method = "cask" }]
 ## research
 [zotero]
 type = "gui"
-arch = [{ name = "zotero", method = "nix-hm" }]
+linux = [{ name = "zotero", method = "nix-hm" }]
 darwin = [{ name = "zotero", method = "cask" }]
 
 [anki]
@@ -411,23 +402,19 @@ common = [{ name = "anki-bin", method = "nix-hm" }]
 ## password manager
 [bitwarden]
 type = "gui"
-arch = [{ name = "bitwarden", method = "pacman" }]
 darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
-# nixos = [{ name = "bitwarden-desktop", method = "nix" }]
 
 ## terminal emulator
 [wezterm]
 type = "gui"
-arch = [{ name = "wezterm", method = "pacman", function = "setup_wezterm" }]
 darwin = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
-nixos = [{ name = "wezterm", method = "nix-hm", function = "setup_wezterm" }]
+linux = [{ name = "wezterm", method = "nix-hm", function = "setup_wezterm" }]
 
 ## cloud storage
 [nextcloud-client]
 type = "gui"
-arch = [{ name = "nextcloud-client", method = "pacman" }]
 darwin = [{ name = "nextcloud", method = "cask" }]
-nixos = [{ name = "nextcloud-client", method = "nix-hm" }]
+linux = [{ name = "nextcloud-client", method = "nix-hm" }]
 
 [google-drive]
 type = "gui"
@@ -436,21 +423,19 @@ darwin = [{ name = "google-drive", method = "cask" }]
 ## libreoffice
 [libreoffice]
 type = "gui"
-arch = [{ name = "libreoffice-fresh", method = "nix-hm" }]
+linux = [{ name = "libreoffice-fresh", method = "nix-hm" }]
 darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
 
 ## launcher
 [launcher]
 type = "gui"
 darwin = [{ name = "raycast", method = "nix-hm" }]
-arch = [{ name = "rofi-lbonn-wayland-git", method = "aur", function = "setup_rofi" }]
-nixos = [{ name = "rofi-wayland", method = "nix-hm", function = "setup_rofi" }]
+linux = [{ name = "rofi-wayland", method = "nix-hm", function = "setup_rofi" }]
 
 ## external monitor control
 [monitorcontrol]
 type = "gui"
 darwin = [{ name = "monitorcontrol", method = "nix-hm" }]
-arch = [{ name = "ddcci-driver-linux-dkms", method = "aur" }]
 
 ## window manager
 [hyprland]
@@ -459,86 +444,32 @@ nixos = [
   { name = "hyprland", method = "nix" },
   { name = "hyprland", method = "nix-hm" },
   { name = "xdg-desktop-portal-hyprland", method = "nix" },
-  { name = "xremap", method = "nix"},
+  { name = "xremap", method = "nix" },
   { name = "waybar", method = "nix", function = "setup_waybar" },
   { name = "mako", method = "nix", function = "setup_mako" },
-  { name = "networkmanagerapplet", method = "nix"},
-  { name = "hyprshot", method = "nix-hm"},
-  { name = "playerctl", method = "nix-hm"},
-  { name = "pwvucontrol", method = "nix-hm"},
-  { name = "brightnessctl", method = "nix-hm"},
-  { name = "gnome-keyring", method = "nix-hm"},
-  { name = "libsecret", method = "nix-hm"},
-  { name = "seahorse", method = "nix-hm"},
+  { name = "networkmanagerapplet", method = "nix" },
+  { name = "hyprshot", method = "nix-hm" },
+  { name = "playerctl", method = "nix-hm" },
+  { name = "pwvucontrol", method = "nix-hm" },
+  { name = "brightnessctl", method = "nix-hm" },
+  { name = "gnome-keyring", method = "nix-hm" },
+  { name = "libsecret", method = "nix-hm" },
+  { name = "seahorse", method = "nix-hm" },
+  { name = "nord", method = "nix-hm" },
 ]
 
 # [sway] # arch linux
 # type = "gui"
 # arch = [
-#   { name = "sway", method = "pacman", function = "setup_sway" },
-#   { name = "xorg-xwayland", method = "pacman" },
-#   { name = "qt5-wayland", method = "pacman" },
-#   { name = "qt6-wayland", method = "pacman" },
-#   { name = "swayidle", method = "pacman" },
-#   { name = "swaylock", method = "pacman", function = "setup_swaylock" },
-#   { name = "swaybg", method = "pacman" },
-#   { name = "xdg-desktop-portal-wlr", method = "pacman" },
-#   { name = "xdg-desktop-portal", method = "pacman" },
-#   { name = "waybar", method = "pacman", function = "setup_waybar" },
-#   { name = "wl-clipboard", method = "pacman" },
-#   { name = "mako", method = "pacman", function = "setup_mako" },
-#   { name = "lightdm", method = "pacman" },
-#   { name = "lightdm-gtk-greeter", method = "pacman" },
-#   { name = "network-manager-applet", method = "pacman" },
-#   { name = "papirus-icon-theme", method = "pacman" },
-#   { name = "bluez", method = "pacman" },
-#   { name = "bluez-utils", method = "pacman" },
-#   { name = "blueman", method = "pacman" },
-#   { name = "pipewire", method = "pacman" },
-#   { name = "wireplumber", method = "pacman" },
-#   { name = "pipewire-alsa", method = "pacman" },
-#   { name = "pipewire-pulse", method = "pacman" },
-#   { name = "pavucontrol", method = "pacman" },
-#   { name = "playerctl", method = "pacman" },
-#   { name = "thunar", method = "pacman" },
-#   { name = "tumbler", method = "pacman" },
-#   { name = "gvfs", method = "pacman" },
-#   { name = "gvfs-smb", method = "pacman" },
-#   { name = "sshfs", method = "pacman" },
-#   { name = "ristretto", method = "pacman" },
-#   { name = "slurp", method = "pacman" },
-#   { name = "grim", method = "pacman" },
-#   { name = "kanshi", method = "pacman", function = "setup_kanshi" },
-#   { name = "qtkeychain-qt5", method = "pacman" },
-#   { name = "libsecret", method = "pacman" },
-#   { name = "gnome-keyring", method = "pacman" },
-#   { name = "seahorse", method = "pacman" },
-#   { name = "gtk2", method = "pacman" },
-#   { name = "autotiling-rs", method = "pacman" },
-#   { name = "python-i3ipc", method = "pacman" }, # for inactive-windows-transparency.py
-#   { name = "noto-fonts", method = "pacman", function = "setup_noto_font" },
-#   { name = "noto-fonts-cjk", method = "pacman" },
-#   { name = "noto-fonts-emoji", method = "pacman" },
-#   { name = "noto-fonts-extra", method = "pacman" },
-#   { name = "ttf-font-awesome", method = "pacman" },
-#   { name = "acpi", method = "pacman" },
-#   { name = "fcitx5", method = "pacman" },
-#   { name = "fcitx5-configtool", method = "pacman" },
-#   { name = "fcitx5-gtk", method = "pacman" },
-#   { name = "fcitx5-qt", method = "pacman" },
-#   { name = "fcitx5-skk", method = "pacman" },
-#   { name = "clipman", method = "aur" },
-#   { name = "nwg-look", method = "aur" },
-#   { name = "nordic-theme", method = "aur" },
 #   { name = "xwindow", method = "script", function = "setup_xwindow" },
 # ]
 
 [yabai]
 type = "gui"
 darwin = [
-  # { name = "koekeishiya/formulae/yabai", method = "brew", function = "setup_yabai" },
-  # { name = "koekeishiya/formulae/skhd", method = "brew", function = "setup_skhd" },
-  { name = "FelixKratz/formulae/sketchybar", method = "brew", function = "setup_sketchybar" },
+  { name = "yabai", method = "nix" },
+  { name = "skhd", method = "nix" },
+  { name = "sketchybar", method = "nix", function = "setup_sketchybar" },
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
 ]
 
@@ -561,10 +492,10 @@ common = [{ name = "hugo", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
 
-## programing font
-[programing_font]
+## font
+[font]
 type = "gui"
-arch = [{ name = "programing_font", method = "script", function = "setup_prograing_font" }]
+common = [{ name = "fonts", method = "nix-hm" }]
 
 ## key remapper
 [keyremap]
@@ -575,8 +506,7 @@ arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setu
 ## backup tools
 [borg]
 type = "gui"
-arch = [{ name = "borgbackup", method = "nix-hm", function = "setup_borg" }]
-nixos = [{ name = "borgbackup", method = "nix-hm", function = "setup_borg" }]
+linux = [{ name = "borgbackup", method = "nix-hm", function = "setup_borg" }]
 
 ## dvd writing
 [growisofs]

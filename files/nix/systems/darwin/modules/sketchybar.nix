@@ -1,0 +1,150 @@
+{ pkgs, hostname, ... }:
+{
+  services.sketchybar = {
+    enable = true;
+    config = ''
+      PLUGIN_DIR="~/.config/sketchybar/plugins"
+
+      ##### Bar Appearance #####
+      sketchybar --bar height=32        \
+                       blur_radius=30   \
+                       position=top     \
+                       sticky=off       \
+                       padding_left=10  \
+                       padding_right=10 \
+                       shadow=off       \
+                       color=0xff3b4252
+
+      ##### Changing Defaults #####
+      sketchybar --default icon.font="Hack Nerd Font:Bold:17.0"  \
+                           icon.color=0xffffffff                 \
+                           label.font="Hack Nerd Font:Bold:14.0" \
+                           label.color=0xffeceff4                \
+                           label.highlight_color=0xff8CABC8      \
+                           padding_left=5                        \
+                           padding_right=5                       \
+                           label.padding_left=2                  \
+                           label.padding_right=2                 \
+                           icon.padding_left=8 2                 \
+                           icon.padding_right=8
+
+      sketchybar --add space space.1 left                                    \
+                 --set space.1    space=1                                    \
+                                  icon="1"                                   \
+                                  background.color=0x44ffffff                \
+                                  background.corner_radius=5                 \
+                                  background.height=20                       \
+                                  background.drawing=off                     \
+                                  label.drawing=off                          \
+                                  script="$PLUGIN_DIR/space.sh"              \
+                                  click_script="yabai -m space --focus 1"
+
+      sketchybar --add space space.2 left                                    \
+                 --set space.2    space=2                                    \
+                                  icon="2"                                    \
+                                  background.color=0x44ffffff                \
+                                  background.corner_radius=5                 \
+                                  background.height=20                       \
+                                  background.drawing=off                     \
+                                  label.drawing=off                          \
+                                  script="$PLUGIN_DIR/space.sh"              \
+                                  click_script="yabai -m space --focus 2"
+      sketchybar --add space space.3 left                                    \
+                 --set space.3    space=3                                    \
+                                  icon="3"                                   \
+                                  background.color=0x44ffffff                \
+                                  background.corner_radius=5                 \
+                                  background.height=20                       \
+                                  background.drawing=off                     \
+                                  label.drawing=off                          \
+                                  script="$PLUGIN_DIR/space.sh"              \
+                                  click_script="yabai -m space --focus 3"
+      sketchybar --add space space.4 left                                    \
+                 --set space.4    space=4                                    \
+                                  icon="4"                                   \
+                                  background.color=0x44ffffff                \
+                                  background.corner_radius=5                 \
+                                  background.height=20                       \
+                                  background.drawing=off                     \
+                                  label.drawing=off                          \
+                                  script="$PLUGIN_DIR/space.sh"              \
+                                  click_script="yabai -m space --focus 4"
+      sketchybar --add space space.5 left                                    \
+                 --set space.5    space=5                                    \
+                                  icon="5"                                   \
+                                  background.color=0x44ffffff                \
+                                  background.corner_radius=5                 \
+                                  background.height=20                       \
+                                  background.drawing=off                     \
+                                  label.drawing=off                          \
+                                  script="$PLUGIN_DIR/space.sh"              \
+                                  click_script="yabai -m space --focus 5"
+
+      ##### Adding Left Items #####
+      sketchybar --add item space_separator left                         \
+                 --set space_separator icon=                            \
+                                       padding_left=10                   \
+                                       padding_right=10                  \
+                                       label.drawing=off                 \
+                                                                         \
+                 --add item front_app left                               \
+                 --set front_app       script="$PLUGIN_DIR/front_app.sh" \
+                                       icon.drawing=off                  \
+                 --subscribe front_app front_app_switched
+
+      ##### Adding Center Items #####
+      sketchybar --add item task center                              \
+                 --set task    update_freq=30                        \
+                               script="$PLUGIN_DIR/org-task.sh"
+
+      ##### Adding Right Items #####
+      sketchybar --add item clock right                              \
+                 --set clock   update_freq=10                        \
+                               icon=                                \
+                               script="$PLUGIN_DIR/clock.sh"         \
+                               label.padding_left=2                  \
+                               icon.padding_right=2                  \
+                               icon.padding_left=2                  \
+                               label.padding_right=2                 \
+                                                                     \
+                 --add item volume right                             \
+                 --set volume  script="$PLUGIN_DIR/volume.sh"        \
+                               label.padding_left=2                  \
+                               icon.padding_right=2                  \
+                               icon.padding_left=2                  \
+                               label.padding_right=2                 \
+                 --subscribe volume volume_change                    \
+                                                                     \
+                 --add item battery right                            \
+                 --set battery script="$PLUGIN_DIR/battery.sh"       \
+                               update_freq=120                       \
+                               label.padding_left=2                  \
+                               icon.padding_right=2                  \
+                               icon.padding_left=2                  \
+                               label.padding_right=2                 \
+                 --subscribe battery system_woke power_source_change \
+                                                                     \
+                 --add item network right                            \
+                 --set network script="$PLUGIN_DIR/network.sh"       \
+                               update_freq=30                        \
+                               label.padding_left=2                  \
+                               icon.padding_right=2                  \
+                               icon.padding_left=2                  \
+                               label.padding_right=2                 \
+                 --subscribe network wifi_change                     \
+                                                                     \
+                 --add alias MeetingBar right                        \
+                 --set MeetingBar alias.update_freq=60               \
+                               label.padding_left=2                  \
+                               icon.padding_right=2                  \
+                               icon.padding_left=2                  \
+                               label.padding_right=2
+
+      # sketchybar --hotload on
+
+      sketchybar --update
+
+      echo "sketchybar configuation loaded.."
+    '';
+  };
+}

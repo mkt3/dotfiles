@@ -56,4 +56,5 @@ return {
   keys=keys,
   enable_wayland = false,
   window_close_confirmation = 'NeverPrompt',
+  check_for_updates = false,
 }

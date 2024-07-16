@@ -26,23 +26,11 @@ in
     text = "no-autostart";
   };
 
-  home.pointerCursor = lib.mkIf (isLinux && isGUI) {
-    gtk.enable = true;
-    # x11.enable = true;
-    package = pkgs.nordzy-cursor-theme;
-    name = "Nordzy-cursors";
-    size = 24;
-  };
-
-  gtk = lib.mkIf (isLinux && isGUI) {
-    enable = true;
-    theme = {
-      package = pkgs.nordic;
-      name = "Nordic";
-    };
-    iconTheme = {
-      package = pkgs.papirus-nord;
-      name = "Papirus-Dark";
-    };
+  home.file.".config/discord/settings.json" = lib.mkIf(isGUI) {
+    text = ''
+    {
+      "SKIP_HOST_UPDATE": true
+    }
+  '';
   };
 }

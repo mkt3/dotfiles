@@ -6,9 +6,3 @@ pre_setup_sketchybar() {
     info "Creating symlink for skhetchybar"
     ln -sfn "${CONFIGS_DIR}/sketchybar" "${XDG_CONFIG_HOME}/sketchybar"
 }
-
-post_setup_sketchybar() {
-    info "Restart sketchybar"
-    brew services start sketchybar
-    brew services restart sketchybar
-}

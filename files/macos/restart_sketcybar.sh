@@ -9,4 +9,4 @@
 
 . "${HOME}/.zshenv"
 
-brew services restart sketchybar
+launchctl kickstart -k gui/$(id -u)/org.nixos.sketchybar

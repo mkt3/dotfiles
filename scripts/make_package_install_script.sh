@@ -16,13 +16,13 @@ GITHUB_ACTIONS=${GITHUB_ACTIONS:-n}
 title "Making packages install script"
 
 os_name=""
-
+is_linux=false
 case "$DISTRO" in
-    "Arch Linux") os_name="arch" ;;
-    "Ubuntu") os_name="ubuntu" ;;
-    "NixOS") os_name="nixos" ;;
+    "Arch Linux") os_name="arch"; is_linux=true ;;
+    "Ubuntu") os_name="ubuntu"; is_linux=true ;;
+    "NixOS") os_name="nixos"; is_linux=true ;;
     "Darwin") os_name="darwin" ;;
-    *) os_name="otherlinux" ;;
+    *) os_name="otherlinux"; is_linux=true ;;
 esac
 
 dev_env=${DEV_ENV:-n}
@@ -123,8 +123,20 @@ else
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
-    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | jq --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select((.value["common"] != null or .value[$os] != null) and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | (.value["common"][]?, .value[$os][]?) | select(.method == $method) | .name | select(. != null)' && printf '\0')
-
+    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | jq --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
+      to_entries | .[] |
+      select(
+        (.value.common != null or ($is_linux and .value.linux != null) or .value[$os] != null) and
+        (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))
+      ) |
+        if $os != "darwin" then
+          (.value.common[]?, .value.linux[]?, .value[$os][]?)
+        else
+          (.value.common[]?, .value[$os][]?)
+        end |
+      select(.method == $method) |
+      .name |
+      select(. != null)' && printf '\0')
     if [ ${#package_names[@]} -eq 0 ]; then
         continue
     fi

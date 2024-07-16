@@ -14,7 +14,6 @@
       "xz"
       "zlib"
       "tcl-tk"
-      "FelixKratz/formulae/sketchybar"
     ];
 
     casks = [

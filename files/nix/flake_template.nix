@@ -46,7 +46,6 @@
           modules = [
             ./systems/common/host-users.nix
             ./systems/nixos/configuration.nix
-            ./systems/common/fonts.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -64,8 +63,6 @@
             ./systems/common/host-users.nix
             ./systems/darwin/system.nix
             ./systems/darwin/system_packages.nix
-            ./systems/darwin/yabai_skhd.nix
-            ./systems/common/fonts.nix
             ./systems/darwin/homebrew-apps.nix
             home-manager.darwinModules.home-manager
             {

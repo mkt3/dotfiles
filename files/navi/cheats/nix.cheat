@@ -3,7 +3,7 @@
 $ project_type: echo "minimal\npython"
 
 # Delete old generation
-nix store gc
+nix store gc --verbose
 
 # Run a Nix application from the nixpkgs flake
 nix run nixpkgs#<package_name>

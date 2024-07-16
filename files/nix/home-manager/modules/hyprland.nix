@@ -87,6 +87,7 @@
         "QT_IM_MODULE, fcitx"
         "XMODkIFIERS, @im=fcitx"
         "GDK_SCALE, 1.5"
+        "NIXOS_OZONE_WL, 1"
         ];
       monitor = [
         "eDP-1,preferred,auto-down,1.6"
