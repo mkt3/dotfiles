@@ -91,7 +91,7 @@
         }
         {
           name = "Vivaldi";
-          application.only = ["Vivaldi-stable"];
+          application.only = ["vivaldi-stable"];
           remap = {
             "Super-s" = "C-f";
             "Super-BTN_LEFT" = "C-BTN_LEFT";

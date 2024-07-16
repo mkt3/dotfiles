@@ -1,10 +1,6 @@
-{ pkgs, isGUI, ... }:
-let
-  isLinux = pkgs.stdenv.isLinux;
-  lib = pkgs.lib;
-in
+{ pkgs, ... }:
 {
-  home.pointerCursor = lib.mkIf (isLinux && isGUI) {
+  home.pointerCursor = {
     gtk.enable = true;
     # x11.enable = true;
     package = pkgs.nordzy-cursor-theme;
@@ -12,7 +8,7 @@ in
     size = 24;
   };
 
-  gtk = lib.mkIf (isLinux && isGUI) {
+  gtk = {
     enable = true;
     theme = {
       package = pkgs.nordic;
