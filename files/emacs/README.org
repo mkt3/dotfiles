@@ -691,10 +691,10 @@
     #+end_src
 *** fussy
     #+begin_src emacs-lisp
-      (use-package fussy
-        :ensure t
-        :config
-        (push 'fussy completion-styles))
+      ;; (use-package fussy
+      ;;   :ensure t
+      ;;   :config
+      ;;   (push 'fussy completion-styles))
     #+end_src
 *** embark
     #+begin_src emacs-lisp
