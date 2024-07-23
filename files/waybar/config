@@ -103,7 +103,7 @@
         "on-click": "pwvucontrol"
     },
     "custom/vpn": {
-        "format": " {}",
+        "format": "  {}",
         "interval": 5,
         "exec": "$HOME/.config/waybar/scripts/nm-vpn.sh",
         "exec-if": "exit 0"
