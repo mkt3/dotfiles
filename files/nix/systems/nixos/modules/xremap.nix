@@ -44,7 +44,7 @@
             "C-e" = "end"; # TODO = Alt-C-e
             "C-k"  = ["Shift-end" "C-x"];
 
-            # Alt -> Ctrl
+            # Super -> Ctrl
             "Super-a" = "C-a";
             "Super-z" = "C-z";
             "Super-x" = "C-x";
@@ -94,6 +94,7 @@
           application.only = ["vivaldi-stable"];
           remap = {
             "Super-s" = "C-f";
+            "Super-e" = "Alt-Shift-i";
             "Super-BTN_LEFT" = "C-BTN_LEFT";
           };
         }

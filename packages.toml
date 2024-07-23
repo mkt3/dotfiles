@@ -444,7 +444,6 @@ nixos = [
   { name = "hyprland", method = "nix" },
   { name = "hyprland", method = "nix-hm" },
   { name = "xdg-desktop-portal-hyprland", method = "nix" },
-  { name = "xremap", method = "nix" },
   { name = "waybar", method = "nix", function = "setup_waybar" },
   { name = "mako", method = "nix", function = "setup_mako" },
   { name = "networkmanagerapplet", method = "nix" },
@@ -457,12 +456,6 @@ nixos = [
   { name = "seahorse", method = "nix-hm" },
   { name = "nord", method = "nix-hm" },
 ]
-
-# [sway] # arch linux
-# type = "gui"
-# arch = [
-#   { name = "xwindow", method = "script", function = "setup_xwindow" },
-# ]
 
 [yabai]
 type = "gui"
@@ -501,7 +494,7 @@ common = [{ name = "fonts", method = "nix-hm" }]
 [keyremap]
 type = "gui"
 darwin = [{ name = "karabiner-elements", method = "nix-hm", function = "setup_karabiner" }]
-arch = [{ name = "xremap --features wlroots", method = "cargo", function = "setup_xremap" }]
+nixos = [{ name = "xremap", method = "nix" }]
 
 ## backup tools
 [borg]
@@ -517,7 +510,6 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 [utils]
 type = "gui"
 darwin = [
-  #  { name = "stats", method = "nix-hm" },
   { name = "appcleaner", method = "nix-hm" },
 ]
 
