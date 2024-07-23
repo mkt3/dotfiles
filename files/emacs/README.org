@@ -1227,7 +1227,7 @@
          (defun gtd ()
            (interactive)
            (find-file org-gtd-file))
-         (when (display-graphic-p)
+         (when (and (file-directory-p (expand-file-name "GoogleDrive" (getenv "HOME")))  (display-graphic-p))
            (run-at-time 0 (* 5 60)
                         (lambda ()
                           (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud)))))
@@ -2021,8 +2021,6 @@
        :if (executable-find "recoll")
        :bind (("C-c n s" . consult-recoll))
        :config
-       (if (eq system-type 'darwin)
-           (setq exec-path (append '("/usr/local/Cellar/recoll/1.35.0/recoll.app/Contents/MacOS") exec-path)))
        (when (display-graphic-p)
          (run-at-time 0 (* 5 60)
                       (lambda ()
