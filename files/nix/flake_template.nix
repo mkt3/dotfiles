@@ -38,7 +38,7 @@
       specialArgs =
         inputs
         // {
-          inherit platform username hostname homeDirectory;
+          inherit platform username hostname homeDirectory dotfilesDirectory isGUI isCLI;
         };
     in
       {
@@ -51,9 +51,8 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."${username}" = import ./home-manager/home.nix {
-                inherit pkgs username homeDirectory dotfilesDirectory isGUI isCLI;
-              };
+              home-manager.users."${username}" = import ./home-manager/home.nix;
+              home-manager.extraSpecialArgs = specialArgs;
             }
           ];
         };
@@ -69,16 +68,16 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."${username}" = import ./home-manager/home.nix {
-                inherit pkgs username homeDirectory dotfilesDirectory isGUI isCLI;
-              };
+              home-manager.users."${username}" = import ./home-manager/home.nix;
+              home-manager.extraSpecialArgs = specialArgs;
             }
           ];
         };
         homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
+          extraSpecialArgs = specialArgs;
           modules = [
-            (import ./home-manager/home.nix { inherit pkgs username homeDirectory dotfilesDirectory isGUI isCLI;})
+            (import ./home-manager/home.nix)
           ];
         };
       };

@@ -148,7 +148,7 @@ common = [{ name = "zoxide", method = "nix-hm" }]
 
 [navi]
 type = "basic"
-common = [{ name = "navi", method = "nix-hm", function = "setup_navi" }]
+common = [{ name = "navi", method = "nix-hm" }]
 
 [lazygit]
 type = "basic"

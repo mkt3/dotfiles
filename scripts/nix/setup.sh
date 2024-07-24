@@ -7,6 +7,7 @@ pre_setup_nix() {
     local nix_config_dir="${CONFIGS_DIR}/nix"
 
     local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
+    local relative_dotfiles_dir
     local home_manager_dir="${nix_main_flake_dir}/home-manager"
     local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
     local nix_main_flake="${nix_main_flake_dir}/flake.nix"
@@ -43,11 +44,13 @@ pre_setup_nix() {
        cp -rf "/etc/nixos/hardware-configuration.nix" "${nix_main_flake_dir}/systems/nixos"
     fi
 
+    relative_dotfiles_dir=$(realpath --relative-to=${HOME} ${REPO_DIR})
+
     "$sed_command" -i "s|__SYSTEM__|${nix_platform}|g" "$nix_main_flake"
     "$sed_command" -i "s|__HOSTNAME__|${host_name}|g" "$nix_main_flake"
     "$sed_command" -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
     "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__DOTFILESDIRECTORY__|${REPO_DIR}|g" "$nix_main_flake"
+    "$sed_command" -i "s|__DOTFILESDIRECTORY__|${relative_dotfiles_dir}|g" "$nix_main_flake"
     "$sed_command" -i "s|__ISGUI__|${is_gui}|g" "$nix_main_flake"
     "$sed_command" -i "s|__ISCLI__|${is_cli}|g" "$nix_main_flake"
 
