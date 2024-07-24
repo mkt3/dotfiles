@@ -8,6 +8,9 @@ nix store gc --verbose
 # Run a Nix application from the nixpkgs flake
 nix run nixpkgs#<package_name>
 
+# Create a shell environment with the specified Nix package installed
+nix shell nixpkgs#<package_name>
+
 # Develop project
 nix develop -c $SHELL
 

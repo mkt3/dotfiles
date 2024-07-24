@@ -202,10 +202,10 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             packages=$([ ${#package_list[@]} -ne 0 ] && printf '    %s\n' "${package_list[@]}" || echo "")
             modules=$([ ${#module_list[@]} -ne 0 ] && printf '    ./modules/%s.nix\n' "${module_list[@]}" || echo "")
 
-            printf '{ config, pkgs, ... }:\n{\n  %s = with pkgs; [\n%s\n  ];\n\n  imports = [\n%s\n  ];\n}\n' \
+            printf '{ config, pkgs, lib, ... }:\nlet\n  programModules = [\n%s\n  ];\nin\n{\n  imports = programModules;\n\n  %s = with pkgs; lib.concatLists ([[\n%s\n  ]] ++ (map (mod: mod.home.packages or []) programModules));\n}\n' \
+                   "${modules}" \
                    "${package_prefix}" \
                    "${packages}" \
-                   "${modules}" \
                    > "$packages_nix_path"
             ;;
         brew)

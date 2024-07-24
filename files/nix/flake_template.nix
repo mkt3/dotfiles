@@ -23,8 +23,9 @@
       hostname = "__HOSTNAME__";
       username = "__USERNAME__";
       homeDirectory = "__HOMEDIRECTORY__";
+      dotfilesDirectory = "__DOTFILESDIRECTORY__";
       isGUI = __ISGUI__;
-      isCUI = __ISCUI__;
+      isCLI = __ISCLI__;
 
       pkgs = import nixpkgs {
         config.allowUnfree = true;
@@ -51,7 +52,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users."${username}" = import ./home-manager/home.nix {
-                inherit pkgs username homeDirectory isGUI isCUI;
+                inherit pkgs username homeDirectory dotfilesDirectory isGUI isCLI;
               };
             }
           ];
@@ -69,7 +70,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users."${username}" = import ./home-manager/home.nix {
-                inherit pkgs username homeDirectory isGUI isCUI;
+                inherit pkgs username homeDirectory dotfilesDirectory isGUI isCLI;
               };
             }
           ];
@@ -77,7 +78,7 @@
         homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            (import ./home-manager/home.nix { inherit pkgs username homeDirectory isGUI isCUI;})
+            (import ./home-manager/home.nix { inherit pkgs username homeDirectory dotfilesDirectory isGUI isCLI;})
           ];
         };
       };

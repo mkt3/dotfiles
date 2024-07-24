@@ -1,4 +1,4 @@
-{ pkgs, isGUI, isCUI, ... }:
+{ pkgs, isGUI, isCLI, ... }:
 let
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
@@ -22,15 +22,15 @@ in
          '' + (if isDarwin then "\npinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac" else "");
   };
 
-  home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && isCUI) {
+  home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && isCLI) {
     text = "no-autostart";
   };
 
   home.file.".config/discord/settings.json" = lib.mkIf(isGUI) {
     text = ''
-    {
-      "SKIP_HOST_UPDATE": true
-    }
-  '';
+      {
+        "SKIP_HOST_UPDATE": true
+      }
+    '';
   };
 }

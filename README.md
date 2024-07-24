@@ -7,8 +7,8 @@ This repository contains configuration files and scripts for my personal use. Th
 
 ## Supported OS
 - macOS
-- Ubuntu
-- Arch Linux
+- Ubuntu(CLI only)
+- Arch Linux(CLI only)
 - NixOS
 
 ## Install

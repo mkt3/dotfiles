@@ -13,7 +13,7 @@ pre_setup_nix() {
     local nix_platform
     local host_name
     local is_gui
-    local is_cui
+    local is_cli
 
     if [ "$OS" = "Darwin" ]; then
         sed_command="gsed"
@@ -27,10 +27,10 @@ pre_setup_nix() {
 
     if [ "$GUI_ENV" = "y" ]; then
         is_gui="true"
-        is_cui="false"
+        is_cli="false"
     else
         is_gui="false"
-        is_cui="true"
+        is_cli="true"
     fi
 
     if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
@@ -47,8 +47,9 @@ pre_setup_nix() {
     "$sed_command" -i "s|__HOSTNAME__|${host_name}|g" "$nix_main_flake"
     "$sed_command" -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
     "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
+    "$sed_command" -i "s|__DOTFILESDIRECTORY__|${REPO_DIR}|g" "$nix_main_flake"
     "$sed_command" -i "s|__ISGUI__|${is_gui}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__ISCUI__|${is_cui}|g" "$nix_main_flake"
+    "$sed_command" -i "s|__ISCLI__|${is_cli}|g" "$nix_main_flake"
 
     if [ "$OS" = "Darwin" ]; then
         cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"

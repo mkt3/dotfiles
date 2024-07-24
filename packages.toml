@@ -124,7 +124,7 @@ common = [{ name = "fd", method = "nix-hm" }]
 
 [ripgrep]
 type = "basic"
-common = [{ name = "ripgrep", method = "nix-hm", function = "setup_ripgrep" }]
+common = [{ name = "ripgrep", method = "nix-hm" }]
 
 [delta]
 type = "basic"
