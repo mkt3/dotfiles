@@ -1,4 +1,4 @@
-{ pkgs, hostname, ... }:
+{ ... }:
 {
   services.sketchybar = {
     enable = true;

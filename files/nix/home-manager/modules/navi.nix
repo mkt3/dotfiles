@@ -5,8 +5,8 @@
   ];
 
 
-  home.file.".config/navi" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/${dotfilesDirectory}/files/navi";
+  xdg.configFile."navi" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDirectory}/files/navi";
     recursive = true;
   };
 }

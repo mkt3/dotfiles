@@ -14,11 +14,11 @@ common = [{ name = "direnv", method = "nix-hm" }]
 
 [gcc]
 type = "basic"
-nixos = [{ name = "gcc", method = "nix-hm" }]
+nixos = [{ name = "gcc", method = "nix" }]
 
 [gnumake]
 type = "basic"
-nixos = [{ name = "gnumake", method = "nix-hm" }]
+nixos = [{ name = "gnumake", method = "nix" }]
 
 # CLI command packages
 [zsh]
@@ -33,30 +33,35 @@ type = "basic"
 arch = [{ name = "coreutils", method = "pacman" }]
 darwin = [{ name = "coreutils", method = "nix-hm" }]
 ubuntu = [{ name = "coreutils", method = "apt" }]
-
-[fzf]
-type = "basic"
-common = [{ name = "fzf", method = "nix-hm" }]
+nixos = [{ name = "coreutils", method = "nix" }]
 
 [findutils]
 type = "basic"
-common = [{ name = "findutils", method = "nix-hm" }]
+common = [{ name = "findutils", method = "nix" }]
 
 [grep]
 type = "basic"
-common = [{ name = "gnugrep", method = "nix-hm" }]
+common = [{ name = "gnugrep", method = "nix" }]
 
 [sed]
 type = "basic"
-common = [{ name = "gnused", method = "nix-hm" }]
+common = [{ name = "gnused", method = "nix" }]
 
 [gawk]
 type = "basic"
-common = [{ name = "gawk", method = "nix-hm" }]
+common = [{ name = "gawk", method = "nix" }]
 
 [less]
 type = "basic"
 common = [{ name = "less", method = "nix" }]
+
+[tree]
+type = "basic"
+common = [{ name = "tree", method = "nix" }]
+
+[rsync]
+type = "basic"
+common = [{ name = "rsync", method = "nix" }]
 
 [yj]
 type = "basic"
@@ -66,9 +71,9 @@ common = [{ name = "yj", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "jq", method = "nix-hm" }]
 
-[tree]
+[fzf]
 type = "basic"
-common = [{ name = "tree", method = "nix-hm" }]
+common = [{ name = "fzf", method = "nix-hm" }]
 
 [duf]
 type = "basic"
@@ -80,12 +85,8 @@ common = [{ name = "fastfetch", method = "nix-hm" }]
 
 [unarchiver]
 type = "basic"
-common = [{ name = "unar", method = "nix-hm" }]
+common = [{ name = "unar", method = "nix" }]
 darwin = [{ name = "\"The Unarchiver\" = 425424353", method = "mas" }]
-
-[rsync]
-type = "basic"
-common = [{ name = "rsync", method = "nix-hm" }]
 
 [trash-cli]
 type = "basic"
@@ -94,7 +95,7 @@ common = [{ name = "trash-cli", method = "nix-hm" }]
 [tmux]
 type = "basic"
 common = [
-  { name = "tmux", method = "nix-hm", function = "setup_tmux" },
+  { name = "tmux", method = "nix-hm" },
   { name = "tmux-mem-cpu-load", method = "nix-hm" },
 ]
 
@@ -152,7 +153,7 @@ common = [{ name = "navi", method = "nix-hm" }]
 
 [lazygit]
 type = "basic"
-common = [{ name = "lazygit", method = "nix-hm", function = "setup_lazygit" }]
+common = [{ name = "lazygit", method = "nix-hm" }]
 
 [taplo]
 type = "basic"
@@ -217,7 +218,7 @@ common = [{ name = "bottom", method = "nix-hm" }]
 type = "basic"
 linux = [{ name = "iotop", method = "nix-hm" }]
 
-# Editor
+## Editor
 [vim]
 type = "basic"
 common = [{ name = "vim", method = "nix", function = "setup_vim" }]
@@ -310,7 +311,7 @@ common = [{ name = "uv", method = "nix-hm" }]
 ## nodejs
 [nodejs]
 type = "dev"
-common = [{ name = "npm", method = "script", function = "setup_npm" }]
+common = [{ name = "npm", method = "nix-hm" }]
 
 ## for bash
 [bash-language-server]
@@ -408,7 +409,7 @@ darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 [wezterm]
 type = "gui"
 darwin = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
-linux = [{ name = "wezterm", method = "nix-hm", function = "setup_wezterm" }]
+linux = [{ name = "wezterm", method = "nix-hm" }]
 
 ## cloud storage
 [nextcloud-client]
@@ -473,7 +474,7 @@ common = [{ name = "skk", method = "script", function = "setup_skk" }]
 ## recoll
 [recoll]
 type = "gui"
-common = [{ name = "recoll", method = "nix-hm", function = "setup_recoll" }]
+common = [{ name = "recoll", method = "nix-hm" }]
 
 # hugo
 [hugo]
@@ -493,7 +494,7 @@ common = [{ name = "fonts", method = "nix-hm" }]
 ## key remapper
 [keyremap]
 type = "gui"
-darwin = [{ name = "karabiner-elements", method = "nix-hm", function = "setup_karabiner" }]
+darwin = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
 nixos = [{ name = "xremap", method = "nix" }]
 
 ## backup tools
