@@ -494,7 +494,7 @@ common = [{ name = "fonts", method = "nix-hm" }]
 ## key remapper
 [keyremap]
 type = "gui"
-darwin = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
+# darwin = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
 nixos = [{ name = "xremap", method = "nix" }]
 
 ## backup tools
