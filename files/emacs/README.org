@@ -759,6 +759,13 @@
         ;;(add-to-list 'completion-at-point-functions #'cape-line)
       )
     #+end_src
+** expand-region
+   #+begin_src emacs-lisp
+     (use-package expand-region
+       :ensure t
+       :bind (("C-M-;" . er/expand-region)
+              ("C-M-'" . er/contract-region)))
+   #+end_src
 ** which-key
    #+begin_src emacs-lisp
      (use-package which-key
@@ -1208,9 +1215,10 @@
          :bind
          ("C-c i l" . org-web-tools-insert-link-for-url))
 
-       ;; (use-package org-sticky-header
-       ;;   :ensure t
-       ;;   :hook (org-mode-hook . org-sticky-header-mode))
+       (use-package org-superstar
+         :ensure t
+         :config
+         (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
      #+end_src
 **** org gtd
      #+begin_src emacs-lisp
