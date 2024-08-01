@@ -21,6 +21,10 @@ type = "basic"
 nixos = [{ name = "gnumake", method = "nix" }]
 
 # CLI command packages
+[bash]
+type = "basic"
+darwin = [{ name = "bash", method = "brew"}]
+
 [zsh]
 type = "basic"
 arch = [{ name = "zsh", method = "pacman", function = "setup_zsh" }]
@@ -45,6 +49,7 @@ common = [{ name = "gnugrep", method = "nix" }]
 
 [sed]
 type = "basic"
+dawrin = [{ name = "gnu-sed", method = "brew" }]
 common = [{ name = "gnused", method = "nix" }]
 
 [gawk]

@@ -64,6 +64,7 @@
         show-recents = false;
         static-only = true;
         mru-spaces = false; # disable automatical rearrange spaces
+        launchanim = false;
       };
 
       screencapture = {

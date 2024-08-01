@@ -43,8 +43,6 @@ install_macos() {
 
     if ! (type brew > /dev/null 2>&1); then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    else
-        brew update
     fi
 
     if ! (bash -lc "brew list | grep bash > /dev/null"); then

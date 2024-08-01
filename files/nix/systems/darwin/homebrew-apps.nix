@@ -2,12 +2,13 @@
 {
   homebrew = {
     enable = true;
-
     onActivation = {
+      cleanup = "uninstall";
       autoUpdate = false;
     };
 
     brews = [
+      "bash"
       "openssl"
       "readline"
       "sqlite3"
