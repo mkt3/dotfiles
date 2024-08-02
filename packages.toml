@@ -23,7 +23,7 @@ nixos = [{ name = "gnumake", method = "nix" }]
 # CLI command packages
 [bash]
 type = "basic"
-darwin = [{ name = "bash", method = "brew"}]
+common = [{ name = "bash", method = "nix"}]
 
 [zsh]
 type = "basic"
@@ -49,7 +49,7 @@ common = [{ name = "gnugrep", method = "nix" }]
 
 [sed]
 type = "basic"
-dawrin = [{ name = "gnu-sed", method = "brew" }]
+darwin = [{ name = "gnu-sed", method = "brew" }]
 common = [{ name = "gnused", method = "nix" }]
 
 [gawk]
@@ -499,7 +499,7 @@ common = [{ name = "fonts", method = "nix-hm" }]
 ## key remapper
 [keyremap]
 type = "gui"
-# darwin = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
+darwin = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
 nixos = [{ name = "xremap", method = "nix" }]
 
 ## backup tools

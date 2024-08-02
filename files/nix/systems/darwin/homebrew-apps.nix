@@ -8,7 +8,7 @@
     };
 
     brews = [
-      "bash"
+      "gnu-sed"
       "openssl"
       "readline"
       "sqlite3"
