@@ -3,7 +3,7 @@
   home.username = username;
   home.homeDirectory = homeDirectory;
   home.stateVersion = "24.05";
-  home.extraOutputsToInstall = ["dev"];
+  home.extraOutputsToInstall = [ "dev" ];
 
   xdg.enable = true;
 

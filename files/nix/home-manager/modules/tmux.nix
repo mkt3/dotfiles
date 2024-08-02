@@ -11,16 +11,15 @@
     historyLimit = 100000;
     shortcut = "q";
 
-    plugins = with pkgs;
-      [
-        {
-          plugin = tmuxPlugins.extrakto;
-          extraConfig = "set -g @extrakto_split_direction \"v\"";
-        }
-        tmuxPlugins.sensible
-        tmuxPlugins.yank
-        tmuxPlugins.nord
-      ];
+    plugins = with pkgs; [
+      {
+        plugin = tmuxPlugins.extrakto;
+        extraConfig = "set -g @extrakto_split_direction \"v\"";
+      }
+      tmuxPlugins.sensible
+      tmuxPlugins.yank
+      tmuxPlugins.nord
+    ];
     extraConfig = ''
       set -g set-clipboard on
 

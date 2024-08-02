@@ -1,8 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = [
-    pkgs.recoll
-  ];
+  home.packages = [ pkgs.recoll ];
 
   xdg.configFile."recoll/recoll.conf" = {
     text = ''

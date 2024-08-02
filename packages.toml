@@ -267,6 +267,15 @@ dawrin = [{ name = "saml2aws", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
 
+## for nix
+[nixd]
+type = "dev"
+common = [{ name = "nixd", method = "nix-hm" }]
+
+[nixfmt-rfc-style]
+type = "dev"
+common = [{ name = "nixfmt-rfc-style", method = "nix-hm" }]
+
 ## python
 [python]
 type = "dev"

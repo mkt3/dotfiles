@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   xdg.configFile."npm/npmrc" = {
     text = ''

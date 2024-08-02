@@ -1,6 +1,5 @@
-{config, pkgs, ... }:
+{ pkgs, ... }:
 {
-
   wayland.windowManager.hyprland = {
     # Whether to enable Hyprland wayland compositor
     enable = true;
@@ -88,7 +87,7 @@
         "XMODkIFIERS, @im=fcitx"
         "GDK_SCALE, 1.5"
         "NIXOS_OZONE_WL, 1"
-        ];
+      ];
       monitor = [
         "eDP-1,preferred,auto-down,1.6"
         "DP-3,preferred,auto-up,1.5"
@@ -131,7 +130,7 @@
       ];
 
       input = {
-        kb_layout ="us";
+        kb_layout = "us";
         repeat_delay = 300;
         repeat_rate = 50;
         follow_mouse = 1;

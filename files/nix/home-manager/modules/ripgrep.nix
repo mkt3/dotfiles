@@ -1,9 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = [
-    pkgs.ripgrep
-  ];
-
+  home.packages = [ pkgs.ripgrep ];
 
   xdg.configFile."ripgrep/ignore" = {
     text = ''

@@ -1,4 +1,10 @@
-{ username, config, lib, pkgs, lanzaboote, nixos-hardware,  ... }:
+{
+  username,
+  lib,
+  lanzaboote,
+  nixos-hardware,
+  ...
+}:
 
 {
   imports = [
@@ -58,12 +64,15 @@
   nix = {
     settings = {
       auto-optimise-store = true;
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
     gc = {
-     automatic = true;
-     dates = "weekly";
-     options = "--delete-older-than 7d";
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
     };
   };
 }

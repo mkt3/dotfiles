@@ -1,16 +1,16 @@
-{platform, hostname, username, homeDirectory, pkgs,... }:
-
-#############################################################
-#
-#  Host & Users configuration
-#
-#############################################################
-
+{
+  platform,
+  hostname,
+  username,
+  homeDirectory,
+  pkgs,
+  ...
+}:
 {
   nixpkgs.hostPlatform = platform;
   networking.hostName = hostname;
 
-  users.users."${username}"= {
+  users.users."${username}" = {
     home = homeDirectory;
     description = username;
     shell = pkgs.zsh;

@@ -1004,7 +1004,12 @@
     #+begin_src emacs-lisp
       (use-package nix-mode
         :ensure t
-        :mode "\\.nix\\'")
+        :mode ("\\.nix\\'" . nix-mode)
+        :hook (nix-mode-hook . eglot-ensure)
+        :config
+        (with-eval-after-load 'eglot
+          (dolist (mode '((nix-mode . ("nixd"))))
+            (add-to-list 'eglot-server-programs mode))))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
