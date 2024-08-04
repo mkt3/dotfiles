@@ -1005,7 +1005,11 @@
       (use-package nix-mode
         :ensure t
         :mode ("\\.nix\\'" . nix-mode)
-        :hook (nix-mode-hook . eglot-ensure)
+        :hook (nix-mode-hook . (lambda ()
+                                 (add-hook 'before-save-hook #'nix-format-before-save)
+                                 (setq fill-column 100)
+                                 (eglot-ensure
+                                  )))
         :config
         (with-eval-after-load 'eglot
           (dolist (mode '((nix-mode . ("nixd"))))
