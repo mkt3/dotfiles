@@ -260,7 +260,7 @@ common = [{ name = "ghq", method = "nix-hm", function = "setup_ghq" }]
 ## SSO
 [saml2aws]
 type = "dev"
-dawrin = [{ name = "saml2aws", method = "nix-hm" }]
+darwin = [{ name = "saml2aws", method = "nix-hm" }]
 
 ## shell script
 [shellcheck]
@@ -488,7 +488,8 @@ common = [{ name = "skk", method = "script", function = "setup_skk" }]
 ## recoll
 [recoll]
 type = "gui"
-common = [{ name = "recoll", method = "nix-hm" }]
+linux = [{ name = "recoll", method = "nix-hm" }]
+# common = [{ name = "recoll", method = "nix-hm" }]
 
 # hugo
 [hugo]
