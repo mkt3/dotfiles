@@ -7,6 +7,8 @@
       autoUpdate = false;
     };
 
+    taps = [ "nailuoGG/recoll" ];
+
     brews = [
       "gnu-sed"
       "openssl"
@@ -26,6 +28,7 @@
       "nextcloud"
       "google-drive"
       "aquaskk"
+      "recoll"
     ];
 
     masApps = {

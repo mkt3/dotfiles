@@ -7,6 +7,8 @@
       autoUpdate = false;
     };
 
+    taps = [ "nailuoGG/recoll" ];
+
     brews = [__BREW_PACKAGES__
     ];
 

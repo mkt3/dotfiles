@@ -488,6 +488,7 @@ common = [{ name = "skk", method = "script", function = "setup_skk" }]
 ## recoll
 [recoll]
 type = "gui"
+darwin = [{ name = "recoll", method = "cask" }]
 linux = [{ name = "recoll", method = "nix-hm" }]
 # common = [{ name = "recoll", method = "nix-hm" }]
 
