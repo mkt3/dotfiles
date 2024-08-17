@@ -1,10 +1,10 @@
-{ config, pkgs, username, xremap, ... }:
+{ username, xremap, ... }:
 {
-  imports = [xremap.nixosModules.default];
+  imports = [ xremap.nixosModules.default ];
 
   hardware.uinput.enable = true;
-  users.groups.uinput.members = [username];
-  users.groups.input.members = [username];
+  users.groups.uinput.members = [ username ];
+  users.groups.input.members = [ username ];
   services.xremap = {
     userName = username;
     withWlroots = true;
@@ -26,7 +26,10 @@
       keymap = [
         {
           name = "Default";
-          application.not = ["org.wezfurlong.wezterm" "emacs"];
+          application.not = [
+            "org.wezfurlong.wezterm"
+            "emacs"
+          ];
           remap = {
             # Emacs basic
             "C-b" = "left";
@@ -42,7 +45,10 @@
             # Emacs lines
             "C-a" = "home"; # TODO = Alt-C-a
             "C-e" = "end"; # TODO = Alt-C-e
-            "C-k"  = ["Shift-end" "C-x"];
+            "C-k" = [
+              "Shift-end"
+              "C-x"
+            ];
 
             # Super -> Ctrl
             "Super-a" = "C-a";
@@ -63,7 +69,7 @@
         }
         {
           name = "Wezterm";
-          application.only = ["org.wezfurlong.wezterm"];
+          application.only = [ "org.wezfurlong.wezterm" ];
           remap = {
             "Ctrl_R-c" = "C-Shift-c";
             "Ctrl_R-v" = "C-Shift-v";
@@ -73,7 +79,7 @@
         }
         {
           name = "Slack";
-          application.only = ["Slack"];
+          application.only = [ "Slack" ];
           remap = {
             "Super-Shift-a" = "C-Shift-a";
             "Super-k" = "C-k";
@@ -91,7 +97,7 @@
         }
         {
           name = "Vivaldi";
-          application.only = ["vivaldi-stable"];
+          application.only = [ "vivaldi-stable" ];
           remap = {
             "Super-s" = "C-f";
             "Super-e" = "Alt-Shift-i";
