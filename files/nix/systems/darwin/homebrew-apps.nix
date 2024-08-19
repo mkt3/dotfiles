@@ -7,7 +7,10 @@
       autoUpdate = false;
     };
 
-    taps = [ "nailuoGG/recoll" ];
+    taps = [
+      "nailuoGG/recoll"
+      "nikitabobko/tap"
+    ];
 
     brews = [
       "gnu-sed"
@@ -27,6 +30,7 @@
       "wezterm"
       "nextcloud"
       "google-drive"
+      "nikitabobko/tap/aerospace"
       "aquaskk"
       "recoll"
     ];

@@ -475,11 +475,14 @@ nixos = [
 [yabai]
 type = "gui"
 darwin = [
-  { name = "yabai", method = "nix" },
-  { name = "skhd", method = "nix" },
+  { name = "nikitabobko/tap/aerospace", method = "cask", function = "setup_aerospace" },
+  { name = "jankyborders", method = "nix" },
   { name = "sketchybar", method = "nix", function = "setup_sketchybar" },
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
 ]
+  # { name = "yabai", method = "nix" },
+  # { name = "skhd", method = "nix" },
+
 
 [skk-dict]
 type = "gui"

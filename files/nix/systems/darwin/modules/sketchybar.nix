@@ -25,60 +25,23 @@
                            padding_right=5                       \
                            label.padding_left=2                  \
                            label.padding_right=2                 \
-                           icon.padding_left=8 2                 \
-                           icon.padding_right=8
+                           icon.padding_left=2                   \
+                           icon.padding_right=2
 
-      sketchybar --add space space.1 left                                    \
-                 --set space.1    space=1                                    \
-                                  icon="1"                                   \
-                                  background.color=0x44ffffff                \
-                                  background.corner_radius=5                 \
-                                  background.height=20                       \
-                                  background.drawing=off                     \
-                                  label.drawing=off                          \
-                                  script="$PLUGIN_DIR/space.sh"              \
-                                  click_script="yabai -m space --focus 1"
+      sketchybar --add event aerospace_workspace_change
 
-      sketchybar --add space space.2 left                                    \
-                 --set space.2    space=2                                    \
-                                  icon="2"                                    \
-                                  background.color=0x44ffffff                \
-                                  background.corner_radius=5                 \
-                                  background.height=20                       \
-                                  background.drawing=off                     \
-                                  label.drawing=off                          \
-                                  script="$PLUGIN_DIR/space.sh"              \
-                                  click_script="yabai -m space --focus 2"
-      sketchybar --add space space.3 left                                    \
-                 --set space.3    space=3                                    \
-                                  icon="3"                                   \
-                                  background.color=0x44ffffff                \
-                                  background.corner_radius=5                 \
-                                  background.height=20                       \
-                                  background.drawing=off                     \
-                                  label.drawing=off                          \
-                                  script="$PLUGIN_DIR/space.sh"              \
-                                  click_script="yabai -m space --focus 3"
-      sketchybar --add space space.4 left                                    \
-                 --set space.4    space=4                                    \
-                                  icon="4"                                   \
-                                  background.color=0x44ffffff                \
-                                  background.corner_radius=5                 \
-                                  background.height=20                       \
-                                  background.drawing=off                     \
-                                  label.drawing=off                          \
-                                  script="$PLUGIN_DIR/space.sh"              \
-                                  click_script="yabai -m space --focus 4"
-      sketchybar --add space space.5 left                                    \
-                 --set space.5    space=5                                    \
-                                  icon="5"                                   \
-                                  background.color=0x44ffffff                \
-                                  background.corner_radius=5                 \
-                                  background.height=20                       \
-                                  background.drawing=off                     \
-                                  label.drawing=off                          \
-                                  script="$PLUGIN_DIR/space.sh"              \
-                                  click_script="yabai -m space --focus 5"
+      for sid in $(aerospace list-workspaces --all); do
+        sketchybar --add item space.$sid left \
+            --subscribe space.$sid aerospace_workspace_change \
+            --set space.$sid \
+            background.color=0x44ffffff \
+            background.corner_radius=5 \
+            background.height=20 \
+            background.drawing=off \
+            label="$sid" \
+            click_script="aerospace workspace $sid" \
+            script="$PLUGIN_DIR/aerospace.sh $sid"
+      done
 
       ##### Adding Left Items #####
       sketchybar --add item space_separator left                         \
