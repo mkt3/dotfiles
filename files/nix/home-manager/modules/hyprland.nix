@@ -102,8 +102,8 @@
         "6, monitor:DP-3"
         "7, monitor:DP-3"
         "8, monitor:DP-3"
-        "9, monitor:eDP-1, default:true"
-        "10, monitor:DP-3"
+        "9, monitor:DP-3"
+        "10, monitor:eDP-1, default:true"
       ];
 
       xwayland = {
@@ -118,9 +118,9 @@
         "sleep 10; nextcloud --background"
         "[workspace 1 silent] wezterm"
         "[workspace 1 silent] vivaldi"
-        "[workspace 10 silent] zotero"
+        "[workspace 9 silent] zotero"
         "[workspace 2 silent] slack"
-        "[workspace 9 silent] COLORTERM=truecolor GTK_IM_MODULE=xim emacs"
+        "[workspace 10 silent] COLORTERM=truecolor GTK_IM_MODULE=xim emacs"
       ];
 
       windowrulev2 = [

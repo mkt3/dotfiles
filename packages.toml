@@ -423,7 +423,10 @@ darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 [wezterm]
 type = "gui"
 darwin = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
-linux = [{ name = "wezterm", method = "nix-hm" }]
+linux = [
+  { name = "wezterm", method = "nix-hm" },
+  { name = "kitty", method = "nix-hm" },
+]
 
 ## cloud storage
 [nextcloud-client]
