@@ -33,6 +33,7 @@
       "nikitabobko/tap/aerospace"
       "aquaskk"
       "recoll"
+      "karabiner-elements"
     ];
 
     masApps = {

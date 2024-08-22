@@ -30,12 +30,3 @@ post_setup_python() {
     info "Creating symlink for matplotlib"
     ln -sfn "${python_file_dir}/matplotlib" "${XDG_CONFIG_HOME}"
 }
-
-post_setup_ruff() {
-    info "Creating symlink for ruff"
-    local python_file_dir="$CONFIGS_DIR/python"
-    if [ "$OS" = "Darwin" ]; then
-        eval "ln -sfn ${python_file_dir}/ruff \"${HOME}/Library/Application Support/\""
-    fi
-    ln -sfn "${python_file_dir}/ruff" "${XDG_CONFIG_HOME}"
-}

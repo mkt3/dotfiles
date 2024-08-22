@@ -164,10 +164,9 @@ common = [{ name = "lazygit", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "taplo", method = "nix-hm" }]
 
-[docker]
+[oxker]
 type = "basic"
 common = [
-  { name = "docker", method = "script", function = "setup_docker" },
   { name = "oxker", method = "nix-hm" },
 ]
 
@@ -284,7 +283,7 @@ common = [{ name = "python", method = "script", function = "setup_python" }]
 ## for python
 [ruff]
 type = "dev"
-common = [{ name = "ruff", method = "nix-hm", function = "setup_ruff" }]
+common = [{ name = "ruff", method = "nix-hm" }]
 
 [pyright]
 type = "dev"
@@ -462,9 +461,9 @@ nixos = [
   { name = "hyprland", method = "nix" },
   { name = "hyprland", method = "nix-hm" },
   { name = "xdg-desktop-portal-hyprland", method = "nix" },
-  { name = "waybar", method = "nix", function = "setup_waybar" },
-  { name = "mako", method = "nix", function = "setup_mako" },
-  { name = "networkmanagerapplet", method = "nix" },
+  { name = "waybar", method = "nix-hm" },
+  { name = "mako", method = "nix-hm" },
+  { name = "networkmanagerapplet", method = "nix-hm" },
   { name = "hyprshot", method = "nix-hm" },
   { name = "playerctl", method = "nix-hm" },
   { name = "pwvucontrol", method = "nix-hm" },
@@ -475,7 +474,7 @@ nixos = [
   { name = "nord", method = "nix-hm" },
 ]
 
-[yabai]
+[aerospace]
 type = "gui"
 darwin = [
   { name = "nikitabobko/tap/aerospace", method = "cask", function = "setup_aerospace" },
@@ -483,13 +482,6 @@ darwin = [
   { name = "sketchybar", method = "nix", function = "setup_sketchybar" },
   { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
 ]
-  # { name = "yabai", method = "nix" },
-  # { name = "skhd", method = "nix" },
-
-
-[skk-dict]
-type = "gui"
-common = [{ name = "skk", method = "script", function = "setup_skk" }]
 
 ## recoll
 [recoll]
@@ -516,7 +508,7 @@ common = [{ name = "fonts", method = "nix-hm" }]
 ## key remapper
 [keyremap]
 type = "gui"
-darwin = [{ name = "karabiner-elements", method = "nix", function = "setup_karabiner" }]
+darwin = [{ name = "karabiner-elements", method = "cask", function = "setup_karabiner" }]
 nixos = [{ name = "xremap", method = "nix" }]
 
 ## backup tools

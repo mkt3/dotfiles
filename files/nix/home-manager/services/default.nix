@@ -18,6 +18,7 @@ in
   #   defaultCacheTtlSsh = 60480000;
   # };
 
+  # gpg
   home.file.".gnupg/gpg-agent.conf" = {
     text =
       ''
@@ -36,10 +37,61 @@ in
 
   home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && isCLI) { text = "no-autostart"; };
 
-  home.file.".config/discord/settings.json" = lib.mkIf (isGUI) {
+  # docker
+  xdg.configFile."docker.config.json" = {
+    text = ''
+      {
+       	"auths": {},
+      	"detachKeys": "ctrl-\\",
+      	"currentContext": "rootless"
+      }
+    '';
+  };
+
+  # discord
+  xdg.configFile."discord/settings.json" = lib.mkIf (isGUI) {
     text = ''
       {
         "SKIP_HOST_UPDATE": true
+      }
+    '';
+  };
+
+  # libskk
+  xdg.configFile."libskk/rules/StickyShift/meta.json" = lib.mkIf (isLinux && isGUI) {
+    text = ''
+      {
+        "name": "StickyShift",
+        "description": "Typing rule, support sticky key"
+      }
+    '';
+  };
+
+  xdg.configFile."libskk/rules/StickyShift/keymap/hiragana.json" = lib.mkIf (isLinux && isGUI) {
+    text = ''
+      {
+        "include": [
+          "default/hiragana"
+        ],
+        "define": {
+          "keymap": {
+            ";": "start-preedit-no-delete"
+          }
+        }
+      }
+    '';
+  };
+  xdg.configFile."libskk/rules/StickyShift/keymap/katakana.json" = lib.mkIf (isLinux && isGUI) {
+    text = ''
+      {
+        "include": [
+          "default/katakana"
+        ],
+        "define": {
+          "keymap": {
+            ";": "start-preedit-no-delete"
+          }
+        }
       }
     '';
   };
