@@ -2,7 +2,7 @@
 
 . ~/.zshenv
 
-ssh_config_file=$(bash -c "ls ~/.ssh/config" 2> /dev/null)
+ssh_config_file=$(bash -c "ls ~/.ssh/extra_config" 2> /dev/null)
 host_list=""
 
 while IFS= read -r line; do

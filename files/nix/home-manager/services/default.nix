@@ -48,15 +48,6 @@ in
     '';
   };
 
-  # discord
-  xdg.configFile."discord/settings.json" = lib.mkIf (isGUI) {
-    text = ''
-      {
-        "SKIP_HOST_UPDATE": true
-      }
-    '';
-  };
-
   # libskk
   xdg.configFile."libskk/rules/StickyShift/meta.json" = lib.mkIf (isLinux && isGUI) {
     text = ''

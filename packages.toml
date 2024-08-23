@@ -1,7 +1,7 @@
 # xdg config
-[xdg_config]
+[xdg-utils]
 type = "basic"
-common = [{ name = "xdg_config", method = "script", function = "setup_xdg_config" }]
+common = [{ name = "xdg-utils", method = "nix-hm", function = "setup_xdg_config" }]
 
 # build package
 [nix]
@@ -107,8 +107,8 @@ common = [
 [git]
 type = "basic"
 common = [
-  { name = "git", method = "nix-hm", function = "setup_git" },
-  { name = "git-secrets", method = "nix-hm", function = "setup_git-secrets" },
+  { name = "git", method = "nix-hm" },
+  { name = "git-secrets", method = "nix-hm" },
 ]
 
 [sheldon]
@@ -166,9 +166,11 @@ common = [{ name = "taplo", method = "nix-hm" }]
 
 [oxker]
 type = "basic"
-common = [
-  { name = "oxker", method = "nix-hm" },
-]
+common = [{ name = "oxker", method = "nix-hm" }]
+
+[ssh]
+type = "basic"
+common = [{ name = "ssh_config", method = "nix-hm" }]
 
 ## security
 [openssl]
@@ -182,7 +184,7 @@ type = "basic"
 arch = [{ name = "gnupg", method = "pacman", function = "setup_gpg" }]
 ubuntu = [{ name = "gnupg", method = "apt", function = "setup_gpg" }]
 darwin = [{ name = "gnupg", method = "nix-hm" }]
-nixos = [{ name = "gnupg", method = "nix" }]
+nixos = [{ name = "gnupg", method = "nix-hm" }]
 
 [macos-security]
 type = "basic"
@@ -230,7 +232,7 @@ common = [{ name = "vim", method = "nix-hm" }]
 [emacs-basic]
 type = "basic"
 common = [
-  { name = "emacs", method = "nix-hm", function = "setup_emacs" },
+  { name = "emacs", method = "nix-hm" },
   { name = "hunspell", method = "nix" },
   { name = "hunspellDicts.en_US", method = "nix" },
   { name = "enchant", method = "nix-hm" },
@@ -253,7 +255,7 @@ darwin = [
 # repository management
 [ghq]
 type = "basic"
-common = [{ name = "ghq", method = "nix-hm", function = "setup_ghq" }]
+common = [{ name = "ghq", method = "nix-hm" }]
 
 # development packages
 ## SSO
@@ -278,7 +280,7 @@ common = [{ name = "nixfmt-rfc-style", method = "nix-hm" }]
 ## python
 [python]
 type = "dev"
-common = [{ name = "python", method = "script", function = "setup_python" }]
+common = [{ name = "python", method = "nix-hm" }]
 
 ## for python
 [ruff]
@@ -421,11 +423,8 @@ darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 ## terminal emulator
 [wezterm]
 type = "gui"
-darwin = [{ name = "wezterm", method = "cask", function = "setup_wezterm" }]
-linux = [
-  { name = "wezterm", method = "nix-hm" },
-  { name = "kitty", method = "nix-hm" },
-]
+darwin = [{ name = "wezterm", method = "cask" }]
+common = [{ name = "wezterm", method = "nix-hm" }]
 
 ## cloud storage
 [nextcloud-client]
@@ -447,7 +446,7 @@ darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
 [launcher]
 type = "gui"
 darwin = [{ name = "raycast", method = "nix-hm" }]
-linux = [{ name = "rofi-wayland", method = "nix-hm", function = "setup_rofi" }]
+linux = [{ name = "rofi-wayland", method = "nix-hm" }]
 
 ## external monitor control
 [monitorcontrol]
@@ -487,8 +486,7 @@ darwin = [
 [recoll]
 type = "gui"
 darwin = [{ name = "recoll", method = "cask" }]
-linux = [{ name = "recoll", method = "nix-hm" }]
-# common = [{ name = "recoll", method = "nix-hm" }]
+common = [{ name = "recoll", method = "nix-hm" }]
 
 # hugo
 [hugo]

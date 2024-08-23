@@ -1,6 +1,5 @@
 .DS_Store
 *~
-files/tmux/plugins
 files/borg/security
 !.gitkeep
 *.zwc
