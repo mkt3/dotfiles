@@ -2,7 +2,7 @@
 {
   home.packages = [ pkgs.vim ];
 
-  xdg.configFile."config/vimrc" = {
+  xdg.configFile."vim/vimrc" = {
     text = ''
       scriptencoding utf-8
       set encoding=utf-8
