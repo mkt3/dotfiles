@@ -49,7 +49,7 @@ in
   };
 
   # libskk
-  xdg.configFile."libskk/rules/StickyShift/meta.json" = lib.mkIf (isLinux && isGUI) {
+  xdg.configFile."libskk/rules/StickyShift/metadata.json" = lib.mkIf (isLinux && isGUI) {
     text = ''
       {
         "name": "StickyShift",
