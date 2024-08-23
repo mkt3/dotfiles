@@ -225,7 +225,7 @@ linux = [{ name = "iotop", method = "nix-hm" }]
 ## Editor
 [vim]
 type = "basic"
-common = [{ name = "vim", method = "nix" }]
+common = [{ name = "vim", method = "nix-hm" }]
 
 [emacs-basic]
 type = "basic"
