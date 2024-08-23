@@ -90,19 +90,19 @@
       ];
       monitor = [
         "eDP-1,preferred,auto-down,1.6"
-        "DP-3,preferred,auto-up,1.5"
+        "desc:LG Electronics LG HDR 4K 0x00035468,preferred,auto-up,1.5"
       ];
 
       workspace = [
-        "1, monitor:DP-3, default:true"
-        "2, monitor:DP-3"
-        "3, monitor:DP-3"
-        "4, monitor:DP-3"
-        "5, monitor:DP-3"
-        "6, monitor:DP-3"
-        "7, monitor:DP-3"
-        "8, monitor:DP-3"
-        "9, monitor:DP-3"
+        "1, monitor:desc:LG Electronics LG HDR 4K 0x00035468, default:true"
+        "2, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "3, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "4, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "5, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "6, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "7, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "8, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "9, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
         "10, monitor:eDP-1, default:true"
       ];
 
