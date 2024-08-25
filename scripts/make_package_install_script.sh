@@ -186,8 +186,8 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
 
             while IFS= read -r -d '' file
             do
-                file_list+=("$(basename -s .nix "$file")")
-            done < <(find "$module_nix_dir" -type f -print0)
+                file_list+=("$(basename "$file")")
+            done < <(find "$module_nix_dir" -type d -print0)
 
             for package in "${package_names[@]}"; do
                 package_name=" $package "
@@ -200,7 +200,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             packages=$(printf '    %s\n' "${package_list[@]}")
 
             packages=$([ ${#package_list[@]} -ne 0 ] && printf '    %s\n' "${package_list[@]}" || echo "")
-            modules=$([ ${#module_list[@]} -ne 0 ] && printf '    ./modules/%s.nix\n' "${module_list[@]}" || echo "")
+            modules=$([ ${#module_list[@]} -ne 0 ] && printf '    ./modules/%s\n' "${module_list[@]}" || echo "")
 
             printf '{ config, pkgs, lib, ... }:\nlet\n  programModules = [\n%s\n  ];\nin\n{\n  imports = programModules;\n\n  %s = with pkgs; lib.concatLists ([[\n%s\n  ]] ++ (map (mod: mod.home.packages or []) programModules));\n}\n' \
                    "${modules}" \

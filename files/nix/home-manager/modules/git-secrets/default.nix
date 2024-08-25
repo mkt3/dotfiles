@@ -1,8 +1,6 @@
 {
   pkgs,
-  config,
   homeDirectory,
-  dotfilesDirectory,
   ...
 }:
 {
@@ -28,6 +26,6 @@
     };
   };
 
-  xdg.configFile."git/git-templates/git-secrets".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDirectory}/files/git/git-templates/git-secrets";
+  xdg.configFile."git/git-templates/git-secrets".source = ./git-templates/git-secrets;
 
 }
