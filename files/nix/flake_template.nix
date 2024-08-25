@@ -44,7 +44,6 @@
         overlays = [
           emacs-overlay.overlays.emacs
           (import ./home-manager/overlays/patched-emacs)
-          (import ./home-manager/overlays/sheldon)
         ];
       };
 
