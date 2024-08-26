@@ -23,7 +23,7 @@ nixos = [{ name = "gnumake", method = "nix" }]
 # CLI command packages
 [bash]
 type = "basic"
-common = [{ name = "bash", method = "nix"}]
+common = [{ name = "bash", method = "nix" }]
 
 [zsh]
 type = "basic"
@@ -376,6 +376,7 @@ common = [{ name = "discord", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "zoom-us", method = "nix-hm" }]
 
+### macos only
 [MeetingBar]
 type = "gui"
 darwin = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
@@ -414,11 +415,6 @@ darwin = [{ name = "zotero", method = "cask" }]
 [anki]
 type = "gui"
 common = [{ name = "anki-bin", method = "nix-hm" }]
-
-## password manager
-[bitwarden]
-type = "gui"
-darwin = [{ name = "\"Bitwarden\" = 1352778147", method = "mas" }]
 
 ## terminal emulator
 [wezterm]
@@ -476,10 +472,12 @@ nixos = [
 [aerospace]
 type = "gui"
 darwin = [
-  { name = "nikitabobko/tap/aerospace", method = "cask", function = "setup_aerospace" },
-  { name = "jankyborders", method = "nix" },
-  { name = "sketchybar", method = "nix", function = "setup_sketchybar" },
-  { name = "aquaskk", method = "cask", function = "setup_aquaskk" },
+  { name = "nikitabobko/tap/aerospace", method = "cask" },
+  { name = "aerospace", method = "nix-hm" },
+  { name = "jankyborders", method = "nix-hm" },
+  { name = "sketchybar", method = "nix-hm" },
+  { name = "aquaskk", method = "cask" },
+  { name = "aquaskk", method = "nix-hm" },
 ]
 
 ## recoll
@@ -506,7 +504,10 @@ common = [{ name = "fonts", method = "nix-hm" }]
 ## key remapper
 [keyremap]
 type = "gui"
-darwin = [{ name = "karabiner-elements", method = "cask", function = "setup_karabiner" }]
+darwin = [
+  { name = "karabiner-elements", method = "cask" },
+  { name = "karabiner-elements", method = "nix-hm" },
+]
 nixos = [{ name = "xremap", method = "nix" }]
 
 ## backup tools

@@ -183,7 +183,7 @@ alt-shift-l = ['join-with right', 'mode main']
 [exec]
 inherit-env-vars = true
 [exec.env-vars]
-PATH = '/run/current-system/sw/bin:${PATH}'
+PATH = '/etc/profiles/per-user/${USER}/bin:/run/current-system/sw/bin:${PATH}'
 
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'

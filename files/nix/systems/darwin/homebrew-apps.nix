@@ -39,7 +39,6 @@
     masApps = {
       "The Unarchiver" = 425424353;
       "MeetingBar" = 1532419400;
-      "Bitwarden" = 1352778147;
       "WireGuard" = 1451685025;
     };
   };
