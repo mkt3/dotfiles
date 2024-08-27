@@ -27,10 +27,9 @@ common = [{ name = "bash", method = "nix" }]
 
 [zsh]
 type = "basic"
-arch = [{ name = "zsh", method = "pacman", function = "setup_zsh" }]
-darwin = [{ name = "zsh", method = "nix-hm", function = "setup_zsh" }]
-ubuntu = [{ name = "zsh", method = "apt", function = "setup_zsh" }]
-nixos = [{ name = "zsh", method = "script", function = "setup_zsh" }]
+arch = [{ name = "zsh", method = "pacman" }]
+ubuntu = [{ name = "zsh", method = "apt" }]
+common = [{ name = "zsh", method = "nix-hm", function = "setup_zsh" }]
 
 [coreutils]
 type = "basic"
@@ -294,7 +293,8 @@ common = [{ name = "pyright", method = "nix-hm" }]
 ## mise
 [mise]
 type = "dev"
-common = [{ name = "mise", method = "nix-hm", function = "setup_mise" }]
+common = [{ name = "mise", method = "nix-hm" }]
+
 ### for python build
 ubuntu = [
   { name = "build-essential", method = "apt" },
@@ -356,6 +356,11 @@ darwin = [{ name = "google-cloud-sdk", method = "nix-hm" }]
 [awscli2]
 type = "dev"
 darwin = [{ name = "awscli2", method = "nix-hm" }]
+
+## config for docker
+[docker-conf]
+type = "dev"
+common = [{ name = "docker-conf", method = "nix-hm" }]
 
 # gui packages
 ## tex

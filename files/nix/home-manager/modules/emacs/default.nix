@@ -30,4 +30,10 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${homeDirectory}/Nextcloud/personal_config/enchant/dict/en_US.dic";
     };
   };
+
+  home.file.".zshenv".text = ''
+    # password store
+    [ -d "''${HOME}/Nextcloud/personal_config/password-store" ] && export PASSWORD_STORE_DIR="''${HOME}/Nextcloud/personal_config/password-store"
+  '';
+
 }

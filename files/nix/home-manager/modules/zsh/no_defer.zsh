@@ -107,6 +107,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # Command history
 HISTFILE=$XDG_STATE_HOME/zsh/history
+mkdir -p "$(dirname "$HISTFILE")"
 HISTSIZE=50000
 SAVEHIST=50000
 setopt hist_ignore_dups

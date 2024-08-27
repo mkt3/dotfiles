@@ -2,6 +2,11 @@
 {
   home.packages = [ pkgs.vim ];
 
+  home.file.".zshenv".text = ''
+    # vim
+    export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+  '';
+
   xdg.configFile."vim/vimrc" = {
     text = ''
       scriptencoding utf-8

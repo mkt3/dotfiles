@@ -8,4 +8,10 @@
       logs-dir=''${XDG_STATE_HOME}/npm/logs
     '';
   };
+
+  home.file.".zshenv".text = ''
+    # node path
+    export NPM_CONFIG_USERCONFIG="''${XDG_CONFIG_HOME}/npm/npmrc"
+    export PATH="''${PATH}:''${XDG_DATA_HOME}/npm/bin"
+  '';
 }

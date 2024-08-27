@@ -2,12 +2,6 @@
 *~
 files/borg/security
 !.gitkeep
-*.zwc
-files/zsh/sheldon/sheldon.zsh
-files/navi/navi.log
-.zcompdump
-key.json
-meta.json
 /results
 files/nix/home-manager/packages.nix
 files/nix/home-manager/system_packages.nix

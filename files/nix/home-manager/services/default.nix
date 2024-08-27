@@ -37,16 +37,12 @@ in
 
   home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && isCLI) { text = "no-autostart"; };
 
-  # docker
-  xdg.configFile."docker.config.json" = {
-    text = ''
-      {
-       	"auths": {},
-      	"detachKeys": "ctrl-\\",
-      	"currentContext": "rootless"
-      }
-    '';
-  };
+  home.file.".zshenv".text = ''
+    # GnuPG
+    ## default value is ~/.gnupg.  If use non-default GnuPG Home directory, need to edit all socket files.
+    export GNUPGHOME="''${HOME}/.gnupg"
+    export GPG_TTY=$(tty)
+  '';
 
   # libskk
   xdg.configFile."libskk/rules/StickyShift/metadata.json" = lib.mkIf (isLinux && isGUI) {

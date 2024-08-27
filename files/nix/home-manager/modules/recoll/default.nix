@@ -9,4 +9,9 @@
       noContentSuffixes+ = .bib
     '';
   };
+
+  home.file.".zshenv".text = ''
+    # recoll
+    export RECOLL_CONFDIR="''${XDG_CONFIG_HOME}/recoll"
+  '';
 }
