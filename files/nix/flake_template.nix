@@ -15,6 +15,7 @@
     xremap.url = "github:xremap/nix-flake";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    sheldon-flake.url = "github:rossmacarthur/sheldon";
   };
 
   outputs =
@@ -27,6 +28,7 @@
       xremap,
       lanzaboote,
       nixos-hardware,
+      sheldon-flake,
       ...
     }:
     let

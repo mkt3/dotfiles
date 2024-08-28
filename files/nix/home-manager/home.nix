@@ -10,7 +10,6 @@
   imports = [
     ./system_packages.nix
     ./packages.nix
-    ./services/default.nix
   ];
 
   programs.home-manager.enable = true;

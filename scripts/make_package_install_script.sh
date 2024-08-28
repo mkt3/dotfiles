@@ -8,8 +8,6 @@ CONFIGS_DIR="${REPO_DIR}/files"
 
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
-# shellcheck source=/dev/null
-. "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
 GITHUB_ACTIONS=${GITHUB_ACTIONS:-n}
 
@@ -34,7 +32,7 @@ methods["darwin"]="brew cask mas"
 methods["arch"]="pacman aur"
 methods["nixos"]=""
 methods["otherlinux"]=""
-common_methods=("cargo" "nix" "nix-hm")
+common_methods=("nix" "nix-hm")
 
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
@@ -56,8 +54,6 @@ set -eu
 
 # variable
 CONFIGS_DIR="${REPO_DIR}/files"
-
-. "${CONFIGS_DIR}/zsh/zshenv.zsh"
 
 . "${REPO_DIR}/scripts/common.sh"
 
@@ -119,7 +115,6 @@ else
         echo "nix run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
     fi
     echo "__ETC_PROFILE_NIX_SOURCED=\"\"" >> "$install_script_path"
-    echo ". ${CONFIGS_DIR}/zsh/zshenv.zsh" >> "$install_script_path"
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
@@ -154,10 +149,6 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             ;;
         "aur")
             install_cmd="yay -S --needed --noconfirm"
-            ;;
-        "cargo")
-            # shellcheck disable=SC2016
-            install_cmd='"${CARGO_HOME}/bin/rustup" run stable cargo install'
             ;;
     esac
 
@@ -226,11 +217,6 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             fi
             /usr/bin/sed -i "" "s|__MAS_PACKAGES__|$mas_packages|g" "$nix_homebrew_apps_file"
             /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
-            ;;
-        cargo)
-            for package in "${package_names[@]}"; do
-                echo "${install_cmd} ${package}" >> "$install_script_path"
-            done
             ;;
         script)
             ;;

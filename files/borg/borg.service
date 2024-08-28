@@ -1,6 +1,0 @@
-[Unit]
-Description= Home directory Backup
-
-[Service]
-Type=oneshot
-ExecStart=%h/.config/borg/borg_home_backup.sh

@@ -274,4 +274,43 @@
       hide_input = false
     }
   '';
+
+  # libskk
+  xdg.configFile."libskk/rules/StickyShift/metadata.json" = {
+    text = ''
+      {
+        "name": "StickyShift",
+        "description": "Typing rule, support sticky key"
+      }
+    '';
+  };
+
+  xdg.configFile."libskk/rules/StickyShift/keymap/hiragana.json" = {
+    text = ''
+      {
+        "include": [
+          "default/hiragana"
+        ],
+        "define": {
+          "keymap": {
+            ";": "start-preedit-no-delete"
+          }
+        }
+      }
+    '';
+  };
+  xdg.configFile."libskk/rules/StickyShift/keymap/katakana.json" = {
+    text = ''
+      {
+        "include": [
+          "default/katakana"
+        ],
+        "define": {
+          "keymap": {
+            ";": "start-preedit-no-delete"
+          }
+        }
+      }
+    '';
+  };
 }

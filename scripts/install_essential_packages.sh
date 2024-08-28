@@ -3,17 +3,17 @@
 set -eu
 
 # variable
-CONFIGS_DIR="${REPO_DIR}/files"
-
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
-# shellcheck source=/dev/null
-. "${CONFIGS_DIR}/zsh/zshenv.zsh"
-
 
 install_essential_packages() {
     title "Install/Update essential packages"
 
+    mkdir -p "$XDG_CONFIG_HOME"
+    mkdir -p "$XDG_CACHE_HOME"
+    mkdir -p "$XDG_DATA_HOME"
+    mkdir -p "$XDG_STATE_HOME"
+    mkdir -p "$GNUPGHOME" && chmod 700 "$GNUPGHOME"
     mkdir -p "${HOME}/.local/bin"
 
     case "$OS" in
@@ -29,10 +29,8 @@ install_essential_packages() {
             ;;
     esac
 
-    ## rust for cargo
     if [[ "$DISTRO" != "NixOS" ]]; then
        install_nix
-       install_rust
     fi
 }
 
@@ -48,11 +46,9 @@ install_macos() {
     if (( ${BASH_VERSINFO[0]} < 4 )); then
         brew install bash jq yj gnu-sed
     fi
-
 }
 
 install_linux() {
-    # distribution
     case "$DISTRO" in
         "Arch Linux")
             sudo pacman -S --needed --noconfirm git jq wget curl xz base-devel pacman-contrib
@@ -83,21 +79,6 @@ install_nix() {
             sudo -i nix upgrade-nix
         fi
     fi
-}
-
-install_rust() {
-    mkdir -p "$CARGO_HOME"
-    ln -sfn "${REPO_DIR}/files/rust/cargo/config" "${CARGO_HOME}/config"
-
-    if (type rustup > /dev/null 2>&1); then
-        rustup self update
-        rustup update
-    else
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y
-    fi
-
-    mkdir -p "$ZSH_COMPLETION_DIR"
-    "${CARGO_HOME}/bin/rustup" completions zsh > "${ZSH_COMPLETION_DIR}/_rustup"
 }
 
 install_essential_packages

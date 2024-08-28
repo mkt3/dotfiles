@@ -1,12 +1,15 @@
 # xdg config
 [xdg-utils]
 type = "basic"
-common = [{ name = "xdg-utils", method = "nix-hm", function = "setup_xdg_config" }]
+common = [{ name = "xdg-utils", method = "nix-hm" }]
 
 # build package
 [nix]
 type = "basic"
-common = [{ name = "nix", method = "script", function = "setup_nix" }]
+common = [
+  { name = "nix", method = "script", function = "setup_nix" },
+  { name = "nix-index", method = "nix-hm"},
+]
 
 [direnv]
 type = "basic"
@@ -29,7 +32,7 @@ common = [{ name = "bash", method = "nix" }]
 type = "basic"
 arch = [{ name = "zsh", method = "pacman" }]
 ubuntu = [{ name = "zsh", method = "apt" }]
-common = [{ name = "zsh", method = "nix-hm", function = "setup_zsh" }]
+common = [{ name = "zsh", method = "nix-hm" }]
 
 [coreutils]
 type = "basic"
@@ -112,8 +115,7 @@ common = [
 
 [sheldon]
 type = "basic"
-darwin = [{ name = "sheldon@0.7.3", method = "cargo" }]
-linux = [{ name = "sheldon", method = "nix-hm" }]
+common = [{ name = "sheldon", method = "nix-hm" }]
 
 [procs]
 type = "basic"
@@ -180,10 +182,9 @@ ubuntu = [{ name = "openssl", method = "apt" }]
 
 [gnupg]
 type = "basic"
-arch = [{ name = "gnupg", method = "pacman", function = "setup_gpg" }]
-ubuntu = [{ name = "gnupg", method = "apt", function = "setup_gpg" }]
-darwin = [{ name = "gnupg", method = "nix-hm" }]
-nixos = [{ name = "gnupg", method = "nix-hm" }]
+arch = [{ name = "gnupg", method = "pacman" }]
+ubuntu = [{ name = "gnupg", method = "apt" }]
+common = [{ name = "gnupg", method = "nix-hm" }]
 
 [macos-security]
 type = "basic"
@@ -360,7 +361,7 @@ darwin = [{ name = "awscli2", method = "nix-hm" }]
 ## config for docker
 [docker-conf]
 type = "dev"
-common = [{ name = "docker-conf", method = "nix-hm" }]
+linux = [{ name = "docker-conf", method = "nix-hm" }]
 
 # gui packages
 ## tex
@@ -515,11 +516,6 @@ darwin = [
 ]
 nixos = [{ name = "xremap", method = "nix" }]
 
-## backup tools
-[borg]
-type = "gui"
-linux = [{ name = "borgbackup", method = "nix-hm", function = "setup_borg" }]
-
 ## dvd writing
 [growisofs]
 type = "gui"
@@ -538,4 +534,4 @@ darwin = [{ name = "\"WireGuard\" = 1451685025", method = "mas" }]
 
 [darwin]
 type = "gui"
-darwin = [{ name = "macos", method = "script", function = "setup_macos" }]
+darwin = [{ name = "macos", method = "nix-hm" }]

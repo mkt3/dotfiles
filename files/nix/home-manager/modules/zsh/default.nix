@@ -91,27 +91,8 @@
               . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
           fi
           export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
-          # Rootless docker path
-          export DOCKER_HOST=unix:///run/user/`id $(whoami) | awk -F'[=()]' '{print $2}'`/docker.sock
       fi
       export PATH="''${HOME}/.local/bin:''${PATH}"
-
-      # RUSTUP & Cargo path
-      export RUSTUP_HOME="''${XDG_DATA_HOME}/rustup"
-      export CARGO_HOME="''${XDG_DATA_HOME}/cargo"
-      [ -d "$CARGO_HOME" ] && . "''${CARGO_HOME}/env"
-
-      # enhancd
-      export ENHANCD_DIR="''${XDG_DATA_HOME}/enhancd"
-
-      # gtk2
-      export GTK2_RC_FILES="''${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
-
-      # dvdcss
-      export DVDCSS_CACHE="''${XDG_DATA_HOME}/dvdcss"
-
-      # zoxide
-      export _ZO_DATA_DIR="$XDG_DATA_HOME"
 
       # kubernetes
       export KUBECONFIG="''${XDG_CONFIG_HOME}/kube/config"
