@@ -363,6 +363,11 @@ darwin = [{ name = "awscli2", method = "nix-hm" }]
 type = "dev"
 linux = [{ name = "docker-conf", method = "nix-hm" }]
 
+## kubernetes
+[kubectl]
+type = "dev"
+common = [{ name = "kubectl", method = "nix-hm" }]
+
 # gui packages
 ## tex
 [latex]
