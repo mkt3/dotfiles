@@ -45,6 +45,6 @@ in
 
   home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && !isNixOS && isCLI) {
     text = "no-autostart";
-    onchange = "systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
+    onChange = "systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
   };
 }
