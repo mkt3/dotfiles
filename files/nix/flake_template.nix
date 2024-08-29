@@ -32,21 +32,33 @@
       ...
     }:
     let
-      platform = "__SYSTEM__"; # aarch64-darwin or x86_64-darwin
+      platform = "__SYSTEM__";
       hostname = "__HOSTNAME__";
       username = "__USERNAME__";
       homeDirectory = "__HOMEDIRECTORY__";
-      dotfilesDirectory = "__DOTFILESDIRECTORY__";
-      isGUI = __ISGUI__;
-      isCLI = __ISCLI__;
+      isGUI = "__ISGUI__";
 
       pkgs = import nixpkgs {
         config.allowUnfree = true;
         system = platform;
-        overlays = [
-          emacs-overlay.overlays.emacs
-          (import ./home-manager/overlays/patched-emacs)
-        ];
+        overlays =
+          [
+            emacs-overlay.overlays.emacs
+          ]
+          ++ (
+            if platform == "x86_64-darwin" || platform == "aarch64-darwin" then
+              [
+                (import ./home-manager/overlays/patched-emacs/emacs-git.nix)
+              ]
+            else if platform == "x86_64-linux" && isGUI then
+              [
+                (import ./home-manager/overlays/patched-emacs/emacs-git-pgtk.nix)
+              ]
+            else
+              [
+                (import ./home-manager/overlays/patched-emacs/emacs-git-nox.nix)
+              ]
+          );
       };
 
       specialArgs = inputs // {
@@ -55,9 +67,7 @@
           username
           hostname
           homeDirectory
-          dotfilesDirectory
           isGUI
-          isCLI
           ;
       };
     in

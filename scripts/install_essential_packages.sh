@@ -46,6 +46,14 @@ install_macos() {
     if (( ${BASH_VERSINFO[0]} < 4 )); then
         brew install bash jq yj gnu-sed
     fi
+
+    if ! infocmp tmux-256color >/dev/null 2>&1; then
+        brew install ncurses
+        tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
+        trap 'rm -f "$tmpfile"' EXIT
+        infocmp tmux-256color > "$tmpfile"
+        tic -xe tmux-256color "$tmpfile"
+    fi
 }
 
 install_linux() {

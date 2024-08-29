@@ -1,11 +1,11 @@
-{ pkgs, homeDirectory, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = [ pkgs.ghq ];
 
   programs.git = {
     extraConfig = {
       ghq = {
-        root = "${homeDirectory}/workspace/ghq";
+        root = "${config.home.homeDirectory}/workspace/ghq";
       };
     };
   };

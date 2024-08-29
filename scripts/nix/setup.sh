@@ -7,13 +7,11 @@ pre_setup_nix() {
     local nix_config_dir="${CONFIGS_DIR}/nix"
 
     local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
-    local home_manager_dir="${nix_main_flake_dir}/home-manager"
     local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
     local nix_main_flake="${nix_main_flake_dir}/flake.nix"
     local nix_platform
     local host_name
     local is_gui
-    local is_cli
 
     if [ "$OS" = "Darwin" ]; then
         sed_command="gsed"
@@ -25,13 +23,7 @@ pre_setup_nix() {
 
     nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
 
-    if [ "$GUI_ENV" = "y" ]; then
-        is_gui="true"
-        is_cli="false"
-    else
-        is_gui="false"
-        is_cli="true"
-    fi
+    is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
 
     if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
         cp -rf "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
@@ -47,17 +39,5 @@ pre_setup_nix() {
     "$sed_command" -i "s|__HOSTNAME__|${host_name}|g" "$nix_main_flake"
     "$sed_command" -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
     "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__DOTFILESDIRECTORY__|${REPO_DIR}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__ISGUI__|${is_gui}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__ISCLI__|${is_cli}|g" "$nix_main_flake"
-
-    if [ "$OS" = "Darwin" ]; then
-        cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
-    elif [ "$OS" = "Linux" ]; then
-        if [ "$GUI_ENV" = "y" ]; then
-            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git-pgtk.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
-        else
-            cp -rf "${home_manager_dir}/overlays/patched-emacs/emacs-git-nox.nix" "${home_manager_dir}/overlays/patched-emacs/default.nix"
-        fi
-    fi
+    "$sed_command" -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
 }

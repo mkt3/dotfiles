@@ -1,8 +1,4 @@
-{
-  pkgs,
-  homeDirectory,
-  ...
-}:
+{ pkgs, config, ... }:
 {
   home.packages = [ pkgs.git-secrets ];
 
@@ -21,7 +17,7 @@
         ];
       };
       init = {
-        templatedir = "${homeDirectory}/.config/git/git-templates/git-secrets";
+        templatedir = "${config.home.homeDirectory}/.config/git/git-templates/git-secrets";
       };
     };
   };

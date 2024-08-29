@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  homeDirectory,
   isGUI,
   ...
 }:
@@ -12,12 +11,21 @@ in
   programs.emacs = {
     enable = true;
     package = pkgs.patched-emacs;
-    extraPackages = epkgs: [
-      epkgs.pdf-tools
-      epkgs.mu4e
-      epkgs.jinx
-      epkgs.treesit-grammars.with-all-grammars
-    ];
+    extraPackages =
+      epkgs:
+      [
+        epkgs.jinx
+        epkgs.treesit-grammars.with-all-grammars
+      ]
+      ++ (
+        if isGUI then
+          [
+            epkgs.pdf-tools
+            epkgs.mu4e
+          ]
+        else
+          [ ]
+      );
   };
 
   xdg.configFile = {
@@ -27,7 +35,7 @@ in
     "emacs/templates".source = ./templates;
     "emacs/ddskk.d/init.el".source = ./ddskk.d/init.el;
     "enchant/en_US.dic" = lib.mkIf (isGUI) {
-      source = config.lib.file.mkOutOfStoreSymlink "${homeDirectory}/Nextcloud/personal_config/enchant/dict/en_US.dic";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Nextcloud/personal_config/enchant/dict/en_US.dic";
     };
   };
 

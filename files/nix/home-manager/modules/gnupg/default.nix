@@ -1,6 +1,6 @@
 {
   pkgs,
-  isCLI,
+  isGUI,
   ...
 }:
 let
@@ -43,7 +43,7 @@ in
       );
   };
 
-  home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && !isNixOS && isCLI) {
+  home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && !isNixOS && !isGUI) {
     text = "no-autostart";
     onChange = "systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
   };

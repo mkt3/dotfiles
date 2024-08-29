@@ -1,6 +1,5 @@
 .DS_Store
 *~
-files/borg/security
 !.gitkeep
 /results
 files/nix/home-manager/packages.nix
