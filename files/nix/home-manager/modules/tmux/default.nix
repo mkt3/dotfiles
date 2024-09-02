@@ -19,6 +19,7 @@
       tmuxPlugins.sensible
       tmuxPlugins.yank
       tmuxPlugins.nord
+      tmuxPlugins.jump
     ];
     extraConfig = ''
       set -g set-clipboard on

@@ -43,7 +43,7 @@ install_macos() {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 
-    if (( ${BASH_VERSINFO[0]} < 4 )); then
+    if (( BASH_VERSINFO[0] < 4 )); then
         brew install bash jq yj gnu-sed
     fi
 
