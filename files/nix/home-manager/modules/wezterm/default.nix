@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = pkgs.lib.mkIf (!pkgs.stdenv.isDarwin) [ pkgs.wezterm ];
+  home.packages = [ pkgs.wezterm ];
 
   xdg.configFile = {
     "wezterm/wezterm.lua".source = ./wezterm.lua;

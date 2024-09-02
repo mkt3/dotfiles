@@ -67,7 +67,6 @@ elif [[ "$DISTRO" == 'Darwin' ]];then
     export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"
     export NIX_PATH="darwin-config=$HOME/.conifg/nix/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
     export NIX_SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
-    export TERMINFO_DIRS="/run/current-system/sw/share/terminfo:/nix/var/nix/profiles/default/share/terminfo:${TERMINFO_DIRS}"
     export XDG_CONFIG_DIRS=":/run/current-system/sw/etc/xdg:/nix/var/nix/profiles/default/etc/xdg"
     export XDG_DATA_DIRS="/run/current-system/sw/share:/nix/var/nix/profiles/default/share"
     export TERM=$TERM

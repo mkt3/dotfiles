@@ -9,7 +9,7 @@
   programs.bash.enable = false;
   environment.pathsToLink = [ "/share/hunspell" ];
   system = {
-    defaults.smb.NetBIOSName = hostname;
+    # defaults.smb.NetBIOSName = hostname;
     # activationScripts are executed every time you boot the system or run `nixos-rebuild` / `darwin-rebuild`.
     activationScripts.postUserActivation.text = ''
       # activateSettings -u will reload the settings from the database and apply them to the current session,
@@ -53,7 +53,7 @@
 
       NSGlobalDomain._HIHideMenuBar = true;
 
-      universalaccess.reduceTransparency = true;
+      # universalaccess.reduceTransparency = true;
 
       dock = {
         autohide = true;

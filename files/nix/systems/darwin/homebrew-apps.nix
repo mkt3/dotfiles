@@ -27,7 +27,6 @@
       "firefox"
       "vlc"
       "zotero"
-      "wezterm"
       "nextcloud"
       "google-drive"
       "nikitabobko/tap/aerospace"

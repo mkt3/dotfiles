@@ -430,7 +430,6 @@ common = [{ name = "anki-bin", method = "nix-hm" }]
 ## terminal emulator
 [wezterm]
 type = "gui"
-darwin = [{ name = "wezterm", method = "cask" }]
 common = [{ name = "wezterm", method = "nix-hm" }]
 
 ## cloud storage

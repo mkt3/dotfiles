@@ -22,6 +22,7 @@ pre_setup_nix() {
     fi
 
     nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
+    nix_platform=${nix_platform/arm64-darwin/aarch64-darwin}
 
     is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
 
