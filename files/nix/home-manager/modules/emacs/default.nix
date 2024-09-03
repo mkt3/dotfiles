@@ -34,7 +34,7 @@ in
     "emacs/init.el".source = ./init.el;
     "emacs/templates".source = ./templates;
     "emacs/ddskk.d/init.el".source = ./ddskk.d/init.el;
-    "enchant/en_US.dic" = lib.mkIf (isGUI) {
+    "enchant/en_US.dic" = lib.mkIf isGUI {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Nextcloud/personal_config/enchant/dict/en_US.dic";
     };
   };

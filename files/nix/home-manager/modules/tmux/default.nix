@@ -16,13 +16,17 @@
         plugin = tmuxPlugins.extrakto;
         extraConfig = "set -g @extrakto_split_direction \"v\"";
       }
+      {
+        plugin = tmuxPlugins.jump;
+        extraConfig = "set -g @jump-key 'q'";
+      }
       tmuxPlugins.sensible
       tmuxPlugins.yank
       tmuxPlugins.nord
-      tmuxPlugins.jump
     ];
     extraConfig = ''
       set -g set-clipboard on
+      set-window-option -g mode-keys vi
 
       # 設定ファイルをリロードする
       bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"

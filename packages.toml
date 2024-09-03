@@ -242,7 +242,7 @@ common = [
 
 [emacs-gui]
 type = "gui"
-common = [
+linux = [
   { name = "isync", method = "nix-hm" },
   { name = "msmtp", method = "nix-hm" },
   { name = "mu", method = "nix-hm" },
@@ -504,7 +504,7 @@ common = [{ name = "hugo", method = "nix-hm" }]
 ## gatsby
 [gatsby-cli]
 type = "gui"
-common = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
+linux = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
 
 ## font
 [font]

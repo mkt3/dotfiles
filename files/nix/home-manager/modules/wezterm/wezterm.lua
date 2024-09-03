@@ -29,8 +29,7 @@ local keys = {
 }
 
 font_size = 20.0
-if wezterm.target_triple == 'x86_64-apple-darwin' then
-  table.insert(keys, {key="q",mods="CTRL",action=wezterm.action{SendString="\x11"}})
+if wezterm.target_triple == 'aarch64-apple-darwin' then
   font_size = 16.0
 end
 
