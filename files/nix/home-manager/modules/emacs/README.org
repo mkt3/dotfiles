@@ -887,18 +887,11 @@
     This uses natively-compiled code, I install this alongside emacs via nix.
     #+begin_src emacs-lisp
       (use-package jinx
-        :hook ((org-mode-hook markdown-mode-hook) . my:jinx-mode-enable)
-        :bind (("C-;" . jinx-correct)
+        :bind (nil
+               :map jinx-mode-map
+               ("C-;" . jinx-correct)
                ("C-x @ ;" . jinx-correct) ; for wezterm
-               ("C-M-$" . jinx-languages))
-        :init
-        (defun my:jinx-mode-enable ()
-          "Enable jinx mode if the current buffer does not contain Hiragana characters."
-          (interactive)
-          (unless (save-excursion
-                    (goto-char (point-min))
-                    (search-forward-regexp "[あ-ん]" nil t))
-            (jinx-mode))))
+               ("C-M-$" . jinx-languages)))
     #+end_src
 * Programming
 ** General
