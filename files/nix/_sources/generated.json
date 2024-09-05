@@ -1,0 +1,17 @@
+{
+    "vivaldi-darwin": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "vivaldi-darwin",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-W6IQ5caVWoHeF0OEn9SJk4o9WAbNCK0k+fnPg3pFZE0=",
+            "type": "url",
+            "url": "https://downloads.vivaldi.com/stable/Vivaldi.6.9.3447.37.universal.dmg"
+        },
+        "version": "6.9.3447.37"
+    }
+}

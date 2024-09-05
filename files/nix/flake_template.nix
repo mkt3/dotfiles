@@ -44,6 +44,7 @@
         overlays =
           [
             emacs-overlay.overlays.emacs
+            (import ./home-manager/overlays/vivaldi)
           ]
           ++ (
             if platform == "x86_64-darwin" || platform == "aarch64-darwin" then

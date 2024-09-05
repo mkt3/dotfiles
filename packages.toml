@@ -395,11 +395,7 @@ darwin = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
 ## browser
 [vivaldi]
 type = "gui"
-linux = [
-  { name = "vivaldi", method = "nix-hm" },
-  { name = "vivaldi-ffmpeg-codecs", method = "nix-hm" },
-]
-darwin = [{ name = "vivaldi", method = "cask" }]
+common = [{ name = "vivaldi", method = "nix-hm" }]
 
 [firefox]
 type = "gui"

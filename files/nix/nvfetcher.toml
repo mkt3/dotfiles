@@ -1,0 +1,8 @@
+[vivaldi-darwin]
+src.archpkg = "vivaldi"
+fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
+
+[macskk]
+src.github = "mtgto/macSKK"
+fetch.url = "https://github.com/mtgto/macSKK/releases/download/$ver/macSKK-$ver.dmg"
+

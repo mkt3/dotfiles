@@ -23,7 +23,6 @@
     ];
 
     casks = [
-      "vivaldi"
       "firefox"
       "vlc"
       "zotero"
