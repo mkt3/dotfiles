@@ -2,7 +2,14 @@
 src.archpkg = "vivaldi"
 fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
 
-[macskk]
-src.github = "mtgto/macSKK"
-fetch.url = "https://github.com/mtgto/macSKK/releases/download/$ver/macSKK-$ver.dmg"
+[aerospace]
+src.github_tag = "nikitabobko/AeroSpace"
+fetch.url = "https://github.com/nikitabobko/AeroSpace/releases/download/$ver/AeroSpace-$ver.zip"
 
+[vlc]
+src.archpkg = "vlc"
+fetch.url = "https://get.videolan.org/vlc/$ver/macosx/vlc-$ver-arm64.dmg"
+
+[meetingbar]
+src.github = "leits/MeetingBar"
+fetch.url = "https://github.com/leits/MeetingBar/releases/download/$ver/MeetingBar.dmg"

@@ -9,6 +9,7 @@ type = "basic"
 common = [
   { name = "nix", method = "script", function = "setup_nix" },
   { name = "nix-index", method = "nix-hm" },
+  { name = "nvfetcher", method = "nix-hm" },
 ]
 
 [direnv]
@@ -51,7 +52,6 @@ common = [{ name = "gnugrep", method = "nix" }]
 
 [sed]
 type = "basic"
-darwin = [{ name = "gnu-sed", method = "brew" }]
 common = [{ name = "gnused", method = "nix" }]
 
 [gawk]
@@ -93,7 +93,6 @@ common = [{ name = "fastfetch", method = "nix-hm" }]
 [unarchiver]
 type = "basic"
 common = [{ name = "unar", method = "nix" }]
-darwin = [{ name = "\"The Unarchiver\" = 425424353", method = "mas" }]
 
 [trash-cli]
 type = "basic"
@@ -390,7 +389,7 @@ common = [{ name = "zoom-us", method = "nix-hm" }]
 ### macos only
 [MeetingBar]
 type = "gui"
-darwin = [{ name = "\"MeetingBar\" = 1532419400", method = "mas" }]
+darwin = [{ name = "meetingbar", method = "nix-hm" }]
 
 ## browser
 [vivaldi]
@@ -405,13 +404,12 @@ darwin = [{ name = "firefox", method = "cask" }]
 ## media
 [vlc]
 type = "gui"
+common = [{ name = "vlc", method = "nix-hm" }]
 linux = [
-  { name = "vlc", method = "nix-hm" },
   { name = "libdvdread", method = "nix-hm" },
   { name = "libdvdnav", method = "nix-hm" },
   { name = "libdvdcss", method = "nix-hm" },
 ]
-darwin = [{ name = "vlc", method = "cask" }]
 
 ## research
 [zotero]
@@ -478,7 +476,6 @@ nixos = [
 [aerospace]
 type = "gui"
 darwin = [
-  { name = "nikitabobko/tap/aerospace", method = "cask" },
   { name = "aerospace", method = "nix-hm" },
   { name = "jankyborders", method = "nix-hm" },
   { name = "sketchybar", method = "nix-hm" },
@@ -488,7 +485,7 @@ darwin = [
 
 ## recoll
 [recoll]
-type = "gui"
+ptype = "gui"
 darwin = [{ name = "recoll", method = "cask" }]
 common = [{ name = "recoll", method = "nix-hm" }]
 

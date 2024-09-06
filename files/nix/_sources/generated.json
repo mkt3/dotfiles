@@ -1,4 +1,34 @@
 {
+    "aerospace": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "aerospace",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-xOIP51kFQTy9RbCGQo5gJGMzl/WhZlJ+lCtMOaMCnB8=",
+            "type": "url",
+            "url": "https://github.com/nikitabobko/AeroSpace/releases/download/v0.14.2-Beta/AeroSpace-v0.14.2-Beta.zip"
+        },
+        "version": "v0.14.2-Beta"
+    },
+    "meetingbar": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "meetingbar",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-8b7UyR5fLdnOYa/fsqm75n4n+sZYKf75hIEh6Dp2t6A=",
+            "type": "url",
+            "url": "https://github.com/leits/MeetingBar/releases/download/v4.10.0/MeetingBar.dmg"
+        },
+        "version": "v4.10.0"
+    },
     "vivaldi-darwin": {
         "cargoLocks": null,
         "date": null,
@@ -8,10 +38,25 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-W6IQ5caVWoHeF0OEn9SJk4o9WAbNCK0k+fnPg3pFZE0=",
+            "sha256": "sha256-7QtXPjadRoqWFhGBf/pMm5R5YO0yYelNZ7XHpLhYGa8=",
             "type": "url",
-            "url": "https://downloads.vivaldi.com/stable/Vivaldi.6.9.3447.37.universal.dmg"
+            "url": "https://downloads.vivaldi.com/stable/Vivaldi.6.9.3447.41.universal.dmg"
         },
-        "version": "6.9.3447.37"
+        "version": "6.9.3447.41"
+    },
+    "vlc": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "vlc",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-Fd1lv2SJ2p7Gpn9VhcdMQKWJk6z/QagpWKkW3XQXgEQ=",
+            "type": "url",
+            "url": "https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-arm64.dmg"
+        },
+        "version": "3.0.21"
     }
 }

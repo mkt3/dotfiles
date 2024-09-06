@@ -9,8 +9,6 @@
 
     # enhancd
     export ENHANCD_DIR="''${XDG_DATA_HOME}/enhancd"
-
-
   '';
 
 }

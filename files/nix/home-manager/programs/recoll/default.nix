@@ -5,7 +5,7 @@
   xdg.configFile."recoll/recoll.conf" = {
     text = ''
       topdirs = ~/Nextcloud/book ~/Nextcloud/orgnotes ~/Nextcloud/documents ~/Nextcloud/zotero
-      recollhelperpath = /usr/local/bin
+      recollhelperpath = /opt/homebrew/bin
       noContentSuffixes+ = .bib
     '';
   };
