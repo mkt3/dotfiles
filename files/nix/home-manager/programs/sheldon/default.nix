@@ -1,6 +1,6 @@
-{ pkgs, sheldon-flake, ... }:
+{ pkgs, ... }:
 {
-  home.packages = [ sheldon-flake.packages.${pkgs.system}.default ];
+  home.packages = [ pkgs.sheldon ];
 
   home.file.".zshenv".text = ''
     # sheldon
