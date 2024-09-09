@@ -1973,6 +1973,21 @@
                         (file+head "reference/ai/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n#+begin_ai\n[ME]: \n#+end_ai")
                         :immediate-finish t
                         :unnarrowed t)))))
+
+     (use-package llm :ensure t)
+
+     (use-package ellama
+       :ensure t
+       :if (file-directory-p my:d:password-store)
+       :after llm
+       :after
+       :init
+       (setopt ellama-keymap-prefix "C-c e")
+       (setopt ellama-language "English")
+       (require 'llm-openai)
+       (setopt ellama-provider
+               (make-llm-openai :key (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key)
+                                :chat-model "gpt-4o-mini")))
    #+end_src
 ** Translate
    #+begin_src emacs-lisp

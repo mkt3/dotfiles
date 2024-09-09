@@ -226,6 +226,12 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
     esac
 done
 
+if  [[ "$DISTRO" == "Darwin" ]] ; then
+    /usr/bin/sed -i "" "s|__BREW_PACKAGES__||g" "$nix_homebrew_apps_file"
+    /usr/bin/sed -i "" "s|__CASK_PACKAGES__||g" "$nix_homebrew_apps_file"
+    /usr/bin/sed -i "" "s|__MAS_PACKAGES__||g" "$nix_homebrew_apps_file"
+fi
+
 # post functions
 echo "# post functions" >> "$install_script_path"
 for func in "${functions[@]}"; do

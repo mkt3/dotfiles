@@ -293,7 +293,7 @@ common = [{ name = "pyright", method = "nix-hm" }]
 ## mise
 [mise]
 type = "dev"
-common = [{ name = "mise", method = "nix-hm" }]
+linux = [{ name = "mise", method = "nix-hm" }]
 
 ### for python build
 ubuntu = [
@@ -310,14 +310,14 @@ ubuntu = [
   { name = "zlib1g-dev", method = "apt" },
   { name = "uuid-dev", method = "apt" },
 ]
-darwin = [
-  { name = "openssl", method = "brew" },
-  { name = "readline", method = "brew" },
-  { name = "sqlite3", method = "brew" },
-  { name = "xz", method = "brew" },
-  { name = "zlib", method = "brew" },
-  { name = "tcl-tk", method = "brew" },
-]
+# darwin = [
+#   { name = "openssl", method = "brew" },
+#   { name = "readline", method = "brew" },
+#   { name = "sqlite3", method = "brew" },
+#   { name = "xz", method = "brew" },
+#   { name = "zlib", method = "brew" },
+#   { name = "tcl-tk", method = "brew" },
+# ]
 
 [uv]
 type = "dev"
@@ -399,7 +399,6 @@ common = [{ name = "vivaldi", method = "nix-hm" }]
 [firefox]
 type = "gui"
 linux = [{ name = "firefox", method = "nix-hm" }]
-darwin = [{ name = "firefox", method = "cask" }]
 
 ## media
 [vlc]

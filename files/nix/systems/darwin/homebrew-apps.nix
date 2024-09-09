@@ -13,16 +13,9 @@
     ];
 
     brews = [
-      "openssl"
-      "readline"
-      "sqlite3"
-      "xz"
-      "zlib"
-      "tcl-tk"
     ];
 
     casks = [
-      "firefox"
       "zotero"
       "nextcloud"
       "google-drive"
@@ -31,7 +24,6 @@
     ];
 
     masApps = {
-      "The Unarchiver" = 425424353;
       "WireGuard" = 1451685025;
     };
   };
