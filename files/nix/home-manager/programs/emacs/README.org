@@ -1667,20 +1667,23 @@
 * Filer
   #+begin_src emacs-lisp
     (use-package dired
+      :hook (dired-mode . dired-omit-mode)
+      :bind (nil
+             :map dired-mode-map
+             ("["  . dired-prev-subdir)
+             ("]"  . dired-next-subdir)
+             ( "." . dired-omit-mode))
       :custom
       (dired-dwim-target t)
       (dired-recursive-copies 'always)
-      :bind (nil
-             :map dired-mode-map
-             ("[" . dired-prev-subdir)
-             ("]" . dired-next-subdir)))
+      (dired-omit-files (rx (seq bol "."))))
 
     (use-package casual-dired
       :ensure t
       :bind (nil
              :map
              dired-mode-map
-             ("M-o" . casual-dired-tmenu)))
+             ("?" . casual-dired-tmenu)))
   #+end_src
 * Browser
   #+begin_src emacs-lisp

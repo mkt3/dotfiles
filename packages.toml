@@ -310,14 +310,6 @@ ubuntu = [
   { name = "zlib1g-dev", method = "apt" },
   { name = "uuid-dev", method = "apt" },
 ]
-# darwin = [
-#   { name = "openssl", method = "brew" },
-#   { name = "readline", method = "brew" },
-#   { name = "sqlite3", method = "brew" },
-#   { name = "xz", method = "brew" },
-#   { name = "zlib", method = "brew" },
-#   { name = "tcl-tk", method = "brew" },
-# ]
 
 [uv]
 type = "dev"
