@@ -1183,6 +1183,11 @@
          (org-appear-inside-latex   t)
          (org-appear-autosubmarkers t))
 
+
+       (use-package org-fragtog
+         :ensure t
+         :hook (org-mode-hook . org-fragtog-mode))
+
        (use-package org-web-tools
          :ensure t
          :bind
