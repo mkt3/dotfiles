@@ -476,7 +476,7 @@ darwin = [
 
 ## recoll
 [recoll]
-ptype = "gui"
+type = "gui"
 darwin = [{ name = "recoll", method = "cask" }]
 common = [{ name = "recoll", method = "nix-hm" }]
 

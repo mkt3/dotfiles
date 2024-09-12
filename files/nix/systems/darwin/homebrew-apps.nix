@@ -20,6 +20,7 @@
       "nextcloud"
       "google-drive"
       "aquaskk"
+      "recoll"
       "karabiner-elements"
     ];
 
