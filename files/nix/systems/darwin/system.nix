@@ -4,7 +4,9 @@
     automatic = true;
     options = "--delete-older-than 7d";
   };
+
   networking.computerName = hostname;
+
   environment.shells = [ pkgs.zsh ];
   programs.bash.enable = false;
   environment.pathsToLink = [ "/share/hunspell" ];
@@ -16,6 +18,8 @@
       # so we do not need to logout and login again to make the changes take effect.
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     '';
+
+    stateVersion = 5;
 
     keyboard = {
       enableKeyMapping = true;
