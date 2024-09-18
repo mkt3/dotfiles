@@ -260,7 +260,7 @@ common = [{ name = "ghq", method = "nix-hm" }]
 ## SSO
 [saml2aws]
 type = "dev"
-darwin = [{ name = "saml2aws", method = "nix-hm" }]
+common = [{ name = "saml2aws", method = "nix-hm" }]
 
 ## shell script
 [shellcheck]
@@ -342,12 +342,12 @@ common = [{ name = "typescript", method = "nix-hm" }]
 ## google cloud sdk
 [google-cloud-sdk]
 type = "dev"
-darwin = [{ name = "google-cloud-sdk", method = "nix-hm" }]
+common = [{ name = "google-cloud-sdk", method = "nix-hm" }]
 
 ## aws cli
 [awscli2]
 type = "dev"
-darwin = [{ name = "awscli2", method = "nix-hm" }]
+common = [{ name = "awscli2", method = "nix-hm" }]
 
 ## config for docker
 [docker-conf]
