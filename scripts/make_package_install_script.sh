@@ -100,12 +100,12 @@ if [[ "$os_name" == "darwin" ]]; then
         echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
     else
         echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
-        echo "darwin-rebuild switch --flake ${nix_dir}" >> "$install_script_path"
+        echo "darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}" >> "$install_script_path"
     fi
 elif [[ "$os_name" == "nixos" ]]; then
     echo "title \"Setup nix\"" >> "$install_script_path"
     echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
-    echo "sudo nixos-rebuild switch --flake ${nix_dir}" >> "$install_script_path"
+    echo "sudo nixos-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}" >> "$install_script_path"
 else
     echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
     if (type home-manager > /dev/null 2>&1); then

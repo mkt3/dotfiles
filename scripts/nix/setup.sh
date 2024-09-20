@@ -15,11 +15,11 @@ pre_setup_nix() {
 
     if [ "$OS" = "Darwin" ]; then
         sed_command=$(type gsed > /dev/null 2>&1 && echo "gsed" || echo "sed")
-        host_name=$(hostname | sed "s/\.local//g")
     elif [ "$OS" = "Linux" ]; then
         sed_command="sed"
-        host_name=$(hostnamectl status --static)
     fi
+
+    host_name="$HOSTNAME_ENV"
 
     nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
     nix_platform=${nix_platform/arm64-darwin/aarch64-darwin}

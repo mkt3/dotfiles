@@ -22,6 +22,7 @@ create_env_file:
 
 .PHONY: setup_env
 setup_env: create_env_file
+	@$(eval HOSTNAME_ENV=$(shell grep 'HOSTNAME_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
 	@$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
 
@@ -39,7 +40,7 @@ $(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
 
 .PHONY: install_packages
 install_packages: $(INSTALL_SCRIPT)
-	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash "$(INSTALL_SCRIPT)"
+	@HOSTNAME_ENV=$(HOSTNAME_ENV) DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash "$(INSTALL_SCRIPT)"
 
 .PHONY: clean
 clean:
