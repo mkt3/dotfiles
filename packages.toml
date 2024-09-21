@@ -388,6 +388,12 @@ darwin = [{ name = "meetingbar", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "vivaldi", method = "nix-hm" }]
 
+### for keymap
+[google-chrome]
+type = "gui"
+common = [{ name = "google-chrome", method = "nix-hm" }]
+
+### sub
 [firefox]
 type = "gui"
 linux = [{ name = "firefox", method = "nix-hm" }]
