@@ -17,9 +17,9 @@
       bind = [
         "$mainMod, t, exec, wezterm"
         "$mainMod SHIFT, m, exit"
-        "$mainMod, q, killactive"
+        "$mainMod, d, killactive"
         "$mainMod, m, exit,"
-        "$mainMod, e, exec, thunar"
+        "$mainMod, f, exec, thunar"
         "$mainMod, v, togglefloating,"
         "$subMod, SPACE, exec, rofi -show combi"
         # bind = $mainMod, P, pseudo, # dwindle
@@ -99,10 +99,10 @@
         "3, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
         "4, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
         "5, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
-        "6, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
-        "7, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
-        "8, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
-        "9, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "6, monitor:eDP-1, default:true"
+        "7, monitor:eDP-1, default:true"
+        "8, monitor:eDP-1, default:true"
+        "9, monitor:eDP-1, default:true"
         "10, monitor:eDP-1, default:true"
       ];
 
@@ -118,9 +118,9 @@
         "sleep 10; nextcloud --background"
         "[workspace 1 silent] wezterm"
         "[workspace 1 silent] vivaldi"
-        "[workspace 9 silent] zotero"
+        "[workspace 5 silent] zotero"
         "[workspace 2 silent] slack"
-        "[workspace 10 silent] COLORTERM=truecolor GTK_IM_MODULE=xim emacs"
+        "[workspace 6 silent] COLORTERM=truecolor GTK_IM_MODULE=xim emacs"
       ];
 
       windowrulev2 = [

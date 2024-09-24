@@ -21,6 +21,9 @@
             "Alt_L" = "Super_L";
             "Super_L" = "Alt_L";
           };
+          device = {
+            "not" = [ "Yowkees Keyball44" ];
+          };
         }
       ];
       keymap = [
