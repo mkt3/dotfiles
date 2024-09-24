@@ -74,11 +74,12 @@ outer.right =      4
 3 = 'main'
 4 = 'main'
 5 = 'main'
-6 = 'main'
-7 = 'main'
-8 = 'main'
-9 = 'main'
+6 = '^built-in retina display$'
+7 = '^built-in retina display$'
+8 = '^built-in retina display$'
+9 = '^built-in retina display$'
 10 = '^built-in retina display$'
+
 
 [mode.main.binding]
 
@@ -199,11 +200,11 @@ run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-id = 'org.zotero.zotero'
-run = "move-node-to-workspace 9"
+run = "move-node-to-workspace 4"
 
 [[on-window-detected]]
 if.app-id = 'org.gnu.Emacs'
-run = "move-node-to-workspace 10"
+run = "move-node-to-workspace 6"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
