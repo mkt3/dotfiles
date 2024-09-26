@@ -17,6 +17,14 @@
       sha256 = "sha256-8b7UyR5fLdnOYa/fsqm75n4n+sZYKf75hIEh6Dp2t6A=";
     };
   };
+  scroll-reverser = {
+    pname = "scroll-reverser";
+    version = "1.9";
+    src = fetchurl {
+      url = "https://github.com/pilotmoon/Scroll-Reverser/releases/download/v1.9/ScrollReverser-1.9.zip";
+      sha256 = "sha256-CWHbtvjvTl7dQyvw3W583UIZ2LrIs7qj9XavmkK79YU=";
+    };
+  };
   vivaldi-darwin = {
     pname = "vivaldi-darwin";
     version = "6.9.3447.48";

@@ -29,6 +29,21 @@
         },
         "version": "v4.10.0"
     },
+    "scroll-reverser": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "scroll-reverser",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-CWHbtvjvTl7dQyvw3W583UIZ2LrIs7qj9XavmkK79YU=",
+            "type": "url",
+            "url": "https://github.com/pilotmoon/Scroll-Reverser/releases/download/v1.9/ScrollReverser-1.9.zip"
+        },
+        "version": "1.9"
+    },
     "vivaldi-darwin": {
         "cargoLocks": null,
         "date": null,

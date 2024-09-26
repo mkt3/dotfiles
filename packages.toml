@@ -11,7 +11,6 @@ common = [
   { name = "nix-index", method = "nix-hm" },
   { name = "nvfetcher", method = "nix-hm" },
 ]
-
 [direnv]
 type = "basic"
 common = [{ name = "direnv", method = "nix-hm" }]
@@ -520,6 +519,12 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 type = "gui"
 darwin = [
   { name = "appcleaner", method = "nix-hm" },
+]
+
+[scroll-reverser]
+type = "gui"
+darwin = [
+  { name = "scroll-reverser", method = "nix-hm" },
 ]
 
 [WireGuard]

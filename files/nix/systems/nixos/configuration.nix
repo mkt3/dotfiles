@@ -43,12 +43,15 @@
       "networkmanager"
       "audio"
       "video"
+      "dialout"
     ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
+
+  programs.nix-ld.enable = true;
 
   services = {
     # Enable the OpenSSH daemon.
@@ -68,10 +71,6 @@
         STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
       };
     };
-
-    udev.extraRules = ''
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="5957", ATTRS{idProduct}=="0400", MODE="0666"
-  '';
   };
 
   networking.firewall = {
