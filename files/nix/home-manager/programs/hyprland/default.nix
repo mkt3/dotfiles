@@ -16,7 +16,7 @@
       "$subMod" = "SUPER";
       bind = [
         "$mainMod, t, exec, wezterm"
-        "$mainMod, q, killactive"
+        "$subMod, q, killactive"
         "$mainMod, m, exit,"
         "$mainMod, f, exec, thunar"
         "$subMod, SPACE, exec, rofi -show combi"
