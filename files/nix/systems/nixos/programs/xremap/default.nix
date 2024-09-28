@@ -8,6 +8,7 @@
   services.xremap = {
     userName = username;
     withWlroots = true;
+    watch = true;
     serviceMode = "user";
     config = {
       keypress_delay_ms = 20;

@@ -16,11 +16,9 @@
       "$subMod" = "SUPER";
       bind = [
         "$mainMod, t, exec, wezterm"
-        "$mainMod SHIFT, m, exit"
-        "$mainMod, d, killactive"
+        "$mainMod, q, killactive"
         "$mainMod, m, exit,"
         "$mainMod, f, exec, thunar"
-        "$mainMod, v, togglefloating,"
         "$subMod, SPACE, exec, rofi -show combi"
         # bind = $mainMod, P, pseudo, # dwindle
         # bind = $mainMod, J, togglesplit, # dwindle
