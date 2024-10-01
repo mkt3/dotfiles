@@ -44,7 +44,7 @@ install_macos() {
     fi
 
     if (( BASH_VERSINFO[0] < 4 )); then
-        brew install bash jq yj gnu-sed
+        brew install bash yj gnu-sed
     fi
 
     if ! infocmp tmux-256color >/dev/null 2>&1; then
