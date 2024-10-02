@@ -1,0 +1,22 @@
+% find
+
+# Find all files in a directory and count them
+find <path> -type f | wc -l
+
+# Find all directories
+find <path> -type d
+
+# Find all files modified in the last 7 days
+find <path> -type f -mtime -7
+
+# Find all files larger than 100MB
+find <path> -type f -size +100M
+
+# Find all files with a specific extension (e.g., .txt)
+find <path> -type f -name "*.txt"
+
+# Find files and remove them
+find <path> -type f -name "*.log" -exec rm {} \;
+
+# Find files with a specific permission (e.g., 755)
+find <path> -type f -perm 755-
