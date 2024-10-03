@@ -21,7 +21,6 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    ${hdiutil} attach $src
     mkdir -p $out/Applications/
     mkdir -p "$out/Applications/$sourceRoot"
     cp -R . "$out/Applications/$sourceRoot"

@@ -541,7 +541,8 @@
        (setq skk-init-file (expand-file-name "init.el" skk-user-directory ))
        (when (file-directory-p my:d:nextcloud)
          (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
-         )
+         (setq skk-extra-jisyo-file-list
+               `(,(expand-file-name "personal_config/skk/ddskk/SKK-JISYO.edict" my:d:nextcloud))))
        (setq viper-mode nil))
    #+end_src
 ** puni
