@@ -54,8 +54,3 @@ lint:
 import_mkt3_public_key:
 	gpg --fetch-key https://github.com/mkt3.gpg
 	gpg --edit-key makoto@mkt3.dev trust quit
-
-.PHONY: my-git
-my-git:
-	git config --global user.name "Makoto Morinaga"
-	git config --global user.email makoto@mkt3.dev

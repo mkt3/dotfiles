@@ -170,10 +170,11 @@
      (use-package windmove
        :custom
        (windmove-wrap-around  t)
-       :bind (("C-M-h" . windmove-left)
-              ("C-M-k" . windmove-up)
-              ("C-M-j" . windmove-down)
-              ("C-M-l" . windmove-right)))
+       :bind* (("C-M-h" . windmove-left)
+               ("M-DEL" . windmove-left) ; for keyball key mapping
+               ("C-M-k" . windmove-up)
+               ("C-M-j" . windmove-down)
+               ("C-M-l" . windmove-right)))
    #+end_src
 ** Save file browsing history
    #+begin_src emacs-lisp
