@@ -13,6 +13,11 @@ pre_setup_nix() {
     local host_name
     local is_gui
 
+    info "Updating nix packages with nvfetcher"
+    if type nvfetcher > /dev/null 2>&1; then
+        nvfetcher -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
+    fi
+
     if [ "$OS" = "Darwin" ]; then
         sed_command=$(type gsed > /dev/null 2>&1 && echo "gsed" || echo "sed")
     elif [ "$OS" = "Linux" ]; then
@@ -41,9 +46,4 @@ pre_setup_nix() {
     "$sed_command" -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
     "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
     "$sed_command" -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
-
-    info "Updating nix packages with nvfetcher"
-    if type nvfetcher > /dev/null 2>&1; then
-        nvfetcher -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
-    fi
 }
