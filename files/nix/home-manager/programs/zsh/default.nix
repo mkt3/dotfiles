@@ -4,6 +4,8 @@
     enable = true;
     enableCompletion = false;
 
+    dotDir = ".config/zsh";
+
     envExtra = ''
       if [ -z "$BASH_VERSION" ];then
         setopt no_global_rcs
@@ -98,14 +100,58 @@
       export KUBECONFIG="''${XDG_CONFIG_HOME}/kube/config"
       export KUBECACHEDIR="''${XDG_CACHE_HOME}/kube"
     '';
+
+    initExtraFirst = ''
+      # https://zenn.dev/fuzmare/articles/zsh-plugin-manager-cache
+
+      # Override the source command
+      function source {
+        ensure_zcompiled "''$1"
+        builtin source "''$1"
+      }
+
+      # Function to compile only files in ~/.config/zsh
+      function ensure_zcompiled {
+        local target_dir="''$HOME/.config/zsh"
+        local compiled="''$'1.zwc"
+
+        # Check if the file is in the target directory
+        if [[ "''$1" == "''$target_dir/"* ]]; then
+          if [[ ! -r "''$compiled" || "''$1" -nt "''$compiled" ]]; then
+            echo "\033[1;36mCompiling\033[m ''$1"
+            zcompile "''$1"
+          fi
+        fi
+      }
+
+      ensure_zcompiled "''${ZDOTDIR}/.zshrc"
+
+      # sheldon cache technique
+      sheldon_cache="''${SHELDON_CONFIG_DIR}/sheldon.zsh"
+      sheldon_toml="''${SHELDON_CONFIG_DIR}/plugins.toml"
+      if [[ ! -r "''$sheldon_cache" || "''$sheldon_toml" -nt "''$sheldon_cache" ]]; then
+          sheldon source > "''$sheldon_cache"
+      fi
+      source "''$sheldon_cache"
+      unset sheldon_cache sheldon_toml
+
+      source "''${ZDOTDIR}/no_defer.zsh"
+      zsh-defer source "''${ZDOTDIR}/defer.zsh"
+      zsh-defer unfunction source
+    '';
   };
 
   home.file.".local/bin/tmux_session.sh".source = ./tmux_session.sh;
 
   xdg.configFile = {
-    "zsh/.zshrc".source = ./zshrc.zsh;
-    "zsh/no_defer.zsh".source = ./no_defer.zsh;
-    "zsh/defer.zsh".source = ./defer.zsh;
+    "zsh/no_defer.zsh" = {
+      source = ./no_defer.zsh;
+      onChange = "rm -rf $HOME/.config/zsh/no_defer.zsh.zwc";
+    };
+    "zsh/defer.zsh" = {
+      source = ./defer.zsh;
+      onChange = "rm -rf $HOME/.config/zsh/defer.zsh.zwc";
+    };
     "zsh/sheldon/plugins.toml".source = ./sheldon/plugins.toml;
     "zsh/abbreviations".source = ./abbreviations;
   };

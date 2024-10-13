@@ -1,9 +1,3 @@
-# mise
-(( ${+commands[mise]} )) && eval "$(mise activate zsh)"
-
-# direnv
-(( ${+commands[direnv]} )) && eval "$(direnv hook zsh)"
-
 # rehash
 zstyle ":completion:*:commands" rehash 1
 
@@ -61,9 +55,6 @@ fi
 # for delta bat completion
 compdef _gnu_generic bat delta
 
-# zoxide
-eval "$(zoxide init zsh --cmd j)"
-
 function sd()
 {
     local session_name="$(tmux display-message -p '#S')"
@@ -87,12 +78,6 @@ fi
 
 # Remove only the files that have been deleted more than 7 days ago:
 yes y | trash-empty 7
-
-# Mount Google Drive (Arch Linux desktop environment only)
-local GOOGLE_DRIVE="${HOME}/GoogleDrive"
-if [ -x "$(command -v google-drive-ocamlfuse)" ] && ! mountpoint -q "$GOOGLE_DRIVE"; then
-    google-drive-ocamlfuse "$GOOGLE_DRIVE"
-fi
 
 # for kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)

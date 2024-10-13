@@ -1,15 +1,3 @@
-# fzf
-if [ -n "${commands[fzf]}" ]; then
-    eval "$(fzf --zsh)"
-fi
-export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-export FZF_DEFAULT_OPTS='--reverse --border --ansi'
-
-export FZF_CTRL_T_COMMAND="rg --files --hidden --follow --ignore-file=$XDG_CONFIG_HOME/ripgrep/ignore"
-export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
-
-export FZF_TMUX_OPTS="-p 80%"
-
 # gpg-agent
 if [[ "$OS" == 'Darwin' ]]; then
     if command -v gpgconf > /dev/null && ! pgrep -u "$USER" gpg-agent > /dev/null; then
