@@ -292,7 +292,7 @@ common = [{ name = "pyright", method = "nix-hm" }]
 ## mise
 [mise]
 type = "dev"
-linux = [{ name = "mise", method = "nix-hm" }]
+common = [{ name = "mise", method = "nix-hm" }]
 
 ### for python build
 ubuntu = [

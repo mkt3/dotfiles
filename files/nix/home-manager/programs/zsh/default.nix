@@ -65,7 +65,7 @@
           export SHELL_SESSIONS_DISABLE=1
 
           if [[ "$ARCH" == 'arm64' ]]; then
-              export PATH="/opt/homebrew/bin:''${MAC_DEFAULT_PATH}"
+              export PATH="/usr/local/bin:/opt/homebrew/bin:''${MAC_DEFAULT_PATH}"
           elif [[ "$ARCH" == 'x86_64' ]]; then
                export PATH="/usr/local/bin:''${MAC_DEFAULT_PATH}"
           fi

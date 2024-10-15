@@ -8,11 +8,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-xOIP51kFQTy9RbCGQo5gJGMzl/WhZlJ+lCtMOaMCnB8=",
+            "sha256": "sha256-+D2t6zBeucu+VdOL+oxe9Z/5NpFonW0fP2YcUV67MT8=",
             "type": "url",
-            "url": "https://github.com/nikitabobko/AeroSpace/releases/download/v0.14.2-Beta/AeroSpace-v0.14.2-Beta.zip"
+            "url": "https://github.com/nikitabobko/AeroSpace/releases/download/v0.15.2-Beta/AeroSpace-v0.15.2-Beta.zip"
         },
-        "version": "v0.14.2-Beta"
+        "version": "v0.15.2-Beta"
     },
     "meetingbar": {
         "cargoLocks": null,
