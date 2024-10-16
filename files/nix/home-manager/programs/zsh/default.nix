@@ -113,13 +113,13 @@
       # Function to compile only files in ~/.config/zsh
       function ensure_zcompiled {
         local target_dir="''$HOME/.config/zsh"
-        local compiled="''$'1.zwc"
+        local compiled="''$1.zwc"
 
         # Check if the file is in the target directory
         if [[ "''$1" == "''$target_dir/"* ]]; then
           if [[ ! -r "''$compiled" || "''$1" -nt "''$compiled" ]]; then
             echo "\033[1;36mCompiling\033[m ''$1"
-            zcompile "''$1"
+            zcompile "''$1" "''$compiled"
           fi
         fi
       }
