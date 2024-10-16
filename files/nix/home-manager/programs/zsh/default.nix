@@ -2,7 +2,7 @@
 {
   programs.zsh = {
     enable = true;
-    enableCompletion = false;
+    enableCompletion = true;
 
     dotDir = ".config/zsh";
 

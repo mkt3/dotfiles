@@ -36,6 +36,8 @@ pre_setup_nix() {
     fi
     rm -rf  "${XDG_CONFIG_HOME}/nix"
     cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"
+    ln -sf "${nix_config_dir}/nix.conf_temp" "${XDG_CONFIG_HOME}/nix.conf"
+
     mv "$nix_main_template_flake" "$nix_main_flake"
     if [ "$DISTRO" = "NixOS" ]; then
        cp -rf "/etc/nixos/hardware-configuration.nix" "${nix_main_flake_dir}/systems/nixos"
@@ -46,4 +48,7 @@ pre_setup_nix() {
     "$sed_command" -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
     "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
     "$sed_command" -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
+
+    command -v find > /dev/null 2>&1 && find "$HOME/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
+
 }

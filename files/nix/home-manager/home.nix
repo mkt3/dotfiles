@@ -1,9 +1,24 @@
-{ username, homeDirectory, ... }:
 {
-  home.username = username;
-  home.homeDirectory = homeDirectory;
-  home.stateVersion = "24.05";
-  home.extraOutputsToInstall = [ "dev" ];
+  pkgs,
+  username,
+  homeDirectory,
+  lib,
+  ...
+}:
+{
+  home = {
+    username = username;
+    homeDirectory = homeDirectory;
+    stateVersion = "24.05";
+    extraOutputsToInstall = [ "dev" ];
+
+    activation = {
+      rmSomeThing = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        rm -rf ${homeDirectory}/.nix-defexpr
+        rm -rf ${homeDirectory}/.nix-profile
+      '';
+    };
+  };
 
   xdg.enable = true;
 
@@ -14,9 +29,21 @@
 
   programs.home-manager.enable = true;
 
-  nix.gc = {
-    automatic = true;
-    frequency = "daily";
-    options = "--delete-older-than 3d";
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      use-xdg-base-directories = true;
+      cores = 0;
+    };
+
+    gc = {
+      automatic = true;
+      frequency = "daily";
+      options = "--delete-older-than 3d";
+    };
   };
 }
