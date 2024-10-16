@@ -36,7 +36,6 @@ pre_setup_nix() {
     fi
     rm -rf  "${XDG_CONFIG_HOME}/nix"
     cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"
-    ln -sf "${nix_config_dir}/nix.conf_temp" "${XDG_CONFIG_HOME}/nix.conf"
 
     mv "$nix_main_template_flake" "$nix_main_flake"
     if [ "$DISTRO" = "NixOS" ]; then

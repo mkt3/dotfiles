@@ -11,7 +11,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     xremap = {
       url = "github:xremap/nix-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -113,6 +116,7 @@
         inherit pkgs;
         extraSpecialArgs = specialArgs;
         modules = [
+          { nix.package = pkgs.nix; }
           (import ./home-manager/home.nix)
         ];
       };

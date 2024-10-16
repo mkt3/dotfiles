@@ -16,8 +16,6 @@
     shell = pkgs.zsh;
   };
 
-  nix.settings.trusted-users = [ username ];
-
   programs.zsh = {
     enable = true;
     enableCompletion = false;

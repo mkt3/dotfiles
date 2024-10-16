@@ -30,7 +30,6 @@
   programs.home-manager.enable = true;
 
   nix = {
-    package = pkgs.nix;
     settings = {
       experimental-features = [
         "nix-command"
@@ -38,6 +37,7 @@
       ];
       use-xdg-base-directories = true;
       cores = 0;
+      trusted-users = [ username ];
     };
 
     gc = {

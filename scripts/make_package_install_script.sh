@@ -96,23 +96,22 @@ if [[ "$os_name" == "darwin" ]]; then
     if ! (type darwin-rebuild > /dev/null 2>&1); then
         echo "sudo mv /etc/shells{,.before-nix-darwin}" >> "$install_script_path"
         echo "sudo mv /etc/nix/nix.conf{,.before-nix-darwin}" >> "$install_script_path"
-        # echo "sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificate
-        echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
+        echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
     else
-        echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
+        echo "cd ${nix_dir} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -" >> "$install_script_path"
         echo "darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}" >> "$install_script_path"
     fi
 elif [[ "$os_name" == "nixos" ]]; then
     echo "title \"Setup nix\"" >> "$install_script_path"
-    echo "cd ${nix_dir} && nix flake update && cd -" >> "$install_script_path"
+    echo "cd ${nix_dir} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -" >> "$install_script_path"
     echo "sudo nixos-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}" >> "$install_script_path"
 else
     echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
     if (type home-manager > /dev/null 2>&1); then
-        echo "nix flake update --flake ${nix_dir}" >> "$install_script_path"
+        echo "nix --extra-experimental-features \"nix-command flakes\" flake update --flake ${nix_dir}" >> "$install_script_path"
         echo "home-manager switch --flake ${nix_dir}" >> "$install_script_path"
     else
-        echo "nix run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
+        echo "nix --extra-experimental-features \"nix-command flakes\" run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
     fi
     echo "__ETC_PROFILE_NIX_SOURCED=\"\"" >> "$install_script_path"
 fi

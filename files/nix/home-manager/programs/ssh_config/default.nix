@@ -3,8 +3,8 @@
   programs.ssh = {
     enable = true;
     includes = [ "~/.ssh/extra_config" ];
-    serverAliveCountMax = 3;
-    serverAliveInterval = 30;
+    serverAliveCountMax = 5;
+    serverAliveInterval = 60;
     hashKnownHosts = true;
   };
 
