@@ -6,4 +6,5 @@ files/nix/home-manager/packages.nix
 files/nix/home-manager/system_packages.nix
 files/nix/systems/darwin/system_packages.nix
 files/nix/flake.lock
+files/nix/nix.conf
 files/nix/systems/nixos/system_packages.nix

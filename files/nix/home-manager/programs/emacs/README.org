@@ -72,10 +72,10 @@
            pixel-scroll-precision-mode 1)
    #+end_src
 ** symlink
-   Automatically visit symlink sources
+   Disable visit symlink sources
    #+begin_src emacs-lisp
      (use-package vc-hooks :custom (vc-follow-symlinks t))
-     (setq-default find-file-visit-truename t)
+     (setq-default find-file-visit-truename nil)
      #+end_src
 ** tab
    #+begin_src emacs-lisp

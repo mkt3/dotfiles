@@ -72,8 +72,10 @@ IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | jq --arg os "$os
 echo "# pre functions" >> "$install_script_path"
 for func in "${functions[@]}"; do
     if type "pre_${func}" &> /dev/null; then
-        echo "title \"Pre-setup ${func#*_}\""  >> "$install_script_path"
-        echo "pre_${func}" >> "$install_script_path"
+        {
+            echo "title \"Pre-setup ${func#*_}\""
+            echo "pre_${func}"
+        } >> "$install_script_path"
     fi
 done
 
@@ -94,22 +96,31 @@ if [[ "$os_name" == "darwin" ]]; then
 
     echo "title \"Setup with nix-darwin\"" >> "$install_script_path"
     if ! (type darwin-rebuild > /dev/null 2>&1); then
-        echo "sudo mv /etc/shells{,.before-nix-darwin}" >> "$install_script_path"
-        echo "sudo mv /etc/nix/nix.conf{,.before-nix-darwin}" >> "$install_script_path"
-        echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake ${nix_dir}" >> "$install_script_path"
+        {
+            echo "sudo mv /etc/shells{,.before-nix-darwin}"
+            echo "sudo mv /etc/nix/nix.conf{,.before-nix-darwin}"
+            echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake ${nix_dir}"
+        } >> "$install_script_path"
     else
-        echo "cd ${nix_dir} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -" >> "$install_script_path"
-        echo "darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}" >> "$install_script_path"
+        {
+            echo "cd ${nix_dir} && nix flake update && cd -"
+            echo "darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
+        } >> "$install_script_path"
     fi
 elif [[ "$os_name" == "nixos" ]]; then
-    echo "title \"Setup nix\"" >> "$install_script_path"
-    echo "cd ${nix_dir} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -" >> "$install_script_path"
-    echo "sudo nixos-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}" >> "$install_script_path"
+    {
+        echo "title \"Setup nix\""
+        echo "cd ${nix_dir} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -"
+        echo "sudo nixos-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
+    } >> "$install_script_path"
+
 else
     echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
     if (type home-manager > /dev/null 2>&1); then
-        echo "nix --extra-experimental-features \"nix-command flakes\" flake update --flake ${nix_dir}" >> "$install_script_path"
-        echo "home-manager switch --flake ${nix_dir}" >> "$install_script_path"
+        {
+            echo "nix flake update --flake ${nix_dir}"
+            echo "home-manager switch --flake ${nix_dir}"
+        } >> "$install_script_path"
     else
         echo "nix --extra-experimental-features \"nix-command flakes\" run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
     fi
@@ -235,8 +246,10 @@ fi
 echo "# post functions" >> "$install_script_path"
 for func in "${functions[@]}"; do
     if type "post_${func}" &> /dev/null; then
-        echo "title \"Post-setup ${func#*_}\""  >> "$install_script_path"
-        echo "post_${func}" >> "$install_script_path"
+        {
+            echo "title \"Post-setup ${func#*_}\""
+            echo "post_${func}"
+        } >> "$install_script_path"
     fi
 done
 

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -139,6 +139,17 @@
       zsh-defer source "''${ZDOTDIR}/defer.zsh"
       zsh-defer unfunction source
     '';
+
+    history = {
+      path = "${config.xdg.dataHome}/zsh/zsh_history";
+      size = 50000;
+      save = 50000;
+      ignoreAllDups = true;
+      ignoreSpace = true;
+      ignoreDups = true;
+      share = true;
+      extended = true;
+    };
   };
 
   home.file.".local/bin/tmux_session.sh".source = ./tmux_session.sh;

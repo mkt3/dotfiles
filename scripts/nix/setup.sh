@@ -32,8 +32,12 @@ pre_setup_nix() {
     is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
 
     if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
-        cp -rf "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
+        cp -f "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
     fi
+    if [ -L "${XDG_CONFIG_HOME}/nix/nix.conf" ]; then
+        cp -fP "${XDG_CONFIG_HOME}/nix/nix.conf" "$nix_config_dir"
+    fi
+
     rm -rf  "${XDG_CONFIG_HOME}/nix"
     cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"
 
@@ -48,6 +52,6 @@ pre_setup_nix() {
     "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
     "$sed_command" -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
 
-    command -v find > /dev/null 2>&1 && find "$HOME/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
+    command -v find > /dev/null 2>&1 && find "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
 
 }
