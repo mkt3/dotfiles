@@ -16,6 +16,8 @@ pre_setup_nix() {
     info "Updating nix packages with nvfetcher"
     if type nvfetcher > /dev/null 2>&1; then
         nvfetcher -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
+    elif type nix > /dev/null 2>&1; then
+        nix run github:berberman/nvfetcher -- -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
     fi
 
     if [ "$OS" = "Darwin" ]; then
@@ -52,6 +54,11 @@ pre_setup_nix() {
     "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
     "$sed_command" -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
 
-    command -v find > /dev/null 2>&1 && find "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
+
+    if type find > /dev/null 2>&1; then
+        find "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
+    elif type nix > /dev/null 2>&1; then
+        nix run nixpkgs#findutils -- "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
+    fi
 
 }

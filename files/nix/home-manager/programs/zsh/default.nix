@@ -59,7 +59,7 @@
       # PATH
       if [[ "$DISTRO" == 'NixOS' ]];then
           export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:''${PATH}"
-          export PATH="''${HOME}/.nix-profile/bin:/etc/profiles/per-user/''${USER}/bin:/run/wrappers/bin:''${PATH}"
+          export PATH="''${XDG_STATE_HOME}/nix/profiles/profile/bin:/etc/profiles/per-user/''${USER}/bin:/run/wrappers/bin:''${PATH}"
       elif [[ "$DISTRO" == 'Darwin' ]];then
           MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
           export SHELL_SESSIONS_DISABLE=1
@@ -72,6 +72,7 @@
           # nix
           export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:''${PATH}"
           export PATH="/etc/profiles/per-user/''${USER}/bin:''${PATH}"
+          export PATH="''${XDG_STATE_HOME}/nix/profiles/profile/bin:''${PATH}"
           export NIX_PATH="darwin-config=$HOME/.conifg/nix/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
           export NIX_SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
           export TERMINFO_DIRS="/run/current-system/sw/share/terminfo:/nix/var/nix/profiles/default/share/terminfo:''${TERMINFO_DIRS}"
@@ -92,6 +93,7 @@
           if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
               . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
           fi
+          export PATH="''${XDG_STATE_HOME}/nix/profiles/profile/bin:''${PATH}"
           export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
       fi
       export PATH="''${HOME}/.local/bin:''${PATH}"
@@ -165,5 +167,10 @@
     };
     "zsh/sheldon/plugins.toml".source = ./sheldon/plugins.toml;
     "zsh/abbreviations".source = ./abbreviations;
+  };
+
+  programs.dircolors = {
+    enable = true;
+    enableZshIntegration = true;
   };
 }
