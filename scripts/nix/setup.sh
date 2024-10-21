@@ -20,11 +20,7 @@ pre_setup_nix() {
         nix run github:berberman/nvfetcher -- -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
     fi
 
-    if [ "$OS" = "Darwin" ]; then
-        sed_command=$(type gsed > /dev/null 2>&1 && echo "gsed" || echo "sed")
-    elif [ "$OS" = "Linux" ]; then
-        sed_command="sed"
-    fi
+    sed_command="sed"
 
     host_name="$HOSTNAME_ENV"
 
@@ -55,10 +51,5 @@ pre_setup_nix() {
     "$sed_command" -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
 
 
-    if type find > /dev/null 2>&1; then
-        find "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
-    elif type nix > /dev/null 2>&1; then
-        nix run nixpkgs#findutils -- "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
-    fi
-
+    find "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
 }

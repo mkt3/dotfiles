@@ -253,4 +253,11 @@ for func in "${functions[@]}"; do
     fi
 done
 
-echo "success \"Complete!\""  >> "$install_script_path"
+cat << 'EOF' >> "$install_script_path"
+# post process
+if [ "$(nix profile list | wc -l)" -gt 1 ]; then
+    nix profile remove --all
+fi
+
+success "Complete!"
+EOF

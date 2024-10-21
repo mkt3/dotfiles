@@ -9,10 +9,6 @@ set -eu
 install_essential_packages() {
     title "Install/Update essential packages"
 
-    mkdir -p "$XDG_CONFIG_HOME"
-    mkdir -p "$XDG_CACHE_HOME"
-    mkdir -p "$XDG_DATA_HOME"
-    mkdir -p "$XDG_STATE_HOME"
     mkdir -p "$GNUPGHOME" && chmod 700 "$GNUPGHOME"
     mkdir -p "${HOME}/.local/bin"
 
@@ -43,10 +39,6 @@ install_macos() {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 
-    if (( BASH_VERSINFO[0] < 4 )); then
-        brew install bash yj gnu-sed
-    fi
-
     if ! infocmp tmux-256color >/dev/null 2>&1; then
         brew install ncurses
         tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
@@ -59,29 +51,27 @@ install_macos() {
 install_linux() {
     case "$DISTRO" in
         "Arch Linux")
-            sudo pacman -S --needed --noconfirm git jq wget curl xz base-devel pacman-contrib
+            sudo pacman -S --needed --noconfirm git curl base-devel pacman-contrib
             if ! (type yay > /dev/null 2>&1); then
                 local yay_repo_dir="${HOME}/.local/src/yay"
                 git clone https://aur.archlinux.org/yay.git "$yay_repo_dir" && cd "$yay_repo_dir" && makepkg -si
             fi
             ;;
         "Ubuntu")
-            sudo apt-get -y install git jq make
             ;;
         *)
             ;;
     esac
-
-    if ! (type yj > /dev/null 2>&1); then
-        local yj_path="${HOME}/.local/bin/yj"
-        wget https://github.com/sclevine/yj/releases/latest/download/yj-linux-amd64 -O "$yj_path"
-        chmod +x "$yj_path"
-    fi
 }
 
 install_nix() {
     if ! (type nix > /dev/null 2>&1); then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+        nix profile install nixpkgs#bash
+        nix profile install nixpkgs#yj
+        nix profile install nixpkgs#jq
+        nix profile install nixpkgs#gnused
+        nix profile install nixpkgs#findutils
     else
         if [[ "$OS" == "Linux" ]]; then
             sudo -i nix upgrade-nix
