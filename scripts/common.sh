@@ -32,4 +32,7 @@ success() {
     echo -e "${COLOR_GREEN}$1${COLOR_NONE}"
 }
 
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
+XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
+
 . "${REPO_DIR}/files/nix/home-manager/programs/zsh/path.zsh"

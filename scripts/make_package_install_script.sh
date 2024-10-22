@@ -63,6 +63,21 @@ for filepath in $setup_files; do
     . "$filepath"
 done
 
+packages=(
+    "bash"
+    "yj"
+    "jq"
+    "gnused"
+    "findutils"
+)
+
+installed_profiles=$(nix profile list)
+
+for package in "${packages[@]}"; do
+    if echo "$installed_profiles" | glrep -q "$package"; then
+        nix profile remove "$package"
+    fi
+done
 EOF
 
 
@@ -253,11 +268,4 @@ for func in "${functions[@]}"; do
     fi
 done
 
-cat << 'EOF' >> "$install_script_path"
-# post process
-if [ "$(nix profile list | wc -l)" -gt 1 ]; then
-    nix profile remove --all
-fi
-
-success "Complete!"
-EOF
+echo "success \"Complete!\""  >> "$install_script_path"
