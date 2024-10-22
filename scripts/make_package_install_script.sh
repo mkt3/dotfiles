@@ -74,7 +74,7 @@ packages=(
 installed_profiles=$(nix profile list)
 
 for package in "${packages[@]}"; do
-    if echo "$installed_profiles" | glrep -q "$package"; then
+    if echo "$installed_profiles" | grep -q "$package"; then
         nix profile remove "$package"
     fi
 done
