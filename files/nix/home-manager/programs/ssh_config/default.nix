@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.ssh = {
     enable = true;
@@ -8,14 +8,17 @@
     hashKnownHosts = true;
   };
 
-  home.file.".zshenv".text = ''
-    # ssh
-    export SSH_AGENT_PID=""
-    if [[ "$OS" == 'Linux' ]];then
-        export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
-    elif [[ "$OS" == 'Darwin' ]];then
-        export SSH_AUTH_SOCK="''${HOME}/.gnupg/S.gpg-agent.ssh"
-    fi
-  '';
-
+  home.file.".zshenv".text =
+    ''
+      # ssh
+      export SSH_AGENT_PID=""
+    ''
+    + (
+      if pkgs.stdenv.isLinux then
+        "export SSH_AUTH_SOCK=\"\${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh\"\n"
+      else if pkgs.stdenv.isDarwin then
+        "export SSH_AUTH_SOCK=\"\${HOME}/.gnupg/S.gpg-agent.ssh\"\n"
+      else
+        ""
+    );
 }

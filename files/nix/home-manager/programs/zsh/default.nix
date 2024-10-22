@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, isGUI, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -6,40 +6,39 @@
 
     dotDir = ".config/zsh";
 
-    envExtra = ''
-      if [ -z "$BASH_VERSION" ];then
-        setopt no_global_rcs
-      fi
+    envExtra =
+      ''
+        if [ -z "$BASH_VERSION" ];then
+          setopt no_global_rcs
+        fi
 
-      # Language
-      export LANGUAGE="en_US.UTF-8"
-      export LANG="$LANGUAGE"
-      export LC_ALL="$LANGUAGE"
-      export LC_CTYPE="$LANGUAGE"
+        # Language
+        export LANGUAGE="en_US.UTF-8"
+        export LANG="$LANGUAGE"
+        export LC_ALL="$LANGUAGE"
+        export LC_CTYPE="$LANGUAGE"
 
-      # Editor
-      export EDITOR=vim
-      export CVSEDITOR="$EDITOR"
-      export SVN_EDITOR="$EDITOR"
-      export GIT_EDITOR="$EDITOR"
+        # Editor
+        export EDITOR=vim
+        export CVSEDITOR="$EDITOR"
+        export SVN_EDITOR="$EDITOR"
+        export GIT_EDITOR="$EDITOR"
 
-      # less
-      export LESS='-g -i -M -R -S -W -x4'
+        # less
+        export LESS='-g -i -M -R -S -W -x4'
 
-      # Pager
-      export PAGER=less
+        # Pager
+        export PAGER=less
 
-      # personal env
-      [ -d "''${HOME}/Nextcloud/personal_config/env" ] && . "''${HOME}/Nextcloud/personal_config/env/zshenv"
+        # terminfo
+        export TERMINFO="''${XDG_DATA_HOME}/terminfo"
+        export TERMINFO_DIRS="''${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+        export COLORTERM="truecolor"
 
-      # terminfo
-      export TERMINFO="''${XDG_DATA_HOME}/terminfo"
-      export TERMINFO_DIRS="''${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
-      export COLORTERM="truecolor"
-
-      # path env
-      source "''${HOME}/.config/zsh/path.zsh"
-    '';
+        # path env
+        source "''${HOME}/.config/zsh/path.zsh"
+      ''
+      + (if isGUI then "# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
 
     initExtraFirst = ''
       # https://zenn.dev/fuzmare/articles/zsh-plugin-manager-cache

@@ -17,6 +17,6 @@ jobs:
     - name: Run install.sh
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/results
-        echo -e "DEV_ENV=y\nGUI_ENV=y" > ${GITHUB_WORKSPACE}/results/env_settings
+        echo -e "DEV_ENV=y\nGUI_ENV=y\nHOSTNAME_ENV=macos-test" > ${GITHUB_WORKSPACE}/results/env_settings
         echo "GITHUB_ACTIONS=y" >> ${GITHUB_WORKSPACE}/files/zsh/zshenv.zsh
         INSTALL_DIR=${GITHUB_WORKSPACE} bash ${GITHUB_WORKSPACE}/install.sh

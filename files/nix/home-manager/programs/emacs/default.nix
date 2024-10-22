@@ -42,9 +42,10 @@ in
     };
   };
 
-  home.file.".zshenv".text = ''
-    # password store
-    [ -d "''${HOME}/Nextcloud/personal_config/password-store" ] && export PASSWORD_STORE_DIR="''${HOME}/Nextcloud/personal_config/password-store"
-  '';
-
+  home.file.".zshenv" = lib.mkIf isGUI {
+    text = ''
+      # password store
+      export PASSWORD_STORE_DIR="''${HOME}/Nextcloud/personal_config/password-store"
+    '';
+  };
 }
