@@ -38,7 +38,7 @@
         # path env
         source "''${HOME}/.config/zsh/path.zsh"
       ''
-      + (if isGUI then "# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
+      + (if isGUI then "\n# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
 
     initExtraFirst = ''
       # https://zenn.dev/fuzmare/articles/zsh-plugin-manager-cache

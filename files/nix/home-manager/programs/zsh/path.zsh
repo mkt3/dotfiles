@@ -29,7 +29,7 @@ elif [[ "$DISTRO" == 'Darwin' ]];then
     export XDG_CONFIG_DIRS="/run/current-system/sw/etc/xdg:/nix/var/nix/profiles/default/etc/xdg"
     export XDG_DATA_DIRS="/run/current-system/sw/share:/nix/var/nix/profiles/default/share"
     export NIX_USER_PROFILE_DIR="/etc/profiles/per-user/${USER}"
-    export NIX_PROFILES="/nix/var/nix/profiles/default /run/current-system/sw"
+    export NIX_PROFILES="/nix/var/nix/profiles/default /run/current-system/sw /etc/profiles/per-user/${USER}"
     # Set up secure multi-user builds: non-root users build through the
     # Nix daemon.
     if [ ! -w /nix/var/nix/db ]; then

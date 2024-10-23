@@ -31,6 +31,4 @@
     export MISE_CACHE_DIR="''${XDG_CACHE_HOME}/mise"
     export MISE_USE_TOML=1
   '';
-
-  home.file.".local/share/zsh/completion/_mise".source = ./_mise;
 }

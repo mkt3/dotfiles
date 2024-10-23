@@ -18,5 +18,5 @@ jobs:
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/results
         echo -e "DEV_ENV=y\nGUI_ENV=y\nHOSTNAME_ENV=ubuntu-test" > ${GITHUB_WORKSPACE}/results/env_settings
-        echo "GITHUB_ACTIONS=y" >> ${GITHUB_WORKSPACE}/files/zsh/zshenv.zsh
+        echo "GITHUB_ACTIONS=y" >> ${GITHUB_WORKSPACE}/files/nix/home-manager/programs/zsh/path.zsh
         INSTALL_DIR=${GITHUB_WORKSPACE} bash ${GITHUB_WORKSPACE}/install.sh
