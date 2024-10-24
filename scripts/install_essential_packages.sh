@@ -67,16 +67,25 @@ install_linux() {
 install_nix() {
     if ! (type nix > /dev/null 2>&1); then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-        nix profile install nixpkgs#bash
-        nix profile install nixpkgs#yj
-        nix profile install nixpkgs#jq
-        nix profile install nixpkgs#gnused
-        nix profile install nixpkgs#findutils
     else
         if [[ "$OS" == "Linux" ]]; then
             sudo -i nix upgrade-nix
         fi
     fi
+
+    packages=(
+        "bash"
+        "yj"
+        "jq"
+        "gnused"
+        "findutils"
+    )
+
+    for pkg in "${packages[@]}"; do
+        if ! command -v "$pkg" &> /dev/null; then
+            nix profile install "nixpkgs#$pkg"
+        fi
+    done
 }
 
 install_essential_packages

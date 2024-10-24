@@ -517,15 +517,11 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 ## macos only
 [utils]
 type = "gui"
-darwin = [
-  { name = "appcleaner", method = "nix-hm" },
-]
+darwin = [{ name = "appcleaner", method = "nix-hm" }]
 
 [scroll-reverser]
 type = "gui"
-darwin = [
-  { name = "scroll-reverser", method = "nix-hm" },
-]
+darwin = [{ name = "scroll-reverser", method = "nix-hm" }]
 
 [WireGuard]
 type = "gui"
