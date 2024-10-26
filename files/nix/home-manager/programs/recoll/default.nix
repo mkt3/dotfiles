@@ -13,5 +13,6 @@
   home.file.".zshenv".text = ''
     # recoll
     export RECOLL_CONFDIR="''${XDG_CONFIG_HOME}/recoll"
+    export PATH="''${PATH}:/Applications/Recoll.app/Contents/MacOS"
   '';
 }

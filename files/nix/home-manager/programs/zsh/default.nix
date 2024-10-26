@@ -36,7 +36,10 @@
         export COLORTERM="truecolor"
 
         # path env
-        source "''${HOME}/.config/zsh/path.zsh"
+        if [[ -z "$ZSH_PATH_LOADED" ]]; then
+            source "''${HOME}/.config/zsh/path.zsh"
+            export ZSH_PATH_LOADED=1
+        fi
       ''
       + (if isGUI then "\n# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
 

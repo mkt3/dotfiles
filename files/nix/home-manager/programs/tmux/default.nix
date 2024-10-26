@@ -83,8 +83,8 @@
       set-option -g status-left "#[fg=black,bg=cyan,bold] #h:#[fg=black,bg=cyan,nobold]#S #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
       set-option -g status-right "#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] #(tmux-mem-cpu-load --interval 2 -a 1  -g 0) "
 
-      set-option -g default-shell "${pkgs.zsh}/bin/zsh"
-      set -g default-command "${pkgs.zsh}/bin/zsh"
+      set -gu default-command
+      set -g default-shell "$SHELL"
     '';
   };
 }

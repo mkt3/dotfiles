@@ -801,7 +801,7 @@
     (setq gc-cons-threshold most-positive-fixnum)
     (add-hook 'emacs-startup-hook
               (lambda ()
-                (setq gc-cons-threshold (* 124 1024 1024))))
+                (setq gc-cons-threshold (* 1024 1024 1024))))
 
     (setq gc-cons-percentage 0.2
           garbage-collection-messages t)
@@ -1659,11 +1659,11 @@
             (expand-file-name "tramp-connection-history" user-emacs-directory))
       (setq password-cache-expiry nil)
       :config
-      ; https://github.com/alexluigit/dirvish/blob/main/docs/CUSTOMIZING.org#tramp-integration
+      ;; https://github.com/alexluigit/dirvish/blob/main/docs/CUSTOMIZING.org#tramp-integration
       (add-to-list 'tramp-connection-properties
                    (list (regexp-quote "/ssh:")
                          "direct-async-process" t))
-      (setq tramp-verbose 0)
+      (setq tramp-verbose 1)
       (setq tramp-chunksize 2000)
       (setq tramp-use-ssh-controlmaster-options nil)
       (customize-set-variable 'tramp-ssh-controlmaster-options
