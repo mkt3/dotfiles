@@ -281,7 +281,11 @@
 
      (use-package nerd-icons-dired
        :ensure t
-       :hook (dired-mode-hook . nerd-icons-dired-mode))
+       :hook   (dired-mode . (lambda ()
+                               ;; avoid turning enabling nerd-icons-dired for tramp buffers
+                               ;; as it seems to slow down the display
+                               (unless (file-remote-p default-directory)
+                                 (nerd-icons-dired-mode 1)))))
 
      (use-package nerd-icons-completion
        :ensure t
@@ -943,8 +947,7 @@
         (global-diff-hl-mode)
         (diff-hl-margin-mode)
         :hook ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
-               (magit-post-refresh-hook . diff-hl-magit-post-refresh)
-               (dired-mode-hook . diff-hl-dired-mode)))
+               (magit-post-refresh-hook . diff-hl-magit-post-refresh)))
     #+end_src
 ** languages
 *** emacs lisp
