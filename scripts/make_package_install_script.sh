@@ -37,7 +37,7 @@ common_methods=("nix" "nix-hm")
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
-json_content=$(yj -t < "$toml_file")
+json_content=$(nix run nixpkgs#yj -- -t < "$toml_file")
 
 setup_files="${REPO_DIR:-..}/scripts/**/setup.sh"
 for filepath in $setup_files; do
@@ -62,27 +62,11 @@ for filepath in $setup_files; do
     # shellcheck disable=SC1090
     . "$filepath"
 done
-
-packages=(
-    "bash"
-    "yj"
-    "jq"
-    "gnused"
-    "findutils"
-)
-
-installed_profiles=$(nix profile list)
-
-for package in "${packages[@]}"; do
-    if echo "$installed_profiles" | grep -q "$package"; then
-        nix profile remove "$package"
-    fi
-done
 EOF
 
 
 # pre functions
-IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | jq --arg os "$os_name" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select((.value["common"] != null or .value[$os] != null) and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | (.value["common"][]?, .value[$os][]?) | .function | select(. != null)' && printf '\0')
+IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | nix run nixpkgs#jq -- --arg os "$os_name" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select((.value["common"] != null or .value[$os] != null) and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | (.value["common"][]?, .value[$os][]?) | .function | select(. != null)' && printf '\0')
 
 echo "# pre functions" >> "$install_script_path"
 for func in "${functions[@]}"; do
@@ -143,7 +127,7 @@ else
 fi
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
-    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | jq --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
+    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | nix run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
       to_entries | .[] |
       select(
         (.value.common != null or ($is_linux and .value.linux != null) or .value[$os] != null) and
@@ -203,7 +187,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             while IFS= read -r -d '' file
             do
                 file_list+=("$(basename "$file")")
-            done < <(find "$programs_nix_dir" -type d -print0)
+            done < <(nix run nixpkgs#findutils -- "$programs_nix_dir" -type d -print0)
 
             for package in "${package_names[@]}"; do
                 package_name=" $package "

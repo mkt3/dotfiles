@@ -2,6 +2,8 @@
 
 INSTALL_DIR="${INSTALL_DIR:-$HOME/workspace/ghq/github.com/mkt3/dotfiles}"
 
+. "${INSTALL_DIR}/files/nix/home-manager/programs/zsh/path.zsh"
+
 if [ ! -d "$INSTALL_DIR" ]; then
     echo "Cloning dotfiles..."
     git clone https://github.com/mkt3/dotfiles "$INSTALL_DIR"

@@ -16,11 +16,9 @@ pre_setup_nix() {
     info "Updating nix packages with nvfetcher"
     if type nvfetcher > /dev/null 2>&1; then
         nvfetcher -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
-    elif type nix > /dev/null 2>&1; then
+    else
         nix run github:berberman/nvfetcher -- -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
     fi
-
-    sed_command="sed"
 
     host_name="$HOSTNAME_ENV"
 
@@ -44,12 +42,11 @@ pre_setup_nix() {
        cp -rf "/etc/nixos/hardware-configuration.nix" "${nix_main_flake_dir}/systems/nixos"
     fi
 
-    "$sed_command" -i "s|__SYSTEM__|${nix_platform}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__HOSTNAME__|${host_name}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
-    "$sed_command" -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
-    "$sed_command" -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
+    nix run nixpkgs#gnused -- -i "s|__SYSTEM__|${nix_platform}|g" "$nix_main_flake"
+    nix run nixpkgs#gnused -- -i "s|__HOSTNAME__|${host_name}|g" "$nix_main_flake"
+    nix run nixpkgs#gnused -- -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
+    nix run nixpkgs#gnused -- -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
+    nix run nixpkgs#gnused -- -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
 
-
-    find "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
+    nix run nixpkgs#findutils -- "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
 }

@@ -72,20 +72,6 @@ install_nix() {
             sudo -i nix upgrade-nix
         fi
     fi
-
-    packages=(
-        "bash"
-        "yj"
-        "jq"
-        "gnused"
-        "findutils"
-    )
-
-    for pkg in "${packages[@]}"; do
-        if ! command -v "$pkg" &> /dev/null; then
-            nix profile install "nixpkgs#$pkg"
-        fi
-    done
 }
 
 install_essential_packages

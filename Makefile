@@ -36,7 +36,7 @@ install_essential_packages:
 
 .PHONY: $(INSTALL_SCRIPT)
 $(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
-	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash $(MAKE_INSTALL_SCRIPT)
+	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) nix run nixpkgs#bash $(MAKE_INSTALL_SCRIPT)
 
 .PHONY: install_packages
 install_packages: $(INSTALL_SCRIPT)
