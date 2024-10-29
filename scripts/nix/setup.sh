@@ -48,5 +48,5 @@ pre_setup_nix() {
     nix run nixpkgs#gnused -- -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
     nix run nixpkgs#gnused -- -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
 
-    nix run nixpkgs#findutils -- "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
+    [ -d "${HOME}/.config/zsh" ] && nix run nixpkgs#findutils -- "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
 }
