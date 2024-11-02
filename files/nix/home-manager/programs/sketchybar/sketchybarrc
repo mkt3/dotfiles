@@ -91,12 +91,12 @@ sketchybar --add item clock right                              \
                          label.padding_right=2                 \
            --subscribe network wifi_change                     \
                                                                \
-           --add alias MeetingBar right                        \
-           --set MeetingBar alias.update_freq=60               \
-                            label.padding_left=2               \
-                            icon.padding_right=2               \
-                            icon.padding_left=2                \
-                            label.padding_right=2
+           # --add alias MeetingBar right                        \
+           # --set MeetingBar alias.update_freq=60               \
+           #                  label.padding_left=2               \
+           #                  icon.padding_right=2               \
+           #                  icon.padding_left=2                \
+           #                  label.padding_right=2
 # sketchybar --hotload on
 sketchybar --update
 
