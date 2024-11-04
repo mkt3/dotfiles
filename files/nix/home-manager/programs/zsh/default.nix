@@ -1,4 +1,9 @@
-{ config, isGUI, ... }:
+{
+  pkgs,
+  config,
+  isGUI,
+  ...
+}:
 {
   programs.zsh = {
     enable = true;
@@ -92,6 +97,24 @@
       share = true;
       extended = true;
     };
+
+    shellAliases =
+      {
+        wget = "wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\"";
+        sudo = "TERM=xterm-256color sudo";
+        grep = "grep --color=auto";
+        cp = "cp -i";
+        mv = "mv -i";
+        history = "history -i";
+      }
+      // (
+        if pkgs.stdenv.isLinux then
+          {
+            open = "xdg-open";
+          }
+        else
+          { }
+      );
   };
 
   home.file.".local/bin/tmux_session.sh".source = ./tmux_session.sh;
@@ -101,16 +124,32 @@
       source = ./no_defer.zsh;
       onChange = "rm -rf $HOME/.config/zsh/no_defer.zsh.zwc";
     };
-    "zsh/defer.zsh" = {
-      source = ./defer.zsh;
-      onChange = "rm -rf $HOME/.config/zsh/defer.zsh.zwc";
-    };
     "zsh/path.zsh" = {
       source = ./path.zsh;
       onChange = "rm -rf $HOME/.config/zsh/path.zsh.zwc";
     };
     "zsh/sheldon/plugins.toml".source = ./sheldon/plugins.toml;
     "zsh/abbreviations".source = ./abbreviations;
+  };
+
+  xdg.configFile."zsh/defer.zsh" = {
+    text = ''
+      # rehash
+      zstyle ":completion:*:commands" rehash 1
+
+      # comment
+      setopt INTERACTIVE_COMMENTS
+
+      # terminal title
+      echo -ne "\x1b]0;$HOST\x1b\\"
+
+      # Alias
+      setopt complete_aliases
+
+      if [[ ! -n $TMUX  ]]; then
+          bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
+      fi
+    '';
   };
 
   programs.dircolors = {

@@ -48,4 +48,26 @@ in
       export PASSWORD_STORE_DIR="''${HOME}/Nextcloud/personal_config/password-store"
     '';
   };
+
+  xdg.configFile."zsh/defer.zsh" = {
+    text = ''
+      # Emacs tramp config for zsh
+      if [[ "$TERM" == "dumb" ]]; then
+          unsetopt zle
+          unsetopt prompt_cr
+          unsetopt prompt_subst
+          unfunction precmd
+          unfunction preexec
+          PS1='$ '
+      fi
+    '';
+  };
+
+  programs.zsh.shellAliases = {
+    emacs =
+      if pkgs.stdenv.isDarwin then
+        "${pkgs.emacs}/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+      else
+        "emacs -nw";
+  };
 }

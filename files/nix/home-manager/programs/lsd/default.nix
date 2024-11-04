@@ -53,4 +53,16 @@
       };
     };
   };
+
+  programs.zsh.shellAliases = {
+    ls = "lsd -F";
+  };
+
+  xdg.configFile."zsh/defer.zsh" = {
+    text = ''
+      chpwd() {
+          lsd -F
+      }
+    '';
+  };
 }
