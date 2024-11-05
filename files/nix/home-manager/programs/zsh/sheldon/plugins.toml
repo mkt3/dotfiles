@@ -35,6 +35,8 @@ bindkey -M menuselect '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-comple
 bindkey '^N' history-beginning-search-forward
 bindkey '^P' history-beginning-search-backward
 
+zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored
+
 +autocomplete:recent-directories() {
   typeset -ga reply=("${(@f)$(zoxide query -l)}")
   }

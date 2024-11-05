@@ -76,7 +76,6 @@ zle -N accept-line _date_exec
 unsetopt glob_dots
 unsetopt ignore_eof
 setopt no_flow_control
-setopt auto_cd
 setopt auto_pushd
 setopt no_beep
 setopt no_list_beep
@@ -90,4 +89,7 @@ setopt list_types
 setopt auto_menu
 setopt complete_in_word
 setopt magic_equal_subst
+setopt INTERACTIVE_COMMENTS
+setopt complete_aliases
+setopt EXTENDED_GLOB
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'

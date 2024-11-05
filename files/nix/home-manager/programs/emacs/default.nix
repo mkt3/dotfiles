@@ -6,6 +6,7 @@
 }:
 let
   lib = pkgs.lib;
+  isLinux = pkgs.stdenv.isLinux;
 in
 {
   programs.emacs = {
@@ -21,6 +22,13 @@ in
         if isGUI then
           [
             epkgs.pdf-tools
+          ]
+        else
+          [ ]
+      )
+      ++ (
+        if (isGUI && isLinux) then
+          [
             epkgs.mu4e
           ]
         else
@@ -66,7 +74,7 @@ in
   programs.zsh.shellAliases = {
     emacs =
       if pkgs.stdenv.isDarwin then
-        "${pkgs.emacs}/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+        "\${HOME}/Applications/Home Manager Apps/Emacs.app/Contents/MacOS/Emacs -nw"
       else
         "emacs -nw";
   };

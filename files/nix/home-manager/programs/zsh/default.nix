@@ -10,6 +10,7 @@
     enableCompletion = true;
 
     dotDir = ".config/zsh";
+    autocd = true;
 
     envExtra =
       ''
@@ -77,7 +78,8 @@
       sheldon_cache="''${SHELDON_CONFIG_DIR}/sheldon.zsh"
       sheldon_toml="''${SHELDON_CONFIG_DIR}/plugins.toml"
       if [[ ! -r "''$sheldon_cache" || "''$sheldon_toml" -nt "''$sheldon_cache" ]]; then
-          sheldon source > "''$sheldon_cache"
+        sheldon lock --update
+        sheldon source > "''$sheldon_cache"
       fi
       source "''$sheldon_cache"
       unset sheldon_cache sheldon_toml
@@ -128,7 +130,10 @@
       source = ./path.zsh;
       onChange = "rm -rf $HOME/.config/zsh/path.zsh.zwc";
     };
-    "zsh/sheldon/plugins.toml".source = ./sheldon/plugins.toml;
+    "zsh/sheldon/plugins.toml" = {
+      source = ./sheldon/plugins.toml;
+      onChange = "rm -rf $HOME/.config/zsh/sheldon/sheldon.zs*";
+    };
     "zsh/abbreviations".source = ./abbreviations;
   };
 
@@ -137,14 +142,8 @@
       # rehash
       zstyle ":completion:*:commands" rehash 1
 
-      # comment
-      setopt INTERACTIVE_COMMENTS
-
       # terminal title
       echo -ne "\x1b]0;$HOST\x1b\\"
-
-      # Alias
-      setopt complete_aliases
 
       if [[ ! -n $TMUX  ]]; then
           bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
