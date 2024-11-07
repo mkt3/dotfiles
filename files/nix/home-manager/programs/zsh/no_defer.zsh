@@ -89,7 +89,6 @@ setopt list_types
 setopt auto_menu
 setopt complete_in_word
 setopt magic_equal_subst
-setopt INTERACTIVE_COMMENTS
 setopt complete_aliases
 setopt EXTENDED_GLOB
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'

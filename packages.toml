@@ -9,7 +9,7 @@ type = "basic"
 common = [
   { name = "nix", method = "script", function = "setup_nix" },
   { name = "nix-index", method = "nix-hm" },
-  # { name = "nvfetcher", method = "nix-hm" },
+  { name = "nvfetcher", method = "nix-hm" },
 ]
 [direnv]
 type = "basic"

@@ -800,6 +800,20 @@
        :config
        (global-dmacro-mode))
    #+end_src
+** Casual
+   #+begin_src emacs-lisp
+     (use-package casual
+       :ensure t
+       :bind (nil
+              :map dired-mode-map
+              ("?" . casual-dired-tmenu)
+              :map org-agenda-mode-map
+              ("?" . casual-agenda-tmenu)
+              :map calc-mode-map
+              ("?" . casual-calc-tmenu)
+              :map calc-alg-map
+              ("?" . casual-calc-tmenu)))
+   #+end_src
 * Garbage collection
   #+begin_src emacs-lisp
     (setq gc-cons-threshold most-positive-fixnum)
@@ -1687,13 +1701,6 @@
       (dired-dwim-target t)
       (dired-recursive-copies 'always)
       (dired-omit-files (rx (seq bol "."))))
-
-    (use-package casual-dired
-      :ensure t
-      :bind (nil
-             :map
-             dired-mode-map
-             ("?" . casual-dired-tmenu)))
   #+end_src
 * Browser
   #+begin_src emacs-lisp
