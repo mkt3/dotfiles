@@ -519,10 +519,6 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 type = "gui"
 darwin = [{ name = "appcleaner", method = "nix-hm" }]
 
-[scroll-reverser]
-type = "gui"
-darwin = [{ name = "scroll-reverser", method = "nix-hm" }]
-
 [WireGuard]
 type = "gui"
 darwin = [{ name = "\"WireGuard\" = 1451685025", method = "mas" }]

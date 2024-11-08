@@ -17,20 +17,12 @@
       sha256 = "sha256-8b7UyR5fLdnOYa/fsqm75n4n+sZYKf75hIEh6Dp2t6A=";
     };
   };
-  scroll-reverser = {
-    pname = "scroll-reverser";
-    version = "1.9";
-    src = fetchurl {
-      url = "https://github.com/pilotmoon/Scroll-Reverser/releases/download/v1.9/ScrollReverser-1.9.zip";
-      sha256 = "sha256-CWHbtvjvTl7dQyvw3W583UIZ2LrIs7qj9XavmkK79YU=";
-    };
-  };
   vivaldi-darwin = {
     pname = "vivaldi-darwin";
-    version = "7.0.3495.10";
+    version = "7.0.3495.11";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.10.universal.dmg";
-      sha256 = "sha256-jbdjOknI1V/xAP6z6JTzApnXiceiLguBmB5o/iSohGs=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.11.universal.dmg";
+      sha256 = "sha256-funDpFY3yjj7Kw+jRuo11nUj8PK2BUfT4wgXj6sw7RY=";
     };
   };
   vlc = {
