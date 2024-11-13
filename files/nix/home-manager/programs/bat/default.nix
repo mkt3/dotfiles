@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.bat = {
     enable = true;
@@ -7,11 +7,7 @@
       pager = "less -F -R";
       italic-text = "always";
     };
+
+    extraPackages = with pkgs.bat-extras; [ batman batgrep ];
   };
-
-  home.file.".zshenv".text = ''
-    # bat for man
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-  '';
-
 }
