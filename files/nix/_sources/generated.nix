@@ -19,10 +19,10 @@
   };
   vivaldi-darwin = {
     pname = "vivaldi-darwin";
-    version = "7.0.3495.14";
+    version = "7.0.3495.15";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.14.universal.dmg";
-      sha256 = "sha256-UktqCO4D04JZR5GbNliTx55W+2vGV4f6RXqZXqSRY2Y=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.15.universal.dmg";
+      sha256 = "sha256-iBG3W7jqJQMh+uR/SZNoSVfMzS0jXgzwtVtTHeFQhak=";
     };
   };
   vlc = {

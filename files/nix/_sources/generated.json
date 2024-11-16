@@ -38,11 +38,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-UktqCO4D04JZR5GbNliTx55W+2vGV4f6RXqZXqSRY2Y=",
+            "sha256": "sha256-iBG3W7jqJQMh+uR/SZNoSVfMzS0jXgzwtVtTHeFQhak=",
             "type": "url",
-            "url": "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.14.universal.dmg"
+            "url": "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.15.universal.dmg"
         },
-        "version": "7.0.3495.14"
+        "version": "7.0.3495.15"
     },
     "vlc": {
         "cargoLocks": null,
