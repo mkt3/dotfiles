@@ -9,7 +9,7 @@
   home = {
     username = username;
     homeDirectory = homeDirectory;
-    stateVersion = "24.05";
+    stateVersion = "24.11";
     extraOutputsToInstall = [ "dev" ];
 
     activation = {

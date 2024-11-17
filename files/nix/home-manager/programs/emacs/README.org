@@ -63,6 +63,19 @@
      (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
    #+end_src
 * Builtin config
+** key-translation-map
+   for keyball
+   #+begin_src emacs-lisp
+     (dolist (mapping '(("<backspace>" . "C-h")
+                        ("<delete>" . "C-d")
+                        ("<right>" . "C-f")
+                        ("<left>" . "C-b")
+                        ("<up>" . "C-p")
+                        ("<down>" . "C-n")
+                        ("<home>" . "C-a")
+                        ("<end>" . "C-e")))
+       (define-key key-translation-map (kbd (car mapping)) (kbd (cdr mapping))))
+   #+end_src
 ** scroll
    #+begin_src emacs-lisp
      (setq scroll-preserve-screen-position t
