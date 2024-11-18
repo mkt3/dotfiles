@@ -84,7 +84,7 @@
   # Create a symlink in XDG_DATA_HOME/fonts pointing to /run/current-system/sw/share/X11/fonts
   fonts.fontDir.enable = true;
 
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
   nix = {
     settings = {
       auto-optimise-store = true;
