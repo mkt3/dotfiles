@@ -67,13 +67,7 @@
    for keyball
    #+begin_src emacs-lisp
      (dolist (mapping '(("<backspace>" . "C-h")
-                        ("<delete>" . "C-d")
-                        ("<right>" . "C-f")
-                        ("<left>" . "C-b")
-                        ("<up>" . "C-p")
-                        ("<down>" . "C-n")
-                        ("<home>" . "C-a")
-                        ("<end>" . "C-e")))
+                        ("<delete>" . "C-d")))
        (define-key key-translation-map (kbd (car mapping)) (kbd (cdr mapping))))
    #+end_src
 ** scroll
@@ -1700,6 +1694,11 @@
                               (concat
                                "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
                                "-o ControlMaster=auto -o ControlPersist=yes")))
+
+    (use-package consult-tramp
+      :vc (:url "https://github.com/Ladicle/consult-tramp" :rev :newest)
+      :custom
+      (consult-tramp-ssh-config "~/.ssh/extra_config"))
   #+end_src
 * Filer
   #+begin_src emacs-lisp
