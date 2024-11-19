@@ -22,9 +22,11 @@ local keys = {
   {key="\\",mods="CMD|CTRL",action=wezterm.action.SendKey{key="\\", mods="OPT|CTRL"}}, -- for emacs
   {key=";",mods="CTRL",action=wezterm.action.SendString "\x18@;"}, -- for emacs in terminal
   {key="j",mods="CTRL",action=wezterm.action.SendString "\x18@j"}, -- for emacs ddskk in terminal
-  {key="Home",mods='',action=wezterm.action{SendString="\001"} },-- for keyball
-  {key="Delete",mods='',action=wezterm.action{SendString="\004"} }, -- for keyball
-  {key="End",mods='', action=wezterm.action{SendString="\005"} },-- for keyball
+  {key = "Delete",mods = "",action = wezterm.action.SendKey { key = "d", mods = "CTRL" } }, -- for keyball
+  {key = "RightArrow",mods = "",action = wezterm.action.SendKey { key = "f", mods = "CTRL" }}, -- for keyball
+  {key = "LeftArrow",mods = "",action = wezterm.action.SendKey { key = "b", mods = "CTRL" }}, -- for keyball
+  {key = "UpArrow",mods = "",action = wezterm.action.SendKey { key = "p", mods = "CTRL" }}, -- for keyball
+  {key = "DownArrow",mods = "",action = wezterm.action.SendKey { key = "n", mods = "CTRL" }}, -- for keyball
   {key="v",mods="OPT",action=wezterm.action.PasteFrom 'Clipboard'},
   {key="t",mods="OPT",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
   {key="w",mods="OPT",action=wezterm.action.CloseCurrentTab{confirm=false}},

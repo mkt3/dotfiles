@@ -67,7 +67,11 @@
    for keyball
    #+begin_src emacs-lisp
      (dolist (mapping '(("<backspace>" . "C-h")
-                        ("<delete>" . "C-d")))
+                        ("<delete>" . "C-d")
+                        ("<right>" . "C-f")
+                        ("<left>" . "C-b")
+                        ("<up>" . "C-p")
+                        ("<down>" . "C-n")))
        (define-key key-translation-map (kbd (car mapping)) (kbd (cdr mapping))))
    #+end_src
 ** scroll
@@ -1004,6 +1008,19 @@
         (with-eval-after-load 'eglot
           (dolist (mode '((nix-mode . ("nixd"))))
             (add-to-list 'eglot-server-programs mode))))
+    #+end_src
+*** C
+    #+begin_src emacs-lisp
+      (use-package cc-mode
+        :ensure nil
+        :mode ("\\.c\\'" . c-mode)
+        :config
+        (setq c-default-style "linux"
+              c-basic-offset 4)
+        (add-hook 'c-mode-hook
+                  (lambda ()
+                    (setq tab-width 4)
+                    (setq indent-tabs-mode nil))))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
