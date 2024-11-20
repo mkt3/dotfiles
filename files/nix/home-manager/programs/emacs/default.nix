@@ -74,7 +74,7 @@ in
   programs.zsh.shellAliases = {
     emacs =
       if pkgs.stdenv.isDarwin then
-        "\${HOME}/Applications/Home Manager Apps/Emacs.app/Contents/MacOS/Emacs -nw"
+        "\${HOME}/Applications/Home\\ Manager\\ Apps/Emacs.app/Contents/MacOS/Emacs -nw"
       else
         "emacs -nw";
   };
