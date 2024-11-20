@@ -139,6 +139,11 @@
           clickfinger_behavior = true;
           scroll_factor = 1;
         };
+
+        device = {
+          name = "yowkees-keyball44-mouse";
+          sensitivity = -0.5;
+        };
       };
       general = {
         gaps_in = 2;

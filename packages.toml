@@ -93,6 +93,13 @@ common = [{ name = "duf", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "fastfetch", method = "nix-hm" }]
 
+[zip]
+type = "basic"
+common = [
+  { name = "zip", method = "nix-hm" },
+  { name = "unzip", method = "nix-hm" },
+]
+
 [unarchiver]
 type = "basic"
 common = [{ name = "unar", method = "nix" }]
