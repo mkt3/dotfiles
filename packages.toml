@@ -421,8 +421,7 @@ linux = [
 ## research
 [zotero]
 type = "gui"
-linux = [{ name = "zotero", method = "nix-hm" }]
-darwin = [{ name = "zotero", method = "cask" }]
+common = [{ name = "zotero", method = "nix-hm" }]
 
 [anki]
 type = "gui"

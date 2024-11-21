@@ -16,7 +16,6 @@
     ];
 
     casks = [
-      "zotero"
       "nextcloud"
       "google-drive"
       "aquaskk"
