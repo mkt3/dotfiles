@@ -2,6 +2,8 @@
 {
   programs.git = {
     enable = true;
+    lfs.enable = true;
+
     userName = "Makoto Morinaga";
     userEmail = "makoto@mkt3.dev";
 
