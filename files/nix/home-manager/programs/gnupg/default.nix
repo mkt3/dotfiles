@@ -4,9 +4,9 @@
   ...
 }:
 let
-  isNixOS = pkgs.stdenv.isLinux && (builtins.match ".*nixos.*" (pkgs.stdenv.system) != null);
-  isLinux = pkgs.stdenv.isLinux;
-  isDarwin = pkgs.stdenv.isDarwin;
+  isNixOS = pkgs.stdenv.hostPlatform.isLinux && (builtins.match ".*nixos.*" (pkgs.stdenv.system) != null);
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   lib = pkgs.lib;
 in
 {

@@ -6,7 +6,7 @@
 }:
 let
   lib = pkgs.lib;
-  isLinux = pkgs.stdenv.isLinux;
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
 in
 {
   programs.emacs = {
@@ -73,7 +73,7 @@ in
 
   programs.zsh.shellAliases = {
     emacs =
-      if pkgs.stdenv.isDarwin then
+      if pkgs.stdenv.hostPlatform.isDarwin then
         "\${HOME}/Applications/Home\\ Manager\\ Apps/Emacs.app/Contents/MacOS/Emacs -nw"
       else
         "emacs -nw";

@@ -14,9 +14,9 @@
       export SSH_AGENT_PID=""
     ''
     + (
-      if pkgs.stdenv.isLinux then
+      if pkgs.stdenv.hostPlatform.isLinux then
         "export SSH_AUTH_SOCK=\"\${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh\"\n"
-      else if pkgs.stdenv.isDarwin then
+      else if pkgs.stdenv.hostPlatform.isDarwin then
         "export SSH_AUTH_SOCK=\"\${HOME}/.gnupg/S.gpg-agent.ssh\"\n"
       else
         ""

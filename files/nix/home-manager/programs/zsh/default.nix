@@ -110,7 +110,7 @@
         history = "history -i";
       }
       // (
-        if pkgs.stdenv.isLinux then
+        if pkgs.stdenv.hostPlatform.isLinux then
           {
             open = "xdg-open";
           }

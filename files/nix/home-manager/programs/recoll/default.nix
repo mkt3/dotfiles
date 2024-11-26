@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = pkgs.lib.mkIf (!pkgs.stdenv.isDarwin) [ pkgs.recoll ];
+  home.packages = pkgs.lib.mkIf (!pkgs.stdenv.hostPlatform.isDarwin) [ pkgs.recoll ];
 
   xdg.configFile."recoll/recoll.conf" = {
     text = ''

@@ -138,6 +138,10 @@ common = [{ name = "bat", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "fd", method = "nix-hm" }]
 
+[sd]
+type = "basic"
+common = [{ name = "sd", method = "nix-hm" }]
+
 [ripgrep]
 type = "basic"
 common = [{ name = "ripgrep", method = "nix-hm" }]

@@ -66,8 +66,8 @@
 ** key-translation-map
    for keyball
    #+begin_src emacs-lisp
-     (dolist (mapping '(("<backspace>" . "C-h")
-                        ("<delete>" . "C-d")
+     (dolist (mapping '(("<DEL>" . "C-h")
+                        ("<deletechar>" . "C-d")
                         ("<right>" . "C-f")
                         ("<left>" . "C-b")
                         ("<up>" . "C-p")
@@ -962,8 +962,21 @@
         :ensure t
         :custom
         (magit-wip-mode t)
+        (magit-log-section-commit-count 30)
         :bind (("C-x g" . magit-status)
-               ("C-x M-g" . magit-dispatch-popup)))
+               ("C-x M-g" . magit-dispatch-popup))
+        :config
+        (if (eq system-type 'darwin)
+            (setq magit-git-executable "/usr/bin/git"))
+        (setq magit-status-sections-hook
+              '(magit-insert-status-headers
+                magit-insert-untracked-files
+                magit-insert-unstaged-changes
+                magit-insert-staged-changes
+                magit-insert-unpushed-to-pushremote
+                magit-insert-unpushed-to-upstream-or-recent
+                magit-insert-unpulled-from-pushremote
+                magit-insert-unpulled-from-upstream)))
 
       (use-package diff-hl
         :ensure t

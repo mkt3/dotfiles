@@ -22,7 +22,7 @@
       }
       tmuxPlugins.sensible
       tmuxPlugins.yank
-      tmuxPlugins.nord
+      # tmuxPlugins.nord
     ];
     extraConfig = ''
       set -g set-clipboard on
@@ -80,11 +80,20 @@
       set-option -g status-left-length 60
       set-option -g status-right-length 60
 
-      set-option -g status-left "#[fg=black,bg=cyan,bold] #h:#[fg=black,bg=cyan,nobold]#S #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
-      set-option -g status-right "#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] #(tmux-mem-cpu-load --interval 2 -a 1  -g 0) "
-
       set -gu default-command
       set -g default-shell "$SHELL"
+
+      ## nord
+      set-option -g status-style bg=black,fg=white
+      set-option -g pane-border-style bg=default,fg=brightblack
+      set-option -g pane-active-border-style bg=default,fg=blue
+      set-option -g display-panes-colour black
+      set-option -g display-panes-active-colour brightblack
+      set-option -g status-left "#[fg=black,bg=cyan,bold] #h:#[fg=black,bg=cyan,nobold]#S #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+      set-option -g status-right "#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] #(tmux-mem-cpu-load --interval 2 -a 1  -g 0) "
+      set-option -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W #F #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
+      set-option -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W #F #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+      set-option -g window-status-separator ""
     '';
   };
 }

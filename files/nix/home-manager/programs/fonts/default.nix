@@ -2,7 +2,7 @@
 {
   fonts.fontconfig.enable = true;
 
-  fonts.fontconfig.defaultFonts = pkgs.lib.mkIf (pkgs.stdenv.isLinux) {
+  fonts.fontconfig.defaultFonts = pkgs.lib.mkIf (pkgs.stdenv.hostPlatform.isLinux) {
     serif = [
       "Noto Serif"
       "Noto Color Emoji"

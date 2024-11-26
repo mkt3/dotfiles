@@ -1,8 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = [
-    (import ../../packages/aerospace { inherit pkgs; })
-  ];
+  home.packages = [ pkgs.aerospace ];
 
   xdg.configFile."aerospace/aerospace.toml".source = ./aerospace.toml;
 }

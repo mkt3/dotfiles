@@ -12,7 +12,7 @@
 
   xdg.configFile."zsh/defer.zsh" = {
     text = ''
-      function sd()
+      function jp()
       {
           local session_name="$(tmux display-message -p '#S')"
           if [ -z "$session_name" ]; then
