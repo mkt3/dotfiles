@@ -407,7 +407,7 @@ common = [{ name = "vivaldi", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "google-chrome", method = "nix-hm" }]
 
-### sub
+### sub browser
 [firefox]
 type = "gui"
 linux = [{ name = "firefox", method = "nix-hm" }]
