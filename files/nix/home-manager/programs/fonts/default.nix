@@ -25,7 +25,7 @@
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
     noto-fonts-color-emoji
-    nerdfonts
+    nerd-fonts.hack
     plemoljp-nf
   ];
 }

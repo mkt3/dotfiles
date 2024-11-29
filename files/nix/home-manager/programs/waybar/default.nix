@@ -154,7 +154,7 @@
       #waybar {
           background: @bg;
           color: @nord_light;
-          font-family: Nerd Font, Noto Sans CJK JP, sans-serif;
+          font-family: Hack Nerd Font, Noto Sans CJK JP, sans-serif;
           font-size: 14px;
       }
 
