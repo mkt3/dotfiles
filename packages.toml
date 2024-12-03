@@ -206,11 +206,6 @@ darwin = [
   { name = "pam-reattach", method = "nix-hm" },
 ]
 
-## network
-[iproute2mac]
-type = "basic"
-darwin = [{ name = "darwin.iproute2mac", method = "nix-hm" }]
-
 ## downloader
 [wget]
 type = "basic"
