@@ -484,8 +484,8 @@ darwin = [
   { name = "aerospace", method = "nix-hm" },
   { name = "jankyborders", method = "nix-hm" },
   { name = "sketchybar", method = "nix-hm" },
-  { name = "aquaskk", method = "cask" },
-  { name = "aquaskk", method = "nix-hm" },
+  { name = "macskk", method = "cask" },
+  # { name = "aquaskk", method = "nix-hm" },
 ]
 
 ## recoll

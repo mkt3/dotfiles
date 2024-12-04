@@ -9,6 +9,7 @@
 
     taps = [
       "nailuoGG/recoll"
+      "mtgto/macskk"
     ];
 
     brews = [
@@ -17,7 +18,7 @@
     casks = [
       "nextcloud"
       "google-drive"
-      "aquaskk"
+      "macskk"
       "recoll"
       "karabiner-elements"
     ];
