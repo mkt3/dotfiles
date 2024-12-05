@@ -30,9 +30,6 @@
         export SVN_EDITOR="$EDITOR"
         export GIT_EDITOR="$EDITOR"
 
-        # less
-        export LESS='-g -i -M -R -S -W -x4'
-
         # Pager
         export PAGER=less
 
@@ -40,6 +37,9 @@
         export TERMINFO="''${XDG_DATA_HOME}/terminfo"
         export TERMINFO_DIRS="''${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
         export COLORTERM="truecolor"
+
+        # zsh session
+        export SHELL_SESSIONS_DISABLE=1
 
         # path env
         if [[ -z "$ZSH_PATH_LOADED" ]]; then
