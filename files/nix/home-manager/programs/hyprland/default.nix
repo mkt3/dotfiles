@@ -320,4 +320,9 @@
       }
     '';
   };
+
+  home.file.".zshenv".text = ''
+    # icons
+    export XCURSOR_PATH=/usr/share/icons:"''${XDG_DATA_HOME}/icons"
+  '';
 }
