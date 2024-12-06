@@ -453,11 +453,6 @@ type = "gui"
 darwin = [{ name = "raycast", method = "nix-hm" }]
 linux = [{ name = "rofi-wayland", method = "nix-hm" }]
 
-## external monitor control
-[monitorcontrol]
-type = "gui"
-darwin = [{ name = "monitorcontrol", method = "nix-hm" }]
-
 ## window manager
 [hyprland]
 type = "gui"
@@ -485,7 +480,6 @@ darwin = [
   { name = "jankyborders", method = "nix-hm" },
   { name = "sketchybar", method = "nix-hm" },
   { name = "macskk", method = "cask" },
-  # { name = "aquaskk", method = "nix-hm" },
 ]
 
 ## recoll
@@ -535,3 +529,8 @@ darwin = [{ name = "\"WireGuard\" = 1451685025", method = "mas" }]
 [darwin]
 type = "gui"
 darwin = [{ name = "macos", method = "nix-hm" }]
+
+### external monitor control
+[monitorcontrol]
+type = "gui"
+darwin = [{ name = "monitorcontrol", method = "nix-hm" }]

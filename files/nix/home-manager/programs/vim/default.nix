@@ -9,6 +9,7 @@
 
       " setting
       set fenc=utf-8
+      set viminfo=
       set nobackup
       set noswapfile
       set autoread

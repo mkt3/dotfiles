@@ -924,7 +924,7 @@
                ("C-x @ ;" . jinx-correct) ; for wezterm
                ("C-M-$" . jinx-languages)))
     #+end_src
-* Programming
+* Coding
 ** General
 *** makefile
     #+begin_src emacs-lisp
@@ -986,6 +986,11 @@
         (diff-hl-margin-mode)
         :hook ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
                (magit-post-refresh-hook . diff-hl-magit-post-refresh)))
+    #+end_src
+*** Visual-rexexp
+    #+begin_src shell
+      (use-package visual-regexp
+        :ensure t)
     #+end_src
 ** languages
 *** emacs lisp
