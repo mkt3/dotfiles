@@ -470,6 +470,17 @@
        (advice-add 'org-edit-src-exit :before (lambda () (whitespace-cleanup)))
        :hook (org-src-mode-hook . whitespace-turn-on))
    #+end_src
+** Goggles
+   #+begin_src emacs-lisp
+     (use-package goggles
+       :ensure t
+       :hook ((prog-mode text-mode) . goggles-mode)
+       :custom
+       (goggles-pulse-iterations 10)
+       (goggles-pulse-delay 0.2)
+       :config
+       (setq-default goggles-pulse t))
+   #+end_src
 * UI
 ** Clipboard
    #+begin_src emacs-lisp
