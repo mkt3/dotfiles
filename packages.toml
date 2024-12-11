@@ -299,11 +299,6 @@ common = [{ name = "ruff", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "pyright", method = "nix-hm" }]
 
-## mise
-[mise]
-type = "dev"
-common = [{ name = "mise", method = "nix-hm" }]
-
 ### for python build
 ubuntu = [
   { name = "build-essential", method = "apt" },
@@ -491,7 +486,7 @@ common = [{ name = "recoll", method = "nix-hm" }]
 # hugo
 [hugo]
 type = "gui"
-common = [{ name = "hugo", method = "nix-hm" }]
+linux = [{ name = "hugo", method = "nix-hm" }]
 
 ## gatsby
 [gatsby-cli]
