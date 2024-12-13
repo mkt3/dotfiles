@@ -292,11 +292,11 @@
 
      (use-package nerd-icons-dired
        :ensure t
-       :hook   (dired-mode . (lambda ()
-                               ;; avoid turning enabling nerd-icons-dired for tramp buffers
-                               ;; as it seems to slow down the display
-                               (unless (file-remote-p default-directory)
-                                 (nerd-icons-dired-mode 1)))))
+       :hook (dired-mode-hook . (lambda ()
+                                  ;; avoid turning enabling nerd-icons-dired for tramp buffers
+                                  ;; as it seems to slow down the display
+                                  (unless (file-remote-p default-directory)
+                                    (nerd-icons-dired-mode 1)))))
 
      (use-package nerd-icons-completion
        :ensure t
@@ -474,7 +474,7 @@
    #+begin_src emacs-lisp
      (use-package goggles
        :ensure t
-       :hook ((prog-mode text-mode) . goggles-mode)
+       :hook ((prog-mode-hook text-mode-hook) . goggles-mode)
        :custom
        (goggles-pulse-iterations 10)
        (goggles-pulse-delay 0.2)
@@ -658,7 +658,7 @@
                ("M-r" . consult-history))
         :bind* (("C-c C-a" . consult-buffer)
                 ("C-z" . consult-imenu))
-        :hook (completion-list-mode . consult-preview-at-point-mode)
+        :hook (completion-list-mode-hook . consult-preview-at-point-mode)
         :init
         (setq xref-show-xrefs-function #'consult-xref
               xref-show-definitions-function #'consult-xref)
@@ -1137,9 +1137,9 @@
                 ("\\.tsx\\'" . jtsx-tsx-mode)
                 ("\\.ts\\'" . jtsx-typescript-mode))
          :commands jtsx-install-treesit-language
-         :hook ((jtsx-jsx-mode . hs-minor-mode)
-                (jtsx-tsx-mode . hs-minor-mode)
-                (jtsx-typescript-mode . hs-minor-mode))
+         :hook ((jtsx-jsx-mode-hook . hs-minor-mode)
+                (jtsx-tsx-mode-hook . hs-minor-mode)
+                (jtsx-typescript-mode-hook . hs-minor-mode))
          :custom
          (js-indent-level 2)
          (typescript-ts-mode-indent-offset 2)
@@ -1749,7 +1749,7 @@
 * Filer
   #+begin_src emacs-lisp
     (use-package dired
-      :hook (dired-mode . dired-omit-mode)
+      :hook (dired-mode-hook . dired-omit-mode)
       :bind (nil
              :map dired-mode-map
              ("["  . dired-prev-subdir)
