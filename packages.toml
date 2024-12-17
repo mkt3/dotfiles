@@ -61,7 +61,7 @@ common = [{ name = "gawk", method = "nix" }]
 type = "basic"
 common = [
   { name = "less", method = "nix-hm" },
-  { name = "lesspipe", method = "nix-hm" }
+  { name = "lesspipe", method = "nix-hm" },
 ]
 nixos = [{ name = "less", method = "nix" }]
 

@@ -14,7 +14,6 @@ This repository contains configuration files and scripts for my personal use. Th
 ## Install
 1. **macOS Users:**
    - Sign in to the App Store manually.
-   - Run `xcode-select --install` in the terminal.
 2. Run one of the following:
 
    ```bash
@@ -31,4 +30,4 @@ This repository contains configuration files and scripts for my personal use. Th
    ```
 
 ## Link
-[emacs conf](./files/emacs)
+[emacs conf](./files/nix/home-manager/programs/emacs)
