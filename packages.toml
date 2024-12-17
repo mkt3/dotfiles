@@ -186,6 +186,11 @@ common = [{ name = "oxker", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "ssh_config", method = "nix-hm" }]
 
+## package mananger for arch
+[paru]
+type = "basic"
+arch = [{ name = "paru", method = "nix-hm" }]
+
 ## security
 [openssl]
 type = "basic"

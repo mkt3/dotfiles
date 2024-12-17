@@ -51,11 +51,7 @@ install_macos() {
 install_linux() {
     case "$DISTRO" in
         "Arch Linux")
-            sudo pacman -S --needed --noconfirm git curl base-devel pacman-contrib
-            if ! (type yay > /dev/null 2>&1); then
-                local yay_repo_dir="${HOME}/.local/src/yay"
-                git clone https://aur.archlinux.org/yay.git "$yay_repo_dir" && cd "$yay_repo_dir" && makepkg -si
-            fi
+            sudo pacman -S --needed --noconfirm curl pacman-contrib
             ;;
         "Ubuntu")
             ;;
@@ -67,10 +63,8 @@ install_linux() {
 install_nix() {
     if ! (type nix > /dev/null 2>&1); then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-    else
-        if [[ "$OS" == "Linux" ]]; then
-            sudo -i nix upgrade-nix
-        fi
+    elif [[ "$OS" == "Linux" ]]; then
+        sudo -i nix upgrade-nix
     fi
 }
 

@@ -86,3 +86,6 @@
 
 # Enable "Automatically switch to a ocument's input source"
 /usr/bin/defaults write com.apple.HIToolbox AppleGlobalTextInputProperties -dict TextInputGlobalPropertyPerContextInput -int 1
+
+# Display app switcher to all display
+/usr/bin/defaults write com.apple.Dock appswitcher-all-displays -bool true
