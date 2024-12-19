@@ -965,6 +965,12 @@
                 (lua-mode . lua-ts-mode)
                 (python-mode . python-ts-mode))))
     #+end_src
+*** envrc
+    #+begin_src emacs-lisp
+      (use-package envrc
+        :ensure t
+        :hook (after-init-hook . envrc-global-mode))
+    #+end_src
 *** git
     #+begin_src emacs-lisp
       (use-package git-modes :ensure t)
