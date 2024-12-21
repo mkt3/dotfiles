@@ -23,11 +23,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-KHtI61xC/rv4GHsgsSpvbjJlg/atA3zvrp+W0D5bxYg=",
+            "sha256": "sha256-jZu2yu+9GezZOAbX0YkO+5MyzCjvLJnETFKaAJK44tE=",
             "type": "url",
-            "url": "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.26.universal.dmg"
+            "url": "https://downloads.vivaldi.com/stable/Vivaldi.7.0.3495.27.universal.dmg"
         },
-        "version": "7.0.3495.26"
+        "version": "7.0.3495.27"
     },
     "vlc": {
         "cargoLocks": null,
