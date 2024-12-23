@@ -657,6 +657,7 @@
                ("M-s" . consult-history)
                ("M-r" . consult-history))
         :bind* (("C-c C-a" . consult-buffer)
+                ("C-c C-," . consult-buffer)
                 ("C-z" . consult-imenu))
         :hook (completion-list-mode-hook . consult-preview-at-point-mode)
         :init
@@ -809,7 +810,9 @@
    #+begin_src emacs-lisp
      (use-package mwim
        :ensure t
-       :bind (("C-a" . mwim-beginning-of-code-or-line)
+       :bind (("C-," . mwim-beginning-of-code-or-line)
+              ("C-r" . mwim-beginning-of-code-or-line)
+              ("C-a" . mwim-beginning-of-code-or-line)
               ("C-e" . mwim-end-of-code-or-line)))
    #+end_src
 ** dmacro
