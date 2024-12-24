@@ -710,18 +710,12 @@
     #+begin_src emacs-lisp
       (use-package tempel
         :ensure t
-        ;; :bind (nil
-        ;;        :map tempel-map
-        ;;        ("C-i" . tempel-next)
-        ;;        )
         :init
         (defun tempel-setup-capf ()
           (setq-local completion-at-point-functions
                       (cons #'tempel-complete
                             completion-at-point-functions)))
-        (add-hook 'prog-mode-hook 'tempel-setup-capf)
-        (add-hook 'text-mode-hook 'tempel-setup-capf)
-        (add-hook 'org-mode-hook 'tempel-setup-capf))
+        :hook ((prog-mode-hook text-mode-hook org-mode-hook) . tempel-setup-capf))
     #+end_src
 *** corfu
     #+begin_src emacs-lisp
