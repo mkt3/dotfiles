@@ -5,6 +5,8 @@
     options = "--delete-older-than 7d";
   };
 
+  services.nix-daemon.enable = true;
+
   networking.computerName = hostname;
 
   environment.shells = [ pkgs.zsh ];

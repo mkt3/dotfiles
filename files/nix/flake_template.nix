@@ -98,7 +98,6 @@
       darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
         inherit pkgs specialArgs;
         modules = [
-          ./systems/common/nix-core.nix
           ./systems/common/host-users.nix
           ./systems/darwin/system.nix
           ./systems/darwin/system_packages.nix
