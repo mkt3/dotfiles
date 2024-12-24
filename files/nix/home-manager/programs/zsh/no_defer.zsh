@@ -72,6 +72,39 @@ function _date_exec {
 
 zle -N accept-line _date_exec
 
+function format_duration() {
+    local total_seconds=$1
+    local hours=$(( total_seconds / 3600 ))
+    local minutes=$(( (total_seconds % 3600) / 60 ))
+    local seconds=$(( total_seconds % 60 ))
+
+    if (( hours > 0 )); then
+        echo "${hours}h ${minutes}m ${seconds}s"
+    elif (( minutes > 0 )); then
+        echo "${minutes}m ${seconds}s"
+    else
+        echo "${seconds}s"
+    fi
+}
+
+function _time_and_date_precmd() {
+    local TIMER_END=$SECONDS
+    local LAST_CMD_DURATION=$(( TIMER_END - TIMER_START ))
+    local CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
+
+    if [[ -n "$TIMER_START" && "$LAST_CMD_DURATION" -gt 300 ]]; then
+        local formatted_duration=$(format_duration $LAST_CMD_DURATION)
+        printf "\nCommand finished at %s, took %s\n" "$CURRENT_TIME" "$formatted_duration"
+    fi
+}
+
+function _time_and_date_preexec() {
+    TIMER_START=$SECONDS
+}
+
+add-zsh-hook preexec _time_and_date_preexec
+add-zsh-hook precmd _time_and_date_precmd
+
 # Setopt
 unsetopt glob_dots
 unsetopt ignore_eof
