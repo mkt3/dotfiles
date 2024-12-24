@@ -22,8 +22,6 @@ local keys = {
   {key="\\",mods="CMD|CTRL",action=wezterm.action.SendKey{key="\\", mods="OPT|CTRL"}}, -- for emacs
   {key=";",mods="CTRL",action=wezterm.action.SendString "\x18@;"}, -- for emacs in terminal
   {key="j",mods="CTRL",action=wezterm.action.SendString "\x18@j"}, -- for emacs ddskk in terminal
-  {key="r",mods="CTRL",action=wezterm.action.SendKey{key="a", mods="CTRL"}}, -- for keyball
-  {key=",",mods="CTRL",action=wezterm.action.SendKey{key="a", mods="CTRL"}}, -- for keyball
   {key = "Delete",mods = "",action = wezterm.action.SendKey { key = "d", mods = "CTRL" } }, -- for keyball
   {key = "RightArrow",mods = "",action = wezterm.action.SendKey { key = "f", mods = "CTRL" }}, -- for keyball
   {key = "LeftArrow",mods = "",action = wezterm.action.SendKey { key = "b", mods = "CTRL" }}, -- for keyball
