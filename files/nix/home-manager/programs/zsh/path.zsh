@@ -11,14 +11,12 @@ if [[ "$DISTRO" == 'NixOS' ]];then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:/etc/profiles/per-user/${USER}/bin:/run/wrappers/bin:${PATH}"
 elif [[ "$DISTRO" == 'Darwin' ]];then
-    MAC_DEFAULT_PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+    MAC_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export SHELL_SESSIONS_DISABLE=1
 
-    if [[ "$ARCH" == 'arm64' ]]; then
-        export PATH="/usr/local/bin:/opt/homebrew/bin:${MAC_DEFAULT_PATH}"
-    elif [[ "$ARCH" == 'x86_64' ]]; then
-        export PATH="/usr/local/bin:${MAC_DEFAULT_PATH}"
-    fi
+    # homebrew
+    export PATH="/opt/homebrew/bin:${MAC_DEFAULT_PATH}"
+
     # nix
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"

@@ -55,7 +55,7 @@
             (import ./home-manager/overlays/vlc)
           ]
           ++ (
-            if platform == "x86_64-darwin" || platform == "aarch64-darwin" then
+            if platform == "aarch64-darwin" then
               [
                 (import ./home-manager/overlays/patched-emacs/emacs-git.nix)
               ]
