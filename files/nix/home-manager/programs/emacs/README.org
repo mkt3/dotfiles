@@ -71,7 +71,9 @@
                         ("<right>" . "C-f")
                         ("<left>" . "C-b")
                         ("<up>" . "C-p")
-                        ("<down>" . "C-n")))
+                        ("<down>" . "C-n")
+                        ("<ESC>" . "C-g")
+                        ))
        (define-key key-translation-map (kbd (car mapping)) (kbd (cdr mapping))))
    #+end_src
 ** scroll
