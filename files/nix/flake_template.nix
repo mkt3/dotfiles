@@ -53,6 +53,16 @@
             emacs-overlay.overlays.emacs
             (import ./home-manager/overlays/vivaldi)
             (import ./home-manager/overlays/vlc)
+            (final: prev: {
+              awscli2 = prev.awscli2.overrideAttrs (old: {
+                postPatch =
+                  old.postPatch
+                  + ''
+                    substituteInPlace pyproject.toml \
+                                      --replace-fail 'flit_core>=3.7.1,<3.9.1' 'flit_core>=3.7.1'
+                  '';
+              });
+            })
           ]
           ++ (
             if platform == "aarch64-darwin" then
