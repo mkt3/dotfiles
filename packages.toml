@@ -498,6 +498,11 @@ linux = [{ name = "hugo", method = "nix-hm" }]
 type = "gui"
 linux = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
 
+## github cli
+[gh]
+type = "gui"
+common = [{ name = "gh", method = "nix-hm" }]
+
 ## font
 [font]
 type = "gui"
