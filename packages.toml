@@ -482,6 +482,11 @@ darwin = [
   { name = "macskk", method = "cask" },
 ]
 
+## gui archiver
+[xarchiver]
+type = "gui"
+linux = [{ name = "xarchiver", method = "nix-hm" }]
+
 ## recoll
 [recoll]
 type = "gui"
