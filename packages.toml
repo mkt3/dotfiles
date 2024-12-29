@@ -485,7 +485,7 @@ darwin = [
 ## gui archiver
 [xarchiver]
 type = "gui"
-common = [{ name = "xarchiver", method = "nix-hm" }]
+linux = [{ name = "xarchiver", method = "nix-hm" }]
 
 ## recoll
 [recoll]
