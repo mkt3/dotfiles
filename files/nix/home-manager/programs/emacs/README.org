@@ -1387,13 +1387,6 @@
 
          (add-hook 'org-clock-in-hook 'org-clock-current-task-to-file)
          (add-hook 'org-clock-out-hook 'org-clock-clear-file-after-clock-out)
-
-         (add-hook 'org-after-todo-state-change-hook
-                   'org-clock-todo-change)
-         (defun org-clock-todo-change ()
-           (if (string= org-state "IN PROGRESS")
-               (org-clock-in)
-             (org-clock-out)))
          )
 
        (use-package org-super-agenda

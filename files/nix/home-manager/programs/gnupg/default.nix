@@ -4,7 +4,8 @@
   ...
 }:
 let
-  isNixOS = pkgs.stdenv.hostPlatform.isLinux && (builtins.match ".*nixos.*" (pkgs.stdenv.system) != null);
+  isNixOS =
+    pkgs.stdenv.hostPlatform.isLinux && (builtins.match ".*nixos.*" (pkgs.stdenv.system) != null);
   isLinux = pkgs.stdenv.hostPlatform.isLinux;
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   lib = pkgs.lib;
@@ -45,6 +46,6 @@ in
 
   home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && !isNixOS && !isGUI) {
     text = "no-autostart";
-    onChange = "systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
+    onChange = "/usr/bin/systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
   };
 }
