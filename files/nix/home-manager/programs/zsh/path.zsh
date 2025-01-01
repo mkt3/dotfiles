@@ -2,15 +2,15 @@
 export OS=`uname -s`
 export ARCH=`uname -m`
 DISTRO="$OS"
-if [[ "$DISTRO" == "Linux" ]];then
+if [ "$DISTRO" = "Linux" ];then
     DISTRO=$(grep -oP '(?<=^NAME=).+' /etc/os-release | tr -d '"')
 fi
 
 # PATH
-if [[ "$DISTRO" == 'NixOS' ]];then
+if [ "$DISTRO" = 'NixOS' ];then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:/etc/profiles/per-user/${USER}/bin:/run/wrappers/bin:${PATH}"
-elif [[ "$DISTRO" == 'Darwin' ]];then
+elif [ "$DISTRO" = 'Darwin' ];then
     MAC_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export SHELL_SESSIONS_DISABLE=1
 

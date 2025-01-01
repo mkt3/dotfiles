@@ -9,6 +9,8 @@ set -eu
 install_essential_packages() {
     title "Install/Update essential packages"
 
+    mkdir -p "$XDG_CONFIG_HOME"
+
     mkdir -p "$GNUPGHOME" && chmod 700 "$GNUPGHOME"
     mkdir -p "${HOME}/.local/bin"
 
@@ -54,6 +56,7 @@ install_linux() {
             sudo pacman -S --needed --noconfirm curl pacman-contrib
             ;;
         "Ubuntu")
+            sudo apt install -y make
             ;;
         *)
             ;;
@@ -64,7 +67,7 @@ install_nix() {
     if ! (type nix > /dev/null 2>&1); then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
     elif [[ "$OS" == "Linux" ]]; then
-        sudo -i nix upgrade-nix
+        sudo -i nix upgrade-nix || true
     fi
 }
 
