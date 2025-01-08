@@ -4,7 +4,8 @@
     enable = true;
     onActivation = {
       cleanup = "uninstall";
-      autoUpdate = false;
+      autoUpdate = true;
+      upgrade = true;
     };
 
     taps = [

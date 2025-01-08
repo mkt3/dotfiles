@@ -1451,7 +1451,13 @@
          (setq org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
          (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          :custom
-         (org-roam-capture-templates '(("n" "note" plain "%?"
+         (org-roam-capture-templates '(("i" "idea" plain "%?"
+                                        :if-new
+                                        (file+head "idea/${slug}.org"
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_draft: true\n\n")
+                                        :immediate-finish t
+                                        :unnarrowed t)
+                                       ("n" "note" plain "%?"
                                         :if-new
                                         (file+head "note/${slug}.org"
                                                    "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n#+hugo_draft: true\n\n")
@@ -1460,19 +1466,13 @@
                                        ("j" "project" plain "%?"
                                         :if-new
                                         (file+head "project/${slug}.org"
-                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Tasks\n\n* Work log\n")
-                                        :immediate-finish t
-                                        :unnarrowed t)
-                                       ("0" "zero second thinking" plain "%?"
-                                        :if-new
-                                        (file+head "zero_second_thinking/%<%Y%m%d>_${slug}.org"
-                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* \n* \n* \n*")
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* External links\n\n* Tasks\n\n* Work log\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("b" "book" plain "%?"
                                         :if-new
                                         (file+head "reference/book/${slug}.org"
-                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Link\n  - \n* Facts\n\n* Interpretations\n\n* Actions\n")
+                                                   "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Links\n  - \n* Facts\n\n* Interpretations\n\n* Actions\n")
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ("w" "web" plain "%?"
