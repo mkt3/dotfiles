@@ -96,6 +96,8 @@ function _time_and_date_precmd() {
         local formatted_duration=$(format_duration $LAST_CMD_DURATION)
         printf "\nCommand finished at %s, took %s\n" "$CURRENT_TIME" "$formatted_duration"
     fi
+
+    TIMER_START=""
 }
 
 function _time_and_date_preexec() {
