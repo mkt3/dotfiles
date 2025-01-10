@@ -287,8 +287,10 @@
    #+begin_src emacs-lisp
      (when (display-graphic-p)
        (if (eq system-type 'darwin)
-           (add-to-list 'default-frame-alist '(font . "PlemolJP Console NF-18"))
-         (add-to-list 'default-frame-alist '(font . "PlemolJP Console NF-16"))))
+           (set-frame-font "PlemolJP Console NF-18" nil t)
+         (set-frame-font "PlemolJP Console NF-16" nil t))
+       (set-fontset-font t 'symbol "Hack Nerd Font" nil 'append)
+       (set-fontset-font t 'unicode "Hack Nerd Font" nil 'append))
 
      (use-package nerd-icons :ensure t)
 
