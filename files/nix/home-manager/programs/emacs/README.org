@@ -141,9 +141,9 @@
    #+end_src
 ** Line number
    #+begin_src emacs-lisp
-     (use-package display-line-numbers
-       :config
-       (global-display-line-numbers-mode))
+     ;; (use-package display-line-numbers
+     ;;   :config
+     ;;   (global-display-line-numbers-mode))
    #+end_src
 ** Disable auto generate file
    #+begin_src emacs-lisp
