@@ -34,7 +34,7 @@ elif [ "$DISTRO" = 'Darwin' ];then
          export NIX_REMOTE=daemon
     fi
 else # for linux (except NIXOS)
-    LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin"
+    LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
     export PATH="$LINUX_DEFAULT_PATH"
 
     if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
