@@ -11,3 +11,6 @@ wget -O - https://github.com/mkt3.keys >> ~/.ssh/authorized_keys
 
 # Remode key from known_hosts
 ssh-keygen -R <hostname>
+
+# Scp with rsync
+rsync -avh --stats --info=progress2 -e 'ssh' <source> <destination>
