@@ -15,9 +15,9 @@ pre_setup_nix() {
 
     info "Updating nix packages with nvfetcher"
     if type nvfetcher > /dev/null 2>&1; then
-        nvfetcher -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
+        nvfetcher -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources" || true
     else
-        nix run github:berberman/nvfetcher -- -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"
+        nix run github:berberman/nvfetcher -- -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources" || true
     fi
 
     host_name="$HOSTNAME_ENV"
