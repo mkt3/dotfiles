@@ -72,7 +72,6 @@
                         ("<left>" . "C-b")
                         ("<up>" . "C-p")
                         ("<down>" . "C-n")
-                        ("<ESC>" . "C-g")
                         ))
        (define-key key-translation-map (kbd (car mapping)) (kbd (cdr mapping))))
    #+end_src
@@ -525,14 +524,6 @@
                  (kill-new selected-text)
                  (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))
            (message "No region selected."))))
-   #+end_src
-** Mouse / touchpad
-   #+begin_src emacs-lisp
-     (use-package disable-mouse
-       :ensure t
-       :if (display-graphic-p)
-       :config
-       (global-disable-mouse-mode))
    #+end_src
 ** Wayland / x11
    #+begin_src emacs-lisp

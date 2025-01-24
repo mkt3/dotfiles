@@ -18,7 +18,7 @@ nix shell 'nixpkgs#<package_name>'
 nix develop -c $SHELL
 
 # Create a new Nix project
-nix flake new <project_name> -t github:mkt3/flake-templates#<project_type>
+nix flake new <project_name> -t 'github:mkt3/flake-templates#<project_type>'
 
 # Initialize a nix project
-nix flake init -t github:mkt3/flake-templates#<project_type>
+nix flake init -t 'github:mkt3/flake-templates#<project_type>'
