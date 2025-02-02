@@ -359,13 +359,12 @@
        (minions-mode)
        (setq minions-mode-line-lighter "[+]"))
    #+end_src
-** mlscroll
+** nyan-mode
    #+begin_src emacs-lisp
-     (use-package mlscroll
+     (use-package nyan-mode
        :ensure t
-       :config
-       (setq mlscroll-shortfun-min-width 11)
-       (mlscroll-mode 1))
+       :init
+       (nyan-mode 1))
    #+end_src
 ** tab-bar-mode
    #+begin_src emacs-lisp
@@ -1204,7 +1203,6 @@
                 :map org-mode-map
                 ("C-c C-o" . my:org-open-url-with-default)
                 ("C-c i t" . org-insert-structure-template)
-                ("C-c C-'" . org-edit-special)
                 :map org-src-mode-map
                 ("C-c C-'" . org-edit-src-exit))
          :init
