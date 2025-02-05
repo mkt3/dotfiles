@@ -1658,7 +1658,7 @@
              (when recentf-active
                (recentf-mode -1))
              (dolist (org-file (directory-files-recursively (expand-file-name "note" my:d:org-roam) "\\.org$"))
-               (with-current-buffer (find-file-noselect org-file nil t nil)
+               (with-current-buffer (find-file-noselect org-file nil nil nil)
                  (save-excursion
                    (goto-char (point-min))
                    (let ((draft-position (re-search-forward "^#\\+hugo_draft: false$" nil t))
