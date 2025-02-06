@@ -24,7 +24,7 @@
     ignores = [
       ".DS_Store"
       ".envrc"
-      ".mise.toml"
+      ".direnv"
       ".venv"
     ];
 
