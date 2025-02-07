@@ -1621,35 +1621,34 @@
                   (file-directory-p my:d:org-hugo))
          :custom
          (org-hugo-base-dir my:d:org-hugo)
-         (org-hugo-default-section-directory "notes")
+         (org-hugo-default-section-directory "posts")
          :config
+         (defun org-hugo-set-bundle-and-export-file-name (draft-position)
+           "Set the Hugo bundle from the ID and determine export file name based on #+lang."
+           (goto-char (point-min))
+           ;; Set hugo_bundle from ID if not already present
+           (unless (re-search-forward "^#\\+hugo_bundle:" nil t)
+             (when (re-search-forward ":ID: +\\([a-zA-Z0-9-]+\\)" nil t)
+               (let ((id (match-string 1)))
+                 (goto-char draft-position)
+                 (forward-line)
+                 (insert (concat "#+hugo_bundle: " id "\n")))))
+           ;; Set export_file_name based on lang
+           (goto-char (point-min))
+           (let ((export-file-name "index.en.md")) ;; Default to English
+             (when (re-search-forward "^#\\+lang: +\\(ja\\)" nil t)
+               (setq export-file-name "index.ja.md"))
+             (goto-char (point-min))
+             (if (re-search-forward "^#\\+export_file_name:" nil t)
+                 (replace-match (concat "#+export_file_name: " export-file-name))
+               (goto-char draft-position)
+               (forward-line)
+               (insert (concat "#+export_file_name: " export-file-name "\n")))))
          (defun org-hugo-replace-last-modified ()
            "Replace last_modified with hugo_lastmod."
            (goto-char (point-min))
            (while (re-search-forward "^#\\+last_modified:" nil t)
              (replace-match "#+hugo_lastmod:")))
-
-         (defun my:org-hugo-custom-output (orig-fun &optional async subtreep visible-only)
-           "Customize the output directory and file name for `org-hugo-export-to-md`
-       based on ID and #+lang, placing the output inside `org-hugo-base-dir/content/posts/`."
-           (save-excursion
-             (goto-char (point-min))
-             (let* ((base-dir (expand-file-name "content/posts/" org-hugo-base-dir))
-                    (id (when (re-search-forward "^:ID: +\\([a-zA-Z0-9-]+\\)" nil t)
-                          (match-string 1)))
-                    (lang (or (when (re-search-forward "^#\\+lang: +\\([a-zA-Z0-9-]+\\)" nil t)
-                                (match-string 1))
-                              "en"))
-                    (custom-dir (expand-file-name id base-dir))
-                    (custom-filename (format "index.%s.md" lang))
-                    (outfile (expand-file-name custom-filename custom-dir)))
-               (unless (file-exists-p custom-dir)
-                 (make-directory custom-dir t))
-               (prog1
-                   (org-export-to-file 'hugo outfile async subtreep visible-only)
-                 (message "Exported Hugo markdown to: %s" outfile)))))
-
-         (advice-add 'org-hugo-export-to-md :around #'my:org-hugo-custom-output)
 
          (defun org-hugo-export-drafts ()
            "Export all non-draft .org files in my:d:org-roam to markdown using org-hugo."
@@ -1664,6 +1663,7 @@
                    (let ((draft-position (re-search-forward "^#\\+hugo_draft: false$" nil t))
                          (modified (buffer-modified-p)))
                      (when draft-position
+                       (org-hugo-set-bundle-and-export-file-name draft-position)
                        (org-hugo-replace-last-modified)
                        (org-hugo-export-to-md)
                        (set-buffer-modified-p modified))))
