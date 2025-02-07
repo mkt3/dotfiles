@@ -2,3 +2,6 @@
 
 # pip compile from pip freeze
 uv pip freeze | uv pip compile - -o requirements.txt
+
+# add activation to .envrc
+echo 'source .venv/bin/activate' >> .envrc
