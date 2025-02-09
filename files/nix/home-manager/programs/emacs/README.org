@@ -1615,7 +1615,7 @@
 **** ox-hugo
      #+begin_src emacs-lisp
        (use-package ox-hugo
-         :ensure t
+         :vc (:url "https://github.com/mkt3/ox-hugo.git" :rev :newest)
          :after org
          :if (and (file-directory-p my:d:org-roam)
                   (file-directory-p my:d:org-hugo))

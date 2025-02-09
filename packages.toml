@@ -498,11 +498,6 @@ common = [{ name = "recoll", method = "nix-hm" }]
 type = "gui"
 linux = [{ name = "hugo", method = "nix-hm" }]
 
-## gatsby
-[gatsby-cli]
-type = "gui"
-linux = [{ name = "nodePackages.gatsby-cli", method = "nix-hm" }]
-
 ## github cli
 [gh]
 type = "gui"
