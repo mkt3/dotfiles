@@ -175,10 +175,6 @@ common = [{ name = "navi", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "lazygit", method = "nix-hm" }]
 
-[taplo]
-type = "basic"
-common = [{ name = "taplo", method = "nix-hm" }]
-
 [oxker]
 type = "basic"
 common = [{ name = "oxker", method = "nix-hm" }]
@@ -186,6 +182,26 @@ common = [{ name = "oxker", method = "nix-hm" }]
 [ssh]
 type = "basic"
 common = [{ name = "ssh_config", method = "nix-hm" }]
+
+## toml
+[taplo]
+type = "basic"
+common = [{ name = "taplo", method = "nix-hm" }]
+
+## for html/css/json/eslint
+[vscode-langservers-extracted]
+type = "basic"
+common = [{ name = "vscode-langservers-extracted", method = "nix-hm" }]
+
+## for yaml
+[yaml-language-server]
+type = "basic"
+common = [{ name = "yaml-language-server", method = "nix-hm" }]
+
+## for markdown
+[marksman]
+type = "basic"
+common = [{ name = "marksman", method = "nix-hm" }]
 
 ## package mananger for arch
 [paru]
@@ -291,17 +307,11 @@ common = [{ name = "nixd", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "nixfmt-rfc-style", method = "nix-hm" }]
 
-## for yaml
-[yaml-language-server]
-type = "dev"
-common = [{ name = "yaml-language-server", method = "nix-hm" }]
-
-## python
+## for python
 [python]
 type = "dev"
 common = [{ name = "python", method = "nix-hm" }]
 
-## for python
 [ruff]
 type = "dev"
 common = [{ name = "ruff", method = "nix-hm" }]
@@ -330,20 +340,10 @@ ubuntu = [
 type = "dev"
 common = [{ name = "uv", method = "nix-hm" }]
 
-## nodejs
-[nodejs]
-type = "dev"
-common = [{ name = "npm", method = "nix-hm" }]
-
 ## for bash
 [bash-language-server]
 type = "dev"
 common = [{ name = "bash-language-server", method = "nix-hm" }]
-
-## for markdown eslint json
-[vscode-langservers-extracted]
-type = "dev"
-common = [{ name = "vscode-langservers-extracted", method = "nix-hm" }]
 
 ## for typescript
 [typescript-language-server]

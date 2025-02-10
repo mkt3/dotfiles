@@ -1085,19 +1085,6 @@
           :program "ruff"
           :args `("check" "--fix" "-e" "--stdin-filename" ,buffer-file-name  "-")
           :group 'python))
-
-      ;; (use-package flymake-ruff
-      ;;   :ensure t
-      ;;   :hook (eglot-managed-mode-hook . (lambda ()
-      ;;                                      (when (derived-mode-p 'python-mode 'python-ts-mode)
-      ;;                                        (flymake-ruff-load))))
-      ;;   :config
-      ;;   (setq flymake-ruff--default-configs '("ruff.toml" ".ruff.toml")))
-
-      ;; (use-package ruff-fix
-      ;;   :vc (:url "https://github.com/mkt3/ruff-fix.el.git" :rev :newest)
-      ;;   ;; :vc (:fetcher github :repo mkt3/ruff-fix.el.git)
-      ;;   :hook (before-save-hook . ruff-fix-before-save))
     #+end_src
 *** Rust
     #+begin_src emacs-lisp
@@ -1121,7 +1108,7 @@
      #+begin_src emacs-lisp
        (use-package web-mode
          :ensure t
-         :mode ("\\.css\\'" "\\.p?html?\\'")
+         :mode ("\\.p?html?\\'")
          :custom
          (web-mode-markup-indent-offset 2)
          (web-mode-css-indent-offset 2)
@@ -1136,65 +1123,25 @@
          (indent-tabs-mode nil)
          (tab-width 2))
      #+end_src
+*** css
+    #+begin_src emacs-lisp
+      (use-package css-mode
+        :ensure t
+        :hook (css-ts-mode-hook . eglot-ensure)
+        :mode (("\\.css\\'" . css-ts-mode)
+               ("\\.scss\\'" . scss-mode))
+        :commands (css-ts-mode)
+        :custom
+        (css-indent-offset 2))
+    #+end_src
 *** typescript / JavaScript
-**** node module path
-     #+begin_src emacs-lisp
-       (use-package  add-node-modules-path
-         :ensure t
-         :commands add-node-modules-path)
-     #+end_src
-**** jsx-mode
-     #+begin_src emacs-lisp
-       (use-package jtsx
-         :ensure t
-         :mode (("\\.jsx?\\'" . jtsx-jsx-mode)
-                ("\\.tsx\\'" . jtsx-tsx-mode)
-                ("\\.ts\\'" . jtsx-typescript-mode))
-         :commands jtsx-install-treesit-language
-         :hook ((jtsx-jsx-mode-hook . hs-minor-mode)
-                (jtsx-tsx-mode-hook . hs-minor-mode)
-                (jtsx-typescript-mode-hook . hs-minor-mode))
-         :custom
-         (js-indent-level 2)
-         (typescript-ts-mode-indent-offset 2)
-         (jtsx-switch-indent-offset 0)
-         (jtsx-indent-statement-block-regarding-standalone-parent nil)
-         (jtsx-jsx-element-move-allow-step-out t)
-         (jtsx-enable-jsx-electric-closing-element t)
-         :config
-         (defun jtsx-bind-keys-to-mode-map (mode-map)
-           "Bind keys to MODE-MAP."
-           (keymap-set mode-map "C-c C-j" 'jtsx-jump-jsx-element-tag-dwim)
-           (keymap-set mode-map "C-c j o" 'jtsx-jump-jsx-opening-tag)
-           (keymap-set mode-map "C-c j c" 'jtsx-jump-jsx-closing-tag)
-           (keymap-set mode-map "C-c j r" 'jtsx-rename-jsx-element)
-           (keymap-set mode-map "C-c <down>" 'jtsx-move-jsx-element-tag-forward)
-           (keymap-set mode-map "C-c <up>" 'jtsx-move-jsx-element-tag-backward)
-           (keymap-set mode-map "C-c C-<down>" 'jtsx-move-jsx-element-forward)
-           (keymap-set mode-map "C-c C-<up>" 'jtsx-move-jsx-element-backward)
-           (keymap-set mode-map "C-c C-S-<down>" 'jtsx-move-jsx-element-step-in-forward)
-           (keymap-set mode-map "C-c C-S-<up>" 'jtsx-move-jsx-element-step-in-backward)
-           (keymap-set mode-map "C-c j w" 'jtsx-wrap-in-jsx-element))
-
-         (defun jtsx-bind-keys-to-jsx-mode-map ()
-           (jtsx-bind-keys-to-mode-map jsx-mode-map))
-
-         (defun jtsx-bind-keys-to-tsx-mode-map ()
-           (jtsx-bind-keys-to-mode-map tsx-mode-map))
-
-         (add-hook 'jsx-mode-hook 'jtsx-bind-keys-to-jsx-mode-map)
-         (add-hook 'tsx-mode-hook 'jtsx-bind-keys-to-tsx-mode-map))
-     #+end_src
 **** typescript-mode
      #+begin_src emacs-lisp
        (use-package typescript-mode
          :ensure t
          :custom
          (typescript-indent-level 2)
-         :hook (typescript-ts-mode-hook . (lambda ()
-                                            (interactive)
-                                            (add-node-modules-path)
-                                            (eglot-ensure))))
+         :hook (typescript-ts-mode-hook . (eglot-ensure)))
      #+end_src
 ** Markup Languages
 *** Org
@@ -1694,7 +1641,6 @@
         :hook (markdown-mode-hook . (lambda ()
                                       (setq tab-width 2)
                                       (turn-on-orgtbl)
-                                      (setf (alist-get 'markdown-mode eglot-server-programs) '("marksman"))
                                       (eglot-ensure))))
     #+end_src
 *** YAML
