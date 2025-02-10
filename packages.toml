@@ -119,7 +119,8 @@ common = [
 type = "basic"
 common = [
   { name = "git", method = "nix-hm" },
-  # { name = "git-secrets", method = "nix-hm" },
+  { name = "pre-commit", method = "nix-hm" },
+  { name = "gitleaks", method = "nix-hm" },
 ]
 
 [sheldon]
