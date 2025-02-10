@@ -1048,10 +1048,9 @@
                                  (setq fill-column 100)
                                  (eglot-ensure
                                   )))
-        :config
+        :init
         (with-eval-after-load 'eglot
-          (dolist (mode '((nix-mode . ("nixd"))))
-            (add-to-list 'eglot-server-programs mode))))
+          (setf (alist-get 'nix-mode eglot-server-programs) '("nixd"))))
     #+end_src
 *** C
     #+begin_src emacs-lisp
@@ -1693,15 +1692,16 @@
         (markdown-fontify-code-blocks-natively t)
         (markdown-indent-on-enter 'indent-and-new-item)
         :hook (markdown-mode-hook . (lambda ()
-                                       (setq tab-width 2)
-                                       (turn-on-orgtbl)
-                                       (add-to-list 'eglot-server-programs '(markdown-mode . ("marksman")))
-                                       (eglot-ensure))))
+                                      (setq tab-width 2)
+                                      (turn-on-orgtbl)
+                                      (setf (alist-get 'markdown-mode eglot-server-programs) '("marksman"))
+                                      (eglot-ensure))))
     #+end_src
 *** YAML
     #+begin_src emacs-lisp
       (use-package yaml-mode
         :ensure t
+        :hook (yaml-ts-mode-hook . eglot-ensure)
         :mode (("\\.yml\\'" . yaml-ts-mode)
                ("\\.yaml\\'" . yaml-ts-mode))
         :commands (yaml-ts-mode))
@@ -1710,8 +1710,12 @@
     #+begin_src emacs-lisp
       (use-package toml-mode
         :ensure t
+        :hook (toml-ts-mode-hook . eglot-ensure)
         :mode (("\\.toml\\'" . toml-ts-mode))
-        :commands (toml-ts-mode))
+        :commands (toml-ts-mode)
+        :init
+        (with-eval-after-load 'eglot
+          (setf (alist-get 'toml-mode eglot-server-programs) '("taplo" "lsp" "stdio")))  )
     #+end_src
 *** JSON
     #+begin_src emacs-lisp

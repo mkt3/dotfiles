@@ -291,6 +291,11 @@ common = [{ name = "nixd", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "nixfmt-rfc-style", method = "nix-hm" }]
 
+## for yaml
+[yaml-language-server]
+type = "dev"
+common = [{ name = "yaml-language-server", method = "nix-hm" }]
+
 ## python
 [python]
 type = "dev"
