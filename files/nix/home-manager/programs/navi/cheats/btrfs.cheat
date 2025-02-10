@@ -22,4 +22,3 @@ sudo btrfs balance start <mount_point>
 
 # Remove devices online
 sudo btrfs device delete "device" <mount_point>
-

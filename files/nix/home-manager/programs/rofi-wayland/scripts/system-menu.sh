@@ -13,4 +13,3 @@ if [[ $# -ne 0 ]]; then
 else
     echo "${!SYSTEM_DICT[*]}"
 fi
-
