@@ -183,6 +183,10 @@ common = [{ name = "oxker", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "ssh_config", method = "nix-hm" }]
 
+[drill]
+type = "basic"
+common = [{ name = "drill", method = "nix-hm" }]
+
 ## toml
 [taplo]
 type = "basic"
@@ -282,7 +286,7 @@ darwin = [
   { name = "pngpaste", method = "nix-hm" },
 ]
 
-# repository management
+## repository management
 [ghq]
 type = "basic"
 common = [{ name = "ghq", method = "nix-hm" }]
