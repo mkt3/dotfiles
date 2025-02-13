@@ -50,7 +50,7 @@
       + (if isGUI then "\n# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
 
     initExtraFirst = ''
-      source "''${ZDOTDIR}/sheldon/sheldon.zsh"
+      source "''${HOME}/.config/sheldon/sheldon.zsh"
 
       source "''${ZDOTDIR}/no_defer.zsh"
       zsh-defer source "''${ZDOTDIR}/defer.zsh"
@@ -91,32 +91,37 @@
   xdg.configFile = {
     "zsh/no_defer.zsh" = {
       source = ./no_defer.zsh;
-      onChange = "zcompile $HOME/.config/zsh/no_defer";
+      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile $HOME/.config/zsh/no_defer'";
     };
     "zsh/path.zsh" = {
       source = ./path.zsh;
-      onChange = "zcompile $HOME/.config/zsh/path.zsh";
-    };
-    "zsh/sheldon/plugins.toml" = {
-      source = ./sheldon/plugins.toml;
-      onChange = "sheldon source $HOME/.config/zsh/sheldon/sheldon.zsh && sheldon lock --update && zcompile $HOME/.config/zsh/sheldon/sheldon.zsh";
+      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile $HOME/.config/zsh/path.zsh'";
     };
     "zsh/abbreviations".source = ./abbreviations;
-  };
 
-  xdg.configFile."zsh/defer.zsh" = {
-    onChange = "zcompile $HOME/.config/zsh/defer.zsh";
-    text = ''
-      # rehash
-      zstyle ":completion:*:commands" rehash 1
+    "zsh/defer.zsh" = {
+      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile $HOME/.config/zsh/defer.zsh'";
+      text = ''
+        # rehash
+        zstyle ":completion:*:commands" rehash 1
 
-      # terminal title
-      echo -ne "\x1b]0;$HOST\x1b\\"
+        # terminal title
+        echo -ne "\x1b]0;$HOST\x1b\\"
 
-      if [[ ! -n $TMUX  ]]; then
-          bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
-      fi
-    '';
+        if [[ ! -n $TMUX  ]]; then
+            bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
+        fi
+      '';
+    };
+
+    "sheldon/plugins.toml" = {
+      source = ./sheldon/plugins.toml;
+      onChange = ''
+        ${pkgs.sheldon}/bin/sheldon --config-file=$HOME/.config/sheldon/plugins.toml source > $HOME/.config/sheldon/sheldon.zsh
+        ${pkgs.sheldon}/bin/sheldon lock --update
+        ${pkgs.zsh}/bin/zsh -c 'zcompile $HOME/.config/sheldon/sheldon.zsh'
+      '';
+    };
   };
 
   programs.dircolors = {
