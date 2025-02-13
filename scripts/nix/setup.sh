@@ -23,6 +23,7 @@ pre_setup_nix() {
     host_name="$HOSTNAME_ENV"
 
     nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
+    # for macos
     nix_platform=${nix_platform/arm64-darwin/aarch64-darwin}
 
     is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
@@ -47,8 +48,6 @@ pre_setup_nix() {
     nix run nixpkgs#gnused -- -i "s|__USERNAME__|${USER}|g" "$nix_main_flake"
     nix run nixpkgs#gnused -- -i "s|__HOMEDIRECTORY__|${HOME}|g" "$nix_main_flake"
     nix run nixpkgs#gnused -- -i "s|\"__ISGUI__\"|${is_gui}|g" "$nix_main_flake"
-
-    [ -d "${HOME}/.config/zsh" ] && nix run nixpkgs#findutils -- "${HOME}/.config/zsh" -type f -name "*.zwc" -exec rm -f {} \;
 
     info "Finished pre-setup for nix"
 }

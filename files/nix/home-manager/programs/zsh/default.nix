@@ -50,43 +50,10 @@
       + (if isGUI then "\n# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
 
     initExtraFirst = ''
-      # https://zenn.dev/fuzmare/articles/zsh-plugin-manager-cache
-
-      # Override the source command
-      function source {
-        ensure_zcompiled "''$1"
-        builtin source "''$1"
-      }
-
-      # Function to compile only files in ~/.config/zsh
-      function ensure_zcompiled {
-        local target_dir="''$HOME/.config/zsh"
-        local compiled="''$1.zwc"
-
-        # Check if the file is in the target directory
-        if [[ "''$1" == "''$target_dir/"* ]]; then
-          if [[ ! -r "''$compiled" || "''$1" -nt "''$compiled" ]]; then
-            echo "\033[1;36mCompiling\033[m ''$1"
-            zcompile "''$1" "''$compiled"
-          fi
-        fi
-      }
-
-      ensure_zcompiled "''${ZDOTDIR}/.zshrc"
-
-      # sheldon cache technique
-      sheldon_cache="''${SHELDON_CONFIG_DIR}/sheldon.zsh"
-      sheldon_toml="''${SHELDON_CONFIG_DIR}/plugins.toml"
-      if [[ ! -r "''$sheldon_cache" || "''$sheldon_toml" -nt "''$sheldon_cache" ]]; then
-        sheldon lock --update
-        sheldon source > "''$sheldon_cache"
-      fi
-      source "''$sheldon_cache"
-      unset sheldon_cache sheldon_toml
+      source "''${ZDOTDIR}/sheldon/sheldon.zsh"
 
       source "''${ZDOTDIR}/no_defer.zsh"
       zsh-defer source "''${ZDOTDIR}/defer.zsh"
-      zsh-defer unfunction source
     '';
 
     history = {
@@ -124,20 +91,21 @@
   xdg.configFile = {
     "zsh/no_defer.zsh" = {
       source = ./no_defer.zsh;
-      onChange = "rm -rf $HOME/.config/zsh/no_defer.zsh.zwc";
+      onChange = "zcompile $HOME/.config/zsh/no_defer";
     };
     "zsh/path.zsh" = {
       source = ./path.zsh;
-      onChange = "rm -rf $HOME/.config/zsh/path.zsh.zwc";
+      onChange = "zcompile $HOME/.config/zsh/path.zsh";
     };
     "zsh/sheldon/plugins.toml" = {
       source = ./sheldon/plugins.toml;
-      onChange = "rm -rf $HOME/.config/zsh/sheldon/sheldon.zs*";
+      onChange = "sheldon source $HOME/.config/zsh/sheldon/sheldon.zsh && sheldon lock --update && zcompile $HOME/.config/zsh/sheldon/sheldon.zsh";
     };
     "zsh/abbreviations".source = ./abbreviations;
   };
 
   xdg.configFile."zsh/defer.zsh" = {
+    onChange = "zcompile $HOME/.config/zsh/defer.zsh";
     text = ''
       # rehash
       zstyle ":completion:*:commands" rehash 1
