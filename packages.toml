@@ -272,6 +272,7 @@ common = [
   { name = "enchant", method = "nix-hm" },
   { name = "emacs-lsp-booster", method = "nix-hm" },
   { name = "pandoc", method = "nix-hm" },
+  { name = "cmigemo", method = "nix-hm" },
 ]
 
 [emacs-gui]

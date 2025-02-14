@@ -49,7 +49,7 @@
        :if (display-graphic-p)
        :config
        (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
-       (setq exec-path-from-shell-variables  '("PATH" "GOPATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID" "RECOLL_CONFDIR"))
+       (setq exec-path-from-shell-variables  '("PATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID" "RECOLL_CONFDIR" "CMIGEMO_DICT"))
        (exec-path-from-shell-initialize))
    #+end_src
 ** Constant
@@ -684,6 +684,7 @@
          (pcase-lambda (`(,cmd _)) (eq cmd #'project-find-regexp))
          project-switch-commands))
     #+end_src
+
 *** marginalia
     #+begin_src emacs-lisp
       (use-package marginalia
@@ -691,13 +692,31 @@
         :init
         (marginalia-mode))
     #+end_src
-*** orderless
+*** orderless & migemo
     #+begin_src emacs-lisp
       (use-package orderless
         :ensure t
         :custom
         (completion-styles '(orderless))
         (completion-category-overrides nil))
+
+      (use-package migemo
+        :if (executable-find "cmigemo")
+        :ensure t
+        :config
+        (setq migemo-command "cmigemo")
+        (setq migemo-options '("-q" "--emacs"))
+        (setq migemo-dictionary (getenv "CMIGEMO_DICT"))
+        (setq migemo-user-dictionary nil)
+        (setq migemo-regex-dictionary nil)
+        (setq migemo-coding-system 'utf-8-unix)
+        (defun orderless-migemo (component)
+          "Use migemo for COMPONENT if available."
+          (let ((pattern (migemo-get-pattern component)))
+            (orderless-regexp pattern)))
+        (with-eval-after-load 'orderless
+          (add-to-list 'orderless-matching-styles 'orderless-migemo))
+        )
     #+end_src
 *** fussy
     #+begin_src emacs-lisp
