@@ -313,17 +313,6 @@
        :after corfu
        :config
        (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
-     (use-package magit-file-icons
-       :ensure t
-       :after magit
-       :init
-       (magit-file-icons-mode 1)
-       :custom
-       ;; These are the default values:
-       (magit-file-icons-enable-diff-file-section-icons t)
-       (magit-file-icons-enable-untracked-icons t)
-       (magit-file-icons-enable-diffstat-icons t))
    #+end_src
 ** Highlight-indent-guide
    #+begin_src emacs-lisp
@@ -1001,9 +990,11 @@
 
       (use-package magit
         :ensure t
+        :after nerd-icons
         :custom
         (magit-wip-mode t)
         (magit-log-section-commit-count 30)
+        (magit-format-file-function #'magit-format-file-nerd-icons)
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup))
         :config
