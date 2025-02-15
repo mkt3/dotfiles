@@ -1,5 +1,6 @@
 {
   username,
+  hostname,
   lib,
   lanzaboote,
   nixos-hardware,
@@ -7,13 +8,20 @@
 }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./system_packages.nix
-    lanzaboote.nixosModules.lanzaboote
-    nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
-  ];
-
+  imports =
+    [
+      ./hardware-configuration.nix
+      ./system_packages.nix
+    ]
+    ++ (
+      if hostname == "personal-lt" then
+        [
+          lanzaboote.nixosModules.lanzaboote
+          nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
+        ]
+      else
+        [ ]
+    );
   # Use the systemd-boot EFI boot loader.
   boot = {
     initrd.systemd.enable = true;
