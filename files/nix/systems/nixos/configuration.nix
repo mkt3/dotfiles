@@ -16,7 +16,7 @@
     ++ (
       if hostname == "personal-lt" then
         [
-          lanzaboote.nixosModules.lanzaboote
+          ./lanzaboote.nix
           nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
         ]
       else
@@ -29,13 +29,6 @@
     loader.efi.canTouchEfiVariables = true;
 
     bootspec.enable = true;
-
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/etc/secureboot";
-      configurationLimit = 7;
-    };
-
   };
 
   # Set your time zone.
