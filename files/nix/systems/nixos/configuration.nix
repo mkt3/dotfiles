@@ -20,17 +20,8 @@
           nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
         ]
       else
-        [ ]
+        [ ./defaultboot.nix ]
     );
-  # Use the systemd-boot EFI boot loader.
-  boot = {
-    initrd.systemd.enable = true;
-    loader.systemd-boot.enable = lib.mkForce false;
-    loader.efi.canTouchEfiVariables = true;
-
-    bootspec.enable = true;
-  };
-
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
 
