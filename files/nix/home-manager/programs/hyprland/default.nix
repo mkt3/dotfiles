@@ -328,71 +328,87 @@
     enable = true;
     systemdTarget = "hyprland-session.target";
 
-    profiles = {
-      laptop-only = {
-        outputs = [
-          {
-            criteria = "eDP-1";
-            scale = 1.6;
-            status = "enable";
-            mode = " 2944x1840@90Hz";
-          }
-        ];
-      };
-
-      laptop-and-LG = {
-        outputs = [
-          {
-            criteria = "LG Electronics LG HDR 4K 0x00035468";
-            position = "0,0";
-            scale = 1.5;
-            mode = "3840x2160@60Hz";
-          }
-          {
-            criteria = "eDP-1";
-            position = "360,1440";
-            scale = 1.6;
-            status = "enable";
-            mode = " 2944x1840@90Hz";
-          }
-        ];
-      };
-      LG-and-CEX = {
-        outputs = [
-          {
-            criteria = "LG Electronics LG HDR 4K 0x00035468";
-            position = "0,0";
-            scale = 1.5;
-            mode = "3840x2160@60Hz";
-          }
-          {
-            criteria = "CEX CX133 0x00000001";
-            position = "480,1440";
-            scale = 1.6;
-            mode = "2560x1600@60Hz";
-          }
-        ];
-      };
-      laptop-and-LG-and-CEX = {
-        outputs = [
-          {
-            criteria = "LG Electronics LG HDR 4K 0x00035468";
-            position = "0,0";
-            scale = 1.5;
-            mode = "3840x2160@60Hz";
-          }
-          {
-            criteria = "CEX CX133 0x00000001";
-            position = "480,1440";
-            scale = 1.6;
-            mode = "2560x1600@60Hz";
-          }
-          {
-            criteria = "eDP-1";
-            status = "disable";
-          }
-        ];
-      };
-    };
+    settings = [
+      {
+        profile = {
+          name = "laptop-only";
+          outputs = [
+            {
+              criteria = "eDP-1";
+              scale = 1.6;
+              mode = " 2944x1840@90Hz";
+              status = "enable";
+            }
+          ];
+        };
+      }
+      {
+        profile = {
+          name = "laptop-and-LG";
+          outputs = [
+            {
+              criteria = "eDP-1";
+              position = "360,1440";
+              scale = 1.6;
+              mode = " 2944x1840@90Hz";
+              status = "enable";
+            }
+            {
+              criteria = "LG Electronics LG HDR 4K 0x00035468";
+              position = "0,0";
+              scale = 1.5;
+              mode = "3840x2160@60Hz";
+              status = "enable";
+            }
+          ];
+        };
+      }
+      {
+        profile = {
+          name = "LG-and-CEX";
+          outputs = [
+            {
+              criteria = "LG Electronics LG HDR 4K 0x00035468";
+              position = "0,0";
+              scale = 1.5;
+              mode = "3840x2160@60Hz";
+              status = "enable";
+            }
+            {
+              criteria = "CEX CX133 0x00000001";
+              position = "480,1440";
+              scale = 1.6;
+              mode = "2560x1600@60Hz";
+              status = "enable";
+            }
+          ];
+        };
+      }
+      {
+        profile = {
+          name = "laptop-and-LG-and-CEX";
+          outputs = [
+            {
+              criteria = "LG Electronics LG HDR 4K 0x00035468";
+              position = "0,0";
+              scale = 1.5;
+              mode = "3840x2160@60Hz";
+              status = "enable";
+            }
+            {
+              criteria = "CEX CX133 0x00000001";
+              position = "480,1440";
+              scale = 1.6;
+              mode = "2560x1600@60Hz";
+              status = "enable";
+            }
+            {
+              criteria = "eDP-1";
+              status = "disable";
+            }
+          ];
+        };
+      }
+    ];
   };
 }
