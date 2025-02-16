@@ -28,6 +28,7 @@
                             ("gnu" . "https://elpa.gnu.org/packages/")
                             ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
        (setq use-package-hook-name-suffix nil)
+       (package-initialize)
        (use-package delight :ensure t))
    #+end_src
 ** Auto package update
@@ -37,6 +38,7 @@
        :config
        (setq auto-package-update-delete-old-versions t)
        (setq auto-package-update-hide-results t)
+       (setq auto-package-update-interval 1)
        (setq auto-package-update-excluded-packages '(pdf-tools jinx mu4e))
        (auto-package-update-maybe))
    #+end_src

@@ -86,17 +86,15 @@
         "GDK_SCALE, 1.5"
         "NIXOS_OZONE_WL, 1"
       ];
-      monitor = [
-        "eDP-1,preferred,auto-down,1.6"
-        "desc:LG Electronics LG HDR 4K 0x00035468,preferred,auto-up,1.5"
-      ];
 
       workspace = [
         "1, monitor:desc:LG Electronics LG HDR 4K 0x00035468, default:true"
         "2, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
         "3, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
+        "4, monitor:desc:CEX CX133 0x00000001, default:true"
         "4, monitor:eDP-1, default:true"
-        "5, monitor:eDP-1, default:true"
+        "5, monitor:desc:CEX CX133 0x00000001"
+        "5, monitor:eDP-1"
         "6, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
         # "7, monitor:eDP-1, default:true"
         # "8, monitor:eDP-1, default:true"
@@ -325,4 +323,76 @@
     # icons
     export XCURSOR_PATH=/usr/share/icons:"''${XDG_DATA_HOME}/icons"
   '';
+
+  services.kanshi = {
+    enable = true;
+    systemdTarget = "hyprland-session.target";
+
+    profiles = {
+      laptop-only = {
+        outputs = [
+          {
+            criteria = "eDP-1";
+            scale = 1.6;
+            status = "enable";
+            mode = " 2944x1840@90Hz";
+          }
+        ];
+      };
+
+      laptop-and-LG = {
+        outputs = [
+          {
+            criteria = "LG Electronics LG HDR 4K 0x00035468";
+            position = "0,0";
+            scale = 1.5;
+            mode = "3840x2160@60Hz";
+          }
+          {
+            criteria = "eDP-1";
+            position = "360,1440";
+            scale = 1.6;
+            status = "enable";
+            mode = " 2944x1840@90Hz";
+          }
+        ];
+      };
+      LG-and-CEX = {
+        outputs = [
+          {
+            criteria = "LG Electronics LG HDR 4K 0x00035468";
+            position = "0,0";
+            scale = 1.5;
+            mode = "3840x2160@60Hz";
+          }
+          {
+            criteria = "CEX CX133 0x00000001";
+            position = "480,1440";
+            scale = 1.6;
+            mode = "2560x1600@60Hz";
+          }
+        ];
+      };
+      laptop-and-LG-and-CEX = {
+        outputs = [
+          {
+            criteria = "LG Electronics LG HDR 4K 0x00035468";
+            position = "0,0";
+            scale = 1.5;
+            mode = "3840x2160@60Hz";
+          }
+          {
+            criteria = "CEX CX133 0x00000001";
+            position = "480,1440";
+            scale = 1.6;
+            mode = "2560x1600@60Hz";
+          }
+          {
+            criteria = "eDP-1";
+            status = "disable";
+          }
+        ];
+      };
+    };
+  };
 }
