@@ -57,15 +57,15 @@
           ++ (
             if platform == "aarch64-darwin" then
               [
-                (import ./home-manager/overlays/patched-emacs/emacs-git.nix)
+                (import ./home-manager/overlays/patched-emacs/emacs-unstable.nix)
               ]
             else if platform == "x86_64-linux" && isGUI then
               [
-                (import ./home-manager/overlays/patched-emacs/emacs-git-pgtk.nix)
+                (import ./home-manager/overlays/patched-emacs/emacs-unstable-pgtk.nix)
               ]
             else
               [
-                (import ./home-manager/overlays/patched-emacs/emacs-git-nox.nix)
+                (import ./home-manager/overlays/patched-emacs/emacs-unstable-nox.nix)
               ]
           );
       };
