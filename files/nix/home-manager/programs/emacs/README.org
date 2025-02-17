@@ -817,7 +817,12 @@
    #+begin_src emacs-lisp
      (use-package vundo
        :ensure t
-       :bind ("C-x u" . vundo))
+       :bind (("C-x u" . vundo)
+              :map vundo-mode-map
+              ("l" . vundo-forward)
+              ("h" . vundo-backward)
+              ("j" . vundo-next)
+              ("k" . vundo-previous)))
    #+end_src
 ** mwim
    #+begin_src emacs-lisp
