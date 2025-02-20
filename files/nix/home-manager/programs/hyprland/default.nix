@@ -91,9 +91,7 @@
         "1, monitor:desc:LG Electronics LG HDR 4K 0x00035468, default:true"
         "2, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
         "3, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
-        "4, monitor:desc:CEX CX133 0x00000001, default:true"
         "4, monitor:eDP-1, default:true"
-        "5, monitor:desc:CEX CX133 0x00000001"
         "5, monitor:eDP-1"
         "6, monitor:desc:LG Electronics LG HDR 4K 0x00035468"
         # "7, monitor:eDP-1, default:true"
@@ -363,52 +361,52 @@
           ];
         };
       }
-      {
-        profile = {
-          name = "LG-and-CEX";
-          outputs = [
-            {
-              criteria = "LG Electronics LG HDR 4K 0x00035468";
-              position = "0,0";
-              scale = 1.5;
-              mode = "3840x2160@60Hz";
-              status = "enable";
-            }
-            {
-              criteria = "CEX CX133 0x00000001";
-              position = "480,1440";
-              scale = 1.6;
-              mode = "2560x1600@60Hz";
-              status = "enable";
-            }
-          ];
-        };
-      }
-      {
-        profile = {
-          name = "laptop-and-LG-and-CEX";
-          outputs = [
-            {
-              criteria = "LG Electronics LG HDR 4K 0x00035468";
-              position = "0,0";
-              scale = 1.5;
-              mode = "3840x2160@60Hz";
-              status = "enable";
-            }
-            {
-              criteria = "CEX CX133 0x00000001";
-              position = "480,1440";
-              scale = 1.6;
-              mode = "2560x1600@60Hz";
-              status = "enable";
-            }
-            {
-              criteria = "eDP-1";
-              status = "disable";
-            }
-          ];
-        };
-      }
+      # {
+      #   profile = {
+      #     name = "LG-and-CEX";
+      #     outputs = [
+      #       {
+      #         criteria = "LG Electronics LG HDR 4K 0x00035468";
+      #         position = "0,0";
+      #         scale = 1.5;
+      #         mode = "3840x2160@60Hz";
+      #         status = "enable";
+      #       }
+      #       {
+      #         criteria = "CEX CX133 0x00000001";
+      #         position = "480,1440";
+      #         scale = 1.6;
+      #         mode = "2560x1600@60Hz";
+      #         status = "enable";
+      #       }
+      #     ];
+      #   };
+      # }
+      # {
+      #   profile = {
+      #     name = "laptop-and-LG-and-CEX";
+      #     outputs = [
+      #       {
+      #         criteria = "LG Electronics LG HDR 4K 0x00035468";
+      #         position = "0,0";
+      #         scale = 1.5;
+      #         mode = "3840x2160@60Hz";
+      #         status = "enable";
+      #       }
+      #       {
+      #         criteria = "CEX CX133 0x00000001";
+      #         position = "480,1440";
+      #         scale = 1.6;
+      #         mode = "2560x1600@60Hz";
+      #         status = "enable";
+      #       }
+      #       {
+      #         criteria = "eDP-1";
+      #         status = "disable";
+      #       }
+      #     ];
+      #   };
+      # }
     ];
   };
 }
