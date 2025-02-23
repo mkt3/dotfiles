@@ -1416,7 +1416,7 @@
                 ("C-c n d" . org-roam-dailies-find-date)
                 ("C-c n e" . org-roam-extract-subtree)
                 ("C-c n p" . citar-open)
-                ("C-c C-g t" . org-roam-dailies-find-today))
+                ("C-c C-g t" . org-roam-dailies-goto-today))
          :init
          (setq org-roam-directory my:d:org-roam)
          (setq org-roam-dailies-directory "daily_notes/")
