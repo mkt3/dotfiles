@@ -1413,10 +1413,10 @@
                 ("C-c n l" . org-roam-buffer-toggle)
                 ("C-c n c" . citar-insert-citation)
                 ("C-c n j" . org-roam-dailies-capture-today)
+                ("C-c n n" . org-roam-dailies-goto-today)
                 ("C-c n d" . org-roam-dailies-find-date)
                 ("C-c n e" . org-roam-extract-subtree)
-                ("C-c n p" . citar-open)
-                ("C-c C-g t" . org-roam-dailies-goto-today))
+                ("C-c n p" . citar-open))
          :init
          (setq org-roam-directory my:d:org-roam)
          (setq org-roam-dailies-directory "daily_notes/")
@@ -1474,7 +1474,14 @@
                                         :unnarrowed t)
                                        ))
          :config
-         (load (expand-file-name "personal_config/emacs/journal.el" my:d:nextcloud))
+         (setq org-roam-dailies-capture-templates
+               '(("j" "journal" plain "** Things I did\n** Things I learned\n** Journal\n"
+                  :jump-to-captured t
+                  :immediate-finish t
+                  :unnarrowed t
+                  :target (file+head+olp "%<%Y-%m>.org"
+                                         "#+title: %<%Y-%m>"
+                                         ("%<%Y-%m-%d %a>")))))
          (defun my:org-roam-read-only ()
            "Enable read-only mode for org-roam files."
            (when (and (buffer-file-name)

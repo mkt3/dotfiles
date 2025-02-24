@@ -53,9 +53,9 @@ org-mode
 (cgpt "#+begin_ai" n> r> n> "#+end_ai")
 (verse "#+begin_verse" n> r> n> "#+end_verse")
 (src "#+begin_src " p n> r> n> "#+end_src" :post (org-edit-src-code))
-(python "#+begin_src python" n> r> n> "#+end_src" :post (org-edit-src-code))
+(pyn "#+begin_src python" n> r> n> "#+end_src" :post (org-edit-src-code))
 (shl "#+begin_src shell" n> r> n> "#+end_src" :post (org-edit-src-code))
-(elisp "#+begin_src emacs-lisp" n> r> n> "#+end_src" :post (org-edit-src-code))
+(elp "#+begin_src emacs-lisp" n> r> n> "#+end_src" :post (org-edit-src-code))
 (todo "** TODO ")
 
 bash-ts-mode
@@ -77,7 +77,6 @@ python-ts-mode
 toml-ts-mode
 
 (pyright "[tool.pyright]" n "exclude = [\".venv\"]" n "venvPath = \".\"" n "venv = \".venv\"" n "include = [\"src\"]")
-(mise-python "[env]" n "PYTHONPATH = \".\"" n "_.python.venv = \".venv\"")
 
 ;; Local Variables:
 ;; mode: lisp-data
