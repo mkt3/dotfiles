@@ -28,6 +28,7 @@
                             ("gnu" . "https://elpa.gnu.org/packages/")
                             ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
        (setq use-package-hook-name-suffix nil)
+       (setq use-package-vc-prefer-newest t)
        (package-initialize)
        (use-package delight :ensure t))
    #+end_src
@@ -783,7 +784,6 @@
 ** which-key
    #+begin_src emacs-lisp
      (use-package which-key
-       :ensure t
        :delight
        :custom
        ((which-key-idle-delay  1)
@@ -975,6 +975,7 @@
                 (json-mode . json-ts-mode)
                 (toml-mode . toml-ts-mode)
                 (bash-mode . bash-ts-mode)
+                (html-mode . html-ts-mode)
                 (js2-mode . js-ts-mode)
                 (typescript-mode . typescript-ts-mode)
                 (tsx-mode . tsx-ts-mode)
@@ -1750,6 +1751,7 @@
       :custom
       (dired-dwim-target t)
       (dired-recursive-copies 'always)
+      (dired-movement-style 'cycle)
       (dired-omit-files (rx (seq bol "."))))
   #+end_src
 * Browser
