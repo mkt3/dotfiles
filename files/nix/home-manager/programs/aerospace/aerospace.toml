@@ -187,11 +187,11 @@ inherit-env-vars = true
 PATH = '/etc/profiles/per-user/${USER}/bin:/run/current-system/sw/bin:${PATH}'
 
 [[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
+if.app-id = 'com.vivaldi.Vivaldi'
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
-if.app-id = 'com.vivaldi.Vivaldi'
+if.app-id = 'com.github.wez.wezterm'
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
