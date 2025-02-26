@@ -1,8 +1,6 @@
 {
   username,
   hostname,
-  lib,
-  lanzaboote,
   nixos-hardware,
   ...
 }:

@@ -902,6 +902,7 @@
 
      (use-package eglot-booster
        :vc (:url "https://github.com/jdtsmith/eglot-booster" :rev :newest)
+       :ensure t
        :after eglot
        :config
        (eglot-booster-mode))
@@ -1736,6 +1737,7 @@
 
     (use-package consult-tramp
       :vc (:url "https://github.com/Ladicle/consult-tramp" :rev :newest)
+      :ensure t
       :custom
       (consult-tramp-ssh-config "~/.ssh/extra_config"))
   #+end_src
