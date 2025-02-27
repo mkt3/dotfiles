@@ -1714,7 +1714,8 @@
     (use-package tramp
       :init
       (setq tramp-remote-path '(tramp-default-remote-path
-                                "~/.local/bin/"))
+                                "~/.local/bin"
+                                "~/.local/state/nix/profiles/profile/bin"))
       (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
       (setq tramp-default-method "ssh")
       (setq tramp-auto-save-directory
