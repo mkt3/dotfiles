@@ -350,6 +350,11 @@ common = [{ name = "uv", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "bash-language-server", method = "nix-hm" }]
 
+## for lua
+[lua-lsp]
+type = "dev"
+common = [{ name = "lua53Packages.lua-lsp", method = "nix-hm" }]
+
 ## for typescript
 [typescript-language-server]
 type = "dev"
