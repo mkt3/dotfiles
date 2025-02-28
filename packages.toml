@@ -411,7 +411,8 @@ darwin = [{ name = "meetingbar", method = "nix-hm" }]
 ## browser
 [vivaldi]
 type = "gui"
-common = [{ name = "vivaldi", method = "nix-hm" }]
+darwin = [{ name = "vivaldi", method = "cask" }]
+linux = [{ name = "vivaldi", method = "nix-hm" }]
 
 ### for keymap
 [google-chrome]

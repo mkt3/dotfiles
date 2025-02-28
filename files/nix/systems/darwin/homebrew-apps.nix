@@ -17,6 +17,7 @@
     ];
 
     casks = [
+      "vivaldi"
       "nextcloud"
       "google-drive"
       "macskk"
