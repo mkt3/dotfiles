@@ -48,7 +48,7 @@ clean:
 
 .PHONY: lint
 lint:
-	@RUST_LOG=warn taplo fmt --config $(REPO_DIR)/taplo.toml $(TOML_FILE)
+	-@RUST_LOG=warn taplo fmt --config $(REPO_DIR)/taplo.toml $(TOML_FILE)
 
 .PHONY: import_mkt3_public_key
 import_mkt3_public_key:
