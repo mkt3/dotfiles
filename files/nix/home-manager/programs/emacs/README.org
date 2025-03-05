@@ -27,10 +27,11 @@
                             ("melpa" . "https://melpa.org/packages/")
                             ("gnu" . "https://elpa.gnu.org/packages/")
                             ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
-       (setq use-package-hook-name-suffix nil)
-       (setq use-package-vc-prefer-newest t)
        (package-initialize)
-       (use-package delight :ensure t))
+       (setq use-package-hook-name-suffix nil)
+       (setq use-package-vc-prefer-newest t))
+
+     (use-package gnu-elpa-keyring-update :ensure t)
    #+end_src
 ** Auto package update
    #+begin_src emacs-lisp
@@ -40,8 +41,8 @@
        (setq auto-package-update-delete-old-versions t)
        (setq auto-package-update-hide-results t)
        (setq auto-package-update-interval 1)
-       (setq auto-package-update-excluded-packages '(pdf-tools jinx mu4e))
-       (auto-package-update-maybe))
+       (setq auto-package-update-excluded-packages '(pdf-tools jinx mu4e ox-hugo))
+       :hook (after-init-hook . auto-package-update-maybe))
    #+end_src
 * Initialize
 ** Load Path
@@ -50,8 +51,8 @@
        :ensure t
        :if (display-graphic-p)
        :config
-       (setq exec-path-from-shell-arguments  "") ;; Since the UI is set to interactive in .zshrc.
-       (setq exec-path-from-shell-variables  '("PATH" "NAME" "ORG_HUGO" "RUSTUP_HOME" "CARGO_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID" "RECOLL_CONFDIR" "CMIGEMO_DICT"))
+       (setq exec-path-from-shell-arguments nil) ;; Since the UI is set to interactive in .zshrc.
+       (setq exec-path-from-shell-variables  '("PATH" "NAME" "ORG_HUGO" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID" "RECOLL_CONFDIR" "CMIGEMO_DICT"))
        (exec-path-from-shell-initialize))
    #+end_src
 ** Constant
@@ -62,7 +63,7 @@
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
      (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:nextcloud))
      (defconst my:d:org-hugo (getenv "ORG_HUGO"))
-     (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
+     (defconst my:d:password-store (getenv "PASSWORD_STORE_DIR"))
    #+end_src
 * Builtin config
 ** key-translation-map
@@ -121,7 +122,7 @@
        :custom
        (uniquify-buffer-name-style  'post-forward-angle-brackets)
        (uniquify-min-dir-content  1)
-       (funiquify-ignore-buffers-re  "*[^*]+*"))
+       (uniquify-ignore-buffers-re  "*[^*]+*"))
    #+end_src
 ** Save various history
    #+begin_src emacs-lisp
@@ -142,9 +143,8 @@
    #+end_src
 ** Line number
    #+begin_src emacs-lisp
-     ;; (use-package display-line-numbers
-     ;;   :config
-     ;;   (global-display-line-numbers-mode))
+     (use-package display-line-numbers
+       :hook (prog-mode-hook . display-line-numbers-mode))
    #+end_src
 ** Disable auto generate file
    #+begin_src emacs-lisp
@@ -171,13 +171,9 @@
 ** Parentheses
    #+begin_src emacs-lisp
      (use-package paren
-       ;; :custom-face (show-paren-match . '((t
-       ;;                                     (:weight regular
-       ;;                                              :background "#44475a"
-       ;;                                              :underline "$ffff00"))))
        :custom
        (show-paren-delay 0.0)
-       (show-paren-mode t))
+       :config (show-paren-mode t))
    #+end_src
 ** Window
    #+begin_src emacs-lisp
@@ -595,7 +591,7 @@
          (vertico-mode)
          :custom
          (vertico-count 20)
-         (enable-recursive-minibufferst)
+         (enable-recursive-minibuffers t)
          (vertico-cycle t)
          :bind (nil
                 :map vertico-map
@@ -749,7 +745,7 @@
         :ensure t
         :custom ((corfu-auto t)
                  (corfu-auto-prefix 1)
-                 (corfu-auto-delay 0)
+                 (corfu-auto-delay 0.2)
                  (corfu-cycle t)
                  (text-mode-ispell-word-completion nil))
         :init
@@ -901,8 +897,8 @@
        (fset #'jsonrpc--log-event #'ignore))
 
      (use-package eglot-booster
+       :ensure nil
        :vc (:url "https://github.com/jdtsmith/eglot-booster" :rev :newest)
-       :ensure t
        :after eglot
        :config
        (eglot-booster-mode))
@@ -1589,6 +1585,7 @@
 **** ox-hugo
      #+begin_src emacs-lisp
        (use-package ox-hugo
+         :ensure nil
          :vc (:url "https://github.com/mkt3/ox-hugo.git" :rev :newest)
          :after org
          :if (and (file-directory-p my:d:org-roam)
@@ -1627,9 +1624,7 @@
          (defun org-hugo-export-drafts ()
            "Export all non-draft .org files in my:d:org-roam to markdown using org-hugo."
            (interactive)
-           (let ((recentf-active recentf-mode))
-             (when recentf-active
-               (recentf-mode -1))
+           (let ((recentf-mode nil))
              (dolist (org-file (directory-files-recursively (expand-file-name "note" my:d:org-roam) "\\.org$"))
                (with-current-buffer (find-file-noselect org-file nil nil nil)
                  (save-excursion
@@ -1641,9 +1636,7 @@
                        (org-hugo-replace-last-modified)
                        (org-hugo-export-to-md)
                        (set-buffer-modified-p modified))))
-                 (kill-buffer)))
-             (when recentf-active
-               (recentf-mode 1)))))
+                 (kill-buffer))))))
      #+end_src
 **** org-pomodoro
      #+begin_src emacs-lisp
@@ -1737,8 +1730,8 @@
                                "-o ControlMaster=auto -o ControlPersist=yes")))
 
     (use-package consult-tramp
+      :ensure nil
       :vc (:url "https://github.com/Ladicle/consult-tramp" :rev :newest)
-      :ensure t
       :custom
       (consult-tramp-ssh-config "~/.ssh/extra_config"))
   #+end_src
@@ -2002,6 +1995,7 @@
 ** atomic-chrome
    #+begin_src emacs-lisp
      (use-package atomic-chrome
+       :ensure nil
        :vc (:url "https://github.com/KarimAziev/atomic-chrome" :rev :newest)
        :if (display-graphic-p)
        :config

@@ -104,9 +104,9 @@ common = [
 type = "basic"
 common = [{ name = "unar", method = "nix" }]
 
-[trash-cli]
+[gtrash]
 type = "basic"
-common = [{ name = "trash-cli", method = "nix-hm" }]
+common = [{ name = "gtrash", method = "nix-hm" }]
 
 [tmux]
 type = "basic"
