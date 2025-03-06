@@ -1553,7 +1553,7 @@
 
        (use-package citar-embark
          :ensure t
-         :after citar embark
+         :after (citar embark)
          :no-require
          :config
          (setq citar-at-point-function 'embark-act)
@@ -1578,6 +1578,7 @@
 
        (use-package org-noter
          :ensure t
+         :after citar
          :custom
          (org-noter-supported-modes '(doc-view-mode pdf-view-mode nov-mode))
          (org-noter-highlight-selected-text t))
