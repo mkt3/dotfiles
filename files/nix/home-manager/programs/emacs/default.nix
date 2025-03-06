@@ -59,6 +59,14 @@ in
 
   xdg.configFile."zsh/defer.zsh" = {
     text = ''
+      if [[ "$(uname)" == "Darwin" ]]; then
+        alias emacs="''${HOME}/Applications/Home\\ Manager\\ Apps/Emacs.app/Contents/MacOS/Emacs -nw"
+      elif [[ -f "/usr/lib/x86_64-linux-gnu/libnss_sss.so.2" ]]; then
+        alias emacs="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libnss_sss.so.2 emacs -nw"
+      else
+        alias emacs="emacs -nw"
+      fi
+
       # Emacs tramp config for zsh
       if [[ "$TERM" == "dumb" ]]; then
           unsetopt zle
@@ -69,13 +77,5 @@ in
           PS1='$ '
       fi
     '';
-  };
-
-  programs.zsh.shellAliases = {
-    emacs =
-      if pkgs.stdenv.hostPlatform.isDarwin then
-        "\${HOME}/Applications/Home\\ Manager\\ Apps/Emacs.app/Contents/MacOS/Emacs -nw"
-      else
-        "emacs -nw";
   };
 }
