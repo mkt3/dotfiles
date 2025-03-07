@@ -17,6 +17,8 @@
     ];
 
     casks = [
+      "slack"
+      "zoom"
       "vivaldi"
       "nextcloud"
       "google-drive"

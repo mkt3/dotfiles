@@ -393,7 +393,9 @@ common = [{ name = "texliveMedium", method = "nix-hm" }]
 ## communication tools
 [slack]
 type = "gui"
-common = [{ name = "slack", method = "nix-hm" }]
+darwin = [{ name = "slack", method = "cask" }]
+linux = [{ name = "slack", method = "nix-hm" }]
+
 
 [discord]
 type = "gui"
@@ -401,7 +403,8 @@ common = [{ name = "discord", method = "nix-hm" }]
 
 [zoom]
 type = "gui"
-common = [{ name = "zoom-us", method = "nix-hm" }]
+darwin = [{ name = "zoom", method = "cask" }]
+linux = [{ name = "zoom-us", method = "nix-hm" }]
 
 ### macos only
 [MeetingBar]
