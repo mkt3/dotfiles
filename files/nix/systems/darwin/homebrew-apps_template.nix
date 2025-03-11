@@ -10,7 +10,6 @@
 
     taps = [
       "nailuoGG/recoll"
-      "mtgto/macskk"
     ];
 
     brews = [__BREW_PACKAGES__

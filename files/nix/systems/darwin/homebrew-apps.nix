@@ -10,7 +10,6 @@
 
     taps = [
       "nailuoGG/recoll"
-      "mtgto/macskk"
     ];
 
     brews = [
