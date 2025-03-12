@@ -58,7 +58,6 @@ return {
     bottom = 0,
   },
   keys=keys,
-  front_end="WebGpu",
   enable_wayland = false,
   window_close_confirmation = 'NeverPrompt',
   check_for_updates = false,
