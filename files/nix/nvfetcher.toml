@@ -1,6 +1,6 @@
-[vivaldi-darwin]
-src.archpkg = "vivaldi"
-fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
+# [vivaldi-darwin]
+# src.archpkg = "vivaldi"
+# fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
 
 [vlc]
 src.archpkg = "vlc"

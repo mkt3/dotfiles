@@ -9,14 +9,6 @@
       sha256 = "sha256-8b7UyR5fLdnOYa/fsqm75n4n+sZYKf75hIEh6Dp2t6A=";
     };
   };
-  vivaldi-darwin = {
-    pname = "vivaldi-darwin";
-    version = "7.1.3570.58";
-    src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.7.1.3570.58.universal.dmg";
-      sha256 = "sha256-2pgKHxQHNSicbyXZdqOBsC5xg2eFMgrkM46/SbS8dpo=";
-    };
-  };
   vlc = {
     pname = "vlc";
     version = "3.0.21";

@@ -14,21 +14,6 @@
         },
         "version": "v4.10.0"
     },
-    "vivaldi-darwin": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "vivaldi-darwin",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-2pgKHxQHNSicbyXZdqOBsC5xg2eFMgrkM46/SbS8dpo=",
-            "type": "url",
-            "url": "https://downloads.vivaldi.com/stable/Vivaldi.7.1.3570.58.universal.dmg"
-        },
-        "version": "7.1.3570.58"
-    },
     "vlc": {
         "cargoLocks": null,
         "date": null,
