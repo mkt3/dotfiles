@@ -91,7 +91,7 @@
   xdg.configFile = {
     "zsh/no_defer.zsh" = {
       source = ./no_defer.zsh;
-      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile $HOME/.config/zsh/no_defer'";
+      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile $HOME/.config/zsh/no_defer.zsh'";
     };
     "zsh/path.zsh" = {
       source = ./path.zsh;
