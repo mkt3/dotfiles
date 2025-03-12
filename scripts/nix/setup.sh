@@ -31,9 +31,6 @@ pre_setup_nix() {
     if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
         cp -f "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
     fi
-    if [ -L "${XDG_CONFIG_HOME}/nix/nix.conf" ]; then
-        cp -fP "${XDG_CONFIG_HOME}/nix/nix.conf" "$nix_config_dir"
-    fi
 
     rm -rf  "${XDG_CONFIG_HOME}/nix"
     cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"

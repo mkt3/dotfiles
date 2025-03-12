@@ -65,10 +65,45 @@ install_linux() {
 
 install_nix() {
     if ! (type nix > /dev/null 2>&1); then
-        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-    elif [[ "$OS" == "Linux" ]]; then
-        sudo -i nix upgrade-nix || true
+        case "$OS" in
+            Darwin)
+                sh <(curl -L https://nixos.org/nix/install)
+                ;;
+            Linux)
+                sh <(curl -L https://nixos.org/nix/install) --daemon
+                ;;
+            *)
+                echo "${OS} is not supported."
+                exit 1
+            ;;
+        esac
+    # else
+    #     case "$OS" in
+    #         Darwin)
+    #             sudo nix-env --install --file '<nixpkgs>' --attr nix cacert -I nixpkgs=channel:nixpkgs-unstable
+    #             sudo launchctl remove org.nixos.nix-daemon
+    #             sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    #             ;;
+    #         Linux)
+    #             sudo nix-env --install --file '<nixpkgs>' --attr nix cacert -I nixpkgs=channel:nixpkgs-unstable
+    #             sudo systemctl daemon-reload
+    #             sudo systemctl restart nix-daemon
+    #             ;;
+    #         *)
+    #             echo "${OS} is not supported."
+    #             exit 1
+    #         ;;
+    #     esac
     fi
+    local CONFIG_FILE="/etc/nix/nix.conf"
+    local FEATURES="experimental-features = nix-command flakes"
+
+    [ -d "$(dirname "$CONFIG_FILE")" ] || sudo mkdir -p "$(dirname "$CONFIG_FILE")"
+
+    if ! grep -Fxq "$FEATURES" "$CONFIG_FILE" 2>/dev/null; then
+        echo "$FEATURES" | sudo tee -a "$CONFIG_FILE" > /dev/null
+    fi
+
 }
 
 install_essential_packages
