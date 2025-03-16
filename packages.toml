@@ -383,6 +383,9 @@ linux = [{ name = "docker-conf", method = "nix-hm" }]
 [kubectl]
 type = "dev"
 common = [{ name = "kubectl", method = "nix-hm" }]
+[k9s]
+type = "dev"
+common = [{ name = "k9s", method = "nix-hm" }]
 
 # gui packages
 ## tex
