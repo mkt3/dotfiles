@@ -98,19 +98,19 @@ if [[ "$os_name" == "darwin" ]]; then
         {
             echo "sudo mv /etc/shells{,.before-nix-darwin}"
             echo "sudo mv /etc/nix/nix.conf{,.before-nix-darwin}"
-            echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake ${nix_dir}#${HOSTNAME_ENV} --keep-going"
+            echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake ${nix_dir}#${HOSTNAME_ENV}"
         } >> "$install_script_path"
     else
         {
             echo "cd ${nix_dir} && nix flake update && cd -"
-            echo "darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV} --keep-going"
+            echo "darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
         } >> "$install_script_path"
     fi
 elif [[ "$os_name" == "nixos" ]]; then
     {
         echo "title \"Setup nix\""
         echo "cd ${nix_dir} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -"
-        echo "sudo nixos-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV} --keep-going"
+        echo "sudo nixos-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
     } >> "$install_script_path"
 
 else
@@ -118,10 +118,10 @@ else
     if (type home-manager > /dev/null 2>&1); then
         {
             echo "nix flake update --flake ${nix_dir}"
-            echo "home-manager switch --flake ${nix_dir} --keep-going"
+            echo "home-manager switch --flake ${nix_dir}"
         } >> "$install_script_path"
     else
-        echo "nix --extra-experimental-features \"nix-command flakes\" run home-manager/master -- switch --flake ${nix_dir} --keep-going" >> "$install_script_path"
+        echo "nix --extra-experimental-features \"nix-command flakes\" run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
     fi
     echo "__ETC_PROFILE_NIX_SOURCED=\"\"" >> "$install_script_path"
 fi
