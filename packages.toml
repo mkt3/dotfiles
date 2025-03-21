@@ -185,7 +185,7 @@ common = [{ name = "ssh_config", method = "nix-hm" }]
 
 [drill]
 type = "basic"
-common = [{ name = "drill", method = "nix-hm" }]
+common = [{ name = "ldns", method = "nix-hm" }]
 
 ## toml
 [taplo]
