@@ -34,24 +34,13 @@ bindkey '\t' menu-select \"$terminfo[kcbt]\" menu-select
 bindkey -M menuselect '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete
 bindkey '^N' history-beginning-search-forward
 bindkey '^P' history-beginning-search-backward
+bindkey -M emacs '^R' .fzf-history-widget
 
 zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored
 
 +autocomplete:recent-directories() {
   typeset -ga reply=("${(@f)$(zoxide query -l)}")
   }
-
-() {
-   local -a prefix=( '\e'{\[,O} )
-   local -a up=( ${^prefix}A ) down=( ${^prefix}B )
-   local key=
-   for key in $up[@]; do
-      bindkey "$key" history-beginning-search-backward
-   done
-   for key in $down[@]; do
-      bindkey "$key" history-beginning-search-forward
-   done
-}
 '''
 
 [plugins.syntax-highlight]
