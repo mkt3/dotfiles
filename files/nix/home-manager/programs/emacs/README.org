@@ -1482,10 +1482,12 @@
                                          "#+title: %<%Y-%m>"
                                          ("%<%Y-%m-%d %a>")))))
          (defun my:org-roam-read-only ()
-           "Enable read-only mode for org-roam files."
+           "Enable read-only mode for org-roam files, unless the buffer is empty."
            (when (and (buffer-file-name)
-                      (string-match-p "/roam/config/" (buffer-file-name)))
+                      (string-match-p "/roam/config/" (buffer-file-name))
+                      (> (buffer-size) 0))
              (read-only-mode 1)))
+
          (add-hook 'org-mode-hook 'my:org-roam-read-only)
          (add-hook 'org-mode-hook (lambda ()
                                     (setq-local time-stamp-active t
