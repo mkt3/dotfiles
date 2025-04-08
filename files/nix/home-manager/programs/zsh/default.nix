@@ -57,9 +57,9 @@
     '';
 
     history = {
-      path = "${config.xdg.dataHome}/zsh/zsh_history";
+      path = "/dev/null";
       size = 50000;
-      save = 50000;
+      save = 0;
       ignoreAllDups = true;
       ignoreSpace = true;
       ignoreDups = true;

@@ -16,7 +16,7 @@
  #+end_src
 * Custom
   #+begin_src emacs-lisp
-    (setq custom-file (locate-user-emacs-file "custom.el"))
+    (setopt custom-file (locate-user-emacs-file "custom.el"))
   #+end_src
 * Packages
 ** Package manager
@@ -28,8 +28,8 @@
                             ("gnu" . "https://elpa.gnu.org/packages/")
                             ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
        (package-initialize)
-       (setq use-package-hook-name-suffix nil)
-       (setq use-package-vc-prefer-newest t))
+       (setopt use-package-hook-name-suffix nil)
+       (setopt use-package-vc-prefer-newest t))
 
      (use-package gnu-elpa-keyring-update :ensure t)
    #+end_src
@@ -37,11 +37,11 @@
    #+begin_src emacs-lisp
      (use-package auto-package-update
        :ensure t
-       :config
-       (setq auto-package-update-delete-old-versions t)
-       (setq auto-package-update-hide-results t)
-       (setq auto-package-update-interval 1)
-       (setq auto-package-update-excluded-packages '(pdf-tools jinx mu4e ox-hugo))
+       :custom
+       (auto-package-update-delete-old-versions t)
+       (auto-package-update-hide-results t)
+       (auto-package-update-interval 1)
+       (auto-package-update-excluded-packages '(pdf-tools jinx mu4e ox-hugo))
        :hook (after-init-hook . auto-package-update-maybe))
    #+end_src
 * Initialize
@@ -50,9 +50,10 @@
      (use-package exec-path-from-shell
        :ensure t
        :if (display-graphic-p)
+       :custom
+       (exec-path-from-shell-arguments nil) ;; Since the UI is set to interactive in .zshrc.
+       (exec-path-from-shell-variables '("PATH" "NAME" "ORG_HUGO" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID" "RECOLL_CONFDIR" "CMIGEMO_DICT"))
        :config
-       (setq exec-path-from-shell-arguments nil) ;; Since the UI is set to interactive in .zshrc.
-       (setq exec-path-from-shell-variables  '("PATH" "NAME" "ORG_HUGO" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GNUPGHOME" "PASSWORD_STORE_DIR" "GPG_KEY_ID" "RECOLL_CONFDIR" "CMIGEMO_DICT"))
        (exec-path-from-shell-initialize))
    #+end_src
 ** Constant
@@ -80,29 +81,31 @@
    #+end_src
 ** scroll
    #+begin_src emacs-lisp
-     (setq scroll-preserve-screen-position t
-           scroll-margin 5
-           scroll-conservatively 1
-           next-screen-context-lines 5
-           pixel-scroll-precision-mode 1)
+     (setopt scroll-preserve-screen-position t
+             scroll-margin 5
+             scroll-conservatively 1
+             next-screen-context-lines 5)
+
+     (pixel-scroll-precision-mode 1)
    #+end_src
 ** symlink
    Disable visit symlink sources
    #+begin_src emacs-lisp
      (use-package vc-hooks :custom (vc-follow-symlinks t))
-     (setq-default find-file-visit-truename nil)
+     (setopt find-file-visit-truename nil)
      #+end_src
 ** tab
    #+begin_src emacs-lisp
      (setq-default
       indent-tabs-mode nil
-      tab-width 4
-      tab-always-indent t)
+      tab-width 4)
+
+     (setopt tab-always-indent t)
    #+end_src
 ** Truncate line
    #+begin_src emacs-lisp
-     (setq truncate-lines nil
-           truncate-partial-width-windows nil)
+     (setopt truncate-lines nil
+             truncate-partial-width-windows nil)
 
      (use-package adaptive-wrap
        :ensure t
@@ -113,14 +116,14 @@
      (bind-key "C-h" 'delete-backward-char)
      (bind-key "C-x ?" 'help-command)
      (use-package delsel
-       :custom
+       :config
        (delete-selection-mode t))
    #+end_src
 ** Assigning directory name to the same buffer name
    #+begin_src emacs-lisp
      (use-package uniquify
        :custom
-       (uniquify-buffer-name-style  'post-forward-angle-brackets)
+       (uniquify-buffer-name-style 'post-forward-angle-brackets)
        (uniquify-min-dir-content  1)
        (uniquify-ignore-buffers-re  "*[^*]+*"))
    #+end_src
@@ -157,7 +160,8 @@
      (use-package time
        :custom
        (display-time-string-forms  '(month "/" day "(" dayname ") " 24-hours ":" minutes))
-       (display-time-mode t))
+       :config
+       (display-time-mode 1))
    #+end_src
 ** Auto revert
    #+begin_src emacs-lisp
@@ -166,20 +170,21 @@
        :custom
        (auto-revert-interval 0.1)
        :config
-       (global-auto-revert-mode))
+       (global-auto-revert-mode 1))
    #+end_src
 ** Parentheses
    #+begin_src emacs-lisp
      (use-package paren
        :custom
        (show-paren-delay 0.0)
-       :config (show-paren-mode t))
+       :config
+       (show-paren-mode 1))
    #+end_src
 ** Window
    #+begin_src emacs-lisp
      (use-package windmove
        :custom
-       (windmove-wrap-around  t)
+       (windmove-wrap-around t)
        :bind* (("C-M-h" . windmove-left)
                ("M-DEL" . windmove-left) ; for keyball key mapping
                ("C-M-k" . windmove-up)
@@ -189,20 +194,20 @@
 ** Save file browsing history
    #+begin_src emacs-lisp
      (use-package recentf
-       :init
-       (setq recentf-exclude '(".recentf"
-                               "^/tmp\\.*"
-                               "bookmarks"
-                               "\\.gpg"
-                               "Nextcloud/orgnotes"))
+       :custom
+       (recentf-exclude '(".recentf"
+                          "^/tmp\\.*"
+                          "bookmarks"
+                          "\\.gpg"
+                          "Nextcloud/orgnotes"))
        :config
-       (recentf-mode))
+       (recentf-mode 1))
    #+end_src
 ** Save last cursor position
    #+begin_src emacs-lisp
      (use-package saveplace
-       :custom
-       (save-place-mode t))
+       :config
+       (save-place-mode 1))
    #+end_src
 ** Encrypting/decrypting
    #+begin_src emacs-lisp
@@ -218,8 +223,7 @@
        :after epg
        :config
        (require 'epa-file)
-       (epa-file-enable)
-       )
+       (epa-file-enable))
 
      (use-package password-store :ensure t)
 
@@ -246,7 +250,7 @@
    #+end_src
 ** Misc
    #+begin_src emacs-lisp
-     (setq
+     (setopt
       use-short-answers t
       debug-on-error nil
       create-lockfiles nil
@@ -303,7 +307,7 @@
        :ensure t
        :after marginalia
        :config
-       (nerd-icons-completion-mode)
+       (nerd-icons-completion-mode 1)
        :hook (marginalia-mode-hook . #'nerd-icons-completion-marginalia-setup))
 
      (use-package nerd-icons-corfu
@@ -334,23 +338,25 @@
    #+begin_src emacs-lisp
      (use-package moody
        :ensure t
+       :custom
+       (x-underline-at-descent-line t)
        :config
-       (setq x-underline-at-descent-line t)
        (moody-replace-mode-line-front-space)
        (moody-replace-mode-line-buffer-identification)
        (moody-replace-vc-mode))
 
      (use-package minions
        :ensure t
+       :custom
+       (minions-mode-line-lighter "[+]")
        :config
-       (minions-mode)
-       (setq minions-mode-line-lighter "[+]"))
+       (minions-mode 1))
    #+end_src
 ** nyan-mode
    #+begin_src emacs-lisp
      (use-package nyan-mode
        :ensure t
-       :init
+       :config
        (nyan-mode 1))
    #+end_src
 ** tab-bar-mode
@@ -439,7 +445,8 @@
        (dimmer-exclusion-regexp-list  '(".*Minibuf.*" ".*which-key.*" ".*NeoTree.*"
                                         ".*Messages.*" ".*Async.*" ".*Warnings.*" ".*LV.*"
                                         ".*Ilist.*"))
-       (dimmer-mode t))
+       :config
+       (dimmer-mode 1))
    #+end_src
 ** Whitespace
    #+begin_src emacs-lisp
@@ -660,9 +667,8 @@
         :init
         (setq xref-show-xrefs-function #'consult-xref
               xref-show-definitions-function #'consult-xref)
-        :custom
-        (recentf-mode t)
         :config
+        (recentf-mode 1)
         (require 'keymap) ;; keymap-substitute requires emacs version 29.1?
         (require 'cl-seq)
         (keymap-substitute project-prefix-map #'project-find-regexp #'consult-ripgrep)
@@ -671,13 +677,12 @@
          (pcase-lambda (`(,cmd _)) (eq cmd #'project-find-regexp))
          project-switch-commands))
     #+end_src
-
 *** marginalia
     #+begin_src emacs-lisp
       (use-package marginalia
         :ensure t
         :init
-        (marginalia-mode))
+        (marginalia-mode 1))
     #+end_src
 *** orderless & migemo
     #+begin_src emacs-lisp
@@ -690,20 +695,20 @@
       (use-package migemo
         :if (executable-find "cmigemo")
         :ensure t
+        :custom
+        (migemo-command "cmigemo")
+        (migemo-options '("-q" "--emacs"))
+        (migemo-dictionary (getenv "CMIGEMO_DICT"))
+        (migemo-user-dictionary nil)
+        (migemo-regex-dictionary nil)
+        (migemo-coding-system 'utf-8-unix)
         :config
-        (setq migemo-command "cmigemo")
-        (setq migemo-options '("-q" "--emacs"))
-        (setq migemo-dictionary (getenv "CMIGEMO_DICT"))
-        (setq migemo-user-dictionary nil)
-        (setq migemo-regex-dictionary nil)
-        (setq migemo-coding-system 'utf-8-unix)
         (defun orderless-migemo (component)
           "Use migemo for COMPONENT if available."
           (let ((pattern (migemo-get-pattern component)))
             (orderless-regexp pattern)))
         (with-eval-after-load 'orderless
-          (add-to-list 'orderless-matching-styles 'orderless-migemo))
-        )
+          (add-to-list 'orderless-matching-styles 'orderless-migemo)))
     #+end_src
 *** fussy
     #+begin_src emacs-lisp
@@ -739,7 +744,7 @@
         :ensure t
         :if (not (display-graphic-p))
         :config
-        (corfu-terminal-mode +1))
+        (corfu-terminal-mode 1))
 
       (use-package corfu
         :ensure t
@@ -749,8 +754,8 @@
                  (corfu-cycle t)
                  (text-mode-ispell-word-completion nil))
         :init
-        (global-corfu-mode)
-        (corfu-popupinfo-mode))
+        (global-corfu-mode 1)
+        (corfu-popupinfo-mode 1))
 
       (use-package cape
         :ensure t
@@ -782,13 +787,14 @@
      (use-package which-key
        :delight
        :custom
-       ((which-key-idle-delay  1)
-        (which-key-replacement-alist  '(((nil . "Prefix Command") . (nil . "prefix"))
-                                        ((nil . "\\`\\?\\?\\'") . (nil . "lambda"))
-                                        (("<left>") . ("←"))
-                                        (("<right>") . ("→"))
-                                        (("<\\([[:alnum:]-]+\\)>") . ("\\1"))))
-        (which-key-mode t)))
+       (which-key-idle-delay  1)
+       (which-key-replacement-alist  '(((nil . "Prefix Command") . (nil . "prefix"))
+                                       ((nil . "\\`\\?\\?\\'") . (nil . "lambda"))
+                                       (("<left>") . ("←"))
+                                       (("<right>") . ("→"))
+                                       (("<\\([[:alnum:]-]+\\)>") . ("\\1"))))
+       :config
+       (which-key-mode 1))
    #+end_src
 ** ace-window
    #+begin_src emacs-lisp
@@ -807,9 +813,9 @@
    #+begin_src emacs-lisp
      (use-package breadcrumb
        :ensure t
-       :custom (breadcrumb-mode t))
+       :config
+       (breadcrumb-mode 1))
    #+end_src
-
 ** undo
    #+begin_src emacs-lisp
      (use-package vundo
@@ -836,7 +842,7 @@
        :custom
        (dmacro-key (kbd "C-t"))
        :config
-       (global-dmacro-mode))
+       (global-dmacro-mode 1))
    #+end_src
 ** Casual
    #+begin_src emacs-lisp
@@ -854,12 +860,12 @@
    #+end_src
 * Garbage collection
   #+begin_src emacs-lisp
-    (setq gc-cons-threshold most-positive-fixnum)
+    (setopt gc-cons-threshold most-positive-fixnum)
     (add-hook 'emacs-startup-hook
               (lambda ()
-                (setq gc-cons-threshold (* 1024 1024 1024))))
+                (setopt gc-cons-threshold (* 1024 1024 1024))))
 
-    (setq gc-cons-percentage 0.2
+    (setopt gc-cons-percentage 0.2
           garbage-collection-messages t)
     (run-with-idle-timer 60 t #'garbage-collect)
   #+end_src
@@ -901,7 +907,7 @@
        :vc (:url "https://github.com/jdtsmith/eglot-booster" :rev :newest)
        :after eglot
        :config
-       (eglot-booster-mode))
+       (eglot-booster-mode 1))
    #+end_src
 ** Flymake
    #+begin_src emacs-lisp
@@ -931,7 +937,7 @@
        (flycheck-display-errors-delay 0.3)
        (flycheck-textlint-plugin-alist ())
        :init
-       (global-flycheck-mode)
+       (global-flycheck-mode 1)
        :config
        (setq-default flycheck-indication-mode 'left-margin)
        (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode))
@@ -1000,21 +1006,20 @@
         (magit-wip-mode t)
         (magit-log-section-commit-count 30)
         (magit-format-file-function #'magit-format-file-nerd-icons)
+        (magit-status-sections-hook
+         '(magit-insert-status-headers
+           magit-insert-untracked-files
+           magit-insert-unstaged-changes
+           magit-insert-staged-changes
+           magit-insert-unpushed-to-pushremote
+           magit-insert-unpushed-to-upstream-or-recent
+           magit-insert-unpulled-from-pushremote
+           magit-insert-unpulled-from-upstream))
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup))
         :config
         (if (eq system-type 'darwin)
             (setq magit-git-executable "/usr/bin/git"))
-        (setq magit-status-sections-hook
-              '(magit-insert-status-headers
-                magit-insert-untracked-files
-                magit-insert-unstaged-changes
-                magit-insert-staged-changes
-                magit-insert-unpushed-to-pushremote
-                magit-insert-unpushed-to-upstream-or-recent
-                magit-insert-unpulled-from-pushremote
-                magit-insert-unpulled-from-upstream))
-        (setq magit-diff-auto-show nil)
         (add-hook 'git-commit-mode-hook (lambda () (save-selected-window (magit-process)))))
 
 
@@ -1022,8 +1027,8 @@
         :ensure t
         :demand t
         :config
-        (global-diff-hl-mode)
-        (diff-hl-margin-mode)
+        (global-diff-hl-mode 1)
+        (diff-hl-margin-mode 1)
         :hook ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
                (magit-post-refresh-hook . diff-hl-magit-post-refresh)))
     #+end_src
@@ -1076,8 +1081,7 @@
               c-basic-offset 4)
         (add-hook 'c-mode-hook
                   (lambda ()
-                    (setq tab-width 4)
-                    (setq indent-tabs-mode nil))))
+                    (setq tab-width 4))))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
@@ -1104,7 +1108,8 @@
     #+begin_src emacs-lisp
       (use-package rust-mode
         :ensure t
-        :custom rust-format-on-save t
+        :custom
+        (rust-format-on-save t)
         :hook (rust-ts-mode-hook . eglot-ensure))
 
       (use-package cargo
@@ -1134,7 +1139,6 @@
          (web-mode-enable-auto-pairing t)
          (web-mode-auto-close-style 2)
          (web-mode-tag-auto-close-style 2)
-         (indent-tabs-mode nil)
          (tab-width 2))
      #+end_src
 *** css
@@ -1170,9 +1174,9 @@
                 ("C-c C-'" . org-edit-src-exit))
          :init
          (setq org-directory my:d:org)
-         (setq org-latex-create-formula-image-program 'dvisvgm)
          :custom
          (org-startup-indent nil)
+         (org-latex-create-formula-image-program 'dvisvgm)
          ;; (org-startup-numerated t)
          (org-hide-leading-stars t)
          (org-return-follows-link t)
@@ -1365,35 +1369,35 @@
          :ensure t
          :after (org-agenda)
          :if (file-directory-p my:d:org-gtd)
+         :custom
+         (org-super-agenda-groups
+          '(;; Each group has an implicit boolean OR operator between its selectors.
+            (:name "Schedule"
+                   :time-grid t
+                   :todo "TODAY")
+            (:name "Today's daily task"
+                   :habit t
+                   :order 1)
+            (:name "Important"
+                   :priority "A"
+                   :order 2)
+            (:priority<= "B"
+                         :order 3)
+            (:todo "WAITING" :order 8)
+            (:todo "SOMEDAY" :order 9)
+            (:auto-category t
+                            :order 4)))
          :config
-         (org-super-agenda-mode)
-         (setq org-super-agenda-groups
-                '(;; Each group has an implicit boolean OR operator between its selectors.
-                  (:name "Schedule"
-                         :time-grid t
-                         :todo "TODAY")
-                  (:name "Today's daily task"
-                         :habit t
-                         :order 1)
-                  (:name "Important"
-                         :priority "A"
-                         :order 2)
-                  (:priority<= "B"
-                               :order 3)
-                  (:todo "WAITING" :order 8)
-                  (:todo "SOMEDAY" :order 9)
-                  (:auto-category t
-                                  :order 4))))
+         (org-super-agenda-mode 1))
 
        (use-package org-capture
          :after (org org-agenda)
          :if (file-directory-p my:d:org-gtd)
          :commands (org-capture)
          :bind ("C-c c" . org-capture)
-         :init
-         :config
-         (setq org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
-                                        "** %^{Brief Description}"))))
+         :custom
+         (org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+                                   "** %^{Brief Description}"))))
       #+end_src
 **** org-roam
      #+begin_src emacs-lisp
@@ -1418,11 +1422,11 @@
                 ("C-c n p" . citar-open))
          :init
          (setq org-roam-directory my:d:org-roam)
-         (setq org-roam-dailies-directory "daily_notes/")
-         ;; (setq org-format-latex-options (plist-put org-format-latex-options :foreground 'auto))
-         (setq org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
-         (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          :custom
+         (org-roam-dailies-directory "daily_notes/")
+         ;; (org-format-latex-options (plist-put org-format-latex-options :foreground 'auto))
+         (org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
+         (org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          (org-roam-capture-templates '(("i" "idea" plain "%?"
                                         :if-new
                                         (file+head "idea/${slug}.org"
@@ -1472,15 +1476,15 @@
                                         :immediate-finish t
                                         :unnarrowed t)
                                        ))
+         (org-roam-dailies-capture-templates
+          '(("j" "journal" plain "** Things I did\n** Things I learned\n** Journal\n"
+             :jump-to-captured t
+             :immediate-finish t
+             :unnarrowed t
+             :target (file+head+olp "%<%Y-%m>.org"
+                                    "#+title: %<%Y-%m>"
+                                    ("%<%Y-%m-%d %a>")))))
          :config
-         (setq org-roam-dailies-capture-templates
-               '(("j" "journal" plain "** Things I did\n** Things I learned\n** Journal\n"
-                  :jump-to-captured t
-                  :immediate-finish t
-                  :unnarrowed t
-                  :target (file+head+olp "%<%Y-%m>.org"
-                                         "#+title: %<%Y-%m>"
-                                         ("%<%Y-%m-%d %a>")))))
          (defun my:org-roam-read-only ()
            "Enable read-only mode for org-roam files, unless the buffer is empty."
            (when (and (buffer-file-name)
@@ -1531,11 +1535,11 @@
        (use-package org-roam-ui
          :ensure t
          :after org-roam
-         :config
-         (setq org-roam-ui-sync-theme t
-               org-roam-ui-follow t
-               org-roam-ui-update-on-save t
-               org-roam-ui-open-on-start t))
+         :custom
+         (org-roam-ui-sync-theme t)
+         (org-roam-ui-follow t)
+         (org-roam-ui-update-on-save t)
+         (org-roam-ui-open-on-start t))
 
        (use-package consult-org-roam
          :ensure t
@@ -1557,16 +1561,16 @@
          :ensure t
          :after (citar embark)
          :no-require
+         :custom
+         (citar-at-point-function 'embark-act)
          :config
-         (setq citar-at-point-function 'embark-act)
-         (citar-embark-mode))
+         (citar-embark-mode 1))
 
        (use-package citar-org-roam
          :ensure t
          :after (citar org-roam)
          :if (file-exists-p my:f:bib)
          :config
-         (citar-org-roam-mode)
          (setq citar-org-roam-template-fields (append citar-org-roam-template-fields '((:citar-file . ("file")) (:citar-abstract . ("abstract")))))
          (setq citar-org-roam-note-title-template "${title}")
          (setq org-roam-capture-templates
@@ -1576,7 +1580,8 @@
                           (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n  ${citar-abstract}\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n")
                           :immediate-finish t
                           :unnarrowed t))))
-         (setq citar-org-roam-capture-template-key "p"))
+         (setq citar-org-roam-capture-template-key "p")
+         (citar-org-roam-mode 1))
 
        (use-package org-noter
          :ensure t
@@ -1702,31 +1707,32 @@
          :if (display-graphic-p)
          :mode (("\\.epub\\'" . nov-mode))
          :hook (nov-mode-hook . visual-line-mode)
-         :config
-         (setq nov-text-width t))
+         :custom
+         (nov-text-width t))
      #+end_src
 * Tramp
   #+begin_src emacs-lisp
     (use-package tramp
-      :init
-      (setq tramp-remote-path '(tramp-default-remote-path
-                                "~/.local/bin"
-                                "~/.local/state/nix/profiles/profile/bin"))
-      (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-      (setq tramp-default-method "ssh")
-      (setq tramp-auto-save-directory
-            (expand-file-name "tramp-auto-save" user-emacs-directory))
-      (setq tramp-persistency-file-name
-            (expand-file-name "tramp-connection-history" user-emacs-directory))
-      (setq password-cache-expiry nil)
+      :custom
+      (tramp-remote-path
+       '(tramp-default-remote-path
+         "~/.local/bin"
+         "~/.local/state/nix/profiles/profile/bin"
+         tramp-own-remote-path))
+      (tramp-default-method "ssh")
+      (tramp-auto-save-directory
+       (expand-file-name "tramp-auto-save" user-emacs-directory))
+      (tramp-persistency-file-name
+       (expand-file-name "tramp-connection-history" user-emacs-directory))
+      (password-cache-expiry nil)
+      (tramp-verbose 1)
+      (tramp-chunksize 2000)
+      (tramp-use-ssh-controlmaster-options nil)
       :config
       ;; https://github.com/alexluigit/dirvish/blob/main/docs/CUSTOMIZING.org#tramp-integration
       (add-to-list 'tramp-connection-properties
                    (list (regexp-quote "/ssh:")
                          "direct-async-process" t))
-      (setq tramp-verbose 1)
-      (setq tramp-chunksize 2000)
-      (setq tramp-use-ssh-controlmaster-options nil)
       (customize-set-variable 'tramp-ssh-controlmaster-options
                               (concat
                                "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
@@ -1901,7 +1907,7 @@
        (load "~/.config/mu4e/mu4e_config.el")
        (add-hook 'emacs-startup-hook  (lambda ()
                                         (my:imapnotify-start-prodigy-services)))
-       (setq message-cite-reply-position 'bellow)
+       (setq message-cite-reply-position 'below)
        ;; (defun message-insert-signature-at-point ()
        ;;   "Function to insert signature at point."
        ;;   (interactive)
