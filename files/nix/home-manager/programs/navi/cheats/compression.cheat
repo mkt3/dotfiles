@@ -1,24 +1,17 @@
 % compression
 
-# Create a tar containing files
-tar cfv <name>.tar <files>
-
-# Extract the files from a tar
-tar xfv <tar_file>
-
-# Create a tar with Gzip compression
-tar czvf <name>.tar.gz <files>
-
-# Extract a tar using Gzip
-tar xzvf <targz_file>
-
-# Compress file and appends .gz to its name
-gzip <path>
-
-# Decompress compressed file
-gzip -d <gz_file>
-
 $ path: ls
 $ tar_file: ls *.tar
-$ targz_file: ls *.tar.gz
-$ gz_file: ls *.gz
+$ tarzst_file: ls *.tar.gst
+
+# Create a tar with Zstandard compression
+tar --zstd -cvf <path>.tar.zst <path>
+
+# Extract a tar using Zstandard
+tar --zstd -xvf <tarzst_file>
+
+# Compress file and appends .zst to its name
+zstd <path>               # creates <path>.zst
+
+# Decompress compressed file
+zstd -d <zst_file>        # decompresses <zst_file> to original
