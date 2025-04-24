@@ -2056,7 +2056,7 @@
        :init
        (setopt ellama-keymap-prefix "C-c e")
        (setopt ellama-language "English")
-       (require 'llm-openai)
+       (require 'llm-gemini)
        (setopt ellama-provider
                (make-llm-gemini :key (plist-get (nth 0 (auth-source-search :app "gemini" :max 1)) :api-key)
                                 :chat-model "gemini-2.0-flash")))
