@@ -2,6 +2,7 @@
   pkgs,
   config,
   isGUI,
+  lib,
   ...
 }:
 {
@@ -49,7 +50,7 @@
       ''
       + (if isGUI then "\n# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
 
-    initExtraFirst = ''
+    initContent = lib.mkBefore ''
       source "''${HOME}/.config/sheldon/sheldon.zsh"
 
       source "''${ZDOTDIR}/no_defer.zsh"
