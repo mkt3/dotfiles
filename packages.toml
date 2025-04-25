@@ -175,10 +175,6 @@ common = [{ name = "navi", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "lazygit", method = "nix-hm" }]
 
-[oxker]
-type = "basic"
-common = [{ name = "oxker", method = "nix-hm" }]
-
 [ssh]
 type = "basic"
 common = [{ name = "ssh_config", method = "nix-hm" }]
