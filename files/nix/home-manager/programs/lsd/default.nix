@@ -2,8 +2,10 @@
 {
   programs.lsd = {
     enable = true;
+    enableZshIntegration = true;
     settings = {
       color.theme = "custom";
+      indicators = true;
     };
 
     colors = {
@@ -54,14 +56,10 @@
     };
   };
 
-  programs.zsh.shellAliases = {
-    ls = "lsd -F";
-  };
-
   xdg.configFile."zsh/defer.zsh" = {
     text = ''
       chpwd() {
-          lsd -F
+          lsd
       }
     '';
   };
