@@ -31,6 +31,8 @@
        (setopt use-package-hook-name-suffix nil)
        (setopt use-package-vc-prefer-newest t))
 
+     (setopt use-package-compute-statistics t)
+
      (use-package gnu-elpa-keyring-update :ensure t)
    #+end_src
 ** Auto package update
@@ -998,7 +1000,6 @@
         :ensure t
         :after nerd-icons
         :custom
-        (magit-wip-mode t)
         (magit-log-section-commit-count 30)
         (magit-format-file-function #'magit-format-file-nerd-icons)
         (magit-status-sections-hook
@@ -1013,6 +1014,7 @@
         :bind (("C-x g" . magit-status)
                ("C-x M-g" . magit-dispatch-popup))
         :config
+        (magit-wip-mode 1)
         (if (eq system-type 'darwin)
             (setq magit-git-executable "/usr/bin/git"))
         (add-hook 'git-commit-mode-hook (lambda () (save-selected-window (magit-process)))))
@@ -1399,7 +1401,6 @@
        (use-package org-roam
          :ensure t
          :after org
-         :demand t
          :if (file-directory-p my:d:org-roam)
          :bind (("C-c n a" . org-roam-alias-add)
                 ("C-c n f" . my:org-roam-node-find-excluding-dir)
@@ -1538,8 +1539,8 @@
 
        (use-package consult-org-roam
          :ensure t
+         :after org-roam
          :init
-         (consult-org-roam-mode 1)
          :custom
          (consult-org-roam-grep-func #'consult-ripgrep)
          :bind (("C-c n b" . consult-org-roam-backlinks)
@@ -1548,6 +1549,7 @@
        (use-package citar
          :ensure t
          :if (file-exists-p my:f:bib)
+         :commands (citar-open citar-insert-citation)
          :custom
          (citar-bibliography my:f:bib)
          (citar-file-open-functions '(("html" . citar-file-open-external) (t . find-file))))
@@ -1556,6 +1558,7 @@
          :ensure t
          :after (citar embark)
          :no-require
+         :hook (citar-mode . citar-embark-mode)
          :custom
          (citar-at-point-function 'embark-act)
          :config
@@ -1565,6 +1568,7 @@
          :ensure t
          :after (citar org-roam)
          :if (file-exists-p my:f:bib)
+         :hook (citar-mode . citar-org-roam-mode)
          :config
          (setq citar-org-roam-template-fields (append citar-org-roam-template-fields '((:citar-file . ("file")) (:citar-abstract . ("abstract")))))
          (setq citar-org-roam-note-title-template "${title}")
@@ -1581,6 +1585,7 @@
        (use-package org-noter
          :ensure t
          :after citar
+         :commands (org-noter)
          :custom
          (org-noter-supported-modes '(doc-view-mode pdf-view-mode nov-mode))
          (org-noter-highlight-selected-text t))
@@ -1640,14 +1645,6 @@
                        (org-hugo-export-to-md)
                        (set-buffer-modified-p modified))))
                  (kill-buffer))))))
-     #+end_src
-**** org-pomodoro
-     #+begin_src emacs-lisp
-       (use-package org-pomodoro
-         :ensure t
-         :custom
-         (org-pomodoro-length 50)
-         (org-pomodoro-short-break-length 10))
      #+end_src
 *** Markdown
     #+begin_src emacs-lisp
@@ -1735,6 +1732,7 @@
 
     (use-package consult-tramp
       :ensure nil
+      :bind ("C-c s" . consult-tramp)
       :vc (:url "https://github.com/Ladicle/consult-tramp" :rev :newest)
       :custom
       (consult-tramp-ssh-config "~/.ssh/extra_config"))
@@ -1788,62 +1786,62 @@
 #+end_src
 * Rss
   #+begin_src emacs-lisp
-    (use-package elfeed
-      :after eww
-      :ensure t
-      :if (file-directory-p my:d:nextcloud)
-      :bind (("C-x w" . elfeed)
-             :map elfeed-search-mode-map
-             ("u" . elfeed-search-fetch)
-             ("r" . elfeed-search-update--force)
-             ("o" . elfeed-search-browse-url)
-             (";" . elfeed-search-quit-window)
-             ("m" . elfeed-search-show-entry)
-             ("," . elfeed-search-first-entry)
-             ("." . elfeed-search-last-entry)
-             :map elfeed-show-mode-map
-             ("r" . elfeed-search-update--force)
-             ("u" . elfeed-search-fetch)
-             ("o" . elfeed-show-visit)
-             ("C-c C-o" . my:elfeed-show-default-browser)
-             (";" . elfeed-kill-buffer))
-      :custom
-      (elfeed-db-directory (locate-user-emacs-file "elfeed"))
-      :config
-      (advice-add 'elfeed-search-fetch :after (lambda (&rest _) (message "RSS fetch completed.")))
-      (defun my:elfeed-show-default-browser ()
-               (interactive)
-               (let ((browse-url-browser-function 'browse-url-default-browser))
-                 (elfeed-show-visit))))
+    ;; (use-package elfeed
+    ;;   :after eww
+    ;;   :ensure t
+    ;;   :if (file-directory-p my:d:nextcloud)
+    ;;   :bind (("C-x w" . elfeed)
+    ;;          :map elfeed-search-mode-map
+    ;;          ("u" . elfeed-search-fetch)
+    ;;          ("r" . elfeed-search-update--force)
+    ;;          ("o" . elfeed-search-browse-url)
+    ;;          (";" . elfeed-search-quit-window)
+    ;;          ("m" . elfeed-search-show-entry)
+    ;;          ("," . elfeed-search-first-entry)
+    ;;          ("." . elfeed-search-last-entry)
+    ;;          :map elfeed-show-mode-map
+    ;;          ("r" . elfeed-search-update--force)
+    ;;          ("u" . elfeed-search-fetch)
+    ;;          ("o" . elfeed-show-visit)
+    ;;          ("C-c C-o" . my:elfeed-show-default-browser)
+    ;;          (";" . elfeed-kill-buffer))
+    ;;   :custom
+    ;;   (elfeed-db-directory (locate-user-emacs-file "elfeed"))
+    ;;   :config
+    ;;   (advice-add 'elfeed-search-fetch :after (lambda (&rest _) (message "RSS fetch completed.")))
+    ;;   (defun my:elfeed-show-default-browser ()
+    ;;            (interactive)
+    ;;            (let ((browse-url-browser-function 'browse-url-default-browser))
+    ;;              (elfeed-show-visit))))
 
-    (use-package elfeed-protocol
-      :ensure t
-      :if (file-directory-p my:d:nextcloud)
-      :after elfeed
-      :config
-      (elfeed-protocol-enable)
-      :custom
-      (elfeed-use-curl t)
-      (elfeed-set-timeout 36000)
-      (elfeed-log-level 'debug)
-      (elfeed-protocol-fever-update-unread-only t)
-      :config
-      (setq elfeed-protocol-feeds
-            (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
-                    (list (plist-get auth-info :feed-url)
-                          :api-url (plist-get auth-info :api-url)
-                          :password (plist-get auth-info :password))))))
+    ;; (use-package elfeed-protocol
+    ;;   :ensure t
+    ;;   :if (file-directory-p my:d:nextcloud)
+    ;;   :after elfeed
+    ;;   :config
+    ;;   (elfeed-protocol-enable)
+    ;;   :custom
+    ;;   (elfeed-use-curl t)
+    ;;   (elfeed-set-timeout 36000)
+    ;;   (elfeed-log-level 'debug)
+    ;;   (elfeed-protocol-fever-update-unread-only t)
+    ;;   :config
+    ;;   (setq elfeed-protocol-feeds
+    ;;         (list (let ((auth-info (nth 0 (auth-source-search :host "freshrss" :max 1))))
+    ;;                 (list (plist-get auth-info :feed-url)
+    ;;                       :api-url (plist-get auth-info :api-url)
+    ;;                       :password (plist-get auth-info :password))))))
 
-    (use-package elfeed-webkit
-      :ensure t
-      :after elfeed
-      :config
-      :bind (nil
-             :map elfeed-webkit-map
-             ("k" . (lambda () (interactive) (xwidget-webkit-scroll-down 20)))
-             ("j" . (lambda () (interactive) (xwidget-webkit-scroll-up 20)))
-             :map elfeed-show-mode-map
-             ("i" . elfeed-webkit-toggle)))
+    ;; (use-package elfeed-webkit
+    ;;   :ensure t
+    ;;   :after elfeed
+    ;;   :config
+    ;;   :bind (nil
+    ;;          :map elfeed-webkit-map
+    ;;          ("k" . (lambda () (interactive) (xwidget-webkit-scroll-down 20)))
+    ;;          ("j" . (lambda () (interactive) (xwidget-webkit-scroll-up 20)))
+    ;;          :map elfeed-show-mode-map
+    ;;          ("i" . elfeed-webkit-toggle)))
   #+end_src
 * Mail
   This uses natively-compiled code, I install this alongside emacs via nix.
@@ -1979,15 +1977,18 @@
    #+begin_src emacs-lisp
      (use-package pdf-tools
        :if (display-graphic-p)
-       :demand t ; load-path has already been set by nix
+       ;; :demand t ;  load-path has already been set by nix
+       :mode ("\\.pdf\\'" . pdf-view-mode)
        :commands (open-pdf-in-external-app)
        :hook (pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1)))
        :bind (nil
               :map pdf-view-mode-map
               ("C-s" . isearch-forward)
               ("C-c C-o" . open-pdf-in-external-app))
+       ;; :init
+       ;; (unless (featurep 'pdf-tools)
+       ;;   (pdf-loader-install))
        :config
-       (pdf-loader-install)
        (setq-default pdf-view-display-size 'fit-page)
        (setq pdf-view-incompatible-modes '(linum-mode linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode))
        (setq pdf-annot-activate-created-annotations t)
@@ -2025,41 +2026,24 @@
        (add-to-list 'consult-buffer-filter "\\`\\*prodigy-.*\\*\\'")
        (load (expand-file-name "personal_config/emacs/mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
   #+end_src
-** openai
+** llm
    #+begin_src emacs-lisp
-     (use-package org-ai
-       :ensure t
-       :if (file-directory-p my:d:password-store)
-       :commands (org-ai-mode
-                  org-ai-global-mode)
-       :init
-       (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
-       (org-ai-global-mode) ; installs global keybindings on C-c M-a
-       :config
-       (setq org-ai-openai-api-token
-             (plist-get (nth 0 (auth-source-search :app "openai" :max 1)) :api-key))
-       (setq org-ai-default-chat-model "gpt-4o")
-       (setq org-roam-capture-templates
-             (append org-roam-capture-templates
-                     '(("a" "ai" plain "%?"
-                        :if-new
-                        (file+head "reference/ai/${slug}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n#+begin_ai\n[ME]: \n#+end_ai")
-                        :immediate-finish t
-                        :unnarrowed t)))))
-
      (use-package llm :ensure t)
 
      (use-package ellama
        :ensure t
-       :if (file-directory-p my:d:password-store)
        :after llm
-       :init
-       (setopt ellama-keymap-prefix "C-c e")
-       (setopt ellama-language "English")
+       :bind ("C-c e" . ellama)
+       :if (file-directory-p my:d:password-store)
+       :config
+       (setopt ellama-language "English"
+               ellama-auto-scroll t)
        (require 'llm-gemini)
-       (setopt ellama-provider
-               (make-llm-gemini :key (plist-get (nth 0 (auth-source-search :app "gemini" :max 1)) :api-key)
-                                :chat-model "gemini-2.0-flash")))
+       (unless ellama-provider
+         (setopt ellama-provider
+                 (make-llm-gemini
+                  :key (plist-get (nth 0 (auth-source-search :app "gemini" :max 1)) :api-key)
+                  :chat-model "gemini-2.0-flash"))))
    #+end_src
 ** Translate
    #+begin_src emacs-lisp
