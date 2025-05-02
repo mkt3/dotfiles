@@ -1164,6 +1164,7 @@
      #+begin_src emacs-lisp
        (use-package org
          :bind (("C-c l" . org-store-link)
+                ("C-c c" . org-capture)
                 :map org-mode-map
                 ("C-c C-o" . my:org-open-url-with-default)
                 ("C-c i t" . org-insert-structure-template)
@@ -1173,6 +1174,7 @@
          (setq org-directory my:d:org)
          :custom
          (org-startup-indent nil)
+
          (org-latex-create-formula-image-program 'dvisvgm)
          ;; (org-startup-numerated t)
          (org-hide-leading-stars t)
@@ -1183,6 +1185,8 @@
          (org-log-done 'time)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
+         (org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+                                   "** %^{Brief Description}")))
          :config
          (keymap-unset orgtbl-mode-map "<backspace>")
          (defun org-insert-clipboard-image ()
@@ -1243,8 +1247,7 @@
 
        (use-package org-superstar
          :ensure t
-         :config
-         (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+         :hook (org-mode-hook . org-superstar-mode))
      #+end_src
 **** org gtd
      #+begin_src emacs-lisp
@@ -1386,15 +1389,6 @@
                             :order 4)))
          :config
          (org-super-agenda-mode 1))
-
-       (use-package org-capture
-         :after (org org-agenda)
-         :if (file-directory-p my:d:org-gtd)
-         :commands (org-capture)
-         :bind ("C-c c" . org-capture)
-         :custom
-         (org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
-                                   "** %^{Brief Description}"))))
       #+end_src
 **** org-roam
      #+begin_src emacs-lisp
@@ -1755,7 +1749,6 @@
 * Browser
   #+begin_src emacs-lisp
     (use-package eww
-      :demand t
       :bind (nil
              :map eww-mode-map
              ("h" . eww-back-url)
@@ -2028,7 +2021,9 @@
   #+end_src
 ** llm
    #+begin_src emacs-lisp
-     (use-package llm :ensure t)
+     (use-package llm
+       :ensure t
+       :if (file-directory-p my:d:password-store))
 
      (use-package ellama
        :ensure t
