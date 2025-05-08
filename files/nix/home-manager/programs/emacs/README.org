@@ -1280,6 +1280,7 @@
          (org-agenda-custom-commands '(("t" todo "TODO")
                                        ("A" todo)))
          :config
+         (require 'org-roam)
          (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
          (add-to-list 'org-modules 'org-habit t)
          (setq org-agenda-prefix-format
