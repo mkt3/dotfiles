@@ -20,9 +20,8 @@
       padding = "14";
       font = "plemoljp-nf 14";
       margin = "20";
-    };
 
-    criteria = {
+      # Criteria
       "urgency=low" = {
         border-color = "#81a1c1";
       };
