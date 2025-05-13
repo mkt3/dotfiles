@@ -3,7 +3,6 @@
   services.mako = {
     enable = true;
 
-    # settings（グローバルな設定）は key = value の形で書く
     settings = {
       sort = "-time";
       layer = "overlay";
