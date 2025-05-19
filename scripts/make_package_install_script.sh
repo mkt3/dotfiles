@@ -103,7 +103,7 @@ if [[ "$os_name" == "darwin" ]]; then
     else
         {
             echo "cd ${nix_dir} && nix flake update && cd -"
-            echo "darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
+            echo "sudo darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
         } >> "$install_script_path"
     fi
 elif [[ "$os_name" == "nixos" ]]; then
