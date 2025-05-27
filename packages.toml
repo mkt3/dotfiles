@@ -563,6 +563,11 @@ nixos = [{ name = "xremap", method = "nix" }]
 type = "gui"
 common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 
+## kde connect
+[kdeconnect]
+type = "gui"
+nixos = [{ name = "kdeconnect", method = "nix" }]
+
 ## macos only
 [utils]
 type = "gui"
