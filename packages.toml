@@ -115,6 +115,10 @@ common = [{ name = "unar", method = "nix" }]
 type = "basic"
 common = [{ name = "gtrash", method = "nix-hm" }]
 
+[file]
+type = "basic"
+common = [{ name = "file", method = "nix-hm" }]
+
 [tmux]
 type = "basic"
 common = [
