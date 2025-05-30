@@ -8,11 +8,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-8b7UyR5fLdnOYa/fsqm75n4n+sZYKf75hIEh6Dp2t6A=",
+            "sha256": "sha256-hUVjHDQ52d2sT7yc4FgwWt6njaliWq97MfGLVARZ+SA=",
             "type": "url",
-            "url": "https://github.com/leits/MeetingBar/releases/download/v4.10.0/MeetingBar.dmg"
+            "url": "https://github.com/leits/MeetingBar/releases/download/v4.11.2/MeetingBar.dmg"
         },
-        "version": "v4.10.0"
+        "version": "v4.11.2"
     },
     "vlc": {
         "cargoLocks": null,
