@@ -942,7 +942,11 @@
        (global-flycheck-mode 1)
        :config
        (setq-default flycheck-indication-mode 'left-margin)
-       (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode))
+       (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
+       (defun my:disable-flycheck-in-scratch ()
+         (when (string= (buffer-name) "*scratch*")
+           (flycheck-mode -1)))
+       (add-hook 'flycheck-mode-hook #'my:disable-flycheck-in-scratch))
 
      (use-package flycheck-posframe
        :ensure t
