@@ -944,9 +944,14 @@
        (setq-default flycheck-indication-mode 'left-margin)
        (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode))
 
-     (use-package flycheck-inline
+     (use-package flycheck-posframe
        :ensure t
-       :hook (flycheck-mode-hook . flycheck-inline-mode))
+       :if (display-graphic-p)
+       :after flycheck
+       :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
+     ;; (use-package flycheck-inline
+     ;;   :ensure t
+     ;;   :hook (flycheck-mode-hook . flycheck-inline-mode))
    #+end_src
 * Writing
 ** Spell Checker
