@@ -3,10 +3,10 @@
 {
   meetingbar = {
     pname = "meetingbar";
-    version = "v4.11.4";
+    version = "v4.11.5";
     src = fetchurl {
-      url = "https://github.com/leits/MeetingBar/releases/download/v4.11.4/MeetingBar.dmg";
-      sha256 = "sha256-rZtLmAEvgYb8LoykpNgjl0zynx9Z24PlL568rvk9gEg=";
+      url = "https://github.com/leits/MeetingBar/releases/download/v4.11.5/MeetingBar.dmg";
+      sha256 = "sha256-t8PTrKLGaZOmCYuTJ0CLJVmAG5hCha2NRR7zhMhIL1A=";
     };
   };
   vlc = {
