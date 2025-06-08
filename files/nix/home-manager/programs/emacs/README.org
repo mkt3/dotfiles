@@ -566,6 +566,7 @@
      (use-package ddskk
        :ensure t
        :bind* (("C-j" . skk-kakutei)
+               ("C-q j" . my:open-skk-input-buffer)
                ("C-x @ j" . skk-kakutei)) ;; for ctrl-j from wezterm
        :custom
        (default-input-method "japanese-skk")
@@ -577,7 +578,15 @@
          (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
          (setq skk-extra-jisyo-file-list
                `(,(expand-file-name "personal_config/skk/ddskk/SKK-JISYO.edict" my:d:nextcloud))))
-       (setq viper-mode nil))
+       (setq viper-mode nil)
+       :config
+       (defun my:open-skk-input-buffer ()
+         (interactive)
+         (let ((buf (get-buffer-create "*SKK Input*")))
+           (switch-to-buffer buf)
+           (erase-buffer)
+           (text-mode)
+           (skk-mode 1))))
    #+end_src
 ** puni
    #+begin_src emacs-lisp
