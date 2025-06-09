@@ -582,11 +582,20 @@
        :config
        (defun my:open-skk-input-buffer ()
          (interactive)
-         (let ((buf (get-buffer-create "*SKK Input*")))
-           (switch-to-buffer buf)
-           (erase-buffer)
-           (text-mode)
-           (skk-mode 1))))
+         (let* ((tab-name "SKK Input")
+                (tabs (tab-bar-tabs))
+                (target-tab (seq-find (lambda (tab)
+                                        (string= (alist-get 'name tab) tab-name))
+                                      tabs)))
+           (if target-tab
+               (tab-bar-switch-to-tab tab-name)
+             (tab-bar-new-tab)
+             (tab-bar-rename-tab tab-name)
+             (let ((buf (get-buffer-create "*SKK Input*")))
+               (switch-to-buffer buf)
+               (erase-buffer)
+               (text-mode)
+               (skk-mode 1))))))
    #+end_src
 ** puni
    #+begin_src emacs-lisp
