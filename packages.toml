@@ -450,7 +450,7 @@ common = [{ name = "google-chrome", method = "nix-hm" }]
 ### sub browser
 [firefox]
 type = "gui"
-linux = [{ name = "firefox", method = "nix-hm" }]
+common = [{ name = "firefox", method = "nix-hm" }]
 
 ## media
 [vlc]
@@ -572,14 +572,16 @@ common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 type = "gui"
 nixos = [{ name = "kdeconnect", method = "nix" }]
 
+## VPN
+[WireGuard]
+type = "gui"
+darwin = [{ name = "wireguard-tools", method = "nix" }]
+common = [{ name = "wireguard-tools", method = "nix-hm" }]
+
 ## macos only
 [utils]
 type = "gui"
 darwin = [{ name = "appcleaner", method = "nix-hm" }]
-
-[WireGuard]
-type = "gui"
-darwin = [{ name = "\"WireGuard\" = 1451685025", method = "mas" }]
 
 [darwin]
 type = "gui"

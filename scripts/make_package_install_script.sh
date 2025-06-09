@@ -164,7 +164,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
     case "$method" in
         nix|nix-hm)
             if [[ "$method" == "nix" ]]; then
-                if [[ "$DISTRO" == "NixOS" ]] ||  [[ "$DISTRO" == "Darwin" ]] ; then
+                if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]] ; then
                     packages_nix_path="${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
                     package_prefix="environment.systemPackages"
                     programs_nix_dir="${CONFIGS_DIR}/nix/systems/${os_name}/programs"
