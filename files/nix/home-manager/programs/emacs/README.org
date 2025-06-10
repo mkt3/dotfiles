@@ -1353,7 +1353,7 @@
                               :where (like tag $s1)] (concat "%" my:roam-task-tag "%")))))
 
          (defun my:org-agenda-update-files (&rest _)
-           "Update the value of `org-agenda-files' and and `my:refile-targets'."
+           "Update the value of `org-agenda-files' and `my:refile-targets'."
            (let ((task-files (my:org-roam-get-task-files)))
              (setq org-agenda-files (append (list my:d:org-gtd) task-files))
              (setq my:refile-targets (append (list org-gtd-file) task-files))
