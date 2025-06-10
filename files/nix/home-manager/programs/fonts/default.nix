@@ -27,5 +27,6 @@
     noto-fonts-color-emoji
     nerd-fonts.hack
     plemoljp-nf
+    migu
   ];
 }

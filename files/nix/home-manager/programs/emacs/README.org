@@ -1693,6 +1693,26 @@
                ("\\.yaml\\'" . yaml-ts-mode))
         :commands (yaml-ts-mode))
     #+end_src
+*** Typst
+    #+begin_src emacs-lisp
+      (use-package typst-ts-mode
+        :ensure nil
+        :vc (:url "https://git.sr.ht/~meow_king/typst-ts-mode" :rev :newest)
+        :if (display-graphic-p)
+        :mode (("\\.typ\\'" . typst-ts-mode))
+        :commands (typst-ts-mode)
+        :hook (typst-ts-mode-hook . eglot-ensure)
+        :init
+        (with-eval-after-load 'eglot
+          (setf (alist-get 'typst-ts-mode eglot-server-programs) '("tinymist")))
+        :config
+        (setq-default eglot-workspace-configuration
+                      '(:tinymist (:exportPdf "onSave"))))
+
+      (use-package ox-typst
+        :ensure t
+        :after org)
+    #+end_src
 *** TOML
     #+begin_src emacs-lisp
       (use-package toml-mode
@@ -1702,7 +1722,7 @@
         :commands (toml-ts-mode)
         :init
         (with-eval-after-load 'eglot
-          (setf (alist-get 'toml-mode eglot-server-programs) '("taplo" "lsp" "stdio")))  )
+          (setf (alist-get 'toml-mode eglot-server-programs) '("taplo" "lsp" "stdio"))))
     #+end_src
 *** JSON
     #+begin_src emacs-lisp

@@ -415,6 +415,20 @@ common = [{ name = "fluxcd", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "texliveMedium", method = "nix-hm" }]
 
+## typst
+[typst]
+type = "gui"
+common = [
+  { name = "typst", method = "nix-hm" },
+  { name = "tinymist", method = "nix-hm" },
+]
+
+## pdf pesenter
+[pdfpc]
+type = "gui"
+darwin = [{ name = "pdfpc", method = "brew" }]
+linux = [{ name = "pdfpc", method = "nix-hm" }]
+
 ## communication tools
 [slack]
 type = "gui"
