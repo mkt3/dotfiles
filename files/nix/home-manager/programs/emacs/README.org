@@ -1496,7 +1496,7 @@
                                         :unnarrowed t)
                                        ))
          (org-roam-dailies-capture-templates
-          '(("j" "journal" plain "** Things I did\n** Things I learned\n** Journal\n"
+          '(("j" "journal" plain "%?"
              :jump-to-captured t
              :immediate-finish t
              :unnarrowed t
