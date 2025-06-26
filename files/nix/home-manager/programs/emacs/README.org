@@ -1591,7 +1591,6 @@
          :ensure t
          :after (citar org-roam)
          :if (file-exists-p my:f:bib)
-         :hook (citar-mode . citar-org-roam-mode)
          :config
          (setq citar-org-roam-template-fields (append citar-org-roam-template-fields '((:citar-file . ("file")) (:citar-abstract . ("abstract")))))
          (setq citar-org-roam-note-title-template "${title}")
@@ -1712,6 +1711,7 @@
       (use-package ox-typst
         :ensure t
         :after org
+        :if (display-graphic-p)
         :config
         (add-to-list 'org-src-lang-modes '("typst" . typst-ts))
         (setq org-export-with-toc nil)
