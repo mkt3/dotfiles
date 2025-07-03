@@ -1802,15 +1802,27 @@
       (tramp-verbose 1)
       (tramp-chunksize 2000)
       (tramp-use-ssh-controlmaster-options nil)
+      (remote-file-name-inhibit-locks t)
+      (tramp-use-scp-direct-remote-copying t)
+      (remote-file-name-inhibit-auto-save-visited t)
       :config
+      (connection-local-set-profile-variables
+       'remote-direct-async-process
+       '((tramp-direct-async-process . t)))
+      (connection-local-set-profiles
+       '(:application tramp :protocol "scp")
+       'remote-direct-async-process)
+      (setq magit-tramp-pipe-stty-settings 'pty)
+      (with-eval-after-load 'compile
+        (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options)))
       ;; https://github.com/alexluigit/dirvish/blob/main/docs/CUSTOMIZING.org#tramp-integration
-      (add-to-list 'tramp-connection-properties
-                   (list (regexp-quote "/ssh:")
-                         "direct-async-process" t))
-      (customize-set-variable 'tramp-ssh-controlmaster-options
-                              (concat
-                               "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
-                               "-o ControlMaster=auto -o ControlPersist=yes")))
+      ;; (add-to-list 'tramp-connection-properties
+      ;;              (list (regexp-quote "/ssh:")
+      ;;                    "direct-async-process" t))
+      ;; (customize-set-variable 'tramp-ssh-controlmaster-options
+      ;;                         (concat
+      ;;                          "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
+      ;;                          "-o ControlMaster=auto -o ControlPersist=yes")))
 
     (use-package consult-tramp
       :ensure nil
