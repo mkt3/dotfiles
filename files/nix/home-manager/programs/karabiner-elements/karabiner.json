@@ -5,7 +5,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Emacs key bindings [control+keys] (rev 10)",
+                        "description": "Emacs key bindings",
                         "manipulators": [
                             {
                                 "conditions": [
@@ -394,13 +394,14 @@
                         ]
                     },
                     {
-                        "description": "Ctl-g to esc in Slack",
+                        "description": "Ctl-g to esc in Slack and Vivaldi",
                         "manipulators": [
                             {
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^com\\.tinyspeck\\.slackmacgap$",
+                                            "^com\\.vivaldi\\.Vivaldi$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
