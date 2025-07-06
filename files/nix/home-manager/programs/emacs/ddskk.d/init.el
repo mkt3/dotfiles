@@ -45,12 +45,14 @@
 (setq skk-show-annotation nil)
 
 ;; 変換候補の表示位置
-(setq skk-show-inline 'vertical)
-(when skk-show-inline
-  (setq skk-inline-show-face nil
-	      skk-inline-show-background-color "#272C36"
-        skk-inline-show-background-color-odd "#272C36"))
-(setq skk-show-candidates-always-pop-to-buffer t)
+(when (not (display-graphic-p))
+  (setq skk-show-inline 'vertical)
+  (when skk-show-inline
+    (setq skk-inline-show-face nil
+          skk-inline-show-background-color "#272C36"
+          skk-inline-show-background-color-odd "#272C36"))
+  (setq skk-show-candidates-always-pop-to-buffer t))
+
 
 ;; 候補表示件数を2列に
 (setq skk-henkan-show-candidates-rows 2)
