@@ -575,27 +575,14 @@
        (setq skk-user-directory (expand-file-name "ddskk.d" user-emacs-directory))
        (setq skk-init-file (expand-file-name "init.el" skk-user-directory ))
        (when (file-directory-p my:d:nextcloud)
-         (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8))
-         (setq skk-extra-jisyo-file-list
-               `(,(expand-file-name "personal_config/skk/ddskk/SKK-JISYO.edict" my:d:nextcloud))))
-       (setq viper-mode nil)
+         (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8)))
+       (setq viper-mode nil))
+
+     (use-package ddskk-posframe
+       :ensure t
+       :if (display-graphic-p)
        :config
-       (defun my:open-skk-input-buffer ()
-         (interactive)
-         (let* ((tab-name "SKK Input")
-                (tabs (tab-bar-tabs))
-                (target-tab (seq-find (lambda (tab)
-                                        (string= (alist-get 'name tab) tab-name))
-                                      tabs)))
-           (if target-tab
-               (tab-bar-switch-to-tab tab-name)
-             (tab-bar-new-tab)
-             (tab-bar-rename-tab tab-name)
-             (let ((buf (get-buffer-create "*SKK Input*")))
-               (switch-to-buffer buf)
-               (erase-buffer)
-               (text-mode)
-               (skk-mode 1))))))
+       (ddskk-posframe-mode 1))
    #+end_src
 ** puni
    #+begin_src emacs-lisp
