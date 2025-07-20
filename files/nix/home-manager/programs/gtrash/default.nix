@@ -4,6 +4,7 @@
 
   programs.zsh.shellAliases = {
     rm = "echo -e 'If you want to use rm really, then use \"\\\\rm\" instead.'; false";
+    ping = "echo -e 'If you want to ping, consider using \"nc -zv <host> <port>\" to check specific service availability instead.'; false";
   };
 
   home.file.".zshenv".text = ''
