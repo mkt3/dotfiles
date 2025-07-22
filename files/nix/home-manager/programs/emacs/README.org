@@ -1585,7 +1585,7 @@
                (append org-roam-capture-templates
                        '(("p" "paper" plain "%?"
                           :if-new
-                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Comment\n\n* Abstract\n  ${citar-abstract}\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n")
+                          (file+head "reference/paper/${citar-citekey}.org" "#+title: ${title}\n#+date: %U\n#+last_modified: %U\n\n* Paper Summary\n\n** Abstract\n  ${citar-abstract}\n\n** 1. What is it?\n\n** 2. How does it compare to prior work?\n\n** 3. What are the core techniques or methods?\n\n** 4. How was its effectiveness validated?\n\n** 5. Are there any open questions or discussions?\n\n** 6. What are the suggested next papers to read?\n\n* Memo\n  :PROPERTIES:\n  :NOTER_DOCUMENT: ~/Nextcloud/zotero/${citar-file}\n  :END:\n")
                           :immediate-finish t
                           :unnarrowed t))))
          (setq citar-org-roam-capture-template-key "p")
