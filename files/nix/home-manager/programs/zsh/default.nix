@@ -10,45 +10,44 @@
     enable = true;
     enableCompletion = true;
 
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     autocd = true;
 
-    envExtra =
-      ''
-        if [ -z "$BASH_VERSION" ];then
-          setopt no_global_rcs
-        fi
+    envExtra = ''
+      if [ -z "$BASH_VERSION" ];then
+        setopt no_global_rcs
+      fi
 
-        # Language
-        export LANGUAGE="en_US.UTF-8"
-        export LANG="$LANGUAGE"
-        export LC_ALL="$LANGUAGE"
-        export LC_CTYPE="$LANGUAGE"
+      # Language
+      export LANGUAGE="en_US.UTF-8"
+      export LANG="$LANGUAGE"
+      export LC_ALL="$LANGUAGE"
+      export LC_CTYPE="$LANGUAGE"
 
-        # Editor
-        export EDITOR=vim
-        export CVSEDITOR="$EDITOR"
-        export SVN_EDITOR="$EDITOR"
-        export GIT_EDITOR="$EDITOR"
+      # Editor
+      export EDITOR=vim
+      export CVSEDITOR="$EDITOR"
+      export SVN_EDITOR="$EDITOR"
+      export GIT_EDITOR="$EDITOR"
 
-        # Pager
-        export PAGER=less
+      # Pager
+      export PAGER=less
 
-        # terminfo
-        export TERMINFO="''${XDG_DATA_HOME}/terminfo"
-        export TERMINFO_DIRS="''${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
-        export COLORTERM="truecolor"
+      # terminfo
+      export TERMINFO="''${XDG_DATA_HOME}/terminfo"
+      export TERMINFO_DIRS="''${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+      export COLORTERM="truecolor"
 
-        # zsh session
-        export SHELL_SESSIONS_DISABLE=1
+      # zsh session
+      export SHELL_SESSIONS_DISABLE=1
 
-        # path env
-        if [[ -z "$ZSH_PATH_LOADED" ]]; then
-            source "''${HOME}/.config/zsh/path.zsh"
-            export ZSH_PATH_LOADED=1
-        fi
-      ''
-      + (if isGUI then "\n# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
+      # path env
+      if [[ -z "$ZSH_PATH_LOADED" ]]; then
+          source "''${HOME}/.config/zsh/path.zsh"
+          export ZSH_PATH_LOADED=1
+      fi
+    ''
+    + (if isGUI then "\n# personal env\n. \"\${HOME}/Nextcloud/personal_config/env/zshenv\"" else "");
 
     initContent = lib.mkBefore ''
       source "''${HOME}/.config/sheldon/sheldon.zsh"
@@ -68,23 +67,22 @@
       extended = true;
     };
 
-    shellAliases =
-      {
-        wget = "wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\"";
-        sudo = "TERM=xterm-256color sudo";
-        grep = "grep --color=auto";
-        cp = "cp -i";
-        mv = "mv -i";
-        history = "history -i";
-      }
-      // (
-        if pkgs.stdenv.hostPlatform.isLinux then
-          {
-            open = "xdg-open";
-          }
-        else
-          { }
-      );
+    shellAliases = {
+      wget = "wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\"";
+      sudo = "TERM=xterm-256color sudo";
+      grep = "grep --color=auto";
+      cp = "cp -i";
+      mv = "mv -i";
+      history = "history -i";
+    }
+    // (
+      if pkgs.stdenv.hostPlatform.isLinux then
+        {
+          open = "xdg-open";
+        }
+      else
+        { }
+    );
   };
 
   home.file.".local/bin/tmux_session.sh".source = ./tmux_session.sh;
