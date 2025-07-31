@@ -14,7 +14,10 @@
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.extrakto;
-        extraConfig = "set -g @extrakto_split_direction \"v\"";
+        extraConfig = ''
+          set -g @extrakto_split_direction "a"
+          set -g @extrakto_split_direction "tmux_osc52"
+        '';
       }
       {
         plugin = tmuxPlugins.jump;
