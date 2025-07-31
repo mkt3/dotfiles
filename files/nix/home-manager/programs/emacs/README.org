@@ -2129,9 +2129,9 @@
    #+end_src
 ** Translate
    #+begin_src emacs-lisp
-     (use-package go-translate
+     (use-package gt
        :ensure t
-       :bind (("C-c t" . gt-do-translate))
+       :bind (("C-c t" . gt-translate))
        :config
        (set-face-attribute 'gt-buffer-render-block-prefix-face nil :background "black")
        (setq gt-langs '(ja en))
