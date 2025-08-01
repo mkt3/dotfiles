@@ -16,7 +16,7 @@
         plugin = tmuxPlugins.extrakto;
         extraConfig = ''
           set -g @extrakto_split_direction "a"
-          set -g @extrakto_split_direction "tmux_osc52"
+          set -g @extrakto_clip_tool_run "tmux_osc52"
         '';
       }
       {
