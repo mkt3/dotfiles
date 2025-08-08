@@ -8,12 +8,7 @@ fi
 # Tmux
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     main_session="main_session"
-    tmux_session="`tmux list-sessions 2> /dev/null`"
-    if [[ "$tmux_session" =~ "${main_session}" ]]; then
-        tmux attach-session -t "$main_session"
-    else
-        tmux new-session -s "$main_session"
-    fi
+    tmux attach-session -t "$main_session" || tmux new-session -s "$main_session"
 fi
 
 # Emacs keybind
