@@ -42,7 +42,7 @@
 
     gc = {
       automatic = true;
-      frequency = "daily";
+      dates = "daily";
       options = "--delete-older-than 3d";
     };
   };
