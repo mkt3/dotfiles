@@ -112,8 +112,9 @@
         "sleep 10; nextcloud --background"
         "[workspace 1 silent] wezterm"
         "[workspace 1 silent] vivaldi"
-        "[workspace 3 silent] zotero"
         "[workspace 2 silent] slack"
+        "[workspace 2 silent] discord"
+        "[workspace 3 silent] zotero"
         "[workspace 4 silent] COLORTERM=truecolor GTK_IM_MODULE=xim emacs"
       ];
 
