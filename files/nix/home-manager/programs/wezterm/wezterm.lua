@@ -7,6 +7,8 @@ local keys = {
   {key="w",mods="CMD",action=wezterm.action.SendKey{key="w", mods="OPT"}}, -- for emacs
   {key="y",mods="CMD",action=wezterm.action.SendKey{key="y", mods="OPT"}}, -- for emacs
   {key="v",mods="CMD",action=wezterm.action.SendKey{key="v", mods="OPT"}}, -- for emacs
+  {key="b",mods="CMD",action=wezterm.action.SendKey{key="b", mods="OPT"}}, -- for emacs
+  {key="f",mods="CMD",action=wezterm.action.SendKey{key="f", mods="OPT"}}, -- for emacs
   {key="i",mods="CMD",action=wezterm.action.SendKey{key="i", mods="OPT"}}, -- for emacs
   {key=",",mods="CMD",action=wezterm.action.SendKey{key=",", mods="OPT"}}, -- for emacs
   {key=".",mods="CMD",action=wezterm.action.SendKey{key=".", mods="OPT"}}, -- for emacs
