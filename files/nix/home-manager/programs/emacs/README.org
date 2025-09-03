@@ -1832,6 +1832,26 @@
       (dired-recursive-copies 'always)
       (dired-movement-style 'cycle)
       (dired-omit-files (rx (seq bol "."))))
+
+    (use-package dired-open
+      :ensure t
+      :bind (nil
+             :map dired-mode-map
+             ("C-c C-o"  . dired-open-xdg)))
+
+    (use-package dired-details-r
+      :ensure nil
+      :vc (:url "https://github.com/misohena/dired-details-r" :rev :newest)
+      :config
+      (global-dired-details-r-mode)
+      (setq dired-details-r-combinations
+            '((size-time  . (size time))
+              ;;(time-size  . (time size)) ;; Which do you prefer?
+              (no-details . ())
+              (disabled   . disabled)
+              (all        . (size time perms links user group))
+              (left-right . (time size filename perms links user group))
+              (left       . (time size filename)))))
   #+end_src
 * Browser
   #+begin_src emacs-lisp
