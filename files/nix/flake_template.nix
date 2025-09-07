@@ -50,14 +50,12 @@
         system = platform;
         overlays = [
           emacs-overlay.overlays.emacs
-          (import ./home-manager/overlays/vivaldi)
           (import ./home-manager/overlays/vlc)
         ]
         ++ (
           if platform == "aarch64-darwin" then
             [
               (import ./home-manager/overlays/patched-emacs/emacs-unstable.nix)
-              (import ./home-manager/overlays/extrakto)
             ]
           else if platform == "x86_64-linux" && isGUI then
             [
