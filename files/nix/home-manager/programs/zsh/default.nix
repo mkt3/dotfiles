@@ -74,6 +74,7 @@
       cp = "cp -i";
       mv = "mv -i";
       history = "history -i";
+      wea = "(){ curl -H \"Accept-Language: \${LANG%_*}\" -t-compressed \"wttr.in/\${1:-Tokyo}\" }";
     }
     // (
       if pkgs.stdenv.hostPlatform.isLinux then
