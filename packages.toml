@@ -509,7 +509,7 @@ darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
 [launcher]
 type = "gui"
 darwin = [{ name = "raycast", method = "nix-hm" }]
-linux = [{ name = "rofi-wayland", method = "nix-hm" }]
+linux = [{ name = "rofi", method = "nix-hm" }]
 
 ## window manager
 [hyprland]
