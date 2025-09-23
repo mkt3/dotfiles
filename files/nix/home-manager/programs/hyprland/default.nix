@@ -278,45 +278,6 @@
     }
   '';
 
-  # libskk
-  xdg.configFile."libskk/rules/StickyShift/metadata.json" = {
-    text = ''
-      {
-        "name": "StickyShift",
-        "description": "Typing rule, support sticky key"
-      }
-    '';
-  };
-
-  xdg.configFile."libskk/rules/StickyShift/keymap/hiragana.json" = {
-    text = ''
-      {
-        "include": [
-          "default/hiragana"
-        ],
-        "define": {
-          "keymap": {
-            ";": "start-preedit-no-delete"
-          }
-        }
-      }
-    '';
-  };
-  xdg.configFile."libskk/rules/StickyShift/keymap/katakana.json" = {
-    text = ''
-      {
-        "include": [
-          "default/katakana"
-        ],
-        "define": {
-          "keymap": {
-            ";": "start-preedit-no-delete"
-          }
-        }
-      }
-    '';
-  };
-
   home.file.".zshenv".text = ''
     # icons
     export XCURSOR_PATH=/usr/share/icons:"''${XDG_DATA_HOME}/icons"

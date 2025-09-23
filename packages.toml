@@ -130,7 +130,7 @@ type = "basic"
 common = [
   { name = "git", method = "nix-hm" },
   { name = "pre-commit", method = "nix-hm" },
-  { name = "gitleaks", method = "nix-hm" },
+  # { name = "gitleaks", method = "nix-hm" },
 ]
 
 [sheldon]
@@ -529,6 +529,7 @@ nixos = [
   { name = "libsecret", method = "nix-hm" },
   { name = "seahorse", method = "nix-hm" },
   { name = "nord", method = "nix-hm" },
+  { name = "fcitx5-skk", method = "nix-hm" },
 ]
 
 [aerospace]
