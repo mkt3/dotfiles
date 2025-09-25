@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  lib = pkgs.lib;
+in
 {
   programs.ssh = {
     enable = true;
@@ -17,17 +20,4 @@
       controlPersist = "no";
     };
   };
-
-  home.file.".zshenv".text = ''
-    # ssh
-    export SSH_AGENT_PID=""
-  ''
-  + (
-    if pkgs.stdenv.hostPlatform.isLinux then
-      "export SSH_AUTH_SOCK=\"\${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh\"\n"
-    else if pkgs.stdenv.hostPlatform.isDarwin then
-      "export SSH_AUTH_SOCK=\"\${HOME}/.gnupg/S.gpg-agent.ssh\"\n"
-    else
-      ""
-  );
 }

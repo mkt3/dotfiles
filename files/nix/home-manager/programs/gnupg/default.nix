@@ -1,6 +1,7 @@
 {
   pkgs,
   isGUI,
+  config,
   ...
 }:
 let
@@ -21,27 +22,37 @@ in
 
   home.packages = lib.mkIf (isNixOS || isDarwin) [ pkgs.gnupg ];
 
-  home.file.".zshenv".text = ''
-    # GnuPG
-    ## default value is ~/.gnupg.  If use non-default GnuPG Home directory, need to edit all socket files.
-    export GNUPGHOME="''${HOME}/.gnupg"
-    export GPG_TTY=$(tty)
-  '';
+  home.file.".zshenv" = {
+    text = lib.mkMerge (
+      [
+        "# GnuPG"
+        "# default value is ~/.gnupg. If use non-default GnuPG Home directory, need to edit all socket files."
+        "export GNUPGHOME=\"${config.home.homeDirectory}/.gnupg\""
+        "export GPG_TTY=$(tty)"
+        "export SSH_AGENT_PID=\"\""
+
+      ]
+      ++ lib.optionals isLinux [
+        ''export SSH_AUTH_SOCK="${config.xdg.runtimeDir}/gnupg/S.gpg-agent.ssh"''
+      ]
+      ++ lib.optionals isDarwin [
+        ''export SSH_AUTH_SOCK="${config.home.homeDirectory}/.gnupg/S.gpg-agent.ssh"''
+      ]
+    );
+  };
 
   home.file.".gnupg/gpg-agent.conf" = {
-    text =
-      ''
-        max-cache-ttl 60480000
-        default-cache-ttl 60480000
-        max-cache-ttl-ssh 60480000
-        default-cache-ttl-ssh 60480000
-      ''
-      + (
-        if isDarwin then
-          "\npinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac"
-        else
-          ""
-      );
+    text = lib.mkMerge (
+      [
+        "max-cache-ttl 60480000"
+        "default-cache-ttl 60480000"
+        "max-cache-ttl-ssh 60480000"
+        "default-cache-ttl-ssh 60480000"
+      ]
+      ++ lib.optionals isDarwin [
+        "pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac"
+      ]
+    );
   };
 
   home.file.".gnupg/gpg.conf" = lib.mkIf (isLinux && !isNixOS && !isGUI) {
