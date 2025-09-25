@@ -3,7 +3,7 @@
 $ project_type: echo "minimal\npython"
 
 # Delete generations older than 7 days
-nix-collect-garbage --delete-older-than 7d --verbose
+sudo nix-collect-garbage --delete-older-than 7d --verbose
 
 # Remove unnecessary store paths
 nix store gc --verbose

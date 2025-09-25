@@ -54,12 +54,16 @@
 # 自動テキスト補完を無効
 /usr/bin/defaults write -g NSAutomaticTextCompletionEnabled -int 0
 
+
 # メニューバー
 /usr/bin/defaults write com.apple.systemuiserver "NSStatusItem Visible Siri" -bool false # Siri 非表示
 /usr/bin/defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.battery" -bool true # battery 表示
 /usr/bin/defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.bluetooth" -bool true # bluetooth 表示
 /usr/bin/defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.clock" -bool true # clock 表示
 /usr/bin/defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.volume" -bool true # volume 表示
+## Show menu bar background
+/usr/bin/defaults write -g SLSMenuBarUseBlurredAppearance -int 1
+
 
 # キャプチャ
 ## キャプチャのプレフィックスを変更
