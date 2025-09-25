@@ -33,7 +33,7 @@ in
 
       ]
       ++ lib.optionals isLinux [
-        ''export SSH_AUTH_SOCK="${config.xdg.runtimeDir}/gnupg/S.gpg-agent.ssh"''
+        "export SSH_AUTH_SOCK=\"\${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh\""
       ]
       ++ lib.optionals isDarwin [
         ''export SSH_AUTH_SOCK="${config.home.homeDirectory}/.gnupg/S.gpg-agent.ssh"''

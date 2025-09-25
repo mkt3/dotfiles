@@ -40,10 +40,10 @@ in
       terminal = false;
       categories = [
         "Development"
-        "Editor"
+        "TextEditor"
       ];
 
-      mimeTypes = [
+      mimeType = [
         "text/english"
         "text/plain"
         "text/x-makefile"
