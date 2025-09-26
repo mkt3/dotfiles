@@ -1030,8 +1030,6 @@
                ("C-x M-g" . magit-dispatch-popup))
         :config
         (magit-wip-mode 1)
-        (if (eq system-type 'darwin)
-            (setq magit-git-executable "/usr/bin/git"))
         (add-hook 'git-commit-mode-hook (lambda () (save-selected-window (magit-process)))))
 
 
