@@ -20,7 +20,7 @@ case "$DISTRO" in
     "Ubuntu") os_name="ubuntu"; is_linux=true ;;
     "NixOS") os_name="nixos"; is_linux=true ;;
     "Darwin") os_name="darwin" ;;
-    *) os_name="otherlinux"; is_linux=true ;;
+    *) os_name="${DISTRO,,}"; is_linux=true ;;
 esac
 
 dev_env=${DEV_ENV:-n}
@@ -37,14 +37,10 @@ common_methods=("nix" "nix-hm")
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
+SED_CMD="nix run nixpkgs#gnused -- -i "
+
+info "Parsing TOML file to JSON..."
 json_content=$(nix run nixpkgs#yj -- -t < "$toml_file")
-
-setup_files="${REPO_DIR:-..}/scripts/**/setup.sh"
-for filepath in $setup_files; do
-     # shellcheck disable=SC1090
-    . "$filepath"
-done
-
 
 cat << 'EOF' > "$install_script_path"
 #!/usr/bin/env bash
@@ -54,77 +50,62 @@ set -eu
 
 # variable
 CONFIGS_DIR="${REPO_DIR}/files"
+NIX_DIR="${HOME}/.config/nix"
 
 . "${REPO_DIR}/scripts/common.sh"
+. "${REPO_DIR}/scripts/nix/setup.sh"
 
-setup_files="${REPO_DIR}/scripts/**/setup.sh"
-for filepath in $setup_files; do
-    # shellcheck disable=SC1090
-    . "$filepath"
-done
+# pre function
+title "Pre-setup nix"
+pre_setup_nix
 EOF
-
-
-# pre functions
-IFS=$'\n' read -r -d '' -a functions < <(echo "$json_content" | nix run nixpkgs#jq -- --arg os "$os_name" --arg dev_env "$dev_env" --arg gui_env "$gui_env" -r 'to_entries | .[] | select((.value["common"] != null or .value[$os] != null) and (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))) | (.value["common"][]?, .value[$os][]?) | .function | select(. != null)' && printf '\0')
-
-echo "# pre functions" >> "$install_script_path"
-for func in "${functions[@]}"; do
-    if type "pre_${func}" &> /dev/null; then
-        {
-            echo "title \"Pre-setup ${func#*_}\""
-            echo "pre_${func}"
-        } >> "$install_script_path"
-    fi
-done
 
 # packages
 echo "# package install/update commands" >> "$install_script_path"
-
-# nix
-nix_dir="${HOME}/.config/nix"
 
 if [[ "$DISTRO" == "NixOS" ]] ||  [[ "$DISTRO" == "Darwin" ]] ; then
     printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
 fi
 printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/home-manager/system_packages.nix"
 
-if [[ "$os_name" == "darwin" ]]; then
-    nix_homebrew_apps_file="${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
-    cp -rf "${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
+nix_homebrew_apps_file="${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
 
-    echo "title \"Setup with nix-darwin\"" >> "$install_script_path"
-    if ! (type darwin-rebuild > /dev/null 2>&1); then
-        {
-            echo "sudo mv /etc/shells{,.before-nix-darwin}"
-            echo "sudo mv /etc/nix/nix.conf{,.before-nix-darwin}"
-            echo "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake ${nix_dir}#${HOSTNAME_ENV}"
-        } >> "$install_script_path"
-    else
-        {
-            echo "cd ${nix_dir} && nix flake update && cd -"
-            echo "sudo darwin-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
-        } >> "$install_script_path"
-    fi
-elif [[ "$os_name" == "nixos" ]]; then
-    {
-        echo "title \"Setup nix\""
-        echo "cd ${nix_dir} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -"
-        echo "sudo nixos-rebuild switch --flake ${nix_dir}#${HOSTNAME_ENV}"
-    } >> "$install_script_path"
+generate_nix_switch_command() {
+    local os="$1"
+    local output=""
 
-else
-    echo "title \"Install/Update packages from nix\"" >> "$install_script_path"
-    if (type home-manager > /dev/null 2>&1); then
-        {
-            echo "nix flake update --flake ${nix_dir}"
-            echo "home-manager switch --flake ${nix_dir}"
-        } >> "$install_script_path"
+    if [[ "$os" == "darwin" ]]; then
+        cp -f "${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
+        output+="title \"Setup with nix-darwin\"\n"
+        output+="cd \${NIX_DIR} && nix flake update && cd -\n"
+        output+="if ! (type darwin-rebuild > /dev/null 2>&1); then\n"
+        output+="    echo \"Setting up initial nix-darwin...\"\n"
+        output+="    sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true\n"
+        output+="    sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true\n"
+        output+="    NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
+        output+="else\n"
+        output+="    sudo darwin-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
+        output+="fi"
+    elif [[ "$os" == "nixos" ]]; then
+        output+="title \"Setup nixos\"\n"
+        output+="cd \${NIX_DIR} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -\n"
+        output+="sudo nixos-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}"
     else
-        echo "nix --extra-experimental-features \"nix-command flakes\" run home-manager/master -- switch --flake ${nix_dir}" >> "$install_script_path"
+        output+="title \"Install/Update packages from home-manager\"\n"
+        output+="if type home-manager > /dev/null 2>&1; then\n"
+        output+="    echo \"Updating flakes and switching home-manager...\"\n"
+        output+="    nix flake update --flake \${NIX_DIR}\n"
+        output+="    home-manager switch --flake \${NIX_DIR}\n"
+        output+="else\n"
+        output+="    echo \"Running home-manager via nix run...\"\n"
+        output+="    nix --extra-experimental-features \"nix-command flakes\" run home-manager/master -- switch --flake \${NIX_DIR}\n"
+        output+="fi\n"
+        output+="export __ETC_PROFILE_NIX_SOURCED=\"\""
     fi
-    echo "__ETC_PROFILE_NIX_SOURCED=\"\"" >> "$install_script_path"
-fi
+    echo -e "$output" >> "$install_script_path"
+}
+
+generate_nix_switch_command "$os_name"
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
     IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | nix run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
@@ -141,28 +122,32 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
       select(.method == $method) |
       .name |
       select(. != null)' && printf '\0')
+
     if [ ${#package_names[@]} -eq 0 ]; then
         continue
     fi
 
-    if [ "$method" != "brew" ] &&  [ "$method" != "cask" ] && [ "$method" != "mas" ] && [ "$method" != "nix" ] && [ "$method" != "nix-hm" ]; then
-        echo "title \"Install/Update packages from ${method}\""  >> "$install_script_path"
-    fi
     install_cmd=""
     case "$method" in
         "apt")
+            echo "title \"Install/Update packages from apt\"" >> "$install_script_path"
             install_cmd="sudo apt-get -y install"
             ;;
         "pacman")
+            echo "title \"Install/Update packages from pacman\"" >> "$install_script_path"
             install_cmd="sudo pacman -S --needed --noconfirm"
             ;;
         "aur")
+            echo "title \"Install/Update packages from aur\"" >> "$install_script_path"
             install_cmd="yay -S --needed --noconfirm"
             ;;
     esac
 
     case "$method" in
         nix|nix-hm)
+            programs_nix_dir=""
+            packages_nix_path=""
+            package_prefix=""
             if [[ "$method" == "nix" ]]; then
                 if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]] ; then
                     packages_nix_path="${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
@@ -180,24 +165,16 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             fi
             mkdir -p "$programs_nix_dir"
 
-            file_list=()
             package_list=()
             program_list=()
 
-            while IFS= read -r -d '' file
-            do
-                file_list+=("$(basename "$file")")
-            done < <(nix run nixpkgs#findutils -- "$programs_nix_dir" -type d -print0)
-
             for package in "${package_names[@]}"; do
-                package_name=" $package "
-                if [[ " ${file_list[*]} " =~ $package_name ]]; then
+                if [ -d "$programs_nix_dir/$package" ]; then
                     program_list+=("$package")
                 else
                     package_list+=("$package")
                 fi
             done
-            packages=$(printf '    %s\n' "${package_list[@]}")
 
             packages=$([ ${#package_list[@]} -ne 0 ] && printf '    %s\n' "${package_list[@]}" || echo "")
             programs=$([ ${#program_list[@]} -ne 0 ] && printf '    ./programs/%s\n' "${program_list[@]}" || echo "")
@@ -208,48 +185,45 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
                    "${packages}" \
                    > "$packages_nix_path"
             ;;
-        brew)
-            brew_packages=$(printf '__n__      "%s"' "${package_names[@]}")
-            /usr/bin/sed -i "" "s|__BREW_PACKAGES__|$brew_packages|g" "$nix_homebrew_apps_file"
-            /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
-            ;;
-        cask)
-            cask_packages=$(printf '__n__      "%s"' "${package_names[@]}")
-            /usr/bin/sed -i "" "s|__CASK_PACKAGES__|$cask_packages|g" "$nix_homebrew_apps_file"
-            /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
-            ;;
-        mas)
-            if [ "$GITHUB_ACTIONS" == "y" ]; then
-                mas_packages=""
-            else
-                mas_packages=$(printf '__n__      %s;' "${package_names[@]}")
-            fi
-            /usr/bin/sed -i "" "s|__MAS_PACKAGES__|$mas_packages|g" "$nix_homebrew_apps_file"
-            /usr/bin/sed -i "" "s|__n__|\n|g" "$nix_homebrew_apps_file"
+        brew|cask|mas)
+            placeholder=""
+            packages_string=""
+            case "$method" in
+                brew)
+                    placeholder="__BREW_PACKAGES__"
+                    packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
+                    ;;
+                cask)
+                    placeholder="__CASK_PACKAGES__"
+                    packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
+                    ;;
+                mas)
+                    placeholder="__MAS_PACKAGES__"
+                    if [ "$GITHUB_ACTIONS" == "y" ]; then
+                        packages_string=""
+                    else
+                        packages_string=$(printf '__n__      %s;' "${package_names[@]}")
+                    fi
+                    ;;
+            esac
+
+            ${SED_CMD} "s|${placeholder}|${packages_string}|g" "$nix_homebrew_apps_file"
+            ${SED_CMD} "s|__n__|\n|g" "$nix_homebrew_apps_file"
             ;;
         script)
             ;;
         *)
-            echo "${install_cmd} ${package_names[*]}" >> "$install_script_path"
+            if [ -n "$install_cmd" ]; then
+                echo "${install_cmd} ${package_names[*]}" >> "$install_script_path"
+            fi
             ;;
     esac
 done
 
-if  [[ "$DISTRO" == "Darwin" ]] ; then
-    /usr/bin/sed -i "" "s|__BREW_PACKAGES__||g" "$nix_homebrew_apps_file"
-    /usr/bin/sed -i "" "s|__CASK_PACKAGES__||g" "$nix_homebrew_apps_file"
-    /usr/bin/sed -i "" "s|__MAS_PACKAGES__||g" "$nix_homebrew_apps_file"
+if [[ "$DISTRO" == "Darwin" ]] ; then
+    ${SED_CMD} "s|__BREW_PACKAGES__||g; \
+                s|__CASK_PACKAGES__||g; \
+                s|__MAS_PACKAGES__||g" "$nix_homebrew_apps_file"
 fi
-
-# post functions
-echo "# post functions" >> "$install_script_path"
-for func in "${functions[@]}"; do
-    if type "post_${func}" &> /dev/null; then
-        {
-            echo "title \"Post-setup ${func#*_}\""
-            echo "post_${func}"
-        } >> "$install_script_path"
-    fi
-done
 
 echo "success \"Complete!\""  >> "$install_script_path"

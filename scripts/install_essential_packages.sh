@@ -40,14 +40,6 @@ install_macos() {
     if ! (type brew > /dev/null 2>&1); then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
-
-    if ! infocmp tmux-256color >/dev/null 2>&1; then
-        brew install ncurses
-        tmpfile=$(mktemp /tmp/tempfile.XXXXXX)
-        trap 'rm -f "$tmpfile"' EXIT
-        infocmp tmux-256color > "$tmpfile"
-        tic -xe tmux-256color "$tmpfile"
-    fi
 }
 
 install_linux() {
@@ -66,18 +58,7 @@ install_linux() {
 install_nix() {
     if ! (type nix > /dev/null 2>&1); then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-    # elif [[ "$OS" == "Linux" ]]; then
-    #    sudo -i nix upgrade-nix || true
     fi
-    # local CONFIG_FILE="/etc/nix/nix.conf"
-    # local FEATURES="experimental-features = nix-command flakes"
-
-    # [ -d "$(dirname "$CONFIG_FILE")" ] || sudo mkdir -p "$(dirname "$CONFIG_FILE")"
-
-    # if ! grep -Fxq "$FEATURES" "$CONFIG_FILE" 2>/dev/null; then
-    #    echo "$FEATURES" | sudo tee -a "$CONFIG_FILE" > /dev/null
-    #fi
-
 }
 
 install_essential_packages

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eu
+set -o pipefail
 
 COLOR_GRAY="\033[1;38;5;243m"
 COLOR_BLUE="\033[1;34m"
@@ -9,6 +11,7 @@ COLOR_PURPLE="\033[1;35m"
 COLOR_YELLOW="\033[1;33m"
 COLOR_NONE="\033[0m"
 
+
 title() {
     echo -e "\n${COLOR_GRAY}=============================================${COLOR_NONE}"
     echo -e "${COLOR_PURPLE}$1${COLOR_NONE}"
@@ -16,7 +19,7 @@ title() {
 }
 
 error() {
-    echo -e "${COLOR_RED}Error: ${COLOR_NONE}$1"
+    echo -e "${COLOR_RED}Error: ${COLOR_NONE}$1" >&2
     exit 1
 }
 
@@ -32,8 +35,13 @@ success() {
     echo -e "${COLOR_GREEN}$1${COLOR_NONE}"
 }
 
+
+# XDG Base Directory Specification
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
-XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
+XDG_STATE_HOME=${XDG_STATE_HOME:-${HOME}/.local/state}
+
+# GnuPG Home
 GNUPGHOME=${GNUPGHOME:-${HOME}/.gnupg}
 
+# shellcheck source=/dev/null
 . "${REPO_DIR}/files/nix/home-manager/programs/zsh/path.zsh"

@@ -37,6 +37,7 @@ in
 
         # Pager, Terminfo, Color
         ''
+          export LESS='-g -i -M -R -S -W -x4'
           export PAGER=less
           export TERMINFO="${config.xdg.dataHome}/terminfo"
           export TERMINFO_DIRS="${config.xdg.dataHome}/terminfo:/usr/share/terminfo"

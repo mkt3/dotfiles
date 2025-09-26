@@ -7,12 +7,9 @@ common = [{ name = "xdg-utils", method = "nix-hm" }]
 [nix]
 type = "basic"
 common = [
-  { name = "nix", method = "script", function = "setup_nix" },
+  { name = "nix", method = "nix" },
   { name = "nvfetcher", method = "nix-hm" },
 ]
-[direnv]
-type = "basic"
-common = [{ name = "direnv", method = "nix-hm" }]
 
 [gcc]
 type = "basic"
@@ -35,10 +32,7 @@ common = [{ name = "zsh", method = "nix-hm" }]
 
 [coreutils]
 type = "basic"
-arch = [{ name = "coreutils", method = "pacman" }]
-darwin = [{ name = "coreutils", method = "nix-hm" }]
-ubuntu = [{ name = "coreutils", method = "apt" }]
-nixos = [{ name = "coreutils", method = "nix" }]
+common = [{ name = "coreutils", method = "nix" }]
 
 [findutils]
 type = "basic"
@@ -59,10 +53,9 @@ common = [{ name = "gawk", method = "nix" }]
 [less]
 type = "basic"
 common = [
-  { name = "less", method = "nix-hm" },
-  { name = "lesspipe", method = "nix-hm" },
+  { name = "less", method = "nix" },
+  { name = "lesspipe", method = "nix" },
 ]
-nixos = [{ name = "less", method = "nix" }]
 
 [tree]
 type = "basic"
@@ -71,6 +64,29 @@ common = [{ name = "tree", method = "nix" }]
 [rsync]
 type = "basic"
 common = [{ name = "rsync", method = "nix" }]
+
+[zip]
+type = "basic"
+common = [
+  { name = "zip", method = "nix" },
+  { name = "unzip", method = "nix" },
+  { name = "wzip", method = "nix-hm" },
+]
+
+[tar]
+type = "basic"
+common = [
+  { name = "gnutar", method = "nix-hm" },
+  { name = "zstd", method = "nix-hm" },
+]
+
+[unarchiver]
+type = "basic"
+common = [{ name = "unar", method = "nix" }]
+
+[direnv]
+type = "basic"
+common = [{ name = "direnv", method = "nix-hm" }]
 
 [yj]
 type = "basic"
@@ -92,24 +108,6 @@ common = [{ name = "duf", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "fastfetch", method = "nix-hm" }]
 
-[zip]
-type = "basic"
-common = [
-  { name = "zip", method = "nix-hm" },
-  { name = "unzip", method = "nix-hm" },
-]
-
-[tar]
-type = "basic"
-common = [
-  { name = "gnutar", method = "nix-hm" },
-  { name = "zstd", method = "nix-hm" },
-]
-
-[unarchiver]
-type = "basic"
-common = [{ name = "unar", method = "nix" }]
-
 [gtrash]
 type = "basic"
 common = [{ name = "gtrash", method = "nix-hm" }]
@@ -130,7 +128,6 @@ type = "basic"
 common = [
   { name = "git", method = "nix-hm" },
   { name = "pre-commit", method = "nix-hm" },
-  # { name = "gitleaks", method = "nix-hm" },
 ]
 
 [sheldon]
@@ -235,7 +232,7 @@ common = [{ name = "gnupg", method = "nix-hm" }]
 type = "basic"
 common = [
   { name = "sops", method = "nix-hm" },
-  { name = "age", method = "nix-hm" }
+  { name = "age", method = "nix-hm" },
 ]
 
 [macos-security]
