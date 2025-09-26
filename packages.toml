@@ -4,12 +4,9 @@ type = "basic"
 common = [{ name = "xdg-utils", method = "nix-hm" }]
 
 # build package
-[nix]
+[nvfetcher]
 type = "basic"
-common = [
-  { name = "nix", method = "nix" },
-  { name = "nvfetcher", method = "nix-hm" },
-]
+common = [{ name = "nvfetcher", method = "nix-hm" }]
 
 [gcc]
 type = "basic"
