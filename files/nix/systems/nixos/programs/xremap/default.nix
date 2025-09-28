@@ -23,7 +23,23 @@
             "Super_L" = "Alt_L";
           };
           device = {
-            "not" = [ "Yowkees Keyball44" ];
+            "not" = [
+              "Yowkees Keyball44"
+              "Apple Inc. Magic Keyboard"
+            ];
+          };
+        }
+        {
+          name = "Magic Keyboard";
+          remap = {
+            "CapsLock" = "Ctrl_L";
+            "KEY_102ND" = "KEY_GRAVE";
+            "Super_R" = "Ctrl_R";
+          };
+          device = {
+            "only" = [
+              "Apple Inc. Magic Keyboard"
+            ];
           };
         }
       ];

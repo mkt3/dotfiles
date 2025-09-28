@@ -1,6 +1,6 @@
 {
     "meetingbar": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "meetingbar",
@@ -15,7 +15,7 @@
         "version": "v4.11.6"
     },
     "vlc": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "vlc",

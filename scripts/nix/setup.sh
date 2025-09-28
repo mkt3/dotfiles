@@ -49,7 +49,7 @@ pre_setup_nix() {
             date +%s > "$nvfetcher_last_run_file"
             info "nvfetcher execution successful. Timestamp updated."
         else
-            info "nvfetcher failed. Continuing setup with existing sources."
+            warning "nvfetcher failed. Continuing setup with existing sources."
         fi
     fi
 
@@ -72,7 +72,7 @@ pre_setup_nix() {
         if [ -d "$nixos_systems_dir" ]; then
             cp -f "/etc/nixos/hardware-configuration.nix" "$nixos_systems_dir"
         else
-            info "Warning: NixOS systems directory not found at $nixos_systems_dir. Skipping hardware config copy."
+            warning "Warning: NixOS systems directory not found at $nixos_systems_dir. Skipping hardware config copy."
         fi
     fi
 
