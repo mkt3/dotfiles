@@ -13,7 +13,6 @@ pre_setup_nix() {
     local nix_platform
     local is_gui
 
-    info "Updating nix packages with nvfetcher"
     local nvfetcher_last_run_file="${REPO_DIR}/results/nvfetcher_last_run"
     local one_day_in_seconds=86400
     local should_run_nvfetcher="true"
