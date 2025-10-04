@@ -561,6 +561,11 @@ common = [{ name = "gh", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "fonts", method = "nix-hm" }]
 
+## image editor
+[pinta]
+type = "gui"
+nixos = [{ name = "pinta", method = "nix-hm" }]
+
 ## key remapper
 [keyremap]
 type = "gui"
