@@ -119,10 +119,6 @@ in
 
         # terminal title
         echo -ne "\x1b]0;$HOST\x1b\\"
-
-        if [[ ! -n $TMUX  ]]; then
-          bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
-        fi
       '';
     };
 

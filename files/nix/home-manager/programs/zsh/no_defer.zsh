@@ -6,6 +6,10 @@ if [[ "$OS" == 'Darwin' ]]; then
 fi
 
 # Tmux
+if [[ ! -n $TMUX ]]; then
+    bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
+fi
+
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
     main_session="main_session"
     tmux attach-session -t "$main_session" || tmux new-session -s "$main_session"
