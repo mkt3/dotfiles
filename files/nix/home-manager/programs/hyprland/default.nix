@@ -336,7 +336,7 @@
             {
               criteria = "CEX CX133 0x00000001";
               position = "480,1440";
-              scale = 1.6;
+              scale = 1.25;
               mode = "2560x1600@60Hz";
               status = "enable";
             }
