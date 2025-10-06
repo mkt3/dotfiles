@@ -416,6 +416,11 @@ common = [
   { name = "tinymist", method = "nix-hm" },
 ]
 
+## pdf viewer
+[zathura]
+type = "gui"
+linux = [{ name = "zathura", method = "nix-hm" }]
+
 ## pdf pesenter
 [pdfpc]
 type = "gui"
