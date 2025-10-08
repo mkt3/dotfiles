@@ -561,6 +561,11 @@ linux = [{ name = "hugo", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "gh", method = "nix-hm" }]
 
+## coding agent
+[codex]
+type = "gui"
+common = [{ name = "codex", method = "nix-hm" }]
+
 ## font
 [font]
 type = "gui"
