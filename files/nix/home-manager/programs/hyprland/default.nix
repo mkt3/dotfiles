@@ -343,7 +343,7 @@
               status = "enable";
             }
           ];
-          exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor desc:2 LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 3 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 4 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 5 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 6 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468";
+          exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 2 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 3 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 4 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 5 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 6 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468";
         };
       }
     ];
