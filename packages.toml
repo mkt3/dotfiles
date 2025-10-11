@@ -601,6 +601,11 @@ type = "gui"
 darwin = [{ name = "wireguard-tools", method = "nix" }]
 common = [{ name = "wireguard-tools", method = "nix-hm" }]
 
+## steam
+[steam]
+type = "gui"
+nixos = [{ name = "steam", method = "nix" }]
+
 ## macos only
 [utils]
 type = "gui"
