@@ -6,20 +6,24 @@
 }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./system_packages.nix
-    ]
-    ++ (
-      if hostname == "personal-lt" then
-        [
-          ./lanzaboote.nix
-          nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
-        ]
-      else
-        [ ./defaultboot.nix ]
-    );
+  imports = [
+    ./hardware-configuration.nix
+    ./system_packages.nix
+  ]
+  ++ (
+    if hostname == "personal-lt" then
+      [
+        ./lanzaboote.nix
+        nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
+      ]
+    else if hostname == "personal-dt" then
+      [
+        ./nvidia.nix
+        ./defaultboot.nix
+      ]
+    else
+      [ ./defaultboot.nix ]
+  );
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
 
