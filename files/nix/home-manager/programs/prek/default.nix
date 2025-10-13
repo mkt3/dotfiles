@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 {
-  home.packages = [ pkgs.pre-commit ];
+  home.packages = [ pkgs.prek ];
 
   programs.git = {
     extraConfig = {
@@ -11,7 +11,7 @@
   };
 
   xdg.configFile."git/git-templates/pre-commit" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix/home-manager/programs/pre-commit/git-templates/pre-commit";
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix/home-manager/programs/prek/git-templates/pre-commit";
     recursive = true;
   };
 
