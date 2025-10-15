@@ -93,3 +93,6 @@
 
 # Display app switcher to all display
 /usr/bin/defaults write com.apple.Dock appswitcher-all-displays -bool true
+
+# Hide desktop widgets
+/usr/bin/defaults write com.apple.WindowManager StandardHideWidgets -bool true
