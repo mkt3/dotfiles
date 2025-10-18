@@ -6,6 +6,7 @@
   users.groups.uinput.members = [ username ];
   users.groups.input.members = [ username ];
   services.xremap = {
+    enable = true;
     userName = username;
     withWlroots = true;
     watch = true;
@@ -51,40 +52,132 @@
             "emacs"
           ];
           remap = {
-            # Emacs basic
-            "C-b" = "left";
-            "C-f" = "right";
-            "C-p" = "up";
-            "C-n" = "down";
+            # Cursor
+            "C-b" = {
+              with_mark = "left";
+            };
+            "C-f" = {
+              with_mark = "right";
+            };
+            "C-p" = {
+              with_mark = "up";
+            };
+            "C-n" = {
+              with_mark = "down";
+            };
+            # Forward/Backward word
+            "Super-b" = {
+              with_mark = "C-left";
+            };
+            "Super-f" = {
+              with_mark = "C-right";
+            };
+            # Beginning/End of line
+            "C-a" = {
+              with_mark = "home";
+            };
+            "C-e" = {
+              with_mark = "end";
+            };
+            # Page up/down
+            "Super-v" = {
+              with_mark = "pageup";
+            };
+            "C-v" = {
+              with_mark = "pagedown";
+            };
+            # Beginning/End of file
+            "Super-Shift-comma" = {
+              with_mark = "C-home";
+            };
+            "Super-Shift-dot" = {
+              with_mark = "C-end";
+            };
+            # Newline
             "C-m" = "enter";
-
-            # Emacs word
-            "Super-b" = "C-left";
-            "Super-f" = "C-right";
-
-            # Emacs lines
-            "C-a" = "home"; # TODO = Alt-C-a
-            "C-e" = "end"; # TODO = Alt-C-e
+            # Copy
+            "C-w" = [
+              "C-x"
+              {
+                set_mark = false;
+              }
+            ];
+            "Super-w" = [
+              "C-c"
+              {
+                set_mark = false;
+              }
+            ];
+            "C-y" = [
+              "C-v"
+              {
+                set_mark = false;
+              }
+            ];
+            # Delete
+            "C-d" = [
+              "delete"
+              {
+                set_mark = false;
+              }
+            ];
+            "Super-d" = [
+              "C-delete"
+              {
+                set_mark = false;
+              }
+            ];
+            "C-h" = "backspace";
+            # Kill line
             "C-k" = [
               "Shift-end"
               "C-x"
+              {
+                set_mark = false;
+              }
             ];
-
-            # Super -> Ctrl
-            "Super-a" = "C-a";
-            "Super-z" = "C-z";
-            "Super-x" = "C-x";
-            "Super-c" = "C-c";
-            "Super-v" = "C-v";
-            "Super-w" = "C-w";
-            "Super-t" = "C-t";
-            "Super-l" = "C-l";
-
-            "C-h" = "backspace";
-            "C-d" = "delete";
-            "Super-d" = "C-delete";
-
-            "C-g" = "Esc";
+            # set mark next word continuously.
+            "C-Super-space" = [
+              "C-Shift-right"
+              {
+                set_mark = true;
+              }
+            ];
+            # Undo
+            "C-slash" = [
+              "C-z"
+              {
+                set_mark = false;
+              }
+            ];
+            # Mark
+            "C-space" = {
+              set_mark = true;
+            };
+            # Search
+            "C-s" = "C-f";
+            # Cancel
+            "C-g" = [
+              "esc"
+              {
+                set_mark = false;
+              }
+            ];
+            # C-x YYY
+            "C-x" = {
+              remap = {
+                # C-x h (select all)
+                h = [
+                  "C-home"
+                  "C-a"
+                  {
+                    set_mark = true;
+                  }
+                ];
+                "C-s" = "C-s";
+                "C-c" = "C-q";
+              };
+            };
           };
         }
         {
@@ -102,7 +195,9 @@
           application.only = [ "Slack" ];
           remap = {
             "Super-Shift-a" = "C-Shift-a";
+            "Super-a" = "C-Shift-a";
             "Super-k" = "C-k";
+            "Super-g" = "C-g";
             "C-Super-m" = "C-Enter";
             "Super-1" = "C-1";
             "Super-2" = "C-2";
@@ -119,7 +214,6 @@
           name = "Vivaldi";
           application.only = [ "vivaldi-stable" ];
           remap = {
-            "Super-s" = "C-f";
             "Super-e" = "Alt-Shift-i";
             "Super-BTN_LEFT" = "C-BTN_LEFT";
           };
