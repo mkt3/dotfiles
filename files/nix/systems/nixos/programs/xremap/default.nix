@@ -65,6 +65,7 @@
             "C-n" = {
               with_mark = "down";
             };
+
             # Forward/Backward word
             "Super-b" = {
               with_mark = "C-left";
@@ -72,6 +73,7 @@
             "Super-f" = {
               with_mark = "C-right";
             };
+
             # Beginning/End of line
             "C-a" = {
               with_mark = "home";
@@ -79,13 +81,15 @@
             "C-e" = {
               with_mark = "end";
             };
-            # Page up/down
-            "Super-v" = {
-              with_mark = "pageup";
-            };
-            "C-v" = {
-              with_mark = "pagedown";
-            };
+
+            # # Page up/down
+            # "Super-v" = {
+            #   with_mark = "pageup";
+            # };
+            # "C-v" = {
+            #   with_mark = "pagedown";
+            # };
+
             # Beginning/End of file
             "Super-Shift-comma" = {
               with_mark = "C-home";
@@ -93,27 +97,30 @@
             "Super-Shift-dot" = {
               with_mark = "C-end";
             };
+
             # Newline
             "C-m" = "enter";
-            # Copy
-            "C-w" = [
-              "C-x"
-              {
-                set_mark = false;
-              }
-            ];
-            "Super-w" = [
-              "C-c"
-              {
-                set_mark = false;
-              }
-            ];
-            "C-y" = [
-              "C-v"
-              {
-                set_mark = false;
-              }
-            ];
+
+            # # Copy
+            # "C-w" = [
+            #   "C-x"
+            #   {
+            #     set_mark = false;
+            #   }
+            # ];
+            # "Super-w" = [
+            #   "C-c"
+            #   {
+            #     set_mark = false;
+            #   }
+            # ];
+            # "C-y" = [
+            #   "C-v"
+            #   {
+            #     set_mark = false;
+            #   }
+            # ];
+
             # Delete
             "C-d" = [
               "delete"
@@ -128,6 +135,7 @@
               }
             ];
             "C-h" = "backspace";
+
             # Kill line
             "C-k" = [
               "Shift-end"
@@ -136,6 +144,7 @@
                 set_mark = false;
               }
             ];
+
             # set mark next word continuously.
             "C-Super-space" = [
               "C-Shift-right"
@@ -143,6 +152,7 @@
                 set_mark = true;
               }
             ];
+
             # Undo
             "C-slash" = [
               "C-z"
@@ -150,12 +160,15 @@
                 set_mark = false;
               }
             ];
+
             # Mark
             "C-space" = {
               set_mark = true;
             };
+
             # Search
             "C-s" = "C-f";
+
             # Cancel
             "C-g" = [
               "esc"
@@ -163,21 +176,29 @@
                 set_mark = false;
               }
             ];
-            # C-x YYY
-            "C-x" = {
-              remap = {
-                # C-x h (select all)
-                h = [
-                  "C-home"
-                  "C-a"
-                  {
-                    set_mark = true;
-                  }
-                ];
-                "C-s" = "C-s";
-                "C-c" = "C-q";
-              };
-            };
+
+            # # C-x YYY
+            # "C-x" = {
+            #   remap = {
+            #     # C-x h (select all)
+            #     h = [
+            #       "C-home"
+            #       "C-a"
+            #       {
+            #         set_mark = true;
+            #       }
+            #     ];
+            #     "C-s" = "C-s";
+            #     "C-c" = "C-q";
+            #   };
+            # };
+
+            # Super -> Ctrl
+            "Super-a" = "C-a";
+            "Super-x" = "C-x";
+            "Super-c" = "C-c";
+            "Super-v" = "C-v";
+            "Super-w" = "C-w";
           };
         }
         {
