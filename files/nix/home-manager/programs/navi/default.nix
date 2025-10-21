@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home.packages = [ pkgs.navi ];
 
@@ -9,7 +9,7 @@
 
   home.file.".zshenv".text = ''
     # navi
-    export NAVI_CONFIG="''${HOME}/.config/navi/config.yaml"
+    export NAVI_CONFIG="${config.xdg.configHome}/navi/config.yaml"
   '';
 
   # programs.navi = {

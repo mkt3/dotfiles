@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   programs.fzf = {
     enable = true;
@@ -10,7 +10,7 @@
       "--ansi"
     ];
 
-    fileWidgetCommand = "rg --files --hidden --follow --ignore-file=$XDG_CONFIG_HOME/ripgrep/ignore";
+    fileWidgetCommand = "rg --files --hidden --follow --ignore-file=${config.xdg.configHome}/ripgrep/ignore";
     fileWidgetOptions = [
       "--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
     ];

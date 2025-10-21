@@ -462,7 +462,7 @@ common = [{ name = "google-chrome", method = "nix-hm" }]
 ### sub browser
 [firefox]
 type = "gui"
-common = [{ name = "firefox", method = "nix-hm" }]
+linux = [{ name = "firefox", method = "nix-hm" }]
 
 ## media
 [vlc]

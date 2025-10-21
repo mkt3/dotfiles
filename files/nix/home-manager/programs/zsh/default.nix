@@ -83,7 +83,7 @@ in
     };
 
     shellAliases = {
-      wget = "wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\"";
+      wget = "wget --hsts-file=\"${config.xdg.cacheHome}/wget-hsts\"";
       sudo = "TERM=xterm-256color sudo";
       grep = "grep --color=auto";
       cp = "cp -i";

@@ -4,31 +4,12 @@
     enable = true;
     lfs.enable = true;
 
-    userName = "Makoto Morinaga";
-    userEmail = "makoto@mkt3.dev";
-
-    delta = {
-      enable = true;
-      options = {
-        navigate = true;
-        light = false;
-        line-numbers = true;
+    settings = {
+      user = {
+        name = "Makoto Morinaga";
+        email = "makoto@mkt3.dev";
       };
-    };
 
-    signing = {
-      signByDefault = true;
-      key = null;
-    };
-
-    ignores = [
-      ".DS_Store"
-      ".envrc"
-      ".direnv"
-      ".venv"
-    ];
-
-    extraConfig = {
       pull = {
         rebase = false;
       };
@@ -53,5 +34,17 @@
         colorMoved = "default";
       };
     };
+
+    signing = {
+      signByDefault = true;
+      key = null;
+    };
+
+    ignores = [
+      ".DS_Store"
+      ".envrc"
+      ".direnv"
+      ".venv"
+    ];
   };
 }

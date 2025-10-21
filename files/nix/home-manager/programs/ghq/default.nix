@@ -3,7 +3,7 @@
   home.packages = [ pkgs.ghq ];
 
   programs.git = {
-    extraConfig = {
+    settings = {
       ghq = {
         root = "${config.home.homeDirectory}/workspace/ghq";
       };

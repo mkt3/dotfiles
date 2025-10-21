@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home.packages = pkgs.lib.mkIf (!pkgs.stdenv.hostPlatform.isDarwin) [ pkgs.recoll ];
 
@@ -12,7 +12,7 @@
 
   home.file.".zshenv".text = ''
     # recoll
-    export RECOLL_CONFDIR="''${XDG_CONFIG_HOME}/recoll"
+    export RECOLL_CONFDIR="${config.xdg.configHome}/recoll"
     export PATH="''${PATH}:/Applications/Recoll.app/Contents/MacOS"
   '';
 }

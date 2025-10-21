@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   xdg.configFile."docker.config.json" = {
     text = ''
@@ -12,7 +12,7 @@
 
   home.file.".zshenv".text = ''
     # docker
-    export DOCKER_CONFIG="''${XDG_CONFIG_HOME}/docker"
+    export DOCKER_CONFIG="${config.xdg.configHome}/docker"
 
     # Rootless docker path
     export DOCKER_HOST=unix:///run/user/`id $(whoami) | awk -F'[=()]' '{print $2}'`/docker.sock

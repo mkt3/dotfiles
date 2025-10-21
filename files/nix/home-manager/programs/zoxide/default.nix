@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   programs.zoxide = {
     enable = true;
@@ -8,6 +8,6 @@
 
   home.file.".zshenv".text = ''
     # zoxide
-    export _ZO_DATA_DIR="$XDG_DATA_HOME"
+    export _ZO_DATA_DIR="${config.xdg.dataHome}"
   '';
 }

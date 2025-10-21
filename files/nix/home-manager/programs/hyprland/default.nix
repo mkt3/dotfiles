@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   wayland.windowManager.hyprland = {
     # Whether to enable Hyprland wayland compositor
@@ -280,7 +280,7 @@
 
   home.file.".zshenv".text = ''
     # icons
-    export XCURSOR_PATH=/usr/share/icons:"''${XDG_DATA_HOME}/icons"
+    export XCURSOR_PATH=/usr/share/icons:"${config.xdg.dataHome}/icons"
   '';
 
   services.kanshi = {

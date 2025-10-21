@@ -3,7 +3,7 @@
   home.packages = [ pkgs.prek ];
 
   programs.git = {
-    extraConfig = {
+    settings = {
       init = {
         templatedir = "${config.home.homeDirectory}/.config/git/git-templates/pre-commit";
       };

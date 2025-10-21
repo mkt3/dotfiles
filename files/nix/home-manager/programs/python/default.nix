@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   programs.matplotlib = {
     enable = true;
@@ -10,10 +10,10 @@
 
   home.file.".zshenv".text = ''
     # python
-    export PYTHONUSERBASE="''${HOME}/.local"
+    export PYTHONUSERBASE="${config.home.homeDirectory}/.local"
     export PYTHONDONTWRITEBYTECODE=1
 
     # ipython path
-    export IPYTHONDIR="''${XDG_CONFIG_HOME}/jupyter"
+    export IPYTHONDIR="${config.xdg.configHome}/jupyter"
   '';
 }
