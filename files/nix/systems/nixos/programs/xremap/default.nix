@@ -70,9 +70,9 @@
             "Super-b" = {
               with_mark = "C-left";
             };
-            "Super-f" = {
-              with_mark = "C-right";
-            };
+            # "Super-f" = {
+            #   with_mark = "C-right";
+            # };
 
             # Beginning/End of line
             "C-a" = {
@@ -166,9 +166,6 @@
               set_mark = true;
             };
 
-            # Search
-            "C-s" = "C-f";
-
             # Cancel
             "C-g" = [
               "esc"
@@ -199,6 +196,19 @@
             "Super-c" = "C-c";
             "Super-v" = "C-v";
             "Super-w" = "C-w";
+          };
+        }
+        {
+          name = "Default Forwrad word";
+          application.not = [
+            "org.wezfurlong.wezterm"
+            "emacs"
+            "vivaldi-stable"
+          ];
+          remap = {
+            "Super-f" = {
+              with_mark = "C-right";
+            };
           };
         }
         {
@@ -237,6 +247,10 @@
           remap = {
             "Super-e" = "Alt-Shift-i";
             "Super-BTN_LEFT" = "C-BTN_LEFT";
+
+            # Search
+            "Super-f" = "C-f";
+
           };
         }
       ];

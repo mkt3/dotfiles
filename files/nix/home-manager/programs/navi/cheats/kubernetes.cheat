@@ -1,5 +1,7 @@
 % kubernetes, k8s
 
+$nodes: kubectl get nodes -o custom-columns=NAME:.metadata.name --no-headers
+
 # Print all contexts
 kubectl config get-contexts
 
@@ -40,13 +42,13 @@ kubectl get deployments -n <namespace>
 kubectl edit deployment/<name> -n <namespace>
 
 # Drain node in preparation for maintenance
-kubectl drain <name>
+kubectl drain <nodes> -ignore-daemonsets --delete-emptydir-data --force
 
 # Mark node as schedulable
-kubectl uncordon <name>
+kubectl uncordon <noodes>
 
 # Mark node as unschedulable
-kubectl cordon <name>
+kubectl cordon <nodes>
 
 # Display resource (cpu/memory/storage) usage
 kubectl top <type>
