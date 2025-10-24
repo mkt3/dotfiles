@@ -453,7 +453,6 @@
 ** Whitespace
    #+begin_src emacs-lisp
      (use-package whitespace
-       :ensure t
        :demand t
        :delight
        :bind ("C-c W" . whitespace-cleanup)
@@ -1154,7 +1153,6 @@
 *** css
     #+begin_src emacs-lisp
       (use-package css-mode
-        :ensure t
         :hook (css-ts-mode-hook . eglot-ensure)
         :mode (("\\.css\\'" . css-ts-mode)
                ("\\.scss\\'" . scss-mode))
