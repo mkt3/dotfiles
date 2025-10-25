@@ -1,0 +1,26 @@
+% prek
+
+# Make sample config
+prek sample-config > .pre-commit-config.yaml
+
+# Install prek
+prek install
+
+# Run prek on all files
+prek run --all-files
+
+# Run prek only on changed files
+prek run
+
+# Run a specific hook
+prek run <hook>
+$ hook: prek list | awk '{print $1}'
+
+# Update hooks
+prek autoupdate
+
+# Validate the prek config
+prek validate-config
+
+# Clear the prek cache
+prek clean
