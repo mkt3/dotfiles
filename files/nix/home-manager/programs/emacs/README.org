@@ -6,7 +6,7 @@
 
 * Header
  #+begin_src emacs-lisp
-   ;;; README.el --- init file for Emacs -*- coding: utf-8 ; lexical-binding: t -*-
+   ;;; README.el --- init file for Emacs -*- coding: utf-8; lexical-binding: t -*-
 
    ;; Copyright (C) 2023 Makoto Morinaga
 
@@ -534,9 +534,9 @@
        (mac-control-modifier 'control)
        (mac-option-modifier 'super)
        (mac-command-modifier 'meta)
-       (mac-right-control-modifier. 'control)
+       (mac-right-control-modifier 'control)
        (mac-right-option-modifier 'hyper)
-       (mac-right-command-modifier'meta))
+       (mac-right-command-modifier 'meta))
    #+end_src
 ** ns
    #+begin_src emacs-lisp
@@ -1041,10 +1041,12 @@
         :hook ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
                (magit-post-refresh-hook . diff-hl-magit-post-refresh)))
     #+end_src
-*** Visual-rexexp
-    #+begin_src shell
+*** Visual-regexp
+    #+begin_src emacs-lisp
       (use-package visual-regexp
-        :ensure t)
+        :ensure t
+        :bind (("C-c r" . vr/replace)
+               ("C-c q" . vr/query-replace)))
     #+end_src
 ** languages
 *** emacs lisp
@@ -1085,12 +1087,10 @@
       (use-package cc-mode
         :ensure nil
         :mode ("\\.c\\'" . c-mode)
-        :config
-        (setq c-default-style "linux"
-              c-basic-offset 4)
-        (add-hook 'c-mode-hook
-                  (lambda ()
-                    (setq tab-width 4))))
+        :custom
+        (c-default-style "linux")
+        (c-basic-offset 4)
+        :hook (c-mode-hook . (lambda () (setq tab-width 4))))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
