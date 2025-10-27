@@ -43,7 +43,7 @@
        (auto-package-update-delete-old-versions t)
        (auto-package-update-hide-results t)
        (auto-package-update-interval 1)
-       (auto-package-update-excluded-packages '(pdf-tools jinx mu4e ox-hugo))
+       (auto-package-update-excluded-packages '(pdf-tools jinx mu4e ox-hugo eglot-booster typst-ts-mode consult-tramp dired-details-r atomic-chrome))
        :hook (after-init-hook . auto-package-update-maybe))
    #+end_src
 * Initialize
