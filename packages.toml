@@ -250,7 +250,7 @@ common = [{ name = "curl", method = "nix-hm" }]
 
 [aria2]
 type = "basic"
-common = [{ name = "aria", method = "nix-hm" }]
+common = [{ name = "aria2", method = "nix-hm" }]
 
 ## top series
 [htop]
