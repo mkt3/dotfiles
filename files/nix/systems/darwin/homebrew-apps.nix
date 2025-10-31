@@ -20,7 +20,6 @@
       "slack"
       "zoom"
       "vivaldi"
-      "nextcloud"
       "google-drive"
       "macskk"
       "recoll"

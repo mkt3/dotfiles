@@ -491,7 +491,6 @@ common = [{ name = "wezterm", method = "nix-hm" }]
 ## cloud storage
 [nextcloud-client]
 type = "gui"
-darwin = [{ name = "nextcloud", method = "cask" }]
 linux = [{ name = "nextcloud-client", method = "nix-hm" }]
 
 [google-drive]

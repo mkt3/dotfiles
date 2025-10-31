@@ -59,8 +59,12 @@ in
         ''
       ]
       ++ lib.optionals isGUI [
-        "# personal env"
-        ". \"${config.home.homeDirectory}/Nextcloud/personal_config/env/zshenv\""
+        ''
+          # personal env
+          if [ -f "${config.home.homeDirectory}/Nextcloud/personal_config/env/zshenv" ]; then
+            source "${config.home.homeDirectory}/Nextcloud/personal_config/env/zshenv"
+          fi
+        ''
       ]
     );
 

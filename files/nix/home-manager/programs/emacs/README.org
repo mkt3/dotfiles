@@ -44,7 +44,7 @@
        (auto-package-update-hide-results t)
        (auto-package-update-interval 1)
        (auto-package-update-excluded-packages '(pdf-tools jinx mu4e ox-hugo eglot-booster typst-ts-mode consult-tramp dired-details-r atomic-chrome))
-       :hook (after-init-hook . auto-package-update-maybe))
+       :hook (emacs-startup-hook . auto-package-update-maybe))
    #+end_src
 * Initialize
 ** Load Path
@@ -60,13 +60,21 @@
    #+end_src
 ** Constant
    #+begin_src emacs-lisp
-     (defconst my:d:nextcloud (expand-file-name "Nextcloud" (getenv "HOME")))
-     (defconst my:d:org (expand-file-name "orgnotes" my:d:nextcloud))
+     (defconst my:d:data-dir
+       (expand-file-name
+        (pcase system-type
+          ('darwin "GoogleDrive/local_data_dir")
+          ('gnu/linux "Nextcloud")
+          (_ "Nextcloud"))
+        (getenv "HOME")))
+     (defconst my:d:org (expand-file-name "orgnotes" my:d:data-dir))
      (defconst my:d:org-gtd (expand-file-name "gtd" my:d:org))
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
-     (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:nextcloud))
-     (defconst my:d:org-hugo (getenv "ORG_HUGO"))
+     (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:data-dir))
      (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
+     (defconst my:d:org-hugo
+       (let ((env (getenv "ORG_HUGO")))
+         (when env (expand-file-name env))))
    #+end_src
 * Builtin config
 ** key-translation-map
@@ -126,8 +134,8 @@
      (use-package uniquify
        :custom
        (uniquify-buffer-name-style 'post-forward-angle-brackets)
-       (uniquify-min-dir-content  1)
-       (uniquify-ignore-buffers-re  "*[^*]+*"))
+       (uniquify-min-dir-content 1)
+       (uniquify-ignore-buffers-re "^\\*[^*]+\\*$"))
    #+end_src
 ** Save various history
    #+begin_src emacs-lisp
@@ -140,7 +148,6 @@
                                         search-ring
                                         regexp-search-ring
                                         file-name-history
-                                        read-expression-history
                                         command-history
                                         extended-command-history))
        :config
@@ -281,10 +288,9 @@
       (use-package ef-themes
         :ensure t
         :config
-        (mapc #'disable-theme custom-enabled-themes)
-        (load-theme 'ef-maris-dark :no-confirm)
-        ;; (ef-themes-load-random 'dark)
-        )
+        (setq ef-themes-mixed-fonts t
+              ef-themes-italic-constructs t)
+        (ef-themes-select 'ef-maris-dark))
     #+end_src
 ** Font
    #+begin_src emacs-lisp
@@ -338,21 +344,23 @@
    #+end_src
 ** moody
    #+begin_src emacs-lisp
-     (use-package moody
-       :ensure t
-       :custom
-       (x-underline-at-descent-line t)
-       :config
-       (moody-replace-mode-line-front-space)
-       (moody-replace-mode-line-buffer-identification)
-       (moody-replace-vc-mode))
-
      (use-package minions
        :ensure t
        :custom
        (minions-mode-line-lighter "[+]")
        :config
        (minions-mode 1))
+
+
+     (use-package moody
+       :ensure t
+       :after minions
+       :custom
+       (x-underline-at-descent-line t)
+       :config
+       (moody-replace-mode-line-front-space)
+       (moody-replace-mode-line-buffer-identification)
+       (moody-replace-vc-mode))
    #+end_src
 ** nyan-mode
    #+begin_src emacs-lisp
@@ -573,8 +581,8 @@
        :init
        (setq skk-user-directory (expand-file-name "ddskk.d" user-emacs-directory))
        (setq skk-init-file (expand-file-name "init.el" skk-user-directory ))
-       (when (file-directory-p my:d:nextcloud)
-         (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:nextcloud) 'utf-8)))
+       (when (file-directory-p my:d:data-dir)
+         (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:data-dir) 'utf-8)))
        (setq viper-mode nil))
 
      (use-package ddskk-posframe
@@ -1278,7 +1286,7 @@
          (when (and (file-directory-p (expand-file-name "GoogleDrive" (getenv "HOME")))  (display-graphic-p))
            (run-at-time 0 (* 5 60)
                         (lambda ()
-                          (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:nextcloud)))))
+                          (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:data-dir)))))
          :custom
          (org-agenda-window-setup 'other-tab)
          (org-agenda-span 'day)
@@ -1601,7 +1609,9 @@
          :ensure nil
          :vc (:url "https://github.com/mkt3/ox-hugo.git" :rev :newest)
          :after org
-         :if (and (file-directory-p my:d:org-roam)
+         :if (and my:d:org-roam
+                  (file-directory-p my:d:org-roam)
+                  my:d:org-hugo
                   (file-directory-p my:d:org-hugo))
          :custom
          (org-hugo-base-dir my:d:org-hugo)
@@ -1629,10 +1639,11 @@
                (forward-line)
                (insert (concat "#+export_file_name: " export-file-name "\n")))))
          (defun org-hugo-replace-last-modified ()
-           "Replace last_modified with hugo_lastmod."
-           (goto-char (point-min))
-           (while (re-search-forward "^#\\+last_modified:" nil t)
-             (replace-match "#+hugo_lastmod:")))
+           "Replace all '#+last_modified:' with '#+hugo_lastmod:' safely."
+           (save-excursion
+             (goto-char (point-min))
+             (while (re-search-forward (rx bol "#+last_modified:") nil t)
+               (replace-match "#+hugo_lastmod:"))))
 
          (defun org-hugo-export-drafts ()
            "Export all non-draft .org files in my:d:org-roam to markdown using org-hugo."
@@ -1885,7 +1896,7 @@
     ;; (use-package elfeed
     ;;   :after eww
     ;;   :ensure t
-    ;;   :if (file-directory-p my:d:nextcloud)
+    ;;   :if (file-directory-p my:d:data-dir)
     ;;   :bind (("C-x w" . elfeed)
     ;;          :map elfeed-search-mode-map
     ;;          ("u" . elfeed-search-fetch)
@@ -1912,7 +1923,7 @@
 
     ;; (use-package elfeed-protocol
     ;;   :ensure t
-    ;;   :if (file-directory-p my:d:nextcloud)
+    ;;   :if (file-directory-p my:d:data-dir)
     ;;   :after elfeed
     ;;   :config
     ;;   (elfeed-protocol-enable)
@@ -2022,7 +2033,7 @@
 
      ;; (use-package mu4e-alert
      ;;   :ensure t
-     ;;   :if (and (executable-find "mu") (file-directory-p my:d:nextcloud) (display-graphic-p))
+     ;;   :if (and (executable-find "mu") (file-directory-p my:d:data-dir) (display-graphic-p))
      ;;   :custom
      ;;   (mu4e-alert-email-notification-types '(subjects))
      ;;   :config
@@ -2116,11 +2127,11 @@
    #+begin_src emacs-lisp
      (use-package prodigy
        :ensure t
-       :if (and (executable-find "goimapnotify") (file-directory-p my:d:nextcloud) (display-graphic-p))
+       :if (and (executable-find "goimapnotify") (file-directory-p my:d:data-dir) (display-graphic-p))
        :after consult
        :config
        (add-to-list 'consult-buffer-filter "\\`\\*prodigy-.*\\*\\'")
-       (load (expand-file-name "personal_config/emacs/mail/imapnotify.d/prodigy.el" my:d:nextcloud)))
+       (load (expand-file-name "personal_config/emacs/mail/imapnotify.d/prodigy.el" my:d:data-dir)))
   #+end_src
 ** llm
    #+begin_src emacs-lisp
@@ -2182,3 +2193,7 @@
                       (lambda ()
                         (start-process "recollindex" nil "recollindex" "-c" (getenv "RECOLL_CONFDIR"))))))
    #+end_src
+* Footer
+  #+begin_src emacs-lisp
+    ;;; README.el ends here
+  #+end_src
