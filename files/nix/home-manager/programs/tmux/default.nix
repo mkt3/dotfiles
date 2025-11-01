@@ -6,10 +6,16 @@
     baseIndex = 1;
     clock24 = true;
     escapeTime = 0;
-    keyMode = "emacs";
+    keyMode = "vi";
     terminal = "tmux-256color";
     historyLimit = 100000;
     shortcut = "q";
+    secureSocket = true;
+    shell = "${pkgs.zsh}/bin/zsh";
+    newSession = true;
+    customPaneNavigationAndResize = true;
+    resizeAmount = 5;
+    mouse = true;
 
     plugins = with pkgs; [
       {
@@ -29,10 +35,6 @@
     ];
     extraConfig = ''
       set -g set-clipboard on
-      set-window-option -g mode-keys vi
-
-      # 設定ファイルをリロードする
-      bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
 
       # | でペインを縦に分割する
       bind | split-window -h
@@ -40,30 +42,14 @@
       # - でペインを横に分割する
       bind - split-window -v
 
-      set -g history-limit 100000
-
-      # Vimのキーバインドでペインを移動する
-      bind h select-pane -L
-      bind j select-pane -D
-      bind k select-pane -U
-      bind l select-pane -R
       bind -r C-h select-window -t :-
+      bind -r BSpace select-window -t :-
       bind -r C-l select-window -t :+
       bind C-o select-pane -t :.+
-
-      # Vimのキーバインドでペインをリサイズする
-      bind -r H resize-pane -L 5
-      bind -r J resize-pane -D 5
-      bind -r K resize-pane -U 5
-      bind -r L resize-pane -R 5
-
-      # マウス操作を有効にする
-      setw -g mouse
 
       # 24bit color端末を使用する
       set-option -ga terminal-overrides ",$TERM:Tc"
 
-      # vim: set ft=tmux tw=0 nowrap:
       # ウィンドウを閉じた時に番号を詰める
       set-option -g renumber-windows on
 
@@ -83,8 +69,7 @@
       set-option -g status-left-length 60
       set-option -g status-right-length 60
 
-      set -gu default-command
-      set -g default-shell "$SHELL"
+      # set -gu default-command
 
       ## nord
       set-option -g status-style bg=black,fg=white
