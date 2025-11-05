@@ -72,9 +72,7 @@
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
      (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:data-dir))
      (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
-     (defconst my:d:org-hugo
-       (let ((env (getenv "ORG_HUGO")))
-         (when env (expand-file-name env))))
+     (defconst my:d:org-hugo (or (getenv "ORG_HUGO") ""))
    #+end_src
 * Builtin config
 ** key-translation-map
@@ -1615,7 +1613,6 @@
          :after org
          :if (and my:d:org-roam
                   (file-directory-p my:d:org-roam)
-                  my:d:org-hugo
                   (file-directory-p my:d:org-hugo))
          :custom
          (org-hugo-base-dir my:d:org-hugo)
