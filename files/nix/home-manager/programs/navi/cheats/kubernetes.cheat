@@ -42,7 +42,7 @@ kubectl get deployments -n <namespace>
 kubectl edit deployment/<name> -n <namespace>
 
 # Drain node in preparation for maintenance
-kubectl drain <nodes> -ignore-daemonsets --delete-emptydir-data --force
+kubectl drain <nodes> --ignore-daemonsets --delete-emptydir-data --force
 
 # Mark node as schedulable
 kubectl uncordon <noodes>
