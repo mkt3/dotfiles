@@ -69,7 +69,7 @@
       set-option -g status-left-length 60
       set-option -g status-right-length 60
 
-      # set -gu default-command
+      set -gu default-command
 
       ## nord
       set-option -g status-style bg=black,fg=white

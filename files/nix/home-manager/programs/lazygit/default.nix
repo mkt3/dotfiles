@@ -2,12 +2,15 @@
 {
   programs.lazygit = {
     enable = true;
+    enableZshIntegration = true;
     settings = {
       git = {
-        paging = {
-          colorArg = "always";
-          pager = "delta --dark --paging=never --24-bit-color=never -n";
-        };
+        pagers = [
+          {
+            pager = "delta --dark --paging=never --24-bit-color=auto -n";
+            colorArg = "always";
+          }
+        ];
       };
     };
   };
