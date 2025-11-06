@@ -496,6 +496,7 @@ linux = [{ name = "nextcloud-client", method = "nix-hm" }]
 [google-drive]
 type = "gui"
 darwin = [{ name = "google-drive", method = "cask" }]
+linux = [{ name = "gdrive3", method = "nix-hm" }]
 
 ## libreoffice
 [libreoffice]

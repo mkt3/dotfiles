@@ -1286,7 +1286,7 @@
          (defun gtd ()
            (interactive)
            (find-file org-gtd-file))
-         (when (and (file-directory-p (expand-file-name "GoogleDrive" (getenv "HOME")))  (display-graphic-p))
+         (when (and (eq system-type 'gnu/linux) (display-graphic-p))
            (run-at-time 0 (* 5 60)
                         (lambda ()
                           (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:data-dir)))))
