@@ -267,7 +267,8 @@
       user-full-name (getenv "NAME")
       completion-lazy-hilit t
       process-adaptive-read-buffering t
-      require-final-newline t)
+      require-final-newline t
+      bidi-display-reordering nil)
 
      (use-package simple
        :demand t
