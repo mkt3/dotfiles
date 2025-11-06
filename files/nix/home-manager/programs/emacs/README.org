@@ -595,9 +595,9 @@
        :ensure t
        :defer t
        :bind ("C-h" . puni-backward-delete-char)
+       :hook (term-mode-hook . puni-disable-puni-mode)
        :init
        (puni-global-mode)
-       (add-hook 'term-mode-hook #'puni-disable-puni-mode)
        :custom
        (electric-pair-mode t))
       #+end_src
@@ -888,6 +888,7 @@
        ;; :bind (nil
        ;;        :map eglot-mode-map
        ;;        ("C-c a" . eglot-code-actions))
+       :hook (eglot-managed-mode-hook . my/eglot-capf)
        :config
        (defun my/eglot-capf ()
          (setq-local completion-at-point-functions
@@ -897,8 +898,7 @@
                            #'cape-keyword
                            #'cape-dabbrev
                            #'cape-file)
-                     ))
-       (add-hook 'eglot-managed-mode-hook #'my/eglot-capf))
+                     )))
 
      (use-package flycheck-eglot
        :ensure t
@@ -950,20 +950,19 @@
        (flycheck-textlint-plugin-alist ())
        :init
        (global-flycheck-mode 1)
+       :hook ((flycheck-mode-hook . flycheck-set-indication-mode)
+              (emacs-startup-hook . my:disable-flycheck-in-scratch))
        :config
        (setq-default flycheck-indication-mode 'left-margin)
-       (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
        (defun my:disable-flycheck-in-scratch ()
          (when (string= (buffer-name) "*scratch*")
-           (flycheck-mode -1)))
-
-       (add-hook 'emacs-startup-hook #'my:disable-flycheck-in-scratch))
+           (flycheck-mode -1))))
 
      (use-package flycheck-posframe
        :ensure t
        :if (display-graphic-p)
        :after flycheck
-       :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
+       :hook (flycheck-mode-hook . flycheck-posframe-mode))
      ;; (use-package flycheck-inline
      ;;   :ensure t
      ;;   :hook (flycheck-mode-hook . flycheck-inline-mode))
@@ -1083,11 +1082,13 @@
       (use-package nix-mode
         :ensure t
         :mode ("\\.nix\\'" . nix-mode)
-        :hook (nix-mode-hook . (lambda ()
-                                 (add-hook 'before-save-hook #'nix-format-before-save)
-                                 (setq fill-column 100)
-                                 (eglot-ensure
-                                  )))
+        :preface
+        (defun my/nix-mode-setup ()
+          "Custom setup for nix-mode."
+          (add-hook 'before-save-hook #'nix-format-before-save nil t)
+          (setq fill-column 100)
+          (eglot-ensure))
+        :hook (nix-mode . my/nix-mode-setup)
         :init
         (with-eval-after-load 'eglot
           (setf (alist-get 'nix-mode eglot-server-programs) '("nixd"))))
@@ -1289,27 +1290,10 @@
            (run-at-time 0 (* 5 60)
                         (lambda ()
                           (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:data-dir)))))
-         :custom
-         (org-agenda-window-setup 'other-tab)
-         (org-agenda-span 'day)
-         (org-agenda-remove-tags t)
-         (org-agenda-current-time-string "← now ───────────────────")
-         (org-agenda-todo-ignore-scheduled 'feature)
-         (org-agenda-skip-deadline-prewarning-if-scheduled t)
-         (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
-                              (sequence "WAITING(w)" "SOMEDAY(s)" "|" "CANCELLED(c/!)")))
-         (org-agenda-custom-commands '(("t" todo "TODO")
-                                       ("A" todo)))
-         :config
-         (require 'org-roam)
-         (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
-         (add-to-list 'org-modules 'org-habit t)
-         (setq org-agenda-prefix-format
-               '((agenda . " %i %-15:c%?-12t% s")
-                 (todo . " %i %-12:c")
-                 (tags . " %i %-12:c")
-                 (search . " %i %-12:c")))
-
+         :hook ((before-save-hook . my:org-roam-update-task-tag)
+                (org-clock-in-hook . org-clock-current-task-to-file)
+                (org-clock-out-hook . org-clock-clear-file-after-clock-out))
+         :preface
          (setq my:roam-task-tag "todo")
          (defun my:org-roam-todo-entry-p ()
            "Return non-nil if current buffer has any todo entry."
@@ -1344,34 +1328,12 @@
                               :left-join nodes
                               :on (= tags:node-id nodes:id)
                               :where (like tag $s1)] (concat "%" my:roam-task-tag "%")))))
-
          (defun my:org-agenda-update-files (&rest _)
            "Update the value of `org-agenda-files' and `my:refile-targets'."
            (let ((task-files (my:org-roam-get-task-files)))
              (setq org-agenda-files (append (list my:d:org-gtd) task-files))
              (setq my:refile-targets (append (list org-gtd-file) task-files))
              (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
-
-         (add-hook 'before-save-hook #'my:org-roam-update-task-tag)
-         (advice-add 'org-agenda :before #'my:org-agenda-update-files)
-         (advice-add 'org-todo-list :before #'my:org-agenda-update-files)
-         (advice-add 'org-refile :before #'my:org-agenda-update-files)
-
-         ;; (defun update-org-agenda-buffer ()
-         ;;   "Update the *Org Agenda* buffer if it exists."
-         ;;   (when (get-buffer "*Org Agenda*")
-         ;;     (with-current-buffer "*Org Agenda*"
-         ;;       (let ((current-position (point)))
-         ;;         (org-agenda-redo)
-         ;;         (goto-char current-position)))))
-
-         ;; (defun safe-update-org-agenda-buffer ()
-         ;;   "Safely update the *Org Agenda* buffer and handle any errors."
-         ;;   (condition-case err
-         ;;       (update-org-agenda-buffer)
-         ;;     (error (message "Error updating *Org Agenda*: %s" (error-message-string err)))))
-         ;; (run-with-timer 0 60 'safe-update-org-agenda-buffer)
-
          (defvar org-clock-current-task-file
            (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
 
@@ -1382,9 +1344,29 @@
          (defun org-clock-clear-file-after-clock-out ()
            (with-temp-file org-clock-current-task-file
              (insert "")))
+         :custom
+         (org-agenda-window-setup 'other-tab)
+         (org-agenda-span 'day)
+         (org-agenda-remove-tags t)
+         (org-agenda-current-time-string "← now ───────────────────")
+         (org-agenda-todo-ignore-scheduled 'feature)
+         (org-agenda-skip-deadline-prewarning-if-scheduled t)
+         (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
+                              (sequence "WAITING(w)" "SOMEDAY(s)" "|" "CANCELLED(c/!)")))
+         (org-agenda-custom-commands '(("t" todo "TODO")
+                                       ("A" todo)))
+         :config
+         (require 'org-roam)
+         (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
+         (add-to-list 'org-modules 'org-habit t)
+         (setq org-agenda-prefix-format
+               '((agenda . " %i %-15:c%?-12t% s")
+                 (todo . " %i %-12:c")
+                 (tags . " %i %-12:c")
+                 (search . " %i %-12:c")))
 
-         (add-hook 'org-clock-in-hook 'org-clock-current-task-to-file)
-         (add-hook 'org-clock-out-hook 'org-clock-clear-file-after-clock-out)
+         (dolist (fn '(org-agenda org-todo-list org-refile))
+           (advice-add fn :before #'my:org-agenda-update-files))
          )
 
        (use-package org-super-agenda
@@ -1794,7 +1776,7 @@
       (tramp-persistency-file-name
        (expand-file-name "tramp-connection-history" user-emacs-directory))
       (password-cache-expiry nil)
-      (tramp-verbose 1)
+      (tramp-verbose 0)
       (tramp-chunksize 2000)
       (tramp-use-ssh-controlmaster-options nil)
       (remote-file-name-inhibit-locks t)
