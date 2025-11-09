@@ -1036,10 +1036,7 @@
            magit-insert-unpulled-from-pushremote
            magit-insert-unpulled-from-upstream))
         :bind (("C-x g" . magit-status)
-               ("C-x M-g" . magit-dispatch))
-        :config
-        ;; (magit-wip-mode 1) is commented out because it slows down staging operations on macOS by triggering multiple autosave Git commands.
-        (magit-wip-after-save-mode 1))
+               ("C-x M-g" . magit-dispatch)))
 
       (use-package diff-hl
         :ensure t
