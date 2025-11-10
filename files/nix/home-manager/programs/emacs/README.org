@@ -286,10 +286,12 @@
     #+begin_src emacs-lisp
       (use-package ef-themes
         :ensure t
+        :init
+        (ef-themes-take-over-modus-themes-mode)
         :config
         (setq ef-themes-mixed-fonts t
               ef-themes-italic-constructs t)
-        (ef-themes-select 'ef-maris-dark))
+        (modus-themes-load-theme 'ef-maris-dark))
     #+end_src
 ** Font
    #+begin_src emacs-lisp
