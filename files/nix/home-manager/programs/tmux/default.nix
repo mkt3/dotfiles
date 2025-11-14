@@ -36,10 +36,10 @@
     extraConfig = ''
       set -g set-clipboard on
 
-      # | でペインを縦に分割する
+      bind r source-file ~/.config/tmux/tmux.conf \; display "tmux.conf has been reloaded"
+
       bind | split-window -h
 
-      # - でペインを横に分割する
       bind - split-window -v
 
       bind -r C-h select-window -t :-
@@ -52,7 +52,7 @@
 
       # ウィンドウを閉じた時に番号を詰める
       set-option -g renumber-windows on
-
+G
       # ステータスバーを上部に表示
       set -g status-position top
 
@@ -79,8 +79,8 @@
       set-option -g display-panes-active-colour brightblack
       set-option -g status-left "#[fg=black,bg=cyan,bold] #h:#[fg=black,bg=cyan,nobold]#S #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
       set-option -g status-right "#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] #(tmux-mem-cpu-load --interval 2 -a 1  -g 0) "
-      set-option -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W #F #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
-      set-option -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W #F #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+      set-option -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W #{?window_zoomed_flag, ,} #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
+      set-option -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W #{?window_zoomed_flag, ,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
       set-option -g window-status-separator ""
     '';
   };
