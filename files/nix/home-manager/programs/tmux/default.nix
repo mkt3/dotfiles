@@ -52,7 +52,7 @@
 
       # ウィンドウを閉じた時に番号を詰める
       set-option -g renumber-windows on
-G
+
       # ステータスバーを上部に表示
       set -g status-position top
 
