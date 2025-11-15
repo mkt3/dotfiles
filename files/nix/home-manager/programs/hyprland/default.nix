@@ -81,9 +81,11 @@
       ];
       env = [
         "QT_IM_MODULE, fcitx"
-        "XMODkIFIERS, @im=fcitx"
+        "XMODIFIERS, @im=fcitx"
         "GDK_SCALE, 1.5"
         "NIXOS_OZONE_WL, 1"
+        "ELECTRON_OZONE_PLATFORM_HINT, auto"
+        "WAYLAND_LINUX_DRM_SYNCOBJ, 1"
       ];
 
       workspace = [

@@ -35,7 +35,7 @@ local keys = {
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={"./.config/wezterm/ssh.sh"},cwd = '~'}},
 }
 
-font_size = 20.0
+font_size = 14.0
 if wezterm.target_triple == 'aarch64-apple-darwin' then
   font_size = 16.0
 end
@@ -60,7 +60,7 @@ return {
     bottom = 0,
   },
   keys=keys,
-  enable_wayland = false,
+  enable_wayland = true,
   window_close_confirmation = 'NeverPrompt',
   check_for_updates = false,
 }

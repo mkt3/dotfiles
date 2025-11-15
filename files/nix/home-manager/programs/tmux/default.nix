@@ -6,9 +6,10 @@
     baseIndex = 1;
     clock24 = true;
     escapeTime = 0;
+    focusEvents = true;
     keyMode = "vi";
     terminal = "tmux-256color";
-    historyLimit = 100000;
+    historyLimit = 10000;
     shortcut = "q";
     secureSocket = true;
     shell = "${pkgs.zsh}/bin/zsh";
@@ -53,8 +54,9 @@
       # ウィンドウを閉じた時に番号を詰める
       set-option -g renumber-windows on
 
-      # ステータスバーを上部に表示
+      # status
       set -g status-position top
+      set -g status-interval 5
 
       ## ヴィジュアルノーティフィケーションを無効にする
       setw -g monitor-activity off
@@ -78,7 +80,7 @@
       set-option -g display-panes-colour black
       set-option -g display-panes-active-colour brightblack
       set-option -g status-left "#[fg=black,bg=cyan,bold] #h:#[fg=black,bg=cyan,nobold]#S #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
-      set-option -g status-right "#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] #(tmux-mem-cpu-load --interval 2 -a 1  -g 0) "
+      set-option -g status-right "#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] #(tmux-mem-cpu-load --interval 5 -a 1  -g 0) "
       set-option -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W #{?window_zoomed_flag, ,} #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
       set-option -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W #{?window_zoomed_flag, ,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
       set-option -g window-status-separator ""
