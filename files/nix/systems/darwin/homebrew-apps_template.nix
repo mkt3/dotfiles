@@ -7,6 +7,7 @@
       autoUpdate = true;
       upgrade = true;
     };
+    greedyCasks = true;
 
     taps = [
       "nailuoGG/recoll"
