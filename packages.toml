@@ -430,18 +430,16 @@ linux = [{ name = "pdfpc", method = "nix-hm" }]
 ## communication tools
 [slack]
 type = "gui"
-darwin = [{ name = "slack", method = "cask" }]
-linux = [{ name = "slack", method = "nix-hm" }]
+common = [{ name = "slack", method = "nix-hm" }]
 
 
 [discord]
 type = "gui"
-common = [{ name = "discord", method = "nix-hm" }]
+linux = [{ name = "discord", method = "nix-hm" }]
 
 [zoom]
 type = "gui"
-darwin = [{ name = "zoom", method = "cask" }]
-linux = [{ name = "zoom-us", method = "nix-hm" }]
+common = [{ name = "zoom-us", method = "nix-hm" }]
 
 ### macos only
 [MeetingBar]
@@ -462,7 +460,7 @@ common = [{ name = "google-chrome", method = "nix-hm" }]
 ### sub browser
 [firefox]
 type = "gui"
-linux = [{ name = "firefox", method = "nix-hm" }]
+common = [{ name = "firefox", method = "nix-hm" }]
 
 ## media
 [vlc]
@@ -588,7 +586,7 @@ nixos = [{ name = "xremap", method = "nix" }]
 ## dvd writing
 [growisofs]
 type = "gui"
-common = [{ name = "dvdplusrwtools", method = "nix-hm" }]
+linux = [{ name = "dvdplusrwtools", method = "nix-hm" }]
 
 ## kde connect
 [kdeconnect]

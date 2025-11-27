@@ -7,6 +7,14 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    brew-nix = {
+      url = "github:BatteredBunny/brew-nix";
+      inputs.brew-api.follows = "brew-api";
+    };
+    brew-api = {
+      url = "github:BatteredBunny/brew-api";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,6 +64,7 @@
           if platform == "aarch64-darwin" then
             [
               (import ./home-manager/overlays/patched-emacs/emacs-unstable.nix)
+              inputs.brew-nix.overlays.default
             ]
           else if platform == "x86_64-linux" && isGUI then
             [
