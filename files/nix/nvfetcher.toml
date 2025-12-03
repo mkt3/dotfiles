@@ -6,9 +6,9 @@
 src.archpkg = "vlc"
 fetch.url = "https://get.videolan.org/vlc/$ver/macosx/vlc-$ver-arm64.dmg"
 
-[meetingbar]
-src.github = "leits/MeetingBar"
-fetch.url = "https://github.com/leits/MeetingBar/releases/download/$ver/MeetingBar.dmg"
+# [meetingbar]
+# src.github = "leits/MeetingBar"
+# fetch.url = "https://github.com/leits/MeetingBar/releases/download/$ver/MeetingBar.dmg"
 
 # [scroll-reverser]
 # src.github_tag = "pilotmoon/Scroll-Reverser"
