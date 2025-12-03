@@ -1,19 +1,4 @@
 {
-    "meetingbar": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "meetingbar",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-TxmvSW1P9EubDuAr4CvHYgfz42Wn+ed8chmgjGB4ONc=",
-            "type": "url",
-            "url": "https://github.com/leits/MeetingBar/releases/download/v4.11.6/MeetingBar.dmg"
-        },
-        "version": "v4.11.6"
-    },
     "vlc": {
         "cargoLocks": null,
         "date": null,
