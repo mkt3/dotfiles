@@ -1872,7 +1872,7 @@
         (eww-reload))
       (defun shr-put-image-alt (spec alt &optional flags)
         (insert alt)))
-#+end_src
+  #+end_src
 * Rss
   #+begin_src emacs-lisp
     ;; (use-package elfeed
