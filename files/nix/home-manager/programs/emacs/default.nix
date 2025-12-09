@@ -21,8 +21,6 @@ in
       ]
       ++ lib.optionals isGUI [
         epkgs.pdf-tools
-      ]
-      ++ lib.optionals (isGUI && isLinux) [
         epkgs.mu4e
       ];
   };

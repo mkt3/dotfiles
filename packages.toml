@@ -284,7 +284,7 @@ common = [
 
 [emacs-gui]
 type = "gui"
-linux = [
+common = [
   { name = "isync", method = "nix-hm" },
   { name = "msmtp", method = "nix-hm" },
   { name = "mu", method = "nix-hm" },
