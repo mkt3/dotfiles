@@ -1764,11 +1764,6 @@
   #+begin_src emacs-lisp
     (use-package tramp
       :custom
-      (tramp-remote-path
-       '(tramp-default-remote-path
-         "~/.local/bin"
-         "~/.local/state/nix/profiles/profile/bin"
-         tramp-own-remote-path))
       (tramp-default-method "ssh")
       (tramp-auto-save-directory
        (expand-file-name "tramp-auto-save" user-emacs-directory))
@@ -1782,6 +1777,12 @@
       (tramp-use-scp-direct-remote-copying t)
       (remote-file-name-inhibit-auto-save-visited t)
       :config
+      (with-eval-after-load 'tramp
+        (setq tramp-remote-path
+              '(tramp-default-remote-path
+                "~/.local/bin"
+                "~/.local/state/nix/profiles/profile/bin"
+                tramp-own-remote-path)))
       (connection-local-set-profile-variables
        'remote-direct-async-process
        '((tramp-direct-async-process . t)))

@@ -394,13 +394,13 @@ linux = [{ name = "podman", method = "nix-hm" }]
 ## kubernetes
 [kubectl]
 type = "dev"
-common = [{ name = "kubectl", method = "nix-hm" }]
+linux = [{ name = "kubectl", method = "nix-hm" }]
 [k9s]
 type = "dev"
-common = [{ name = "k9s", method = "nix-hm" }]
+linux = [{ name = "k9s", method = "nix-hm" }]
 [flux]
 type = "dev"
-common = [{ name = "fluxcd", method = "nix-hm" }]
+linux = [{ name = "fluxcd", method = "nix-hm" }]
 
 # gui packages
 ## tex
