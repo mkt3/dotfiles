@@ -3,6 +3,7 @@
   username,
   homeDirectory,
   lib,
+  nix-index-database,
   ...
 }:
 {
@@ -25,9 +26,13 @@
   imports = [
     ./system_packages.nix
     ./packages.nix
+    nix-index-database.homeModules.default
   ];
 
-  programs.home-manager.enable = true;
+  programs = {
+    home-manager.enable = true;
+    nix-index-database.comma.enable = true;
+  };
 
   nix = {
     settings = {
