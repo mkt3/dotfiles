@@ -1821,7 +1821,8 @@
       (dired-dwim-target t)
       (dired-recursive-copies 'always)
       (dired-movement-style 'cycle)
-      (dired-omit-files (rx (seq bol "."))))
+      (dired-omit-files (rx (seq bol ".")))
+      (dired-listing-switches "--group-directories-first --time-style=iso -laGh1vt"))
 
     (use-package dired-open
       :ensure t
@@ -1829,19 +1830,47 @@
              :map dired-mode-map
              ("C-c C-o"  . dired-open-xdg)))
 
-    (use-package dired-details-r
-      :ensure nil
-      :vc (:url "https://github.com/misohena/dired-details-r" :rev :newest)
+    (use-package dired-preview
+      :ensure t
+      :custom
+      (dired-preview-delay 0.3)
       :config
-      (global-dired-details-r-mode)
-      (setq dired-details-r-combinations
-            '((size-time  . (size time))
-              ;;(time-size  . (time size)) ;; Which do you prefer?
-              (no-details . ())
-              (disabled   . disabled)
-              (all        . (size time perms links user group))
-              (left-right . (time size filename perms links user group))
-              (left       . (time size filename)))))
+      (setq dired-preview-max-size (expt 2 20))
+      (setq dired-preview-ignored-extensions-regexp
+            (concat "\\."
+                    "\\(gz\\|"
+                    "zst\\|"
+                    "tar\\|"
+                    "xz\\|"
+                    "rar\\|"
+                    "zip\\|"
+                    "iso\\|"
+                    "epub"
+                    "\\)"))
+      (defun my-dired-preview-to-the-right ()
+        "My preferred `dired-preview-display-action-alist-function'."
+        '((display-buffer-in-side-window)
+          (side . left)
+          (window-width . 80)))
+
+      (setq dired-preview-display-action-alist #'my-dired-preview-to-the-right)
+      :bind (nil
+             :map dired-mode-map
+             ("P"  . dired-preview-mode)))
+
+    ;; (use-package dired-details-r
+    ;;   :ensure nil
+    ;;   :vc (:url "https://github.com/misohena/dired-details-r" :rev :newest)
+    ;;   :config
+    ;;   (global-dired-details-r-mode)
+    ;;   (setq dired-details-r-combinations
+    ;;         '((size-time  . (size time))
+    ;;           ;;(time-size  . (time size)) ;; Which do you prefer?
+    ;;           (no-details . ())
+    ;;           (disabled   . disabled)
+    ;;           (all        . (size time perms links user group))
+    ;;           (left-right . (time size filename perms links user group))
+    ;;           (left       . (time size filename)))))
   #+end_src
 * Browser
   #+begin_src emacs-lisp
