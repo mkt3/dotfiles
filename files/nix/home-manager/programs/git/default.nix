@@ -26,6 +26,8 @@
       };
       core = {
         ignorecase = false;
+        precomposeunicode = true;
+        quotepath = false;
       };
       merge = {
         conflictstyle = "diff3";
