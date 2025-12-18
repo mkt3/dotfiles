@@ -98,7 +98,7 @@ generate_nix_switch_command() {
         output+="    home-manager switch --flake \${NIX_DIR}\n"
         output+="else\n"
         output+="    echo \"Running home-manager via nix run...\"\n"
-        output+="    nix --extra-experimental-features \"nix-command flakes\" run home-manager/master -- switch --flake \${NIX_DIR}\n"
+        output+="    nix run home-manager/master -- switch --flake \${NIX_DIR}\n"
         output+="fi\n"
         output+="export __ETC_PROFILE_NIX_SOURCED=\"\""
     fi

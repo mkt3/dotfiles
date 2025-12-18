@@ -62,6 +62,10 @@ install_nix() {
 
     sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 
+    if [ "${OS}" = "Linux" ] && [ ! -f /etc/nix/nix.conf ]; then
+        sudo mkdir -p /etc/nix
+        echo "experimental-features = nix-command flakes" | sudo tee /etc/nix/nix.conf >/dev/null
+    fi
 }
 
 install_essential_packages
