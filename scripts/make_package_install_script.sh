@@ -77,7 +77,7 @@ generate_nix_switch_command() {
     if [[ "$os" == "darwin" ]]; then
         cp -f "${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
         output+="title \"Setup with nix-darwin\"\n"
-        output+="cd \${NIX_DIR} && nix flake update && cd -\n"
+        output+="cd \${NIX_DIR} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -\n"
         output+="if ! (type darwin-rebuild > /dev/null 2>&1); then\n"
         output+="    echo \"Setting up initial nix-darwin...\"\n"
         output+="    sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true\n"
