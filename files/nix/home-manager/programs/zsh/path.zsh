@@ -7,6 +7,7 @@ if [ "$DISTRO" = "Linux" ];then
 fi
 
 # PATH
+XDG_STATE_HOME=${XDG_STATE_HOME:-${HOME}/.local/state}
 if [ "$DISTRO" = 'NixOS' ];then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:/etc/profiles/per-user/${USER}/bin:/run/wrappers/bin:${PATH}"

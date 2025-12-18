@@ -38,7 +38,6 @@ success() {
 
 # XDG Base Directory Specification
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
-XDG_STATE_HOME=${XDG_STATE_HOME:-${HOME}/.local/state}
 
 # GnuPG Home
 GNUPGHOME=${GNUPGHOME:-${HOME}/.gnupg}
