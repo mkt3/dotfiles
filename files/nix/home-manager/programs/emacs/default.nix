@@ -17,7 +17,40 @@ in
       epkgs:
       [
         epkgs.jinx
-        epkgs.treesit-grammars.with-all-grammars
+        (epkgs.treesit-grammars.with-grammars
+        (p:
+          with p; [
+            tree-sitter-bash
+            tree-sitter-cuda
+            tree-sitter-c
+            tree-sitter-cpp
+            tree-sitter-c-sharp
+            tree-sitter-cmake
+            tree-sitter-css
+            tree-sitter-scss
+            tree-sitter-sql
+            tree-sitter-dockerfile
+            tree-sitter-elisp
+            tree-sitter-go
+            tree-sitter-html
+            tree-sitter-javascript
+            tree-sitter-json
+            tree-sitter-make
+            tree-sitter-markdown
+            tree-sitter-markdown-inline
+            tree-sitter-latex
+            tree-sitter-bibtex
+            tree-sitter-nix
+            tree-sitter-lua
+            tree-sitter-python
+            tree-sitter-ruby
+            tree-sitter-rust
+            tree-sitter-toml
+            tree-sitter-tsx
+            tree-sitter-typescript
+            tree-sitter-typst
+            tree-sitter-yaml
+          ]))
       ]
       ++ lib.optionals isGUI [
         epkgs.pdf-tools
