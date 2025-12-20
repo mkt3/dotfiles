@@ -58,11 +58,3 @@ apply = ["defer"]
 [plugins.zsh-abbr]
 github = "olets/zsh-abbr"
 apply = ["defer"]
-
-[plugins.enhancd]
-github = "b4b4r07/enhancd"
-use = ["init.sh"]
-apply = ["defer"]
-hooks.post = '''
-ENHANCD_FILTER="fzf-tmux -p80%"
-'''

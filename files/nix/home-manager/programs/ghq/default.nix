@@ -12,11 +12,11 @@
 
   xdg.configFile."zsh/defer.zsh" = {
     text = ''
-      function jp()
+      function cdp()
       {
           local session_name="$(tmux display-message -p '#S')"
           if [ -z "$session_name" ]; then
-              cd "$HOME"
+              \cd "$HOME"
           fi
 
           local default_dir
@@ -26,7 +26,7 @@
               default_dir="$(ghq list --exact --full-path "$session_name")"
           fi
 
-          cd "$default_dir"
+          \cd "$default_dir"
       }
     '';
   };
