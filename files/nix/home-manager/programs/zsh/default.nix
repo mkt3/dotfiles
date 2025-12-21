@@ -27,7 +27,7 @@ in
           export LC_CTYPE="${commonLanguage}"
         ''
 
-        # Editor (let変数を使用)
+        # Editor
         ''
           export EDITOR=${commonEditor}
           export CVSEDITOR=${commonEditor}
@@ -69,10 +69,72 @@ in
     );
 
     initContent = lib.mkBefore ''
-      source "${config.xdg.configHome}/sheldon/sheldon.zsh"
+      # https://zenn.dev/fuzmare/articles/zsh-plugin-manager-cache
+      zmodload -F zsh/stat b:zstat 2>/dev/null
+
+      # source command override technique
+      function source {
+        ensure_zcompiled "$1"
+        builtin source "$1"
+      }
+
+      function ensure_zcompiled {
+        local src="$1"
+
+        src=''${src:a}
+
+        [[ "$src" == "${config.home.homeDirectory}/"* ]] || return 0
+
+        [[ -e "$src" ]] || return 0
+
+        local compiled="$1.zwc"
+
+        local src_mtime compiled_mtime
+
+         zstat -L -A src_stat +mtime "$src" || return 0
+        src_mtime=$src_stat[1]
+
+          if [[ -e "$compiled" ]]; then
+            zstat -A compiled_stat +mtime "$compiled" || return 0
+            compiled_mtime=$compiled_stat[1]
+          else
+            compiled_mtime=0
+        fi
+
+        if (( src_mtime > compiled_mtime )); then
+          echo "Compiling $src"
+          zcompile "$src"
+        fi
+      }
+
+      # sheldon cache technique
+      sheldon_cache="${config.xdg.configHome}/sheldon/sheldon.zsh"
+      sheldon_toml="${config.xdg.configHome}/sheldon/plugins.toml"
+
+      local toml_mtime cache_mtime
+
+      if zstat -L -A toml_stat +mtime "$sheldon_toml"; then
+        toml_mtime=$toml_stat[1]
+      else
+        toml_mtime=0
+      fi
+
+      if [[ -r "$sheldon_cache" ]] && zstat -L -A cache_stat +mtime "$sheldon_cache"; then
+        cache_mtime=$cache_stat[1]
+      else
+        cache_mtime=0
+      fi
+
+      if (( toml_mtime > cache_mtime )); then
+        sheldon source > "$sheldon_cache"
+     fi
+
+     source "$sheldon_cache"
+     unset sheldon_cache sheldon_toml toml_mtime cache_mtime toml_stat cache_stat
 
       source "${config.xdg.configHome}/zsh/no_defer.zsh"
       zsh-defer source "${config.xdg.configHome}/zsh/defer.zsh"
+      zsh-defer unfunction source
     '';
 
     history = {
@@ -105,18 +167,15 @@ in
   xdg.configFile = {
     "zsh/no_defer.zsh" = {
       source = ./no_defer.zsh;
-      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile ${config.xdg.configHome}/zsh/no_defer.zsh'";
     };
 
     "zsh/path.zsh" = {
       source = ./path.zsh;
-      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile ${config.xdg.configHome}/zsh/path.zsh'";
     };
 
     "zsh/abbreviations".source = ./abbreviations;
 
     "zsh/defer.zsh" = {
-      onChange = "${pkgs.zsh}/bin/zsh -c 'zcompile ${config.xdg.configHome}/zsh/defer.zsh'";
       text = ''
         # rehash
         zstyle ":completion:*:commands" rehash 1
@@ -125,19 +184,78 @@ in
         echo -ne "\x1b]0;$HOST\x1b\\"
       '';
     };
-
-    "sheldon/plugins.toml" = {
-      source = ./sheldon/plugins.toml;
-      onChange = ''
-        ${pkgs.sheldon}/bin/sheldon --config-file=${config.xdg.configHome}/sheldon/plugins.toml source > ${config.xdg.configHome}/sheldon/sheldon.zsh
-        ${pkgs.sheldon}/bin/sheldon lock --update
-        ${pkgs.zsh}/bin/zsh -c 'zcompile ${config.xdg.configHome}/sheldon/sheldon.zsh'
-      '';
-    };
   };
 
   programs.dircolors = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.sheldon = {
+    enable = true;
+    settings = {
+      shell = "zsh";
+      templates = {
+        defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}";
+      };
+      plugins = {
+        zsh-defer = {
+          github = "romkatv/zsh-defer";
+        };
+        git-prompt = {
+          github =  "woefe/git-prompt.zsh";
+          hooks.post = ''
+            ZSH_THEME_GIT_PROMPT_PREFIX="("''$'\Ue725 '
+            ZSH_THEME_GIT_PROMPT_SUFFIX=")"
+            ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+            ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
+            ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
+            ZSH_THEME_GIT_PROMPT_BEHIND="↓"
+            ZSH_THEME_GIT_PROMPT_AHEAD="↑"
+            ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖ "
+            ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}● "
+            ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚ "
+            ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
+            ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
+            ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
+          '';
+        };
+        zsh-autocomplete = {
+          github = "marlonrichert/zsh-autocomplete";
+          hooks.pre = "bindkey -e";
+          hooks.post = ''
+            bindkey '\t' menu-select \"$terminfo[kcbt]\" menu-select
+            bindkey -M menuselect '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete
+            bindkey '^N' history-beginning-search-forward
+            bindkey '^P' history-beginning-search-backward
+            bindkey -M emacs '^R' fzf-history-widget
+
+            zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored
+
+            +autocomplete:recent-directories() {
+            typeset -ga reply=("''${(@f)$(zoxide query -l)}")
+            }
+          '';
+        };
+        syntax-highlight = {
+           github = "z-shell/F-Sy-H";
+          apply = [ "defer" ];
+        };
+
+        autopair = {
+          github = "hlissner/zsh-autopair";
+          apply = [ "defer" ];
+        };
+
+        zsh-autosuggestions = {
+          github = "zsh-users/zsh-autosuggestions";
+          apply = [ "defer" ];
+        };
+        zsh-abbr = {
+          github = "olets/zsh-abbr";
+          apply = [ "defer" ];
+        };
+      };
+    };
   };
 }

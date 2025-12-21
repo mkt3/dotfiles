@@ -127,10 +127,6 @@ common = [
   { name = "prek", method = "nix-hm" },
 ]
 
-[sheldon]
-type = "basic"
-common = [{ name = "sheldon", method = "nix-hm" }]
-
 [procs]
 type = "basic"
 common = [{ name = "procs", method = "nix-hm" }]
