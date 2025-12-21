@@ -184,6 +184,7 @@ in
         echo -ne "\x1b]0;$HOST\x1b\\"
       '';
     };
+    "sheldon/plugins.toml".source = ./plugins.toml;
   };
 
   programs.dircolors = {
@@ -191,71 +192,5 @@ in
     enableZshIntegration = true;
   };
 
-  programs.sheldon = {
-    enable = true;
-    settings = {
-      shell = "zsh";
-      templates = {
-        defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}";
-      };
-      plugins = {
-        zsh-defer = {
-          github = "romkatv/zsh-defer";
-        };
-        git-prompt = {
-          github =  "woefe/git-prompt.zsh";
-          hooks.post = ''
-            ZSH_THEME_GIT_PROMPT_PREFIX="("''$'\Ue725 '
-            ZSH_THEME_GIT_PROMPT_SUFFIX=")"
-            ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
-            ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
-            ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
-            ZSH_THEME_GIT_PROMPT_BEHIND="↓"
-            ZSH_THEME_GIT_PROMPT_AHEAD="↑"
-            ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖ "
-            ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}● "
-            ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚ "
-            ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
-            ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
-            ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
-          '';
-        };
-        zsh-autocomplete = {
-          github = "marlonrichert/zsh-autocomplete";
-          hooks.pre = "bindkey -e";
-          hooks.post = ''
-            bindkey '\t' menu-select \"$terminfo[kcbt]\" menu-select
-            bindkey -M menuselect '\t' menu-complete \"$terminfo[kcbt]\" reverse-menu-complete
-            bindkey '^N' history-beginning-search-forward
-            bindkey '^P' history-beginning-search-backward
-            bindkey -M emacs '^R' fzf-history-widget
-
-            zstyle ':completion:*' completer _complete _complete:-fuzzy _correct _approximate _ignored
-
-            +autocomplete:recent-directories() {
-            typeset -ga reply=("''${(@f)$(zoxide query -l)}")
-            }
-          '';
-        };
-        syntax-highlight = {
-           github = "z-shell/F-Sy-H";
-          apply = [ "defer" ];
-        };
-
-        autopair = {
-          github = "hlissner/zsh-autopair";
-          apply = [ "defer" ];
-        };
-
-        zsh-autosuggestions = {
-          github = "zsh-users/zsh-autosuggestions";
-          apply = [ "defer" ];
-        };
-        zsh-abbr = {
-          github = "olets/zsh-abbr";
-          apply = [ "defer" ];
-        };
-      };
-    };
-  };
+  home.packages = [ pkgs.sheldon ];
 }
