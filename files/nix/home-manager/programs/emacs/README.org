@@ -2198,6 +2198,7 @@
        :if (executable-find "recoll")
        :bind (("C-c n s" . consult-recoll))
        :config
+       (setq consult-recoll-inline-snippets t)
        (if (eq system-type 'darwin)
            (setq exec-path (append '("/Applications/Recoll.app/Contents/MacOS") exec-path)))
        (when (display-graphic-p)
