@@ -25,7 +25,7 @@
     # '';
     primaryUser = username;
 
-    stateVersion = 5;
+    stateVersion = 6;
 
     keyboard = {
       enableKeyMapping = true;

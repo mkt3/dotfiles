@@ -40,6 +40,7 @@
     signing = {
       signByDefault = true;
       key = null;
+      format = "openpgp";
     };
 
     ignores = [
