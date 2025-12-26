@@ -37,10 +37,10 @@ common_methods=("nix" "nix-hm")
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
-SED_CMD="nix run nixpkgs#gnused -- -i "
+SED_CMD=(nix --extra-experimental-features "nix-command flakes" run nixpkgs#gnused -- -i)
 
 info "Parsing TOML file to JSON..."
-json_content=$(nix run nixpkgs#yj -- -t < "$toml_file")
+json_content=$(nix --extra-experimental-features "nix-command flakes" run nixpkgs#yj -- -t < "$toml_file")
 
 cat << 'EOF' > "$install_script_path"
 #!/usr/bin/env bash
@@ -82,7 +82,7 @@ generate_nix_switch_command() {
         output+="    echo \"Setting up initial nix-darwin...\"\n"
         output+="    sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true\n"
         output+="    sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true\n"
-        output+="    NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
+        output+="    NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt sudo nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
         output+="else\n"
         output+="    sudo darwin-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
         output+="fi"
@@ -108,7 +108,7 @@ generate_nix_switch_command() {
 generate_nix_switch_command "$os_name"
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
-    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | nix run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
+    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | nix --extra-experimental-features "nix-command flakes" run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
       to_entries | .[] |
       select(
         (.value.common != null or ($is_linux and .value.linux != null) or .value[$os] != null) and
@@ -122,7 +122,6 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
       select(.method == $method) |
       .name |
       select(. != null)' && printf '\0')
-
     if [ ${#package_names[@]} -eq 0 ]; then
         continue
     fi
@@ -206,9 +205,8 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
                     fi
                     ;;
             esac
-
-            ${SED_CMD} "s|${placeholder}|${packages_string}|g" "$nix_homebrew_apps_file"
-            ${SED_CMD} "s|__n__|\n|g" "$nix_homebrew_apps_file"
+            "${SED_CMD[@]}" "s|${placeholder}|${packages_string}|g" "$nix_homebrew_apps_file"
+            "${SED_CMD[@]}" "s|__n__|\n|g" "$nix_homebrew_apps_file"
             ;;
         script)
             ;;
@@ -221,7 +219,7 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
 done
 
 if [[ "$DISTRO" == "Darwin" ]] ; then
-    ${SED_CMD} "s|__BREW_PACKAGES__||g; \
+    "${SED_CMD[@]}" "s|__BREW_PACKAGES__||g; \
                 s|__CASK_PACKAGES__||g; \
                 s|__MAS_PACKAGES__||g" "$nix_homebrew_apps_file"
 fi

@@ -39,12 +39,12 @@ pre_setup_nix() {
         local nvfetcher_command
 
         if type nvfetcher > /dev/null 2>&1; then
-            nvfetcher_command="nvfetcher"
+            nvfetcher_command=(nvfetcher)
         else
-            nvfetcher_command="nix run github:berberman/nvfetcher --"
+            nvfetcher_command=(nix --extra-experimental-features "nix-command flakes" run github:berberman/nvfetcher --)
         fi
 
-        if $nvfetcher_command -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"; then
+        if "${nvfetcher_command[@]}" -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"; then
             date +%s > "$nvfetcher_last_run_file"
             info "nvfetcher execution successful. Timestamp updated."
         else
@@ -75,7 +75,7 @@ pre_setup_nix() {
         fi
     fi
 
-    nix run nixpkgs#gnused -- -i \
+    nix --extra-experimental-features "nix-command flakes" run nixpkgs#gnused -- -i \
         -e "s|__SYSTEM__|${nix_platform}|g" \
         -e "s|__HOSTNAME__|${host_name}|g" \
         -e "s|__USERNAME__|${USER}|g" \
