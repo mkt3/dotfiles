@@ -142,10 +142,28 @@ in
       size = 50000;
       save = 50000;
       ignoreAllDups = true;
-      ignoreSpace = true;
       ignoreDups = true;
+      findNoDups = true;
+      ignoreSpace = true;
       share = true;
       extended = true;
+      ignorePatterns = [
+        "*TOKEN*=* *"
+        "*KEY*=* *"
+        "*SECRET*=* *"
+        "*PASSWORD*=* *"
+        "*Authorization:*"
+        "*authorization:*"
+        "*--token *"
+        "*--api-key *"
+        "*--password *"
+        "ls"
+        "ls *"
+        "cd"
+        "cd *"
+        "pwd"
+        "exit"
+      ];
     };
 
     shellAliases = {
