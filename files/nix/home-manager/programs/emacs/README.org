@@ -307,6 +307,9 @@
          (set-fontset-font t charset
                            (font-spec :family "PlemolJP Console NF")))
 
+       (set-fontset-font t 'symbol (font-spec :family "Hack Nerd Font") nil 'append)
+       (set-fontset-font t 'unicode (font-spec :family "Hack Nerd Font") nil 'append)
+
        (with-eval-after-load 'org
          (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
          (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
