@@ -142,7 +142,6 @@ in
       size = 50000;
       save = 50000;
       ignoreAllDups = true;
-      ignoreDups = true;
       findNoDups = true;
       ignoreSpace = true;
       share = true;
