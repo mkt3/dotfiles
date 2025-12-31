@@ -113,6 +113,7 @@
         "nm-applet --indicator"
         "waybar"
         "sleep 10; nextcloud --background"
+        "thunar --daemon"
         "[workspace 1 silent] wezterm"
         "[workspace 1 silent] vivaldi"
         "[workspace 2 silent] slack"
