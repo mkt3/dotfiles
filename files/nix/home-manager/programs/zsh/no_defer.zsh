@@ -87,13 +87,13 @@ function format_duration() {
 }
 
 function _time_and_date_precmd() {
-    local TIMER_END=$SECONDS
-    local LAST_CMD_DURATION=$(( TIMER_END - TIMER_START ))
-    local CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
+    local timer_end=$SECONDS
+    local duration=$(( timer_end - TIMER_START ))
+    local current_time=$(date +"%Y-%m-%d %H:%M:%S")
 
-    if [[ -n "$TIMER_START" && "$LAST_CMD_DURATION" -gt 300 ]]; then
-        local formatted_duration=$(format_duration $LAST_CMD_DURATION)
-        printf "\nCommand finished at %s, took %s\n" "$CURRENT_TIME" "$formatted_duration"
+    if [[ -n "$TIMER_START" && "$duration" -gt 300 ]]; then
+        local formatted_duration=$(format_duration $duration)
+        printf "\nCommand finished at %s, took %s\n" "$current_time" "$formatted_duration"
     fi
 
     TIMER_START=""
