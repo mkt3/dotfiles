@@ -8,7 +8,8 @@
   services.xremap = {
     enable = true;
     userName = username;
-    withWlroots = true;
+    #withWlroots = true;
+    withNiri = true;
     watch = true;
     serviceMode = "user";
     config = {

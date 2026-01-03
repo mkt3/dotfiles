@@ -508,8 +508,10 @@ linux = [{ name = "rofi", method = "nix-hm" }]
 [hyprland]
 type = "gui"
 nixos = [
-  { name = "hyprland", method = "nix" },
-  { name = "hyprland", method = "nix-hm" },
+  { name = "niri", method = "nix" },
+  { name = "niri", method = "nix-hm" },
+  # { name = "hyprland", method = "nix" },
+  # { name = "hyprland", method = "nix-hm" },
   { name = "xdg-desktop-portal-hyprland", method = "nix" },
   { name = "waybar", method = "nix-hm" },
   { name = "mako", method = "nix-hm" },
