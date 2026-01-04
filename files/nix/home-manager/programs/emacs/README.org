@@ -126,6 +126,21 @@
      (use-package delsel
        :config
        (delete-selection-mode t))
+
+     ;; Move deleted files to trash using gtrash
+     (setopt delete-by-moving-to-trash t)
+
+     (when (executable-find "gtrash")
+       (defun system-move-file-to-trash (filename)
+         "Move FILENAME to trash using `gtrash put`."
+         ;; Avoid trashing remote files via TRAMP
+         (when (file-remote-p filename)
+           (error "Refusing to trash remote file: %s" filename))
+         (let ((exit-code
+                (call-process "gtrash" nil nil nil "put" filename)))
+           (unless (zerop exit-code)
+             (error "gtrash put failed for %s" filename))
+           t)))
    #+end_src
 ** Assigning directory name to the same buffer name
    #+begin_src emacs-lisp
