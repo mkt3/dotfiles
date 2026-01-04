@@ -517,6 +517,7 @@ nixos = [
   { name = "mako", method = "nix-hm" },
   { name = "networkmanagerapplet", method = "nix-hm" },
   { name = "hyprshot", method = "nix-hm" },
+  { name = "hyprcursor", method = "nix-hm" },
   { name = "playerctl", method = "nix-hm" },
   { name = "pwvucontrol", method = "nix-hm" },
   { name = "brightnessctl", method = "nix-hm" },

@@ -19,8 +19,8 @@
   programs.niri = {
     enable = true;
     useNautilus = false;
-  }
-  ;
+  };
+
   programs.hyprlock.enable = true;
   services.hypridle.enable = true;
 

@@ -1773,6 +1773,10 @@
          :custom
          (nov-text-width t))
      #+end_src
+*** KDL
+    #+begin_src emacs-lisp
+      (use-package kdl-mode :ensure t)
+    #+end_src
 * Tramp
   #+begin_src emacs-lisp
     (use-package tramp
