@@ -1,6 +1,14 @@
 { config, pkgs, ... }:
 {
+  xdg.configFile."systemd/user/xremap.service.d/after-niri.conf".text = ''
+      [Unit]
+      After=niri.service
+    '';
 
+   xdg.configFile."systemd/user/xdg-desktop-portal-wlr.service.d/after-niri.conf".text = ''
+      [Unit]
+      After=niri.service
+    '';
 
   home.file.".config/hypr/hypridle.conf".text = ''
     general {
@@ -90,69 +98,69 @@
     export XCURSOR_PATH=/usr/share/icons:"${config.xdg.dataHome}/icons"
   '';
 
-  services.kanshi = {
-    enable = true;
-    systemdTarget = "hyprland-session.target";
+  # services.kanshi = {
+#     enable = true;
+#     systemdTarget = "hyprland-session.target";
 
-    settings = [
-      {
-        profile = {
-          name = "laptop-only";
-          outputs = [
-            {
-              criteria = "eDP-1";
-              scale = 1.6;
-              mode = " 2944x1840@90Hz";
-              status = "enable";
-            }
-          ];
-          exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 2 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 3 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 4 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 5 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 6 desc:eDP-1";
-        };
-      }
-      {
-        profile = {
-          name = "laptop-and-LG";
-          outputs = [
-            {
-              criteria = "eDP-1";
-              position = "360,1440";
-              scale = 1.6;
-              mode = " 2944x1840@90Hz";
-              status = "enable";
-            }
-            {
-              criteria = "LG Electronics LG HDR 4K 0x00035468";
-              position = "0,0";
-              scale = 1.5;
-              mode = "3840x2160@60Hz";
-              status = "enable";
-            }
-          ];
-          exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 2 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 3 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 4 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 5 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 6 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468";
-        };
-      }
-      {
-        profile = {
-          name = "LG-and-CEX";
-          outputs = [
-            {
-              criteria = "LG Electronics LG HDR 4K 0x00035468";
-              position = "0,0";
-              scale = 1.5;
-              mode = "3840x2160@60Hz";
-              status = "enable";
-            }
-            {
-              criteria = "CEX CX133 0x00000001";
-              position = "480,1440";
-              scale = 1.25;
-              mode = "2560x1600@60Hz";
-              status = "enable";
-            }
-          ];
-          exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 2 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 3 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 4 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 5 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 6 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468";
-        };
-      }
-    ];
-  };
+#     settings = [
+#       {
+#         profile = {
+#           name = "laptop-only";
+#           outputs = [
+#             {
+#               criteria = "eDP-1";
+#               scale = 1.6;
+#               mode = " 2944x1840@90Hz";
+#               status = "enable";
+#             }
+#           ];
+#           exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 2 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 3 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 4 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 5 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 6 desc:eDP-1";
+#         };
+#       }
+#       {
+#         profile = {
+#           name = "laptop-and-LG";
+#           outputs = [
+#             {
+#               criteria = "eDP-1";
+#               position = "360,1440";
+#               scale = 1.6;
+#               mode = " 2944x1840@90Hz";
+#               status = "enable";
+#             }
+#             {
+#               criteria = "LG Electronics LG HDR 4K 0x00035468";
+#               position = "0,0";
+#               scale = 1.5;
+#               mode = "3840x2160@60Hz";
+#               status = "enable";
+#             }
+#           ];
+#           exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 2 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 3 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 4 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 5 desc:eDP-1; hyprctl dispatch moveworkspacetomonitor 6 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468";
+#         };
+#       }
+#       {
+#         profile = {
+#           name = "LG-and-CEX";
+#           outputs = [
+#             {
+#               criteria = "LG Electronics LG HDR 4K 0x00035468";
+#               position = "0,0";
+#               scale = 1.5;
+#               mode = "3840x2160@60Hz";
+#               status = "enable";
+#             }
+#             {
+#               criteria = "CEX CX133 0x00000001";
+#               position = "480,1440";
+#               scale = 1.25;
+#               mode = "2560x1600@60Hz";
+#               status = "enable";
+#             }
+#           ];
+#           exec = "hyprctl dispatch moveworkspacetomonitor 1 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 2 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 3 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468; hyprctl dispatch moveworkspacetomonitor 4 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 5 desc:CEX\\ CX133\\ 0x00000001; hyprctl dispatch moveworkspacetomonitor 6 desc:LG\\ Electronics\\ LG\\ HDR\\ 4K\\ 0x00035468";
+#         };
+#       }
+#     ];
+#   };
 }

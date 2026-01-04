@@ -8,10 +8,8 @@
     enable = true;
     settings = {
       default_session = {
-        command = ''
-          ${pkgs.tuigreet}/bin/tuigreet --time --asterisks --cmd niri-session
-        '';
-        user = username;
+        command = "${pkgs.lib.getExe pkgs.tuigreet} --time --asterisks --cmd niri-session";
+        user = "greeter";
       };
     };
   };
