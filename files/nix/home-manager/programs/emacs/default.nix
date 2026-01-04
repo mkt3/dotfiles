@@ -50,6 +50,7 @@ in
             tree-sitter-typescript
             tree-sitter-typst
             tree-sitter-yaml
+            tree-sitter-kdl
           ]))
       ]
       ++ lib.optionals isGUI [

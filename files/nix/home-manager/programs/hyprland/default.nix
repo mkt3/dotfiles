@@ -108,10 +108,6 @@
       };
       exec-once = [
         "brightnessctl set 80%"
-        "fcitx5 -D"
-        "hypridle"
-        "nm-applet --indicator"
-        "waybar"
         "sleep 10; nextcloud --background"
         "thunar --daemon"
         "[workspace 1 silent] wezterm"

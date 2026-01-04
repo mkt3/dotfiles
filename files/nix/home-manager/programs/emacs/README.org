@@ -126,6 +126,23 @@
      (use-package delsel
        :config
        (delete-selection-mode t))
+
+     ;; Move deleted files to trash using gtrash
+     (setopt delete-by-moving-to-trash t)
+
+     (when (executable-find "gtrash")
+       (defun system-move-file-to-trash (filename)
+         "Move FILENAME to trash using `gtrash put`.
+
+     For TRAMP files, fall back to the default Emacs behavior."
+         (if (file-remote-p filename)
+             ;; Let Emacs handle TRAMP files normally (i.e. unlink)
+             nil
+           (let ((exit-code
+                  (call-process "gtrash" nil nil nil "put" filename)))
+             (unless (zerop exit-code)
+               (error "gtrash put failed for %s" filename))
+             t))))
    #+end_src
 ** Assigning directory name to the same buffer name
    #+begin_src emacs-lisp
@@ -1773,6 +1790,10 @@
          :custom
          (nov-text-width t))
      #+end_src
+*** KDL
+    #+begin_src emacs-lisp
+      (use-package kdl-mode :ensure t)
+    #+end_src
 * Tramp
   #+begin_src emacs-lisp
     (use-package tramp
