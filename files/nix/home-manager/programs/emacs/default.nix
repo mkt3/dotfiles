@@ -98,7 +98,7 @@ in
   xdg.configFile = {
     "emacs/README.org" = {
       source = ./README.org;
-      onChange = "rm -rf $HOME/.config/emacs/README.el";
+      onChange = "rm -f ${config.xdg.configHome}/emacs/README.el";
     };
     "emacs/early-init.el".source = ./early-init.el;
     "emacs/init.el".source = ./init.el;

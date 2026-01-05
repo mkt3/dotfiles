@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.waybar = {
     enable = true;
@@ -118,7 +118,7 @@
         "custom/vpn" = {
           "format" = "  {}";
           "interval" = 5;
-          "exec" = "$HOME/.config/waybar/scripts/nm-vpn.sh";
+          "exec" = "${config.home.homeDirectory}/.config/waybar/scripts/nm-vpn.sh";
           "exec-if" = "exit 0";
         };
       };
