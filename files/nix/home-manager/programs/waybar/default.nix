@@ -8,10 +8,9 @@
         position = "top";
         spacing = 0;
         modules-left = [
-          "hyprland/workspaces"
-          "hyprland/submap"
+          "niri/workspaces"
         ];
-        modules-center = [ "hyprland/window" ];
+        modules-center = [ "niri/window" ];
         modules-right = [
           "custom/vpn"
           "cpu"
@@ -24,19 +23,32 @@
           "idle_inhibitor"
         ];
 
-        "hyprland/workspaces" = {
-          "format" = "{name} {icon}";
-          "format-icons" = {
-            "1: main" = "";
-            "9: sub" = "";
-            "2: slack" = "";
-            "8: game" = "";
-            "10: media" = "";
+        "niri/workspaces" =  {
+          "format"= "{icon}";
+          "format-icons"= {
+            "main" = "";
+            "second" = "";
+            "emacs" = "";
+            "chat" = "";
+            "game" = "";
             "urgent" = "";
             "active" = "";
             "default" = "";
           };
         };
+        # "hyprland/workspaces" = {
+        #   "format" = "{name} {icon}";
+        #   "format-icons" = {
+        #     "1: main" = "";
+        #     "9: sub" = "";
+        #     "2: slack" = "";
+        #     "8: game" = "";
+        #     "10: media" = "";
+        #     "urgent" = "";
+        #     "active" = "";
+        #     "default" = "";
+        #   };
+        # };
         "idle_inhibitor" = {
           "format" = "{icon}";
           "format-icons" = {
