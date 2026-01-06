@@ -1,14 +1,16 @@
 { config, pkgs, ... }:
 {
-  xdg.configFile."systemd/user/xremap.service.d/after-niri.conf".text = ''
+  xdg.configFile = {
+    "niri/config.kdl".source = ./config.kdl;
+    "systemd/user/xremap.service.d/after-niri.conf".text = ''
+      [Unit]
+        After=niri.service
+     '';
+    "systemd/user/xdg-desktop-portal-wlr.service.d/after-niri.conf".text = ''
       [Unit]
       After=niri.service
     '';
-
-   xdg.configFile."systemd/user/xdg-desktop-portal-wlr.service.d/after-niri.conf".text = ''
-      [Unit]
-      After=niri.service
-    '';
+  };
 
   home.file.".config/hypr/hypridle.conf".text = ''
     general {
