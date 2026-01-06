@@ -2,17 +2,13 @@
 let
   mainMonitor = "LG Electronics LG HDR 4K 0x00035468";
   subMonitor = "PNP(CEX) CX133 0x00000001";
-  builtinMonitor = "eDP=1";
+  builtinMonitor = "eDP-1";
   afterNiriUnit = ''
     [Unit]
     After=niri.service
   '';
 
-   moveWorkspacesToMonitor = monitor: ''
-    niri msg action move-workspace-to-monitor --reference "main" "${monitor}";
-    niri msg action move-workspace-to-monitor --reference "chat" "${monitor}";
-    niri msg action move-workspace-to-monitor --reference "zotero" "${monitor}";
-  '';
+  moveWorkspacesCmd = "niri msg action move-workspace-to-monitor --reference \"main\" \"${mainMonitor}\"; niri msg action move-workspace-to-monitor --reference \"chat\" \"${mainMonitor}\"; niri msg action move-workspace-to-monitor --reference \"zotero\" \"${mainMonitor}\";";
 in
 {
   xdg.configFile = {
@@ -122,7 +118,7 @@ in
           name = "laptop-only";
           outputs = [
             {
-              criteria = "${builtinMonitor}";
+              criteria = builtinMonitor;
               mode = "2944x1840";
               scale = 1.75;
               status = "enable";
@@ -135,21 +131,21 @@ in
           name = "laptop-and-LG";
           outputs = [
             {
-              criteria = "${builtinMonitor}";
+              criteria = builtinMonitor;
               position = "360,1440";
               mode = "2944x1840";
               scale = 1.6;
               status = "enable";
             }
             {
-              criteria = "${mainMonitor}";
+              criteria = mainMonitor;
               position = "0,0";
               scale = 1.5;
               mode = "3840x2160";
               status = "enable";
             }
           ];
-          exec = moveWorkspacesToMonitor mainMonitor;
+          exec = moveWorkspacesCmd;
         };
       }
       {
@@ -157,21 +153,21 @@ in
           name = "LG-and-CEX";
           outputs = [
             {
-              criteria = "${mainMonitor}";
+              criteria = mainMonitor;
               position = "0,0";
               scale = 1.5;
               mode = "3840x2160";
               status = "enable";
             }
             {
-              criteria = "${subMonitor}";
+              criteria = subMonitor;
               position = "480,1440";
               scale = 1.25;
               mode = "2560x1600";
               status = "enable";
             }
           ];
-          exec = moveWorkspacesToMonitor mainMonitor;
+          exec = moveWorkspacesCmd;
         };
       }
     ];
