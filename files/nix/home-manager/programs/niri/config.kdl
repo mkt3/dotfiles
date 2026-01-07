@@ -73,6 +73,12 @@ input {
   // focus-follows-mouse max-scroll-amount="0%"
 }
 
+gestures {
+    hot-corners {
+        off
+    }
+}
+
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Layout
@@ -195,7 +201,7 @@ spawn-at-startup "waybar"
 
 hotkey-overlay {
   // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
-  // skip-at-startup
+  skip-at-startup
 }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
