@@ -1,113 +1,134 @@
 { config, pkgs, ... }:
+
 let
-  mainMonitor = "LG Electronics LG HDR 4K 0x00035468";
-  subMonitor = "PNP(CEX) CX133 0x00000001";
-  builtinMonitor = "eDP-1";
+  monitors = {
+    main    = "LG Electronics LG HDR 4K 0x00035468";
+    sub     = "PNP(CEX) CX133 0x00000001";
+    builtin = "eDP-1";
+  };
+
   afterNiriUnit = ''
     [Unit]
     After=niri.service
   '';
 
-  moveWorkspacesCmd = "niri msg action move-workspace-to-monitor --reference \"main\" \"${mainMonitor}\"; niri msg action move-workspace-to-monitor --reference \"chat\" \"${mainMonitor}\"; niri msg action move-workspace-to-monitor --reference \"zotero\" \"${mainMonitor}\";";
-in
-{
-  xdg.configFile = {
-    "niri/config.kdl".source = ./config.kdl;
-
-    "systemd/user/xremap.service.d/after-niri.conf".text = afterNiriUnit;
-
-    "systemd/user/xdg-desktop-portal-wlr.service.d/after-niri.conf".text = afterNiriUnit;
-
-    "hypr/hypridle.conf".text = ''
-      general {
-          lock_cmd = pidof hyprlock || hyprlock       # avoid starting multiple hyprlock instances.
-          before_sleep_cmd = loginctl lock-session    # lock before suspend.
-          after_sleep_cmd = hyprctl dispatch dpms on  # to avoid having to press a key twice to turn on the display.
-      }
-
-      listener {
-          timeout = 300                                # 5min.
-          on-timeout = brightnessctl -s set 10         # set monitor backlight to minimum, avoid 0 on OLED monitor.
-          on-resume = brightnessctl -r                 # monitor backlight restore.
-      }
-
-      # turn off keyboard backlight, comment out this section if you dont have a keyboard backlight.
-      listener {
-          timeout = 300                                          # 5min.
-          on-timeout = brightnessctl -sd rgb:kbd_backlight set 0 # turn off keyboard backlight.
-          on-resume = brightnessctl -rd rgb:kbd_backlight        # turn on keyboard backlight.
-      }
-
-      listener {
-          timeout = 600                                 # 10min
-          on-timeout = loginctl lock-session            # lock screen when timeout has passed
-      }
-
-      listener {
-          timeout = 630                                 # 10.5min
-          on-timeout = hyprctl dispatch dpms off        # screen off when timeout has passed
-          on-resume = hyprctl dispatch dpms on          # screen on when activity is detected after timeout has fired.
-      }
-
-      listener {
-          timeout = 1800                                # 30min
-          on-timeout = systemctl suspend                # suspend pc
-      }
-    '';
-
-    "hypr/hyprlock.conf".text = ''
-      general {
-        ignore_empty_input = true
-      }
-
-      background {
-        monitor =
-        blur_passes = 0
-        blur_size = 7
-        noise = 0.0117
-        contrast = 0.8916
-        brightness = 0.8172
-        vibrancy = 0.1696
-        vibrancy_darkness = 0.0
-      }
-
-      label {
-        monitor =
-        text = $TIME
-        font_size = 175
-        position = 0, 325
-        halign = center
-        valing = top
-      }
-
-      input-field {
-        monitor =
-        size = 200, 30
-        outline_thickness = 3
-        dots_size = 0.15
-        dots_spacing = 0.25
-        dots_center = false
-        dots_rounding = -1
-        rounding = -1
-        inner_color = rgb(175, 175, 175)
-        placeholder_text = $USER
-        position = 0, 100
-        halign = center
-        valign = bottom
-        check_color = rgb(94, 213, 45)
-        fail_color = rgb(191, 254, 0)
-        fail_text = <span color="white">Failed $ATTEMPTS times</span>
-        hide_input = false
-      }
-    '';
+  afterNiriDropIn = name: {
+    "systemd/user/${name}.d/after-niri.conf".text = afterNiriUnit;
   };
 
-  home.file.".zshenv".text = ''
-    # icons
-    export XCURSOR_PATH=/usr/share/icons:"${config.xdg.dataHome}/icons"
-  '';
+  output = {
+    criteria,
+    position ? null,
+    mode,
+    scale,
+    status ? "enable",
+  }: {
+    inherit criteria mode scale status;
+  } // (if position != null then { inherit position; } else {});
 
-  xdg.configFile."systemd/user/kanshi.service.d/after-niri.conf".text =  afterNiriUnit;
+  moveWorkspacesCmd =
+    let
+      workspaces = [ "main" "chat" "zotero" ];
+      move = ws:
+        "niri msg action move-workspace-to-monitor --reference \"${ws}\" \"${monitors.main}\"";
+    in
+      builtins.concatStringsSep "; " (map move workspaces) + ";";
+
+  lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
+  displayCmd = status:
+    "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
+
+in
+{
+  xdg.configFile =
+    {
+      "niri/config.kdl".source = ./config.kdl;
+    }
+    // afterNiriDropIn "xremap.service"
+    // afterNiriDropIn "kanshi.service"
+    // afterNiriDropIn "xdg-desktop-portal-wlr.service";
+
+  programs.swaylock = {
+  enable = true;
+
+  settings = {
+    # base
+    color = "3b4252";              # Polar Night
+    inside-color = "00000000";
+    inside-clear-color = "00000000";
+    inside-caps-lock-color = "00000000";
+    inside-ver-color = "00000000";
+    inside-wrong-color = "00000000";
+
+    # text
+    text-color = "d8dee9";         # Snow Storm
+    text-clear-color = "e5e9f0";
+    text-caps-lock-color = "d08770"; # Aurora orange
+    text-ver-color = "81a1c1";     # Frost
+    text-wrong-color = "bf616a";   # Aurora red
+
+    # key / backspace highlight
+    key-hl-color = "88c0d0";       # Frost cyan
+    bs-hl-color = "ebcb8b";        # Aurora yellow
+    caps-lock-key-hl-color = "a3be8c"; # Aurora green
+    caps-lock-bs-hl-color = "ebcb8b";
+
+    # ring
+    ring-color = "81a1c1";          # Frost
+    ring-clear-color = "8fbcbb";
+    ring-caps-lock-color = "d08770";
+    ring-ver-color = "5e81ac";
+    ring-wrong-color = "bf616a";
+
+    # line / layout (transparent)
+    line-color = "00000000";
+    line-clear-color = "00000000";
+    line-caps-lock-color = "00000000";
+    line-ver-color = "00000000";
+    line-wrong-color = "00000000";
+
+    layout-bg-color = "00000000";
+    layout-border-color = "00000000";
+    layout-text-color = "e5e9f0";
+
+    separator-color = "00000000";
+
+    image = "~/Nextcloud/Picture/wallpaper/nord.png";
+  };
+  };
+
+  services.swayidle = {
+    enable = true;
+
+    timeouts = [
+      {
+        timeout = 590;
+        command =
+          "${pkgs.libnotify}/bin/notify-send 'Locking in 10 minutes' -t 5000";
+      }
+      {
+        timeout = 600;
+        command = lockCmd;
+      }
+      {
+        timeout = 900;
+        command = displayCmd "off";
+        resumeCommand = displayCmd "on";
+      }
+      {
+        timeout = 1800;
+        command = "${pkgs.systemd}/bin/systemctl suspend";
+      }
+    ];
+
+    events = {
+      before-sleep = "${displayCmd "off"}; ${lockCmd}";
+      after-resume = displayCmd "on";
+      lock          = "${displayCmd "off"}; ${lockCmd}";
+      unlock        = displayCmd "on";
+    };
+  };
+
   services.kanshi = {
     enable = true;
     systemdTarget = "graphical-session.target";
@@ -117,55 +138,52 @@ in
         profile = {
           name = "laptop-only";
           outputs = [
-            {
-              criteria = builtinMonitor;
-              mode = "2944x1840";
-              scale = 1.75;
-              status = "enable";
-            }
+            (output {
+              criteria = monitors.builtin;
+              mode     = "2944x1840";
+              scale    = 1.75;
+            })
           ];
         };
       }
+
       {
         profile = {
           name = "laptop-and-LG";
           outputs = [
-            {
-              criteria = builtinMonitor;
+            (output {
+              criteria = monitors.builtin;
               position = "360,1440";
-              mode = "2944x1840";
-              scale = 1.6;
-              status = "enable";
-            }
-            {
-              criteria = mainMonitor;
+              mode     = "2944x1840";
+              scale    = 1.6;
+            })
+            (output {
+              criteria = monitors.main;
               position = "0,0";
-              scale = 1.5;
-              mode = "3840x2160";
-              status = "enable";
-            }
+              mode     = "3840x2160";
+              scale    = 1.5;
+            })
           ];
           exec = moveWorkspacesCmd;
         };
       }
+
       {
         profile = {
           name = "LG-and-CEX";
           outputs = [
-            {
-              criteria = mainMonitor;
+            (output {
+              criteria = monitors.main;
               position = "0,0";
-              scale = 1.5;
-              mode = "3840x2160";
-              status = "enable";
-            }
-            {
-              criteria = subMonitor;
+              mode     = "3840x2160";
+              scale    = 1.5;
+            })
+            (output {
+              criteria = monitors.sub;
               position = "480,1440";
-              scale = 1.25;
-              mode = "2560x1600";
-              status = "enable";
-            }
+              mode     = "2560x1600";
+              scale    = 1.25;
+            })
           ];
           exec = moveWorkspacesCmd;
         };

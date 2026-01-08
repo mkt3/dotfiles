@@ -19,13 +19,15 @@
     useNautilus = false;
   };
 
-  programs.hyprlock.enable = true;
-  services.hypridle.enable = true;
-
-  security.polkit.enable = true;
-
   services.gnome.gnome-keyring.enable = true;
-  security.pam.services.greetd.enableGnomeKeyring = true;
+
+  security = {
+    polkit.enable = true;
+    pam.services = {
+      greetd.enableGnomeKeyring = true;
+      swaylock = {};
+    };
+  };
 
   programs.gnupg.agent = {
     enable = true;

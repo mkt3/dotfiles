@@ -196,6 +196,8 @@ layout {
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
 
+
+
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
@@ -241,6 +243,7 @@ animations {
 //       path "${lib.getExe pkgs.xwayland-satellite}"
 // }
 
+spawn-sh-at-startup "swaybg -i ~/Nextcloud/Picture/wallpaper/nord.png -m stretch"
 spawn-sh-at-startup "nextcloud --background"
 spawn-sh-at-startup "thunar --daemon"
 spawn-at-startup "wezterm"
@@ -368,7 +371,7 @@ binds {
   // Suggested binds for running programs: terminal, app launcher, screen locker.
   Mod+T hotkey-overlay-title="Open a Terminal: wezterm" { spawn "wezterm"; }
   Super+Space hotkey-overlay-title="Run an Application: rofi" repeat=false { spawn-sh "rofi -show combi"; }
-  Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+  Alt+Ctrl+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
   // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
   // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
