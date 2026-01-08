@@ -93,7 +93,7 @@ in
 
     separator-color = "00000000";
 
-    image = "~/Nextcloud/Picture/wallpaper/nord.png";
+    image = "~/Nextcloud/Picture/wallpaper/nord_lock.png";
   };
   };
 
