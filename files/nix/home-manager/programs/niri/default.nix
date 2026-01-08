@@ -49,52 +49,52 @@ in
     // afterNiriDropIn "xdg-desktop-portal-wlr.service";
 
   programs.swaylock = {
-  enable = true;
+    enable = true;
 
-  settings = {
-    # base
-    color = "3b4252";              # Polar Night
-    inside-color = "00000000";
-    inside-clear-color = "00000000";
-    inside-caps-lock-color = "00000000";
-    inside-ver-color = "00000000";
-    inside-wrong-color = "00000000";
+    settings = {
+      # base
+      color = "3b4252";              # Polar Night
+      inside-color = "00000000";
+      inside-clear-color = "00000000";
+      inside-caps-lock-color = "00000000";
+      inside-ver-color = "00000000";
+      inside-wrong-color = "00000000";
 
-    # text
-    text-color = "d8dee9";         # Snow Storm
-    text-clear-color = "e5e9f0";
-    text-caps-lock-color = "d08770"; # Aurora orange
-    text-ver-color = "81a1c1";     # Frost
-    text-wrong-color = "bf616a";   # Aurora red
+      # text
+      text-color = "d8dee9";         # Snow Storm
+      text-clear-color = "e5e9f0";
+      text-caps-lock-color = "d08770"; # Aurora orange
+      text-ver-color = "81a1c1";     # Frost
+      text-wrong-color = "bf616a";   # Aurora red
 
-    # key / backspace highlight
-    key-hl-color = "88c0d0";       # Frost cyan
-    bs-hl-color = "ebcb8b";        # Aurora yellow
-    caps-lock-key-hl-color = "a3be8c"; # Aurora green
-    caps-lock-bs-hl-color = "ebcb8b";
+      # key / backspace highlight
+      key-hl-color = "88c0d0";       # Frost cyan
+      bs-hl-color = "ebcb8b";        # Aurora yellow
+      caps-lock-key-hl-color = "a3be8c"; # Aurora green
+      caps-lock-bs-hl-color = "ebcb8b";
 
-    # ring
-    ring-color = "81a1c1";          # Frost
-    ring-clear-color = "8fbcbb";
-    ring-caps-lock-color = "d08770";
-    ring-ver-color = "5e81ac";
-    ring-wrong-color = "bf616a";
+      # ring
+      ring-color = "81a1c1";          # Frost
+      ring-clear-color = "8fbcbb";
+      ring-caps-lock-color = "d08770";
+      ring-ver-color = "5e81ac";
+      ring-wrong-color = "bf616a";
 
-    # line / layout (transparent)
-    line-color = "00000000";
-    line-clear-color = "00000000";
-    line-caps-lock-color = "00000000";
-    line-ver-color = "00000000";
-    line-wrong-color = "00000000";
+      # line / layout (transparent)
+      line-color = "00000000";
+      line-clear-color = "00000000";
+      line-caps-lock-color = "00000000";
+      line-ver-color = "00000000";
+      line-wrong-color = "00000000";
 
-    layout-bg-color = "00000000";
-    layout-border-color = "00000000";
-    layout-text-color = "e5e9f0";
+      layout-bg-color = "00000000";
+      layout-border-color = "00000000";
+      layout-text-color = "e5e9f0";
 
-    separator-color = "00000000";
+      separator-color = "00000000";
 
-    image = "~/Nextcloud/Picture/wallpaper/nord_lock.png";
-  };
+      image = "~/Nextcloud/Picture/wallpaper/nord_lock.png";
+    };
   };
 
   services.swayidle = {
