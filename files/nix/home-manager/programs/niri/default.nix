@@ -54,6 +54,9 @@ in
     enable = true;
 
     settings = {
+      indicator-idle-visible  = true;
+      image = "${config.home.homeDirectory}/Nextcloud/Picture/wallpaper/nord.png";
+
       # base
       color = "3b4252";              # Polar Night
       inside-color = "00000000";
@@ -94,8 +97,6 @@ in
       layout-text-color = "e5e9f0";
 
       separator-color = "00000000";
-
-      image = "${config.home.homeDirectory}/Nextcloud/Picture/wallpaper/nord_lock.png";
     };
   };
 
