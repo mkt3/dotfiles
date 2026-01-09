@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 declare -A SYSTEM_DICT=(
-    ["Reboot"]="systemctl reboot"
-    ["Sleep"]="systemctl suspend"
-    ["Poweroff"]="systemctl poweroff"
+    ["Reboot"]="reboot"
+    ["Sleep"]="suspend"
+    ["Poweroff"]="poweroff"
 )
 
 IFS=$'\n'
 if [[ $# -ne 0 ]]; then
-    eval "${SYSTEM_DICT[$1]}" &> /dev/null &
+    action="${SYSTEM_DICT[$1]-}"
+    if [ -z "$action" ]; then
+        exit 0
+    fi
+    systemctl "$action" &> /dev/null &
     exit 0
 else
     echo "${!SYSTEM_DICT[*]}"

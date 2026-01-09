@@ -1,7 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   source = (pkgs.callPackage ../../../_sources/generated.nix { }).meetingbar;
-  lib = pkgs.lib;
   stdenvNoCC = pkgs.stdenvNoCC;
   hdiutil = "/usr/bin/hdiutil";
 in

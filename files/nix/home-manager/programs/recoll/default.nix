@@ -1,12 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, isDarwin, ... }:
 
 let
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
-
   dataDir =
     if isDarwin
-    then "~/GoogleDrive/local_data_dir"
-    else "~/Nextcloud";
+    then "${config.home.homeDirectory}/GoogleDrive/local_data_dir"
+    else "${config.home.homeDirectory}/Nextcloud";
 
   recollHelperPath =
     if isDarwin
@@ -21,7 +19,7 @@ let
     else "";
 in
 {
-  home.packages = pkgs.lib.mkIf (!isDarwin) [ pkgs.recoll ];
+  home.packages = lib.optionals (!isDarwin) [ pkgs.recoll ];
 
   xdg.configFile."recoll/recoll.conf" = {
     text = ''
@@ -37,7 +35,7 @@ in
     '';
   };
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # recoll
     export RECOLL_CONFDIR="${config.xdg.configHome}/recoll"
     ${recollPathEnv}

@@ -1,5 +1,6 @@
 {
   pkgs,
+  homeDirectory,
   hostname,
   username,
   ...
@@ -73,13 +74,13 @@
         largesize = 96;
         show-recents = false;
         static-only = true;
-        mru-spaces = false; # disable automatical rearrange spaces
+        mru-spaces = false; # disable automatic rearrange spaces
         launchanim = false;
       };
 
       screencapture = {
         disable-shadow = true;
-        location = "~/Downloads";
+        location = "${homeDirectory}/Downloads";
       };
 
     };

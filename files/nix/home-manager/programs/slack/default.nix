@@ -1,8 +1,6 @@
-{ config, pkgs, ... }:
+{ pkgs, lib, isDarwin, ... }:
 {
   home.packages =
-    if pkgs.stdenv.hostPlatform.isDarwin then
-      [ pkgs.brewCasks.slack ]
-    else
-      [ pkgs.slack ];
+    lib.optionals isDarwin [ pkgs.brewCasks.slack ]
+    ++ lib.optionals (!isDarwin) [ pkgs.slack ];
 }

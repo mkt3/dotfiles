@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, isLinux, ... }:
 {
   programs.chromium = {
     enable = true;
     package = pkgs.vivaldi;
-    commandLineArgs = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+    commandLineArgs = lib.optionals isLinux [
       "--enable-features=WebUIDarkMode"
       "--force-dark-mode"
       "--enable-features=UseOzonePlatform"

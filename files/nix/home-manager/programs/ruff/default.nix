@@ -1,10 +1,10 @@
-{ ... }:
+{ config, ... }:
 {
   programs.ruff = {
     enable = true;
     settings = {
       # cache-dir
-      cache-dir = "~/.cache/ruff";
+      cache-dir = "${config.xdg.cacheHome}/ruff";
       # Exclude a variety of commonly ignored directories.
       exclude = [
         ".bzr"

@@ -3,7 +3,7 @@
 
   home.file.".local/bin/_setup_macos.sh" = {
     executable = true;
-    source = ./_setup_macos.sh;
+    text = builtins.readFile ./_setup_macos.sh;
     onChange = "${config.home.homeDirectory}/.local/bin/_setup_macos.sh";
   };
 

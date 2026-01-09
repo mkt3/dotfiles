@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 pre_setup_nix() {
     info "Creating symlink for nix"
@@ -19,7 +19,7 @@ pre_setup_nix() {
 
     mkdir -p "${REPO_DIR}/results"
 
-       if [ -f "$nvfetcher_last_run_file" ]; then
+    if [ -f "$nvfetcher_last_run_file" ]; then
         local last_run_timestamp
         last_run_timestamp=$(cat "$nvfetcher_last_run_file" 2>/dev/null || echo 0)
 
@@ -38,7 +38,7 @@ pre_setup_nix() {
         info "Updating nix packages with nvfetcher (more than 24 hours elapsed or first run)"
         local nvfetcher_command
 
-        if type nvfetcher > /dev/null 2>&1; then
+        if command -v nvfetcher > /dev/null 2>&1; then
             nvfetcher_command=(nvfetcher)
         else
             nvfetcher_command=(nix --extra-experimental-features "nix-command flakes" run github:berberman/nvfetcher --)
@@ -62,7 +62,7 @@ pre_setup_nix() {
         cp -f "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
     fi
 
-    rm -rf  "${XDG_CONFIG_HOME}/nix"
+    rm -rf -- "${XDG_CONFIG_HOME}/nix"
     cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"
 
     mv "$nix_main_template_flake" "$nix_main_flake"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 # variable
 # shellcheck source=/dev/null
@@ -37,7 +37,7 @@ install_macos() {
         xcode-select --install
     fi
 
-    if ! (type brew > /dev/null 2>&1); then
+    if ! command -v brew > /dev/null 2>&1; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 }
@@ -56,8 +56,8 @@ install_linux() {
 }
 
 install_nix() {
-    if (type nix > /dev/null 2>&1); then
-        exit 0
+    if command -v nix > /dev/null 2>&1; then
+        return 0
     fi
 
     sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)

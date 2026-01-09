@@ -1,34 +1,24 @@
 #!/usr/bin/env bash
-set -E
-set -e
-set -o pipefail
+set -euo pipefail
 
 declare -A CONNECTION_DICT
 
 declare SELECTED_CONNECTION=""
 
 determine_connection_list(){
-    local active_connections=""
-    local available_connections=""
+    local -a active_connections=()
+    local -a available_connections=()
 
-    available_connections=$(nmcli --mode tabular --terse connection show | grep -E "(vpn|wireguard)" | cut -d ":" -f1) || true
+    mapfile -t available_connections < <(nmcli --mode tabular --terse connection show | grep -E "(vpn|wireguard)" | cut -d ":" -f1 || true)
+    for connection in "${available_connections[@]}"; do
+        CONNECTION_DICT["$connection"]="Inactive"
+    done
 
-    if [[ $available_connections ]]; then
-        for connection in "${available_connections[@]}"
-        do
-            CONNECTION_DICT[$connection]="Inactive"
-        done
-    fi
-
-    active_connections=$(nmcli --mode tabular --terse connection show --active | grep -E "(vpn|wireguard)" | cut -d ':' -f1) || true
-    if [[ $active_connections ]]; then
-        for connection in "${active_connections[@]}"
-        do
-            CONNECTION_DICT[$connection]="Active"
-        done
-    fi
+    mapfile -t active_connections < <(nmcli --mode tabular --terse connection show --active | grep -E "(vpn|wireguard)" | cut -d ':' -f1 || true)
+    for connection in "${active_connections[@]}"; do
+        CONNECTION_DICT["$connection"]="Active"
+    done
     return 0
-
 }
 
 activate_connection(){
@@ -47,7 +37,7 @@ main(){
     if [[ $# -eq 0 ]]; then
         for connection in "${!CONNECTION_DICT[@]}"
         do
-            echo "VPN connecitons - ${CONNECTION_DICT[$connection]}:${connection}"
+            echo "VPN connections - ${CONNECTION_DICT[$connection]}:${connection}"
         done
         return 0
     fi

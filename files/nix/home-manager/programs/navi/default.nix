@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   home.packages = [ pkgs.navi ];
 
@@ -7,7 +7,7 @@
     "navi/cheats".source = ./cheats;
   };
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # navi
     export NAVI_CONFIG="${config.xdg.configHome}/navi/config.yaml"
   '';

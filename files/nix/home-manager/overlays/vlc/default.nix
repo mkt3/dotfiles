@@ -1,5 +1,6 @@
 final: prev:
 let
+  isLinux = prev.stdenv.hostPlatform.isLinux;
   meta = prev.vlc.meta // {
     description = "Cross-platform media player and streaming server";
     platforms = prev.vlc.meta.platforms ++ prev.lib.platforms.darwin;
@@ -7,7 +8,7 @@ let
 in
 {
   vlc =
-    if prev.stdenv.hostPlatform.isLinux then
+    if isLinux then
       prev.vlc.overrideAttrs (old: {
         inherit meta;
       })

@@ -9,7 +9,7 @@ ssh-keygen -t rsa -b 4096
 # Import my public key
 wget -O - https://github.com/mkt3.keys >> ~/.ssh/authorized_keys
 
-# Remode key from known_hosts
+# Remove key from known_hosts
 ssh-keygen -R <hostname>
 
 # Scp with rsync

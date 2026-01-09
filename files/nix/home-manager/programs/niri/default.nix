@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
+  notifySend = lib.getExe' pkgs.libnotify "notify-send";
+  systemctl = lib.getExe' pkgs.systemd "systemctl";
   monitors = {
     main    = "LG Electronics LG HDR 4K 0x00035468";
     sub     = "PNP(CEX) CX133 0x00000001";
@@ -34,9 +36,9 @@ let
     in
       builtins.concatStringsSep "; " (map move workspaces) + ";";
 
-  lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
+  lockCmd = "${lib.getExe pkgs.swaylock} --daemonize";
   displayCmd = status:
-    "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
+    "${lib.getExe pkgs.niri} msg action power-${status}-monitors";
 
 in
 {
@@ -93,7 +95,7 @@ in
 
       separator-color = "00000000";
 
-      image = "~/Nextcloud/Picture/wallpaper/nord_lock.png";
+      image = "${config.home.homeDirectory}/Nextcloud/Picture/wallpaper/nord_lock.png";
     };
   };
 
@@ -104,7 +106,7 @@ in
       {
         timeout = 590;
         command =
-          "${pkgs.libnotify}/bin/notify-send 'Locking in 10 minutes' -t 5000";
+          "${notifySend} 'Locking in 10 minutes' -t 5000";
       }
       {
         timeout = 600;
@@ -117,7 +119,7 @@ in
       }
       {
         timeout = 1800;
-        command = "${pkgs.systemd}/bin/systemctl suspend";
+        command = "${systemctl} suspend";
       }
     ];
 

@@ -1,12 +1,9 @@
-{ pkgs, ... }:
-let
-  lib = pkgs.lib;
-in
+{ config, ... }:
 {
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    includes = [ "~/.ssh/extra_config" ];
+    includes = [ "${config.home.homeDirectory}/.ssh/extra_config" ];
     matchBlocks."*" = {
       forwardAgent = false;
       serverAliveInterval = 60;
@@ -14,9 +11,9 @@ in
       compression = false;
       addKeysToAgent = "no";
       hashKnownHosts = true;
-      userKnownHostsFile = "~/.ssh/known_hosts";
+      userKnownHostsFile = "${config.home.homeDirectory}/.ssh/known_hosts";
       controlMaster = "no";
-      controlPath = "~/.ssh/master-%r@%n:%p";
+      controlPath = "${config.home.homeDirectory}/.ssh/master-%r@%n:%p";
       controlPersist = "no";
     };
   };

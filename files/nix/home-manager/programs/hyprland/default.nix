@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   wayland.windowManager.hyprland = {
     # Whether to enable Hyprland wayland compositor
@@ -196,7 +196,7 @@
     };
   };
 
-  home.file.".config/hypr/hypridle.conf".text = ''
+  xdg.configFile."hypr/hypridle.conf".text = ''
     general {
         lock_cmd = pidof hyprlock || hyprlock       # avoid starting multiple hyprlock instances.
         before_sleep_cmd = loginctl lock-session    # lock before suspend.
@@ -233,7 +233,7 @@
     }
   '';
 
-  home.file.".config/hypr/hyprlock.conf".text = ''
+  xdg.configFile."hypr/hyprlock.conf".text = ''
     general {
       ignore_empty_input = true
     }
@@ -279,7 +279,7 @@
     }
   '';
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # icons
     export XCURSOR_PATH=/usr/share/icons:"${config.xdg.dataHome}/icons"
   '';

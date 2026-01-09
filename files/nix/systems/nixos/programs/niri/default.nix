@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   username,
   ...
 }:
@@ -8,7 +9,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.lib.getExe pkgs.tuigreet} --time --asterisks --cmd niri-session";
+        command = "${lib.getExe pkgs.tuigreet} --time --asterisks --cmd niri-session";
         user = "greeter";
       };
     };
@@ -89,7 +90,7 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
-    settings.General.Experimenal = true;
+    settings.General.Experimental = true;
   };
   services.blueman.enable = true;
 

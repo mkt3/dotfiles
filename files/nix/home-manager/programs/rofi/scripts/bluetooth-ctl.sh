@@ -1,19 +1,38 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 declare -A BLUETOOTH_DICT=(
-    ["bluetooth on"]="bluetoothctl power on && notify-send -u low \"bluetooth on\""
-    ["bluetooth off"]="bluetoothctl power off && notify-send -u low \"bluetooth off\""
+    ["bluetooth on"]="power|on|bluetooth on"
+    ["bluetooth off"]="power|off|bluetooth off"
 )
 
-while read -r LINE; do
-    device_name=$(echo "$LINE" | cut -d ' ' -f 3-)
-    mac_address=$(echo "$LINE" | cut -d ' ' -f 2)
-    BLUETOOTH_DICT["bluetooth connect $device_name"]="bluetoothctl power on && bluetoothctl connect $mac_address"
+while read -r line; do
+    device_name=$(echo "$line" | cut -d ' ' -f 3-)
+    mac_address=$(echo "$line" | cut -d ' ' -f 2)
+    if [ -n "$device_name" ] && [ -n "$mac_address" ]; then
+        BLUETOOTH_DICT["bluetooth connect $device_name"]="connect|$mac_address|"
+    fi
 done < <(bluetoothctl devices)
 
 IFS=$'\n'
 if [[ $# -ne 0 ]]; then
-    eval "${BLUETOOTH_DICT[$1]}"  &> /dev/null &
+    action_spec="${BLUETOOTH_DICT[$1]-}"
+    if [ -z "$action_spec" ]; then
+        exit 0
+    fi
+    IFS='|' read -r action arg notify <<< "$action_spec"
+    case "$action" in
+        power)
+            bluetoothctl power "$arg" &> /dev/null
+            if [ -n "$notify" ]; then
+                notify-send -u low "$notify" &> /dev/null
+            fi
+            ;;
+        connect)
+            bluetoothctl power on &> /dev/null
+            bluetoothctl connect "$arg" &> /dev/null
+            ;;
+    esac
     exit 0
 else
     echo "${!BLUETOOTH_DICT[*]}"

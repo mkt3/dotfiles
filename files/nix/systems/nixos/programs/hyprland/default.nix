@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   username,
   ...
 }:
@@ -9,7 +10,7 @@
     settings = {
       default_session = {
         command = ''
-          ${pkgs.tuigreet}/bin/tuigreet --time --asterisks --cmd start-hyprland
+          ${lib.getExe pkgs.tuigreet} --time --asterisks --cmd start-hyprland
         '';
         user = username;
       };
@@ -87,7 +88,7 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
-    settings.General.Experimenal = true;
+    settings.General.Experimental = true;
   };
   services.blueman.enable = true;
 

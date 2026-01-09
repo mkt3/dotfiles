@@ -1,5 +1,6 @@
 final: prev:
 let
+  isLinux = prev.stdenv.hostPlatform.isLinux;
   meta = prev.vivaldi.meta // {
     description = "A Browser for our Friends powerful and personal";
     platforms = prev.vivaldi.meta.platforms ++ prev.lib.platforms.darwin;
@@ -7,7 +8,7 @@ let
 in
 {
   vivaldi =
-    if prev.stdenv.hostPlatform.isLinux then
+    if isLinux then
       prev.vivaldi.overrideAttrs (old: {
         inherit meta;
       })

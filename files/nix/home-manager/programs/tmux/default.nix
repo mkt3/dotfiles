@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   programs.tmux = {
     enable = true;
@@ -12,7 +12,7 @@
     historyLimit = 10000;
     shortcut = "q";
     secureSocket = true;
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = lib.getExe pkgs.zsh;
     newSession = true;
     customPaneNavigationAndResize = true;
     resizeAmount = 5;
@@ -37,7 +37,7 @@
     extraConfig = ''
       set -g set-clipboard on
 
-      bind r source-file ~/.config/tmux/tmux.conf \; display "tmux.conf has been reloaded"
+      bind r source-file ${config.xdg.configHome}/tmux/tmux.conf \; display "tmux.conf has been reloaded"
 
       bind | split-window -h
 
@@ -65,7 +65,7 @@
       bind t popup -w90% -h90% -E btm -b
       bind b popup -w90% -h90% -E btm
       bind g popup -w90% -h90% -d '#{pane_current_path}' -E lazygit
-      bind o popup -w90% -h90% -E $HOME/.local/bin/tmux_session.sh
+      bind o popup -w90% -h90% -E ${config.home.homeDirectory}/.local/bin/tmux_session.sh
       bind n popup -w90% -h90% -E 'window=$(tmux display -p -F "#S:#I.#P") && export FZF_DEFAULT_OPTS="-m --layout=reverse --border" && navi --print | tr -d "\n" | tmux load-buffer -b tmp - && tmux paste-buffer -drp -t $window -b tmp'
 
       set-option -g status-left-length 60

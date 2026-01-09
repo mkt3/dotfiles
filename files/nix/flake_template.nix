@@ -81,6 +81,10 @@
             ]
         );
       };
+      isLinux = pkgs.stdenv.hostPlatform.isLinux;
+      isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+      isNixOS =
+        pkgs.stdenv.hostPlatform.isLinux && (builtins.match ".*nixos.*" (pkgs.stdenv.system) != null);
 
       specialArgs = inputs // {
         inherit
@@ -89,6 +93,9 @@
           hostname
           homeDirectory
           isGUI
+          isLinux
+          isDarwin
+          isNixOS
           ;
       };
     in

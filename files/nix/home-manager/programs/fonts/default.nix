@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, isLinux, ... }:
 {
   fonts.fontconfig = {
     enable = true;
-    defaultFonts = pkgs.lib.mkIf (pkgs.stdenv.hostPlatform.isLinux) {
+    defaultFonts = lib.optionalAttrs isLinux {
       serif = [
         "Noto Serif"
         "Noto Color Emoji"

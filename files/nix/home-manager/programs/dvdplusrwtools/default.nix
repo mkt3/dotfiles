@@ -1,8 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   home.packages = [ pkgs.dvdplusrwtools ];
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # dvdcss
     export DVDCSS_CACHE="${config.xdg.dataHome}/dvdcss"
   '';

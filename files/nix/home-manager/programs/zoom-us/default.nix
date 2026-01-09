@@ -1,12 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, isDarwin, ... }:
 {
   home.packages =
-    if pkgs.stdenv.hostPlatform.isDarwin then
-      [ pkgs.brewCasks.zoom ]
-    else
-      [ pkgs.zoom-us ];
+    lib.optionals isDarwin [ pkgs.brewCasks.zoom ]
+    ++ lib.optionals (!isDarwin) [ pkgs.zoom-us ];
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # zoom
     export SSB_HOME="${config.xdg.dataHome}/zoom"
   '';

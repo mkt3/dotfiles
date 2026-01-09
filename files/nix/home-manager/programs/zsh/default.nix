@@ -2,6 +2,7 @@
   pkgs,
   config,
   isGUI,
+  isLinux,
   lib,
   ...
 }:
@@ -174,12 +175,15 @@ in
       history = "history -i";
       wea = "(){ curl -H \"Accept-Language: ${commonLanguage}\" -t-compressed \"wttr.in/\${1:-Tokyo}\" }";
     }
-    // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+    // lib.optionalAttrs isLinux {
       open = "xdg-open";
     };
   };
 
-  home.file.".local/bin/tmux_session.sh".source = ./tmux_session.sh;
+  home.file.".local/bin/tmux_session.sh" = {
+    text = builtins.readFile ./tmux_session.sh;
+    executable = true;
+  };
 
   xdg.configFile = {
     "zsh/no_defer.zsh" = {

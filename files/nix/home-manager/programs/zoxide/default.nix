@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   programs.zoxide = {
     enable = true;
@@ -6,7 +6,7 @@
     options = [ "--cmd cd" ];
   };
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # zoxide
     export _ZO_DATA_DIR="${config.xdg.dataHome}"
     export _ZO_FZF_OPTS="--tmux 80%"

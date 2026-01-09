@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   programs.matplotlib = {
     enable = true;
@@ -8,7 +8,7 @@
     };
   };
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # python
     export PYTHONUSERBASE="${config.home.homeDirectory}/.local"
     export PYTHONDONTWRITEBYTECODE=1

@@ -88,7 +88,7 @@
 # Click wallpaper to show desktop items – Only in Stage Manager
 /usr/bin/defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
-# Enable "Automatically switch to a ocument's input source"
+# Enable "Automatically switch to a document's input source"
 /usr/bin/defaults write com.apple.HIToolbox AppleGlobalTextInputProperties -dict TextInputGlobalPropertyPerContextInput -int 1
 
 # Display app switcher to all display

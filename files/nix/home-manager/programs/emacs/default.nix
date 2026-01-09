@@ -1,13 +1,13 @@
 {
   pkgs,
   config,
+  lib,
+  isLinux,
+  isDarwin,
   isGUI,
   ...
 }:
 let
-  lib = pkgs.lib;
-  isLinux = pkgs.stdenv.hostPlatform.isLinux;
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 in
 {
   programs.emacs = {
@@ -59,7 +59,7 @@ in
       ];
   };
 
-  xdg.desktopEntries = lib.mkIf (isGUI && isLinux) {
+  xdg.desktopEntries = lib.optionalAttrs (isGUI && isLinux) {
     emacs = {
       name = "Emacs";
       genericName = "Text Editor";
@@ -95,56 +95,57 @@ in
     };
   };
 
-  xdg.configFile = {
-    "emacs/README.org" = {
-      source = ./README.org;
-      onChange = "rm -f ${config.xdg.configHome}/emacs/README.el";
-    };
-    "emacs/early-init.el".source = ./early-init.el;
-    "emacs/init.el".source = ./init.el;
-    "emacs/templates".source = ./templates;
-    "emacs/ddskk.d/init.el".source = ./ddskk.d/init.el;
-    "enchant/en_US.dic" = lib.mkIf isGUI {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Nextcloud/personal_config/enchant/dict/en_US.dic";
+  xdg.configFile =
+    {
+      "emacs/README.org" = {
+        source = ./README.org;
+        onChange = "rm -f ${config.xdg.configHome}/emacs/README.el";
+      };
+      "emacs/early-init.el".source = ./early-init.el;
+      "emacs/init.el".source = ./init.el;
+      "emacs/templates".source = ./templates;
+      "emacs/ddskk.d/init.el".source = ./ddskk.d/init.el;
+
+      "zsh/defer.zsh" = {
+        text = lib.mkMerge (
+          [
+            ''
+              if [[ "$TERM" == "dumb" ]]; then
+                unsetopt zle
+                unsetopt prompt_cr
+                unsetopt prompt_subst
+                unfunction precmd
+                unfunction preexec
+                PS1='$ '
+              fi
+            ''
+          ]
+          ++ lib.optionals isDarwin [
+            ''
+              alias emacs="${config.home.homeDirectory}/Applications/Home\ Manager\ Apps/Emacs.app/Contents/MacOS/Emacs -nw"
+            ''
+          ]
+          ++ lib.optionals isLinux [
+            ''
+              if [[ -f "/usr/lib/x86_64-linux-gnu/libnss_sss.so.2" ]]; then
+                alias emacs="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libnss_sss.so.2 emacs -nw"
+              else
+                alias emacs="emacs -nw"
+              fi
+            ''
+          ]
+        );
+      };
+    }
+    // lib.optionalAttrs isGUI {
+      "enchant/en_US.dic" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Nextcloud/personal_config/enchant/dict/en_US.dic";
+      };
     };
 
-    "zsh/defer.zsh" = {
-      text = lib.mkMerge (
-        [
-          ''
-            if [[ "$TERM" == "dumb" ]]; then
-              unsetopt zle
-              unsetopt prompt_cr
-              unsetopt prompt_subst
-              unfunction precmd
-              unfunction preexec
-              PS1='$ '
-            fi
-          ''
-        ]
-        ++ lib.optionals isDarwin [
-          ''
-            alias emacs="${config.home.homeDirectory}/Applications/Home\ Manager\ Apps/Emacs.app/Contents/MacOS/Emacs -nw"
-          ''
-        ]
-        ++ lib.optionals isLinux [
-          ''
-            if [[ -f "/usr/lib/x86_64-linux-gnu/libnss_sss.so.2" ]]; then
-              alias emacs="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libnss_sss.so.2 emacs -nw"
-            else
-              alias emacs="emacs -nw"
-            fi
-          ''
-        ]
-      );
-    };
-  };
-
-  home.file.".zshenv" = lib.mkIf isGUI {
-    text = ''
-      # password store
-      export PASSWORD_STORE_DIR="${config.home.homeDirectory}/Nextcloud/personal_config/password-store"
-    '';
-  };
+  programs.zsh.envExtra = lib.mkAfter (lib.optionalString isGUI ''
+    # password store
+    export PASSWORD_STORE_DIR="${config.home.homeDirectory}/Nextcloud/personal_config/password-store"
+  '');
 
 }

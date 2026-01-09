@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-set -eu
-set -o pipefail
+set -euo pipefail
+
+script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+repo_dir="$(CDPATH= cd -- "${script_dir}/.." && pwd)"
+ENV_FILE="${ENV_FILE:-${repo_dir}/results/env_settings}"
 
 ask_prompt() {
     local prompt="$1"
@@ -11,7 +14,7 @@ ask_prompt() {
     while true; do
         read -r -p "$prompt: " answer
         if [[ -n "$answer" ]]; then
-            eval "$result_var=\"$answer\""
+            printf -v "$result_var" '%s' "$answer"
             break
         fi
         echo "Input cannot be empty. Please enter a value."
@@ -26,8 +29,8 @@ ask_yes_no() {
     while true; do
         read -r -p "$prompt (y/n): " answer
         case "$answer" in
-            [Yy]* ) eval "$result_var=\"y\""; break;;
-            [Nn]* ) eval "$result_var=\"n\""; break;;
+            [Yy]* ) printf -v "$result_var" '%s' "y"; break;;
+            [Nn]* ) printf -v "$result_var" '%s' "n"; break;;
             * ) echo "Please answer y or n.";;
         esac
     done

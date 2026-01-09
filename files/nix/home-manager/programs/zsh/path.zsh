@@ -1,13 +1,14 @@
-# Paltform Arch
-export OS=`uname -s`
-export ARCH=`uname -m`
+# Platform Arch
+export OS="$(uname -s)"
+export ARCH="$(uname -m)"
 DISTRO="$OS"
 if [ "$DISTRO" = "Linux" ];then
-    DISTRO=$(grep -oP '(?<=^NAME=).+' /etc/os-release | tr -d '"')
+    DISTRO=$(awk -F= '$1=="NAME"{print $2}' /etc/os-release | tr -d '"')
 fi
 
 # PATH
 XDG_STATE_HOME=${XDG_STATE_HOME:-${HOME}/.local/state}
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 if [ "$DISTRO" = 'NixOS' ];then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:/etc/profiles/per-user/${USER}/bin:/run/wrappers/bin:${PATH}"
@@ -22,7 +23,7 @@ elif [ "$DISTRO" = 'Darwin' ];then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"
     export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:${PATH}"
-    export NIX_PATH="darwin-config=$HOME/.conifg/nix/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
+    export NIX_PATH="darwin-config=${XDG_CONFIG_HOME}/nix/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
     export NIX_SSL_CERT_FILE="/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
     export XDG_CONFIG_DIRS="/run/current-system/sw/etc/xdg:/nix/var/nix/profiles/default/etc/xdg"
     export XDG_DATA_DIRS="/run/current-system/sw/share:/nix/var/nix/profiles/default/share"
@@ -34,8 +35,8 @@ elif [ "$DISTRO" = 'Darwin' ];then
          export NIX_REMOTE=daemon
     fi
 else # for linux (except NIXOS)
-    LINUX_DEFAULT_PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
-    export PATH="$LINUX_DEFAULT_PATH"
+    LINUX_DEFAULT_PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    export PATH="${LINUX_DEFAULT_PATH}:${PATH}"
 
     if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
         . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'

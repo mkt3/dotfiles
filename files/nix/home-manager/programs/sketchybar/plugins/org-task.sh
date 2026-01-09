@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TASK=$(cat ~/.config/emacs/org-clock-current-task.txt)
+TASK=$(cat "${XDG_CONFIG_HOME:-${HOME}/.config}/emacs/org-clock-current-task.txt" 2>/dev/null || true)
 
 if [[ "$TASK" != "" ]]; then
     ICON=""

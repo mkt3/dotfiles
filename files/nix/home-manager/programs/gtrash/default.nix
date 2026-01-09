@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   home.packages = [ pkgs.gtrash ];
 
@@ -7,7 +7,7 @@
     ping = "echo -e 'If you want to ping, consider using \"nc -zv <host> <port>\" to check specific service availability instead.'; false";
   };
 
-  home.file.".zshenv".text = ''
+  programs.zsh.envExtra = lib.mkAfter ''
     # navi
     GTRASH_PUT_RM_MODE="true"
   '';
