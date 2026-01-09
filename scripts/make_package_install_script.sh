@@ -177,11 +177,21 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             packages=$([ ${#package_list[@]} -ne 0 ] && printf '    %s\n' "${package_list[@]}" || echo "")
             programs=$([ ${#program_list[@]} -ne 0 ] && printf '    ./programs/%s\n' "${program_list[@]}" || echo "")
 
-            printf '{ config, pkgs, lib, ... }:\nlet\n  programModules = [\n%s\n  ];\nin\n{\n  imports = programModules;\n\n  %s = with pkgs; lib.concatLists ([[\n%s\n  ]] ++ (map (mod: mod.home.packages or []) programModules));\n}\n' \
-                   "${programs}" \
-                   "${package_prefix}" \
-                   "${packages}" \
-                   > "$packages_nix_path"
+            cat <<EOF > "$packages_nix_path"
+{ pkgs, ... }:
+let
+  programModules = [
+${programs}
+  ];
+in
+{
+  imports = programModules;
+
+  ${package_prefix} = with pkgs; [
+${packages}
+  ];
+}
+EOF
             ;;
         brew|cask|mas)
             placeholder=""
