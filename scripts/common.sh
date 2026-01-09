@@ -10,6 +10,8 @@ COLOR_PURPLE="\033[1;35m"
 COLOR_YELLOW="\033[1;33m"
 COLOR_NONE="\033[0m"
 
+NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
+
 
 title() {
     echo -e "\n${COLOR_GRAY}=============================================${COLOR_NONE}"

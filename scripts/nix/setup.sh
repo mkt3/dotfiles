@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+if ! declare -p NIX_CMD >/dev/null 2>&1; then
+    NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
+fi
+
 pre_setup_nix() {
     info "Creating symlink for nix"
 
@@ -41,7 +45,7 @@ pre_setup_nix() {
         if command -v nvfetcher > /dev/null 2>&1; then
             nvfetcher_command=(nvfetcher)
         else
-            nvfetcher_command=(nix --extra-experimental-features "nix-command flakes" run github:berberman/nvfetcher --)
+            nvfetcher_command=("${NIX_CMD[@]}" run github:berberman/nvfetcher --)
         fi
 
         if "${nvfetcher_command[@]}" -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"; then
@@ -75,7 +79,7 @@ pre_setup_nix() {
         fi
     fi
 
-    nix --extra-experimental-features "nix-command flakes" run nixpkgs#gnused -- -i \
+    "${NIX_CMD[@]}" run nixpkgs#gnused -- -i \
         -e "s|__SYSTEM__|${nix_platform}|g" \
         -e "s|__HOSTNAME__|${host_name}|g" \
         -e "s|__USERNAME__|${USER}|g" \

@@ -36,10 +36,10 @@ common_methods=("nix" "nix-hm")
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
-SED_CMD=(nix --extra-experimental-features "nix-command flakes" run nixpkgs#gnused -- -i)
+SED_CMD=("${NIX_CMD[@]}" run nixpkgs#gnused -- -i)
 
 info "Parsing TOML file to JSON..."
-json_content=$(nix --extra-experimental-features "nix-command flakes" run nixpkgs#yj -- -t < "$toml_file")
+json_content=$("${NIX_CMD[@]}" run nixpkgs#yj -- -t < "$toml_file")
 
 cat << 'EOF' > "$install_script_path"
 #!/usr/bin/env bash
@@ -76,28 +76,28 @@ generate_nix_switch_command() {
     if [[ "$os" == "darwin" ]]; then
         cp -f "${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
         output+="title \"Setup with nix-darwin\"\n"
-        output+="cd \${NIX_DIR} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -\n"
+        output+="cd \${NIX_DIR} && \"\${NIX_CMD[@]}\" flake update && cd -\n"
         output+="if ! command -v darwin-rebuild > /dev/null 2>&1; then\n"
         output+="    echo \"Setting up initial nix-darwin...\"\n"
         output+="    sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true\n"
         output+="    sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true\n"
-        output+="    NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt sudo nix --extra-experimental-features \"nix-command flakes\" run nix-darwin -- switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
+        output+="    NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt sudo \"\${NIX_CMD[@]}\" run nix-darwin -- switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
         output+="else\n"
         output+="    sudo darwin-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
         output+="fi"
     elif [[ "$os" == "nixos" ]]; then
         output+="title \"Setup nixos\"\n"
-        output+="cd \${NIX_DIR} && nix --extra-experimental-features \"nix-command flakes\" flake update && cd -\n"
+        output+="cd \${NIX_DIR} && \"\${NIX_CMD[@]}\" flake update && cd -\n"
         output+="sudo nixos-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}"
     else
         output+="title \"Install/Update packages from home-manager\"\n"
         output+="if command -v home-manager > /dev/null 2>&1; then\n"
         output+="    echo \"Updating flakes and switching home-manager...\"\n"
-        output+="    nix flake update --flake \${NIX_DIR}\n"
+        output+="    \"\${NIX_CMD[@]}\" flake update --flake \${NIX_DIR}\n"
         output+="    home-manager switch --flake \${NIX_DIR}\n"
         output+="else\n"
         output+="    echo \"Running home-manager via nix run...\"\n"
-        output+="    nix run home-manager/master -- init --switch --flake \${NIX_DIR}\n"
+        output+="    \"\${NIX_CMD[@]}\" run home-manager/master -- init --switch --flake \${NIX_DIR}\n"
         output+="fi\n"
         output+="export __ETC_PROFILE_NIX_SOURCED=\"\""
     fi
@@ -107,7 +107,7 @@ generate_nix_switch_command() {
 generate_nix_switch_command "$os_name"
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
-    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | nix --extra-experimental-features "nix-command flakes" run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
+    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | "${NIX_CMD[@]}" run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
       to_entries | .[] |
       select(
         (.value.common != null or ($is_linux and .value.linux != null) or .value[$os] != null) and

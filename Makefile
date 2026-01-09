@@ -6,6 +6,7 @@ ENV_FILE := $(RESULTS_DIR)/env_settings
 INSTALL_SCRIPT := $(RESULTS_DIR)/install_packages.sh
 MAKE_INSTALL_SCRIPT := $(REPO_DIR)/scripts/make_package_install_script.sh
 DISTRO := $(shell uname -s)
+NIX_CMD := nix --extra-experimental-features "nix-command flakes"
 ifeq ($(DISTRO),Linux)
     DISTRO := $(shell grep -oP '(?<=^NAME=).+' /etc/os-release | tr -d '"')
 endif
@@ -36,7 +37,7 @@ install_essential_packages:
 
 .PHONY: $(INSTALL_SCRIPT)
 $(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
-	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) . "${REPO_DIR}/files/nix/home-manager/programs/zsh/path.zsh" && nix --extra-experimental-features "nix-command flakes" run nixpkgs#bash $(MAKE_INSTALL_SCRIPT)
+	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) . "${REPO_DIR}/files/nix/home-manager/programs/zsh/path.zsh" && $(NIX_CMD) run nixpkgs#bash $(MAKE_INSTALL_SCRIPT)
 
 .PHONY: install_packages
 install_packages: $(INSTALL_SCRIPT)
