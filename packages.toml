@@ -311,9 +311,9 @@ common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "nixd", method = "nix-hm" }]
 
-[nixfmt-rfc-style]
+[nixfmt]
 type = "dev"
-common = [{ name = "nixfmt-rfc-style", method = "nix-hm" }]
+common = [{ name = "nixfmt", method = "nix-hm" }]
 
 ## for python
 [python]
