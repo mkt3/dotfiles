@@ -402,7 +402,7 @@ linux = [{ name = "fluxcd", method = "nix-hm" }]
 ## priner
 [printer]
 type = "gui"
-common = [{ name = "printer", method = "nix" }]
+nixos = [{ name = "printer", method = "nix" }]
 
 ## tex
 [latex]
