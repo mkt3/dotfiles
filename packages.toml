@@ -399,10 +399,13 @@ type = "dev"
 linux = [{ name = "fluxcd", method = "nix-hm" }]
 
 # gui packages
-## priner
+## priner & scanner
 [printer]
 type = "gui"
-nixos = [{ name = "printer", method = "nix" }]
+nixos = [
+  { name = "printer", method = "nix" },
+  { name = "simple-scan", method = "nix-hm" }
+]
 
 ## tex
 [latex]
