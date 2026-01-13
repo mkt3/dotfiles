@@ -40,6 +40,8 @@ input {
     // drag false
     // drag-lock
     natural-scroll
+    tap-button-map "left-right-middle"
+    click-method "clickfinger"
     // accel-speed 0.2
     // accel-profile "flat"
     // scroll-method "two-finger"
