@@ -81,6 +81,10 @@ common = [
 type = "basic"
 common = [{ name = "unar", method = "nix" }]
 
+[pv]
+type = "basic"
+common = [{ name = "pv", method = "nix-hm" }]
+
 [direnv]
 type = "basic"
 common = [{ name = "direnv", method = "nix-hm" }]
