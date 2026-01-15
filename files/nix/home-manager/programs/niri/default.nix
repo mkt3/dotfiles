@@ -36,7 +36,7 @@ let
     in
       builtins.concatStringsSep "; " (map move workspaces) + ";";
 
-  lockCmd = "${lib.getExe pkgs.swaylock} --daemonize";
+  lockCmd = "noctalia-shell ipc call lockScreen lock";
   displayCmd = status:
     "${lib.getExe pkgs.niri} msg action power-${status}-monitors";
 

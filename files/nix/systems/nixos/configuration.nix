@@ -14,6 +14,7 @@
     if hostname == "personal-lt" then
       [
         ./lanzaboote.nix
+        ./personal-lt.nix
         nixos-hardware.nixosModules.lenovo-yoga-7-slim-gen8
       ]
     else if hostname == "personal-dt" then
@@ -69,6 +70,8 @@
     udev.extraRules = ''
       KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="5957", ATTRS{idProduct}=="0400", MODE="0666"
     '';
+
+    upower.enable = true;
   };
 
   networking.firewall = {
