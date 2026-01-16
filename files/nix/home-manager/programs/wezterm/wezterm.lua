@@ -1,37 +1,13 @@
 local wezterm = require 'wezterm';
 
 local keys = {
-  {key="s",mods="CMD",action=wezterm.action.SendKey{key="s", mods="OPT"}}, -- for emacs
-  {key="x",mods="CMD",action=wezterm.action.SendKey{key="x", mods="OPT"}}, -- for emacs
-  {key="c",mods="CMD",action=wezterm.action.SendKey{key="c", mods="OPT"}}, -- for emacs
-  {key="w",mods="CMD",action=wezterm.action.SendKey{key="w", mods="OPT"}}, -- for emacs
-  {key="y",mods="CMD",action=wezterm.action.SendKey{key="y", mods="OPT"}}, -- for emacs
-  {key="v",mods="CMD",action=wezterm.action.SendKey{key="v", mods="OPT"}}, -- for emacs
-  {key="b",mods="CMD",action=wezterm.action.SendKey{key="b", mods="OPT"}}, -- for emacs
-  {key="f",mods="CMD",action=wezterm.action.SendKey{key="f", mods="OPT"}}, -- for emacs
-  {key="i",mods="CMD",action=wezterm.action.SendKey{key="i", mods="OPT"}}, -- for emacs
-  {key=",",mods="CMD",action=wezterm.action.SendKey{key=",", mods="OPT"}}, -- for emacs
-  {key=".",mods="CMD",action=wezterm.action.SendKey{key=".", mods="OPT"}}, -- for emacs
-  {key=";",mods="CMD",action=wezterm.action.SendKey{key=";", mods="OPT"}}, -- for emacs
-  {key="/",mods="CMD",action=wezterm.action.SendKey{key="/", mods="OPT"}}, -- for emacs
-  {key="h",mods="CMD|CTRL",action=wezterm.action.SendKey{key="h", mods="OPT|CTRL"}}, -- for emacs
-  {key="j",mods="CMD|CTRL",action=wezterm.action.SendKey{key="j", mods="OPT|CTRL"}}, -- for emacs
-  {key="k",mods="CMD|CTRL",action=wezterm.action.SendKey{key="k", mods="OPT|CTRL"}}, -- for emacs
-  {key="l",mods="CMD|CTRL",action=wezterm.action.SendKey{key="l", mods="OPT|CTRL"}}, -- for emacs
-  {key="<",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="<", mods="OPT"}}, -- for emacs
-  {key=">",mods="CMD|SHIFT",action=wezterm.action.SendKey{key=">", mods="OPT"}}, -- for emacs
-  {key="?",mods="CMD|SHIFT",action=wezterm.action.SendKey{key="?", mods="OPT"}}, -- for emacs
-  {key="\\",mods="CMD|CTRL",action=wezterm.action.SendKey{key="\\", mods="OPT|CTRL"}}, -- for emacs
-  {key=";",mods="CTRL",action=wezterm.action.SendString "\x18@;"}, -- for emacs in terminal
-  {key="j",mods="CTRL",action=wezterm.action.SendString "\x18@j"}, -- for emacs ddskk in terminal
   {key = "Delete",mods = "",action = wezterm.action.SendKey { key = "d", mods = "CTRL" } }, -- for keyball
   {key = "RightArrow",mods = "",action = wezterm.action.SendKey { key = "f", mods = "CTRL" }}, -- for keyball
   {key = "LeftArrow",mods = "",action = wezterm.action.SendKey { key = "b", mods = "CTRL" }}, -- for keyball
   {key = "UpArrow",mods = "",action = wezterm.action.SendKey { key = "p", mods = "CTRL" }}, -- for keyball
   {key = "DownArrow",mods = "",action = wezterm.action.SendKey { key = "n", mods = "CTRL" }}, -- for keyball
-  {key="v",mods="OPT",action=wezterm.action.PasteFrom 'Clipboard'},
-  {key="t",mods="OPT",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
-  {key="w",mods="OPT",action=wezterm.action.CloseCurrentTab{confirm=false}},
+  {key="t",mods="CMD",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
+  {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
   {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={"./.config/wezterm/ssh.sh"},cwd = '~'}},
 }
 

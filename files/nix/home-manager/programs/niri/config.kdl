@@ -7,8 +7,8 @@
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
 input {
-  mod-key "Alt"
-  mod-key-nested "Alt"
+  mod-key "Super"
+  mod-key-nested "Super"
   keyboard {
     xkb {
       // You can set rules, model, layout, variant and options.
@@ -387,13 +387,13 @@ binds {
 
   // Mod-Shift-/, which is usually the same as Mod-?,
   // shows a list of important hotkeys.
-  Mod+Shift+Slash { show-hotkey-overlay; }
+  // Mod+Shift+Slash { show-hotkey-overlay; }
 
   // Suggested binds for running programs: terminal, app launcher, screen locker.
   Mod+T hotkey-overlay-title="Open a Terminal: wezterm" { spawn "wezterm"; }
-  Super+Space hotkey-overlay-title="Run an Application: rofi" repeat=false { spawn-sh "rofi -show combi"; }
-  Alt+Ctrl+L hotkey-overlay-title="Lock the Screen" { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
-  Alt+Y { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
+  Alt+Space hotkey-overlay-title="Run an Application: rofi" repeat=false { spawn-sh "rofi -show combi"; }
+  Mod+Ctrl+L hotkey-overlay-title="Lock the Screen" { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+  Mod+Y { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
 
   // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
   // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -526,10 +526,10 @@ binds {
   //
   // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
   // will all refer to the 3rd workspace.
-  Mod+1 { focus-workspace "main"; }
-  Mod+2 { focus-workspace "chat"; }
-  Mod+3 { focus-workspace "zotero"; }
-  Mod+4 { focus-workspace "emacs"; }
+  Mod+m { focus-workspace "main"; }
+  Mod+Comma { focus-workspace "chat"; }
+  Mod+Period { focus-workspace "zotero"; }
+  Mod+Slash { focus-workspace "emacs"; }
   Mod+5 { focus-workspace 5; }
   Mod+6 { focus-workspace 6; }
   Mod+7 { focus-workspace 7; }
@@ -558,9 +558,9 @@ binds {
   Mod+BracketRight { consume-or-expel-window-right; }
 
   // Consume one window from the right to the bottom of the focused column.
-  Mod+Comma  { consume-window-into-column; }
+  // Mod+Comma  { consume-window-into-column; }
   // Expel the bottom window from the focused column to the right.
-  Mod+Period { expel-window-from-column; }
+  // Mod+Period { expel-window-from-column; }
 
   Mod+R { switch-preset-column-width; }
   // Cycling through the presets in reverse order is also possible.

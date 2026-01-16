@@ -21,8 +21,6 @@
             "CapsLock" = "Ctrl_L";
             "KEY_102ND" = "KEY_GRAVE";
             "Alt_R" = "Ctrl_R";
-            "Alt_L" = "Super_L";
-            "Super_L" = "Alt_L";
           };
           device = {
             "not" = [
@@ -37,6 +35,8 @@
             "CapsLock" = "Ctrl_L";
             "KEY_102ND" = "KEY_GRAVE";
             "Super_R" = "Ctrl_R";
+            "Alt_L" = "Super_L";
+            "Super_L" = "Alt_L";
           };
           device = {
             "only" = [
@@ -68,12 +68,12 @@
             };
 
             # Forward/Backward word
-            "Super-b" = {
+            "Alt-b" = {
               with_mark = "C-left";
             };
-            # "Super-f" = {
-            #   with_mark = "C-right";
-            # };
+            "Alt-f" = {
+              with_mark = "C-right";
+            };
 
             # Beginning/End of line
             "C-a" = {
@@ -84,43 +84,43 @@
             };
 
             # # Page up/down
-            # "Super-v" = {
-            #   with_mark = "pageup";
-            # };
-            # "C-v" = {
-            #   with_mark = "pagedown";
-            # };
+            "Alt-v" = {
+              with_mark = "pageup";
+            };
+            "C-v" = {
+              with_mark = "pagedown";
+            };
 
             # Beginning/End of file
-            "Super-Shift-comma" = {
+            "Alt-Shift-comma" = {
               with_mark = "C-home";
             };
-            "Super-Shift-dot" = {
+            "Alt-Shift-dot" = {
               with_mark = "C-end";
             };
 
             # Newline
             "C-m" = "enter";
 
-            # # Copy
-            # "C-w" = [
-            #   "C-x"
-            #   {
-            #     set_mark = false;
-            #   }
-            # ];
-            # "Super-w" = [
-            #   "C-c"
-            #   {
-            #     set_mark = false;
-            #   }
-            # ];
-            # "C-y" = [
-            #   "C-v"
-            #   {
-            #     set_mark = false;
-            #   }
-            # ];
+            # Copy
+            "Super-x" = [
+              "C-x"
+              {
+                set_mark = false;
+              }
+            ];
+            "Super-c" = [
+              "C-c"
+              {
+                set_mark = false;
+              }
+            ];
+            "Super-v" = [
+              "C-v"
+              {
+                set_mark = false;
+              }
+            ];
 
             # Delete
             "C-d" = [
@@ -129,7 +129,7 @@
                 set_mark = false;
               }
             ];
-            "Super-d" = [
+            "Alt-d" = [
               "C-delete"
               {
                 set_mark = false;
@@ -147,7 +147,7 @@
             ];
 
             # set mark next word continuously.
-            "C-Super-space" = [
+            "C-Alt-space" = [
               "C-Shift-right"
               {
                 set_mark = true;
@@ -193,25 +193,22 @@
 
             # Super -> Ctrl
             "Super-a" = "C-a";
-            "Super-x" = "C-x";
-            "Super-c" = "C-c";
-            "Super-v" = "C-v";
             "Super-w" = "C-w";
           };
         }
-        {
-          name = "Default Forwrad word";
-          application.not = [
-            "org.wezfurlong.wezterm"
-            "emacs"
-            "vivaldi-stable"
-          ];
-          remap = {
-            "Super-f" = {
-              with_mark = "C-right";
-            };
-          };
-        }
+        # {
+        #   name = "Default Forward word";
+        #   application.not = [
+        #     "org.wezfurlong.wezterm"
+        #     "emacs"
+        #     "vivaldi-stable"
+        #   ];
+        #   remap = {
+        #     "Super-f" = {
+        #       with_mark = "C-right";
+        #     };
+        #   };
+        # }
         {
           name = "Wezterm";
           application.only = [ "org.wezfurlong.wezterm" ];

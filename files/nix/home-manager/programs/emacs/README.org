@@ -97,11 +97,11 @@
      (pixel-scroll-precision-mode 1)
    #+end_src
 ** symlink
-   Disable visit symlink sources
+   Disable visiting symlink targets
    #+begin_src emacs-lisp
      (use-package vc-hooks :custom (vc-follow-symlinks t))
      (setopt find-file-visit-truename nil)
-     #+end_src
+   #+end_src
 ** tab
    #+begin_src emacs-lisp
      (setq-default
@@ -140,7 +140,7 @@
              (error "gtrash put failed for %s" filename))
            t)))
    #+end_src
-** Assigning directory name to the same buffer name
+** Disambiguate buffers by directory
    #+begin_src emacs-lisp
      (use-package uniquify
        :custom
@@ -400,28 +400,23 @@
    #+begin_src emacs-lisp
      (use-package tab-bar
        :init (defvar my:tab-bar-map (make-sparse-keymap)
-               "My original keymap binded for tab-bar.")
+               "My original keymap bound for tab-bar.")
        (defalias 'my:tab-bar-prefix my:tab-bar-map)
        (keymap-set global-map "C-o" 'my:tab-bar-prefix)
-       (keymap-set my:tab-bar-map "c"   'tab-new)
-       (keymap-set my:tab-bar-map "C-c" 'tab-new)
-       (keymap-set my:tab-bar-map "k"   'tab-close)
-       (keymap-set my:tab-bar-map "C-k" 'tab-close)
-       (keymap-set my:tab-bar-map "n"   'tab-next)
-       (keymap-set my:tab-bar-map "C-n" 'tab-next)
-       (keymap-set my:tab-bar-map "TAB" 'tab-next)
-       (keymap-set my:tab-bar-map "p"   'tab-previous)
-       (keymap-set my:tab-bar-map "C-p" 'tab-previous)
-       (keymap-set my:tab-bar-map "1" '(lambda () (interactive) (tab-bar-select-tab 1)))
-       (keymap-set my:tab-bar-map "2" '(lambda () (interactive) (tab-bar-select-tab 2)))
-       (keymap-set my:tab-bar-map "3" '(lambda () (interactive) (tab-bar-select-tab 3)))
-       (keymap-set my:tab-bar-map "4" '(lambda () (interactive) (tab-bar-select-tab 4)))
-       (keymap-set my:tab-bar-map "5" '(lambda () (interactive) (tab-bar-select-tab 5)))
-       (keymap-set my:tab-bar-map "6" '(lambda () (interactive) (tab-bar-select-tab 6)))
-       (keymap-set my:tab-bar-map "7" '(lambda () (interactive) (tab-bar-select-tab 7)))
-       (keymap-set my:tab-bar-map "8" '(lambda () (interactive) (tab-bar-select-tab 8)))
-       (keymap-set my:tab-bar-map "9" '(lambda () (interactive) (tab-bar-select-tab 9)))
-       (keymap-set my:tab-bar-map "0" '(lambda () (interactive) (tab-bar-select-tab 0)))
+       (dolist (binding '(("c" . tab-new)
+                          ("C-c" . tab-new)
+                          ("k" . tab-close)
+                          ("C-k" . tab-close)
+                          ("n" . tab-next)
+                          ("C-n" . tab-next)
+                          ("TAB" . tab-next)
+                          ("p" . tab-previous)
+                          ("C-p" . tab-previous)))
+         (keymap-set my:tab-bar-map (car binding) (cdr binding)))
+       (dotimes (i 10)
+         (let ((tab i))
+           (keymap-set my:tab-bar-map (number-to-string tab)
+                       (lambda () (interactive) (tab-bar-select-tab tab)))))
        :custom
        (tab-bar-close-button-show      nil)
        (tab-bar-close-last-tab-choice  nil)
@@ -567,11 +562,11 @@
        (set-frame-parameter nil 'ns-appearance 'dark)
        :custom
        (mac-control-modifier 'control)
-       (mac-option-modifier 'super)
-       (mac-command-modifier 'meta)
+       (mac-option-modifier 'meta)
+       (mac-command-modifier 'super)
        (mac-right-control-modifier 'control)
-       (mac-right-option-modifier 'hyper)
-       (mac-right-command-modifier 'meta))
+       (mac-right-option-modifier 'meta)
+       (mac-right-command-modifier 'hyper))
    #+end_src
 ** ns
    #+begin_src emacs-lisp
@@ -581,8 +576,8 @@
        (set-frame-parameter nil 'ns-appearance 'dark)
        :custom
        (ns-control-modifier 'control)
-       (ns-option-modifier 'super)
-       (ns-command-modifier 'meta)
+       (ns-option-modifier 'meta)
+       (ns-command-modifier 'super)
        (ns-right-control-modifier 'control)
        (ns-right-option-modifier 'hyper)
        (ns-right-command-modifier 'meta)
@@ -1029,16 +1024,16 @@
         :custom
         (treesit-font-lock-level 3)
         :config
-        (setq major-mode-remap-alist
-              '((yaml-mode . yaml-ts-mode)
-                (json-mode . json-ts-mode)
-                (toml-mode . toml-ts-mode)
-                (html-mode . html-ts-mode)
-                (typescript-mode . typescript-ts-mode)
-                (css-mode . css-ts-mode)
-                (rust-mode . rust-ts-mode)
-                (lua-mode . lua-ts-mode)
-                (python-mode . python-ts-mode))))
+        (dolist (pair '((yaml-mode . yaml-ts-mode)
+                        (json-mode . json-ts-mode)
+                        (toml-mode . toml-ts-mode)
+                        (html-mode . html-ts-mode)
+                        (typescript-mode . typescript-ts-mode)
+                        (css-mode . css-ts-mode)
+                        (rust-mode . rust-ts-mode)
+                        (lua-mode . lua-ts-mode)
+                        (python-mode . python-ts-mode)))
+          (add-to-list 'major-mode-remap-alist pair)))
     #+end_src
 *** envrc
     #+begin_src emacs-lisp
@@ -1172,7 +1167,9 @@
     #+begin_src emacs-lisp
       (use-package lua-mode
         :ensure t
-        :custom (lua-indent-level 2))
+        :custom
+        (lua-indent-level 2)
+        (lua-ts-indent-offset 2))
     #+end_src
 *** web
 **** web-mode
