@@ -535,10 +535,10 @@ binds {
   Mod+7 { focus-workspace 7; }
   Mod+8 { focus-workspace 8; }
   Mod+9 { focus-workspace 9; }
-  Mod+Shift+1 { move-column-to-workspace "main"; }
-  Mod+Shift+2 { move-column-to-workspace "chat"; }
-  Mod+Shift+3 { move-column-to-workspace "zotero"; }
-  Mod+Shift+4 { move-column-to-workspace "emacs"; }
+  Mod+Shift+m { move-column-to-workspace "main"; }
+  Mod+Shift+Comma { move-column-to-workspace "chat"; }
+  Mod+Shift+Period { move-column-to-workspace "zotero"; }
+  Mod+Shift+Slash { move-column-to-workspace "emacs"; }
   Mod+Shift+5 { move-column-to-workspace 5; }
   Mod+Shift+6 { move-column-to-workspace 6; }
   Mod+Shift+7 { move-column-to-workspace 7; }
