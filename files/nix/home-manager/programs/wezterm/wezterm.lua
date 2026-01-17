@@ -8,7 +8,7 @@ local keys = {
   {key = "DownArrow",mods = "",action = wezterm.action.SendKey { key = "n", mods = "CTRL" }}, -- for keyball
   {key="t",mods="CMD",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
   {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
-  {key="o",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={"./.config/wezterm/ssh.sh"},cwd = '~'}},
+  {key="s",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={"./.config/wezterm/ssh.sh"},cwd = '~'}},
 }
 
 font_size = 14.0
