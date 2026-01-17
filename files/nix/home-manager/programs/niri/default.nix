@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, username, ... }:
 
 let
   notifySend = lib.getExe' pkgs.libnotify "notify-send";
@@ -36,7 +36,7 @@ let
     in
       builtins.concatStringsSep "; " (map move workspaces) + ";";
 
-  lockCmd = "noctalia-shell ipc call lockScreen lock";
+  lockCmd = "/etc/profiles/per-user/${username}/bin/noctalia-shell ipc call lockScreen lock";
   displayCmd = status:
     "${lib.getExe pkgs.niri} msg action power-${status}-monitors";
 
