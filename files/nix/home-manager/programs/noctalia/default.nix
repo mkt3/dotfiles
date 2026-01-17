@@ -14,7 +14,7 @@
         showOutline = false;
         showCapsule = true;
         capsuleOpacity = 1;
-        backgroundOpacity = 0.93;
+        backgroundOpacity = 1;
         useSeparateOpacity = false;
         floating = false;
         marginVertical = 4;
@@ -43,39 +43,9 @@
               id = "Launcher";
               usePrimaryColor = false;
             }
-            {
-              id = "SystemMonitor";
-              compactMode = true;
-              diskPath = "/";
-              showCpuTemp = true;
-              showCpuUsage = true;
-              showDiskUsage = false;
-              showGpuTemp = false;
-              showLoadAverage = false;
-              showMemoryAsPercent = false;
-              showMemoryUsage = true;
-              showNetworkStats = false;
-              useMonospaceFont = true;
-              usePrimaryColor = false;
-            }
-            {
-              id = "MediaMini";
-              compactMode = false;
-              compactShowAlbumArt = true;
-              compactShowVisualizer = false;
-              hideMode = "hidden";
-              hideWhenIdle = false;
-              maxWidth = 145;
-              panelShowAlbumArt = true;
-              panelShowVisualizer = true;
-              scrollingMode = "hover";
-              showAlbumArt = true;
-              showArtistFirst = true;
-              showProgressRing = true;
-              showVisualizer = false;
-              useFixedWidth = false;
-              visualizerType = "linear";
-            }
+            # {
+            #   id = "MediaMini";
+            # }
           ];
           center = [
             {
@@ -165,12 +135,12 @@
         boxRadiusRatio = 1;
         screenRadiusRatio = 1;
         animationSpeed = 1;
-        animationDisabled = false;
+        animationDisabled = true;
         compactLockScreen = false;
         lockOnSuspend = true;
         showSessionButtonsOnLockScreen = true;
         showHibernateOnLockScreen = false;
-        enableShadows = true;
+        enableShadows = false;
         shadowDirection = "bottom_right";
         shadowOffsetX = 2;
         shadowOffsetY = 3;
@@ -197,12 +167,12 @@
       location = {
         name = "Tokyo";
         weatherEnabled = true;
-        weatherShowEffects = true;
+        weatherShowEffects = false;
         useFahrenheit = false;
         use12hourFormat = false;
         showWeekNumberInCalendar = false;
         showCalendarEvents = true;
-        showCalendarWeather = true;
+        showCalendarWeather = false;
         analogClockInCalendar = false;
         firstDayOfWeek = -1;
         hideWeatherTimezone = false;
@@ -323,11 +293,11 @@
             id = "brightness-card";
           }
           {
-            enabled = true;
+            enabled = false;
             id = "weather-card";
           }
           {
-            enabled = true;
+            enabled = false;
             id = "media-sysmon-card";
           }
         ];
@@ -343,14 +313,14 @@
         memCriticalThreshold = 90;
         diskWarningThreshold = 80;
         diskCriticalThreshold = 90;
-        cpuPollingInterval = 3000;
-        tempPollingInterval = 3000;
-        gpuPollingInterval = 3000;
+        cpuPollingInterval = 10000;
+        tempPollingInterval = 10000;
+        gpuPollingInterval = 10000;
         enableDgpuMonitoring = false;
-        memPollingInterval = 3000;
-        diskPollingInterval = 3000;
-        networkPollingInterval = 3000;
-        loadAvgPollingInterval = 3000;
+        memPollingInterval = 10000;
+        diskPollingInterval = 10000;
+        networkPollingInterval = 10000;
+        loadAvgPollingInterval = 10000;
         useCustomColors = false;
         warningColor = "";
         criticalColor = "";
@@ -457,7 +427,7 @@
       audio = {
         volumeStep = 1;
         volumeOverdrive = false;
-        cavaFrameRate = 30;
+        cavaFrameRate = 5;
         visualizerType = "linear";
         mprisBlacklist = [ ];
         preferredPlayer = "";
