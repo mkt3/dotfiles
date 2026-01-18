@@ -23,9 +23,9 @@
           "idle_inhibitor"
         ];
 
-        "niri/workspaces" =  {
-          "format"= "{icon}";
-          "format-icons"= {
+        "niri/workspaces" = {
+          "format" = "{icon}";
+          "format-icons" = {
             "main" = "";
             "second" = "";
             "emacs" = "";

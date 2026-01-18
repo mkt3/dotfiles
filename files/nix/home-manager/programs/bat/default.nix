@@ -8,6 +8,9 @@
       italic-text = "always";
     };
 
-    extraPackages = with pkgs.bat-extras; [ batman batgrep ];
+    extraPackages = with pkgs.bat-extras; [
+      batman
+      batgrep
+    ];
   };
 }

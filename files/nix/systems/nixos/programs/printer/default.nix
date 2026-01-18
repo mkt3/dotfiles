@@ -11,9 +11,9 @@
     drivers = with pkgs; [
       cups-filters
       cups-browsed
-      brlaser                # brother driver
-      brgenml1lpr            # brother driver
-      brgenml1cupswrapper    # brother driver
+      brlaser # brother driver
+      brgenml1lpr # brother driver
+      brgenml1cupswrapper # brother driver
     ];
   };
 

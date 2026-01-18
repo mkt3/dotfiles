@@ -1,4 +1,9 @@
-{ config, pkgs, noctalia, ... }:
+{
+  config,
+  pkgs,
+  noctalia,
+  ...
+}:
 {
   imports = [
     noctalia.homeModules.default
@@ -27,16 +32,16 @@
             {
               id = "Workspace";
               characterCount = 10;
-              labelMode =  "name";
-              colorizeIcons =  false;
+              labelMode = "name";
+              colorizeIcons = false;
               enableScrollWheel = true;
-              followFocusedScreen =  false;
-              groupedBorderOpacity =  1;
-              hideUnoccupied =  false;
-              iconScale =  0.8;
-              showApplications =  false;
-              showLabelsOnlyWhenOccupied =  true;
-              unfocusedIconsOpacity =  1;
+              followFocusedScreen = false;
+              groupedBorderOpacity = 1;
+              hideUnoccupied = false;
+              iconScale = 0.8;
+              showApplications = false;
+              showLabelsOnlyWhenOccupied = true;
+              unfocusedIconsOpacity = 1;
             }
 
             {
@@ -52,7 +57,7 @@
               id = "ActiveWindow";
               colorizeIcons = false;
               hideMode = "hidden";
-              maxWidth =  300;
+              maxWidth = 300;
               scrollingMode = "hover";
               showIcon = true;
               useFixedWidth = false;
@@ -60,7 +65,7 @@
           ];
           right = [
             {
-              id =  "VPN";
+              id = "VPN";
               displayMode = "alwaysShow";
             }
             {
@@ -71,7 +76,7 @@
             {
               id = "NotificationHistory";
               showUnreadBadge = true;
-              hideWhenZero =  false;
+              hideWhenZero = false;
             }
             {
               id = "Battery";
@@ -84,7 +89,7 @@
             }
             {
               id = "Bluetooth";
-              displayMode =  "onhover";
+              displayMode = "onhover";
             }
             {
               id = "Brightness";
@@ -501,8 +506,8 @@
   };
 
   home.file.".cache/noctalia/wallpapers.json" = {
-      text = builtins.toJSON {
-        defaultWallpaper = "${config.home.homeDirectory}/Nextcloud/Picture/wallpaper/nord.png";
-      };
+    text = builtins.toJSON {
+      defaultWallpaper = "${config.home.homeDirectory}/Nextcloud/Picture/wallpaper/nord.png";
     };
+  };
 }

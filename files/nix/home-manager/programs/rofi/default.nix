@@ -3,11 +3,9 @@
   home.packages = [ pkgs.rofi ];
 
   xdg.configFile = {
-    "rofi/config.rasi".text =
-      builtins.replaceStrings
-        [ "~/.config" ]
-        [ config.xdg.configHome ]
-        (builtins.readFile ./config.rasi);
+    "rofi/config.rasi".text = builtins.replaceStrings [ "~/.config" ] [ config.xdg.configHome ] (
+      builtins.readFile ./config.rasi
+    );
     "rofi/scripts/bluetooth-ctl.sh" = {
       text = builtins.readFile ./scripts/bluetooth-ctl.sh;
       executable = true;

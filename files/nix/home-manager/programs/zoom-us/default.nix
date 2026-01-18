@@ -1,8 +1,13 @@
-{ config, pkgs, lib, isDarwin, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  isDarwin,
+  ...
+}:
 {
   home.packages =
-    lib.optionals isDarwin [ pkgs.brewCasks.zoom ]
-    ++ lib.optionals (!isDarwin) [ pkgs.zoom-us ];
+    lib.optionals isDarwin [ pkgs.brewCasks.zoom ] ++ lib.optionals (!isDarwin) [ pkgs.zoom-us ];
 
   programs.zsh.envExtra = lib.mkAfter ''
     # zoom

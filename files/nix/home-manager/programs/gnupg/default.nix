@@ -38,26 +38,25 @@
     + "\n"
   );
 
-  home.file =
-    {
-      ".gnupg/gpg-agent.conf" = {
-        text = lib.mkMerge (
-          [
-            "max-cache-ttl 60480000"
-            "default-cache-ttl 60480000"
-            "max-cache-ttl-ssh 60480000"
-            "default-cache-ttl-ssh 60480000"
-          ]
-          ++ lib.optionals isDarwin [
-            "pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac"
-          ]
-        );
-      };
-    }
-    // lib.optionalAttrs (isLinux && !isNixOS && !isGUI) {
-      ".gnupg/gpg.conf" = {
-        text = "no-autostart";
-        onChange = "/usr/bin/systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
-      };
+  home.file = {
+    ".gnupg/gpg-agent.conf" = {
+      text = lib.mkMerge (
+        [
+          "max-cache-ttl 60480000"
+          "default-cache-ttl 60480000"
+          "max-cache-ttl-ssh 60480000"
+          "default-cache-ttl-ssh 60480000"
+        ]
+        ++ lib.optionals isDarwin [
+          "pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac"
+        ]
+      );
     };
+  }
+  // lib.optionalAttrs (isLinux && !isNixOS && !isGUI) {
+    ".gnupg/gpg.conf" = {
+      text = "no-autostart";
+      onChange = "/usr/bin/systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
+    };
+  };
 }

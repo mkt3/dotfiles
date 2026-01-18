@@ -1,4 +1,9 @@
-{ pkgs, lib, isLinux, ... }:
+{
+  pkgs,
+  lib,
+  isLinux,
+  ...
+}:
 {
   fonts.fontconfig = {
     enable = true;

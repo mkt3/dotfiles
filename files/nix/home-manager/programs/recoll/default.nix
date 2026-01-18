@@ -1,22 +1,27 @@
-{ config, pkgs, lib, isDarwin, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  isDarwin,
+  ...
+}:
 
 let
   dataDir =
-    if isDarwin
-    then "${config.home.homeDirectory}/GoogleDrive/local_data_dir"
-    else "${config.home.homeDirectory}/Nextcloud";
+    if isDarwin then
+      "${config.home.homeDirectory}/GoogleDrive/local_data_dir"
+    else
+      "${config.home.homeDirectory}/Nextcloud";
 
-  recollHelperPath =
-    if isDarwin
-    then "recollhelperpath = /opt/homebrew/bin"
-    else "";
+  recollHelperPath = if isDarwin then "recollhelperpath = /opt/homebrew/bin" else "";
 
   recollPathEnv =
-    if isDarwin
-    then ''
-      export PATH="''${PATH}:/Applications/Recoll.app/Contents/MacOS"
-    ''
-    else "";
+    if isDarwin then
+      ''
+        export PATH="''${PATH}:/Applications/Recoll.app/Contents/MacOS"
+      ''
+    else
+      "";
 in
 {
   home.packages = lib.optionals (!isDarwin) [ pkgs.recoll ];

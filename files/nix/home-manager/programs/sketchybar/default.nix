@@ -3,11 +3,9 @@
   home.packages = [ pkgs.sketchybar ];
 
   xdg.configFile."sketchybar/sketchybarrc" = {
-    text =
-      builtins.replaceStrings
-        [ "~/.config" ]
-        [ config.xdg.configHome ]
-        (builtins.readFile ./sketchybarrc);
+    text = builtins.replaceStrings [ "~/.config" ] [ config.xdg.configHome ] (
+      builtins.readFile ./sketchybarrc
+    );
     executable = true;
   };
 
