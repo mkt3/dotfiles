@@ -402,6 +402,67 @@ linux = [{ name = "k9s", method = "nix-hm" }]
 type = "dev"
 linux = [{ name = "fluxcd", method = "nix-hm" }]
 
+
+# gui environment
+## linux window-manager
+[niri]
+type = "gui"
+nixos = [
+  { name = "niri", method = "nix" },
+  { name = "niri", method = "nix-hm" },
+  { name = "xwayland-satellite", method = "nix-hm" },
+]
+
+# [hyprland]
+# type = "gui"
+# nixos = [
+#   { name = "hyprland", method = "nix" },
+#   { name = "hyprland", method = "nix-hm" },
+#   { name = "xdg-desktop-portal-hyprland", method = "nix" },
+#   { name = "hyprshot", method = "nix-hm" },
+#   { name = "hyprcursor", method = "nix-hm" },
+# ]
+
+## linux ui
+[noctaria]
+type = "gui"
+nixos = [
+  { name = "noctalia", method = "nix-hm" },
+  { name = "swaybg", method = "nix-hm" },
+]
+# [composable-ui]
+# nixos = [
+#   { name = "waybar", method = "nix-hm"n },
+#   { name = "playerctl", method = "nix-hm" },
+#   { name = "brightnessctl", method = "nix-hm" },
+#   { name = "swaybg", method = "nix-hm" },
+#   { name = "mako", method = "nix-hm" },
+#   { name = "networkmanagerapplet", method = "nix-hm" },
+#   { name = "pwvucontrol", method = "nix-hm" },
+#   { name = "fcitx5-skk", method = "nix-hm" },
+# ]
+
+## other compornet
+[gui-others]
+type = "gui"
+nixos = [
+  { name = "nord", method = "nix-hm" },
+  { name = "fcitx5-skk", method = "nix-hm" },
+  { name = "gnome-keyring", method = "nix-hm" },
+  { name = "libsecret", method = "nix-hm" },
+  { name = "seahorse", method = "nix-hm" },
+]
+
+## macos
+[aerospace]
+type = "gui"
+darwin = [
+  { name = "aerospace", method = "nix-hm" },
+  { name = "jankyborders", method = "nix-hm" },
+  { name = "sketchybar", method = "nix-hm" },
+  { name = "macskk", method = "cask" },
+]
+
 # gui packages
 ## priner & scanner
 [printer]
@@ -515,42 +576,6 @@ darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
 type = "gui"
 darwin = [{ name = "raycast", method = "nix-hm" }]
 linux = [{ name = "rofi", method = "nix-hm" }]
-
-## window manager
-[hyprland]
-type = "gui"
-nixos = [
-  { name = "niri", method = "nix" },
-  { name = "niri", method = "nix-hm" },
-  { name = "xwayland-satellite", method = "nix-hm" },
-  { name = "noctalia", method = "nix-hm" },
-  #{ name = "swaybg", method = "nix-hm" },
-  # { name = "hyprland", method = "nix" },
-  # { name = "hyprland", method = "nix-hm" },
-  # { name = "xdg-desktop-portal-hyprland", method = "nix" },
-  # { name = "hyprshot", method = "nix-hm" },
-  # { name = "hyprcursor", method = "nix-hm" },
-  # { name = "waybar", method = "nix-hm" },
-  # { name = "mako", method = "nix-hm" },
-  # { name = "networkmanagerapplet", method = "nix-hm" },
-  # { name = "playerctl", method = "nix-hm" },
-  # { name = "pwvucontrol", method = "nix-hm" },
-  # { name = "brightnessctl", method = "nix-hm" },
-  { name = "gnome-keyring", method = "nix-hm" },
-  { name = "libsecret", method = "nix-hm" },
-  { name = "seahorse", method = "nix-hm" },
-  { name = "nord", method = "nix-hm" },
-  { name = "fcitx5-skk", method = "nix-hm" },
-]
-
-[aerospace]
-type = "gui"
-darwin = [
-  { name = "aerospace", method = "nix-hm" },
-  { name = "jankyborders", method = "nix-hm" },
-  { name = "sketchybar", method = "nix-hm" },
-  { name = "macskk", method = "cask" },
-]
 
 ## gui archiver
 [xarchiver]

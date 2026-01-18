@@ -245,7 +245,7 @@ animations {
 //       path "${lib.getExe pkgs.xwayland-satellite}"
 // }
 
-//spawn-sh-at-startup "swaybg -i ~/Nextcloud/Picture/wallpaper/nord.png -m stretch"
+spawn-sh-at-startup "swaybg -i ~/Nextcloud/Picture/wallpaper/nord.png -m stretch"
 spawn-at-startup "noctalia-shell"
 spawn-sh-at-startup "nextcloud --background"
 spawn-sh-at-startup "thunar --daemon"
