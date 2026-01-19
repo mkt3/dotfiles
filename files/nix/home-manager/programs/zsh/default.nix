@@ -146,6 +146,7 @@ in
       findNoDups = true;
       ignoreSpace = true;
       share = true;
+      expireDuplicatesFirst = true;
       extended = true;
       ignorePatterns = [
         "*TOKEN*=* *"
@@ -165,6 +166,10 @@ in
         "exit"
       ];
     };
+
+    setOptions = [
+      "HIST_FCNTL_LOCK"
+    ];
 
     shellAliases = {
       wget = "wget --hsts-file=\"${config.xdg.cacheHome}/wget-hsts\"";

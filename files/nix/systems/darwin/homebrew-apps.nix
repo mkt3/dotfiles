@@ -18,9 +18,9 @@
     ];
 
     casks = [
+      "macskk"
       "vivaldi"
       "google-drive"
-      "macskk"
       "recoll"
       "karabiner-elements"
     ];
