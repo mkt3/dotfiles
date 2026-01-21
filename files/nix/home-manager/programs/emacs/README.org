@@ -551,8 +551,8 @@
    #+end_src
 ** Wayland / x11
    #+begin_src emacs-lisp
-     (when (memq  window-system '(pgtk x))
-       (setq x-super-keysym 'meta))
+     ;; (when (memq  window-system '(pgtk x))
+     ;;   (setq x-super-keysym 'meta))
    #+end_src
 ** mac
    #+begin_src emacs-lisp
