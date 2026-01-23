@@ -92,7 +92,7 @@
     powerOnBoot = true;
     # settings.General.Experimental = true;
   };
-  # services.blueman.enable = true;
+  services.blueman.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
