@@ -20,12 +20,14 @@
     else if hostname == "personal-dt" then
       [
         ./nvidia.nix
-        ./personal-dt.nix
         ./defaultboot.nix
       ]
     else
       [ ./defaultboot.nix ]
   );
+
+  hardware.enableRedistributableFirmware = true;
+
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
 
