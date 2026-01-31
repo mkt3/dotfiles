@@ -20,6 +20,7 @@
     else if hostname == "personal-dt" then
       [
         ./nvidia.nix
+        ./personal-dt.nix
         ./defaultboot.nix
       ]
     else
