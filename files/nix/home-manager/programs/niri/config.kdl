@@ -391,7 +391,7 @@ binds {
 
   // Suggested binds for running programs: terminal, app launcher, screen locker.
   Mod+T hotkey-overlay-title="Open a Terminal: wezterm" { spawn "wezterm"; }
-  Alt+Space hotkey-overlay-title="Run an Application: rofi" repeat=false { spawn-sh "rofi -show combi"; }
+  Alt+Space hotkey-overlay-title="Run an Application" repeat=false { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
   Mod+Ctrl+L hotkey-overlay-title="Lock the Screen" { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
   Mod+Y { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
 
