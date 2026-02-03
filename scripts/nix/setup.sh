@@ -17,44 +17,7 @@ pre_setup_nix() {
     local nix_platform
     local is_gui
 
-    local nvfetcher_last_run_file="${REPO_DIR}/results/nvfetcher_last_run"
-    local one_day_in_seconds=86400
-    local should_run_nvfetcher="true"
-
-    mkdir -p "${REPO_DIR}/results"
-
-    if [ -f "$nvfetcher_last_run_file" ]; then
-        local last_run_timestamp
-        last_run_timestamp=$(cat "$nvfetcher_last_run_file" 2>/dev/null || echo 0)
-
-        local current_timestamp
-        current_timestamp=$(date +%s)
-
-        local time_diff=$((current_timestamp - last_run_timestamp))
-
-        if [ "$time_diff" -lt "$one_day_in_seconds" ]; then
-            info "nvfetcher skipped. Last run was within the last $((time_diff / 3600)) hours."
-            should_run_nvfetcher="false"
-        fi
-    fi
-
-    if [ "$should_run_nvfetcher" = "true" ]; then
-        info "Updating nix packages with nvfetcher (more than 24 hours elapsed or first run)"
-        local nvfetcher_command
-
-        if command -v nvfetcher > /dev/null 2>&1; then
-            nvfetcher_command=(nvfetcher)
-        else
-            nvfetcher_command=("${NIX_CMD[@]}" run github:berberman/nvfetcher --)
-        fi
-
-        if "${nvfetcher_command[@]}" -c "${REPO_DIR}/files/nix/nvfetcher.toml" -o "${REPO_DIR}/files/nix/_sources"; then
-            date +%s > "$nvfetcher_last_run_file"
-            info "nvfetcher execution successful. Timestamp updated."
-        else
-            warning "nvfetcher failed. Continuing setup with existing sources."
-        fi
-    fi
+    # run_nvfetcher_if_needed
 
     nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
     # for macos
@@ -88,4 +51,49 @@ pre_setup_nix() {
         "$nix_main_flake"
 
     info "Finished pre-setup for nix"
+}
+
+run_nvfetcher_if_needed() {
+    local nvfetcher_last_run_file="${REPO_DIR}/results/nvfetcher_last_run"
+    local one_day_in_seconds=86400
+    local should_run_nvfetcher="true"
+
+    mkdir -p "${REPO_DIR}/results"
+
+    if [ -f "$nvfetcher_last_run_file" ]; then
+        local last_run_timestamp
+        last_run_timestamp=$(cat "$nvfetcher_last_run_file" 2>/dev/null || echo 0)
+
+        local current_timestamp
+        current_timestamp=$(date +%s)
+
+        local time_diff=$((current_timestamp - last_run_timestamp))
+
+        if [ "$time_diff" -lt "$one_day_in_seconds" ]; then
+            info "nvfetcher skipped. Last run was within the last $((time_diff / 3600)) hours."
+            should_run_nvfetcher="false"
+        fi
+    fi
+
+    if [ "$should_run_nvfetcher" != "true" ]; then
+        return 0
+    fi
+
+    info "Updating nix packages with nvfetcher (more than 24 hours elapsed or first run)"
+
+    local nvfetcher_command
+    if command -v nvfetcher > /dev/null 2>&1; then
+        nvfetcher_command=(nvfetcher)
+    else
+        nvfetcher_command=("${NIX_CMD[@]}" run github:berberman/nvfetcher --)
+    fi
+
+    if "${nvfetcher_command[@]}" \
+        -c "${REPO_DIR}/files/nix/nvfetcher.toml" \
+        -o "${REPO_DIR}/files/nix/_sources"; then
+        date +%s > "$nvfetcher_last_run_file"
+        info "nvfetcher execution successful. Timestamp updated."
+    else
+        warning "nvfetcher failed. Continuing setup with existing sources."
+    fi
 }

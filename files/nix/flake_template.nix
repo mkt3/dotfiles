@@ -67,7 +67,6 @@
         system = platform;
         overlays = [
           emacs-overlay.overlays.emacs
-          (import ./home-manager/overlays/vlc)
         ]
         ++ (
           if platform == "aarch64-darwin" then
