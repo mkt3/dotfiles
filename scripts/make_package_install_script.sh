@@ -76,7 +76,7 @@ generate_nix_switch_command() {
     if [[ "$os" == "darwin" ]]; then
         cp -f "${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
         output+="title \"Setup with nix-darwin\"\n"
-        output+="cd \${NIX_DIR} && \"\${NIX_CMD[@]}\" flake update && cd -\n"
+        output+="cd \"\${NIX_DIR}\" && \"\${NIX_CMD[@]}\" flake update && cd -\n"
         output+="if ! command -v darwin-rebuild > /dev/null 2>&1; then\n"
         output+="    echo \"Setting up initial nix-darwin...\"\n"
         output+="    sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true\n"
@@ -87,7 +87,7 @@ generate_nix_switch_command() {
         output+="fi"
     elif [[ "$os" == "nixos" ]]; then
         output+="title \"Setup nixos\"\n"
-        output+="cd \${NIX_DIR} && \"\${NIX_CMD[@]}\" flake update && cd -\n"
+        output+="cd \"\${NIX_DIR}\" && \"\${NIX_CMD[@]}\" flake update && cd -\n"
         output+="sudo nixos-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}"
     else
         output+="title \"Install/Update packages from home-manager\"\n"

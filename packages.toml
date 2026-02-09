@@ -596,8 +596,12 @@ common = [{ name = "gh", method = "nix-hm" }]
 
 ## coding agent
 [codex]
-type = "gui"
+type = "dev"
 common = [{ name = "codex", method = "nix-hm" }]
+
+[claude-code]
+type = "dev"
+common = [{ name = "claude-code", method = "nix-hm" }]
 
 ## font
 [font]
