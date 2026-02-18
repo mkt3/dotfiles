@@ -391,9 +391,11 @@ linux = [{ name = "podman", method = "nix-hm" }]
 [kubectl]
 type = "dev"
 linux = [{ name = "kubectl", method = "nix-hm" }]
+
 [k9s]
 type = "dev"
 linux = [{ name = "k9s", method = "nix-hm" }]
+
 [flux]
 type = "dev"
 linux = [{ name = "fluxcd", method = "nix-hm" }]
@@ -435,7 +437,6 @@ nixos = [
 #   { name = "mako", method = "nix-hm" },
 #   { name = "networkmanagerapplet", method = "nix-hm" },
 #   { name = "pwvucontrol", method = "nix-hm" },
-#   { name = "fcitx5-skk", method = "nix-hm" },
 # ]
 
 ## other compornet
