@@ -326,7 +326,7 @@ common = [{ name = "ruff", method = "nix-hm" }]
 
 [pyright]
 type = "dev"
-common = [{ name = "pyright", method = "nix-hm" }]
+common = [{ name = "basedpyright", method = "nix-hm" }]
 
 ### for python build
 ubuntu = [

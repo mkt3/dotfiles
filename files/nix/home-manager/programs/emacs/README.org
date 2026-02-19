@@ -311,7 +311,7 @@
      (when (display-graphic-p)
        (set-face-attribute 'default nil
                            :family "PlemolJP Console NF"
-                           :height (if (eq system-type 'darwin) 180 160))
+                           :height (if (eq system-type 'darwin) 140 160))
 
        (set-face-attribute 'fixed-pitch nil
                            :family "PlemolJP Console NF")
@@ -1439,7 +1439,6 @@
                 ("C-c n l" . org-roam-buffer-toggle)
                 ("C-c n c" . citar-insert-citation)
                 ("C-c n j" . org-roam-dailies-capture-today)
-                ("C-c n n" . org-roam-dailies-goto-today)
                 ("C-c n d" . org-roam-dailies-find-date)
                 ("C-c n e" . org-roam-extract-subtree)
                 ("C-c n p" . citar-open))
