@@ -1,10 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  isDarwin,
-  ...
-}:
+{ ... }:
 {
   programs.claude-code = {
     enable = true;

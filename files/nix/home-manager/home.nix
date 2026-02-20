@@ -1,5 +1,4 @@
 {
-  pkgs,
   username,
   homeDirectory,
   lib,
@@ -8,13 +7,12 @@
 }:
 {
   home = {
-    username = username;
-    homeDirectory = homeDirectory;
+    inherit username homeDirectory;
     stateVersion = "25.11";
     extraOutputsToInstall = [ "dev" ];
 
     activation = {
-      rmSomeThing = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      rmSomething = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         rm -rf ${homeDirectory}/.nix-defexpr
         rm -rf ${homeDirectory}/.nix-profile
       '';

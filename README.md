@@ -7,8 +7,8 @@ This repository contains configuration files and scripts for my personal use. Th
 
 ## Supported OS
 - macOS
-- Ubuntu(CLI only)
-- Arch Linux(CLI only)
+- Ubuntu (CLI only)
+- Arch Linux (CLI only)
 - NixOS
 
 ## Install
@@ -29,5 +29,5 @@ This repository contains configuration files and scripts for my personal use. Th
    sh <(curl -sSL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh)
    ```
 
-## Link
-[emacs conf](./files/nix/home-manager/programs/emacs)
+## Links
+[Emacs config](./files/nix/home-manager/programs/emacs)

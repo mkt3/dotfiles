@@ -100,4 +100,4 @@ sketchybar --add item clock right                              \
 # sketchybar --hotload on
 sketchybar --update
 
-echo "sketchybar configuation loaded.."
+echo "sketchybar configuration loaded.."

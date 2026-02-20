@@ -203,7 +203,7 @@ common = [{ name = "yaml-language-server", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "marksman", method = "nix-hm" }]
 
-## package mananger for arch
+## package manager for arch
 [paru]
 type = "basic"
 arch = [{ name = "paru", method = "nix-hm" }]

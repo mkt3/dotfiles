@@ -9,9 +9,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = ''
-          ${lib.getExe pkgs.tuigreet} --time --asterisks --cmd start-hyprland
-        '';
+        command = "${lib.getExe pkgs.tuigreet} --time --asterisks --cmd start-hyprland";
         user = username;
       };
     };

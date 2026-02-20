@@ -86,7 +86,7 @@
     };
   };
 
-  # Add ability to used TouchID for sudo authentication in tmux
+  # Add ability to use TouchID for sudo authentication in tmux
   # environment = {
   #   etc."pam.d/sudo_local".text = ''
   #     # Managed by Nix Darwin

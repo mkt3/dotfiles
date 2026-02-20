@@ -167,10 +167,6 @@ in
       ];
     };
 
-    setOptions = [
-      "HIST_FCNTL_LOCK"
-    ];
-
     shellAliases = {
       wget = "wget --hsts-file=\"${config.xdg.cacheHome}/wget-hsts\"";
       sudo = "TERM=xterm-256color sudo";
