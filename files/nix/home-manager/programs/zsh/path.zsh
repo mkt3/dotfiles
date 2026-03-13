@@ -43,5 +43,8 @@ else # for linux (except NIXOS)
     fi
     export PATH="${XDG_STATE_HOME}/nix/profile/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+
+    export PATH="/usr/local/cuda/bin:${PATH}"
+    export LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
 fi
 export PATH="${HOME}/.local/bin:${PATH}"
