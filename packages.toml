@@ -426,7 +426,6 @@ nixos = [
 type = "gui"
 nixos = [
   { name = "noctalia", method = "nix-hm" },
-  { name = "swaybg", method = "nix-hm" },
 ]
 # [composable-ui]
 # nixos = [
