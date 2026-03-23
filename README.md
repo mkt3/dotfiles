@@ -83,6 +83,7 @@ make apply
 ```
 
 applies your current configuration using the existing `flake.lock`.
+It also refreshes this repository's `pre-commit` hooks when `.pre-commit-config.yaml` is present.
 Use this when you want to reflect your own config changes without pulling newer upstream inputs.
 
 ```bash
@@ -98,6 +99,7 @@ make upgrade
 
 updates and then applies the configuration.
 This is the normal command when you want to keep the environment current.
+As part of `make apply`, it also refreshes this repository's `pre-commit` hooks automatically.
 
 `make` without a target behaves the same way as `make upgrade`.
 

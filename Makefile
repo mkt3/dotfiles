@@ -61,8 +61,12 @@ $(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
 install_packages: $(INSTALL_SCRIPT)
 	@HOSTNAME_ENV=$(HOSTNAME_ENV) DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash "$(INSTALL_SCRIPT)"
 
+.PHONY: install_git_hooks
+install_git_hooks:
+	@REPO_DIR="$(REPO_DIR)" /usr/bin/env bash "$(REPO_DIR)/scripts/install_git_hooks.sh"
+
 .PHONY: apply
-apply: setup_env install_essential_packages install_packages
+apply: setup_env install_essential_packages install_packages install_git_hooks
 
 .PHONY: update
 update: setup_env update_repository update_flake_lock
