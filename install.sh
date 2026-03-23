@@ -3,6 +3,7 @@
 set -euo pipefail
 
 INSTALL_DIR="${INSTALL_DIR:-$HOME/workspace/ghq/github.com/mkt3/dotfiles}"
+REPO_URL="https://github.com/mkt3/dotfiles"
 
 CLONED=false
 
@@ -38,10 +39,20 @@ load_nix() {
 ensure_nix
 load_nix
 
-if [ ! -d "$INSTALL_DIR" ]; then
+if [ ! -e "$INSTALL_DIR" ]; then
     echo "Cloning dotfiles..."
-    nix shell nixpkgs#git --command git clone https://github.com/mkt3/dotfiles "$INSTALL_DIR"
+    nix shell nixpkgs#git --command git clone "$REPO_URL" "$INSTALL_DIR"
     CLONED=true
+elif [ ! -d "$INSTALL_DIR/.git" ]; then
+    echo "install.sh expected $INSTALL_DIR to be a git repository, but it is not."
+    exit 1
+else
+    origin_url="$(git -C "$INSTALL_DIR" remote get-url origin 2>/dev/null || true)"
+
+    if [ "$origin_url" != "$REPO_URL" ]; then
+        echo "install.sh expected $INSTALL_DIR to point to $REPO_URL, but found ${origin_url:-no origin remote}."
+        exit 1
+    fi
 fi
 
 # shellcheck source=/dev/null
