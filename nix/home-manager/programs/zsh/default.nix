@@ -54,7 +54,7 @@ in
           fi
 
           if [[ -z "$ZSH_PATH_LOADED" ]]; then
-            source "${config.xdg.configHome}/zsh/path.zsh"
+            source "${config.xdg.configHome}/zsh/env.sh"
             export ZSH_PATH_LOADED=1
           fi
         ''
@@ -191,8 +191,8 @@ in
       source = ./no_defer.zsh;
     };
 
-    "zsh/path.zsh" = {
-      source = ./path.zsh;
+    "zsh/env.sh" = {
+      source = ./env.sh;
     };
 
     "zsh/abbreviations".source = ./abbreviations;

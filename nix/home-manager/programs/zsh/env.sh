@@ -2,17 +2,20 @@
 export OS="$(uname -s)"
 export ARCH="$(uname -m)"
 DISTRO="$OS"
-if [ "$DISTRO" = "Linux" ];then
+if [ "$DISTRO" = "Linux" ]; then
     DISTRO=$(awk -F= '$1=="NAME"{print $2}' /etc/os-release | tr -d '"')
 fi
+export DISTRO
 
 # PATH
 XDG_STATE_HOME=${XDG_STATE_HOME:-${HOME}/.local/state}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
-if [ "$DISTRO" = 'NixOS' ];then
+export XDG_STATE_HOME XDG_CONFIG_HOME
+
+if [ "$DISTRO" = "NixOS" ]; then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:/etc/profiles/per-user/${USER}/bin:/run/wrappers/bin:${PATH}"
-elif [ "$DISTRO" = 'Darwin' ];then
+elif [ "$DISTRO" = "Darwin" ]; then
     MAC_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
     export SHELL_SESSIONS_DISABLE=1
 
@@ -22,28 +25,27 @@ elif [ "$DISTRO" = 'Darwin' ];then
     # nix
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export PATH="/etc/profiles/per-user/${USER}/bin:${PATH}"
-    export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:${PATH}"
     export NIX_PATH="darwin-config=${XDG_CONFIG_HOME}/nix/flake.nix:/nix/var/nix/profiles/per-user/root/channels"
     export NIX_SSL_CERT_FILE="/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
     export XDG_CONFIG_DIRS="/run/current-system/sw/etc/xdg:/nix/var/nix/profiles/default/etc/xdg"
     export XDG_DATA_DIRS="/run/current-system/sw/share:/nix/var/nix/profiles/default/share"
     export NIX_USER_PROFILE_DIR="/etc/profiles/per-user/${USER}"
     export NIX_PROFILES="/nix/var/nix/profiles/default /run/current-system/sw /etc/profiles/per-user/${USER}"
-    # Set up secure multi-user builds: non-root users build through the
-    # Nix daemon.
+
     if [ ! -w /nix/var/nix/db ]; then
-         export NIX_REMOTE=daemon
+        export NIX_REMOTE=daemon
     fi
-else # for linux (except NIXOS)
+else
     LINUX_DEFAULT_PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     export PATH="${LINUX_DEFAULT_PATH}:${PATH}"
 
-    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+        . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
     fi
-    export PATH="${XDG_STATE_HOME}/nix/profile/bin:/nix/var/nix/profiles/default/bin:${PATH}"
-    export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 
+    export PATH="${XDG_STATE_HOME}/nix/profile/bin:/nix/var/nix/profiles/default/bin:${PATH}"
+    export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
     export PATH="/usr/local/cuda/bin:${PATH}"
 fi
+
 export PATH="${HOME}/.local/bin:${PATH}"

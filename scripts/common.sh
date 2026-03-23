@@ -10,6 +10,7 @@ COLOR_PURPLE="\033[1;35m"
 COLOR_YELLOW="\033[1;33m"
 COLOR_NONE="\033[0m"
 
+# shellcheck disable=SC2034
 NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
 
 
@@ -44,4 +45,4 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 GNUPGHOME=${GNUPGHOME:-${HOME}/.gnupg}
 
 # shellcheck source=/dev/null
-. "${REPO_DIR}/files/nix/home-manager/programs/zsh/path.zsh"
+. "${REPO_DIR}/nix/home-manager/programs/zsh/env.sh"

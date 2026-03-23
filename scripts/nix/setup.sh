@@ -9,7 +9,8 @@ fi
 pre_setup_nix() {
     info "Creating symlink for nix"
 
-    local nix_config_dir="${CONFIGS_DIR}/nix"
+    local nix_config_dir="${CONFIGS_DIR}"
+    local generated_nix_config_dir="${REPO_DIR}/results/generated/nix"
     local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
     local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
     local nix_main_flake="${nix_main_flake_dir}/flake.nix"
@@ -29,10 +30,14 @@ pre_setup_nix() {
         cp -f "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
     fi
 
-    rm -rf -- "${XDG_CONFIG_HOME}/nix"
-    cp -rf "$nix_config_dir" "$XDG_CONFIG_HOME"
+    mkdir -p "$nix_main_flake_dir"
+    cp -Rf "${nix_config_dir}/." "$nix_main_flake_dir"
+    if [ -d "$generated_nix_config_dir" ]; then
+        cp -Rf "${generated_nix_config_dir}/." "$nix_main_flake_dir"
+    fi
 
-    mv "$nix_main_template_flake" "$nix_main_flake"
+    cp -f "$nix_main_template_flake" "$nix_main_flake"
+    rm -f "$nix_main_template_flake"
     if [ "$DISTRO" = "NixOS" ]; then
         local nixos_systems_dir="${nix_main_flake_dir}/systems/nixos"
         if [ -d "$nixos_systems_dir" ]; then
@@ -89,8 +94,8 @@ run_nvfetcher_if_needed() {
     fi
 
     if "${nvfetcher_command[@]}" \
-        -c "${REPO_DIR}/files/nix/nvfetcher.toml" \
-        -o "${REPO_DIR}/files/nix/_sources"; then
+        -c "${REPO_DIR}/nix/nvfetcher.toml" \
+        -o "${REPO_DIR}/nix/_sources"; then
         date +%s > "$nvfetcher_last_run_file"
         info "nvfetcher execution successful. Timestamp updated."
     else
