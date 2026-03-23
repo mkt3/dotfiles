@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm';
+local shell = os.getenv("SHELL") or "/bin/zsh";
 
 local keys = {
   {key = "Delete",mods = "",action = wezterm.action.SendKey { key = "d", mods = "CTRL" } }, -- for keyball
@@ -8,7 +9,9 @@ local keys = {
   {key = "DownArrow",mods = "",action = wezterm.action.SendKey { key = "n", mods = "CTRL" }}, -- for keyball
   {key="t",mods="CMD",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
   {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
-  {key="s",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{args={"./.config/wezterm/ssh.sh"},cwd = '~'}},
+  {key="s",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{
+    args={shell, "-lc", "~/.config/wezterm/ssh.sh"},
+  }},
 }
 
 font_size = 14.0

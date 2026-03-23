@@ -465,7 +465,7 @@ darwin = [
 type = "gui"
 nixos = [
   { name = "printer", method = "nix" },
-  { name = "simple-scan", method = "nix-hm" }
+  { name = "simple-scan", method = "nix-hm" },
 ]
 
 ## tex

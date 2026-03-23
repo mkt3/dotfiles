@@ -7,7 +7,7 @@ active_iface=""
 if command -v wg > /dev/null 2>&1; then
   while read -r iface; do
     active_iface="$iface"
-  done < <(sudo wg show interfaces 2>/dev/null | tr ' ' '\n')
+  done < <(sudo -n wg show interfaces 2>/dev/null | tr ' ' '\n')
 fi
 
 shopt -s nullglob
