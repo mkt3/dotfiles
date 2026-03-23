@@ -6,25 +6,17 @@ if ! declare -p NIX_CMD >/dev/null 2>&1; then
     NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
 fi
 
-pre_setup_nix() {
-    info "Creating symlink for nix"
-
-    local nix_config_dir="${CONFIGS_DIR}"
-    local generated_nix_config_dir="${REPO_DIR}/results/generated/nix"
-    local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
-    local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
-    local nix_main_flake="${nix_main_flake_dir}/flake.nix"
-    local host_name="$HOSTNAME_ENV"
+detect_nix_platform() {
     local nix_platform
-    local is_gui
-
-    # run_nvfetcher_if_needed
 
     nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
-    # for macos
-    nix_platform=${nix_platform/arm64-darwin/aarch64-darwin}
+    echo "${nix_platform/arm64-darwin/aarch64-darwin}"
+}
 
-    is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
+sync_flake_sources() {
+    local nix_config_dir="$1"
+    local generated_nix_config_dir="$2"
+    local nix_main_flake_dir="$3"
 
     if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
         cp -f "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
@@ -35,17 +27,28 @@ pre_setup_nix() {
     if [ -d "$generated_nix_config_dir" ]; then
         cp -Rf "${generated_nix_config_dir}/." "$nix_main_flake_dir"
     fi
+}
 
-    cp -f "$nix_main_template_flake" "$nix_main_flake"
-    rm -f "$nix_main_template_flake"
-    if [ "$DISTRO" = "NixOS" ]; then
-        local nixos_systems_dir="${nix_main_flake_dir}/systems/nixos"
-        if [ -d "$nixos_systems_dir" ]; then
-            cp -f "/etc/nixos/hardware-configuration.nix" "$nixos_systems_dir"
-        else
-            warning "Warning: NixOS systems directory not found at $nixos_systems_dir. Skipping hardware config copy."
-        fi
+copy_nixos_hardware_config() {
+    local nix_main_flake_dir="$1"
+    local nixos_systems_dir="${nix_main_flake_dir}/systems/nixos"
+
+    if [ "$DISTRO" != "NixOS" ]; then
+        return 0
     fi
+
+    if [ -d "$nixos_systems_dir" ]; then
+        cp -f "/etc/nixos/hardware-configuration.nix" "$nixos_systems_dir"
+    else
+        warning "Warning: NixOS systems directory not found at $nixos_systems_dir. Skipping hardware config copy."
+    fi
+}
+
+render_main_flake() {
+    local nix_main_flake="$1"
+    local nix_platform="$2"
+    local host_name="$3"
+    local is_gui="$4"
 
     "${NIX_CMD[@]}" run nixpkgs#gnused -- -i \
         -e "s|__SYSTEM__|${nix_platform}|g" \
@@ -54,6 +57,30 @@ pre_setup_nix() {
         -e "s|__HOMEDIRECTORY__|${HOME}|g" \
         -e "s|\"__ISGUI__\"|${is_gui}|g" \
         "$nix_main_flake"
+}
+
+pre_setup_nix() {
+    info "Creating symlink for nix"
+
+    local nix_config_dir="${CONFIGS_DIR}"
+    local generated_nix_config_dir="${REPO_DIR}/results/generated/nix"
+    local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
+    local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
+    local nix_main_flake="${nix_main_flake_dir}/flake.nix"
+    local host_name="$HOSTNAME_ENV"
+    local nix_platform=""
+    local is_gui=""
+
+    # run_nvfetcher_if_needed
+
+    nix_platform=$(detect_nix_platform)
+    is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
+
+    sync_flake_sources "$nix_config_dir" "$generated_nix_config_dir" "$nix_main_flake_dir"
+    cp -f "$nix_main_template_flake" "$nix_main_flake"
+    rm -f "$nix_main_template_flake"
+    copy_nixos_hardware_config "$nix_main_flake_dir"
+    render_main_flake "$nix_main_flake" "$nix_platform" "$host_name" "$is_gui"
 
     info "Finished pre-setup for nix"
 }
