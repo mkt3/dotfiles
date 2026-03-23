@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home.pointerCursor = {
     enable = true;
@@ -19,6 +19,7 @@
       package = pkgs.nordic;
       name = "Nordic";
     };
+    gtk4.theme = config.gtk.theme;
     iconTheme = {
       package = pkgs.nordzy-icon-theme;
       name = "Nordzy-dark";
