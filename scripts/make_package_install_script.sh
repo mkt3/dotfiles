@@ -11,18 +11,6 @@ GENERATED_CONFIGS_DIR="${REPO_DIR}/results/generated"
 
 GITHUB_ACTIONS=${GITHUB_ACTIONS:-n}
 
-title "Making packages install script"
-
-os_name=""
-is_linux=false
-case "$DISTRO" in
-    "Arch Linux") os_name="arch"; is_linux=true ;;
-    "Ubuntu") os_name="ubuntu"; is_linux=true ;;
-    "NixOS") os_name="nixos"; is_linux=true ;;
-    "Darwin") os_name="darwin" ;;
-    *) os_name="${DISTRO,,}"; is_linux=true ;;
-esac
-
 dev_env=${DEV_ENV:-n}
 gui_env=${GUI_ENV:-n}
 
@@ -38,11 +26,28 @@ toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
 SED_CMD=("${NIX_CMD[@]}" run nixpkgs#gnused -- -i)
+nix_homebrew_apps_file="${GENERATED_CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
+os_name=""
+is_linux=false
+json_content=""
 
-info "Parsing TOML file to JSON..."
-json_content=$("${NIX_CMD[@]}" run nixpkgs#yj -- -t < "$toml_file")
+detect_platform() {
+    case "$DISTRO" in
+        "Arch Linux") os_name="arch"; is_linux=true ;;
+        "Ubuntu") os_name="ubuntu"; is_linux=true ;;
+        "NixOS") os_name="nixos"; is_linux=true ;;
+        "Darwin") os_name="darwin" ;;
+        *) os_name="${DISTRO,,}"; is_linux=true ;;
+    esac
+}
 
-cat << 'EOF' > "$install_script_path"
+parse_package_catalog() {
+    info "Parsing TOML file to JSON..."
+    json_content=$("${NIX_CMD[@]}" run nixpkgs#yj -- -t < "$toml_file")
+}
+
+write_install_script_header() {
+    cat << 'EOF' > "$install_script_path"
 #!/usr/bin/env bash
 # shellcheck source=/dev/null
 
@@ -60,24 +65,23 @@ title "Pre-setup nix"
 pre_setup_nix
 EOF
 
-# packages
-echo "# package install/update commands" >> "$install_script_path"
+    echo "# package install/update commands" >> "$install_script_path"
+}
 
-rm -rf "${GENERATED_CONFIGS_DIR}/nix"
-mkdir -p "${GENERATED_CONFIGS_DIR}/nix/home-manager" "${GENERATED_CONFIGS_DIR}/nix/systems/darwin" "${GENERATED_CONFIGS_DIR}/nix/systems/nixos"
+initialize_generated_nix_tree() {
+    rm -rf "${GENERATED_CONFIGS_DIR}/nix"
+    mkdir -p "${GENERATED_CONFIGS_DIR}/nix/home-manager" "${GENERATED_CONFIGS_DIR}/nix/systems/darwin" "${GENERATED_CONFIGS_DIR}/nix/systems/nixos"
 
-if [[ "$DISTRO" == "NixOS" ]] ||  [[ "$DISTRO" == "Darwin" ]] ; then
-    printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
-fi
-printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+    if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]]; then
+        printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
+    fi
+    printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+}
 
-nix_homebrew_apps_file="${GENERATED_CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
-
-generate_nix_switch_command() {
-    local os="$1"
+append_nix_switch_command() {
     local output=""
 
-    if [[ "$os" == "darwin" ]]; then
+    if [[ "$os_name" == "darwin" ]]; then
         cp -f "${CONFIGS_DIR}/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
         output+="title \"Setup with nix-darwin\"\n"
         output+="if ! command -v darwin-rebuild > /dev/null 2>&1; then\n"
@@ -88,7 +92,7 @@ generate_nix_switch_command() {
         output+="else\n"
         output+="    sudo darwin-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
         output+="fi"
-    elif [[ "$os" == "nixos" ]]; then
+    elif [[ "$os_name" == "nixos" ]]; then
         output+="title \"Setup nixos\"\n"
         output+="sudo nixos-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}"
     else
@@ -102,12 +106,13 @@ generate_nix_switch_command() {
         output+="fi\n"
         output+="export __ETC_PROFILE_NIX_SOURCED=\"\""
     fi
+
     echo -e "$output" >> "$install_script_path"
 }
 
-generate_nix_switch_command "$os_name"
+get_package_names_for_method() {
+    local method="$1"
 
-for method in ${methods[$os_name]} "${common_methods[@]}"; do
     # shellcheck disable=SC2016
     IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | "${NIX_CMD[@]}" run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
       to_entries | .[] |
@@ -123,63 +128,79 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
       select(.method == $method) |
       .name |
       select(. != null)' && printf '\0')
-    if [ ${#package_names[@]} -eq 0 ]; then
-        continue
-    fi
+}
 
-    install_cmd=""
+append_native_package_command() {
+    local method="$1"
+    local install_cmd=""
+
     case "$method" in
-        "apt")
+        apt)
             echo "title \"Install/Update packages from apt\"" >> "$install_script_path"
             install_cmd="sudo apt-get -y install"
             ;;
-        "pacman")
+        pacman)
             echo "title \"Install/Update packages from pacman\"" >> "$install_script_path"
             install_cmd="sudo pacman -S --needed --noconfirm"
             ;;
-        "aur")
+        aur)
             echo "title \"Install/Update packages from aur\"" >> "$install_script_path"
             install_cmd="yay -S --needed --noconfirm"
             ;;
     esac
 
-    case "$method" in
-        nix|nix-hm)
-            programs_nix_dir=""
-            packages_nix_path=""
-            package_prefix=""
-            if [[ "$method" == "nix" ]]; then
-                if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]] ; then
-                    packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
-                    package_prefix="environment.systemPackages"
-                    programs_nix_dir="${CONFIGS_DIR}/systems/${os_name}/programs"
-                else
-                    packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
-                    package_prefix="home.packages"
-                    programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
-                fi
-            elif [[ "$method" == "nix-hm" ]]; then
-                packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/packages.nix"
-                package_prefix="home.packages"
-                programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
-            fi
-            mkdir -p "$programs_nix_dir"
+    if [ -n "$install_cmd" ]; then
+        echo "${install_cmd} ${package_names[*]}" >> "$install_script_path"
+    fi
+}
 
-            package_list=()
-            program_list=()
+resolve_nix_targets() {
+    local method="$1"
 
-            for package in "${package_names[@]}"; do
-                if [ -d "$programs_nix_dir/$package" ]; then
-                    program_list+=("$package")
-                else
-                    package_list+=("$package")
-                fi
-            done
+    programs_nix_dir=""
+    packages_nix_path=""
+    package_prefix=""
 
-            packages=$([ ${#package_list[@]} -ne 0 ] && printf '    %s\n' "${package_list[@]}" || echo "")
-            programs=$([ ${#program_list[@]} -ne 0 ] && printf '    ./programs/%s\n' "${program_list[@]}" || echo "")
+    if [[ "$method" == "nix" ]]; then
+        if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]]; then
+            packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
+            package_prefix="environment.systemPackages"
+            programs_nix_dir="${CONFIGS_DIR}/systems/${os_name}/programs"
+        else
+            packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+            package_prefix="home.packages"
+            programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
+        fi
+    else
+        packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/packages.nix"
+        package_prefix="home.packages"
+        programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
+    fi
+}
 
-            cat <<EOF > "$packages_nix_path"
+write_nix_package_module() {
+    local method="$1"
+    local package
+    local package_list=()
+    local program_list=()
+    local packages=""
+    local programs=""
+
+    resolve_nix_targets "$method"
+    mkdir -p "$programs_nix_dir"
+
+    for package in "${package_names[@]}"; do
+        if [ -d "$programs_nix_dir/$package" ]; then
+            program_list+=("$package")
+        else
+            package_list+=("$package")
+        fi
+    done
+
+    packages=$([ ${#package_list[@]} -ne 0 ] && printf '    %s\n' "${package_list[@]}" || echo "")
+    programs=$([ ${#program_list[@]} -ne 0 ] && printf '    ./programs/%s\n' "${program_list[@]}" || echo "")
+
+    cat <<EOF > "$packages_nix_path"
 { pkgs, ... }:
 let
   programModules = [
@@ -194,45 +215,82 @@ ${packages}
   ];
 }
 EOF
+}
+
+apply_homebrew_packages() {
+    local method="$1"
+    local placeholder=""
+    local packages_string=""
+
+    case "$method" in
+        brew)
+            placeholder="__BREW_PACKAGES__"
+            packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
+            ;;
+        cask)
+            placeholder="__CASK_PACKAGES__"
+            packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
+            ;;
+        mas)
+            placeholder="__MAS_PACKAGES__"
+            if [ "$GITHUB_ACTIONS" != "y" ]; then
+                packages_string=$(printf '__n__      %s;' "${package_names[@]}")
+            fi
+            ;;
+    esac
+
+    "${SED_CMD[@]}" "s|${placeholder}|${packages_string}|g" "$nix_homebrew_apps_file"
+    "${SED_CMD[@]}" "s|__n__|\n|g" "$nix_homebrew_apps_file"
+}
+
+process_method() {
+    local method="$1"
+    local package_names=()
+
+    get_package_names_for_method "$method"
+    if [ ${#package_names[@]} -eq 0 ]; then
+        return 0
+    fi
+
+    case "$method" in
+        nix|nix-hm)
+            write_nix_package_module "$method"
             ;;
         brew|cask|mas)
-            placeholder=""
-            packages_string=""
-            case "$method" in
-                brew)
-                    placeholder="__BREW_PACKAGES__"
-                    packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
-                    ;;
-                cask)
-                    placeholder="__CASK_PACKAGES__"
-                    packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
-                    ;;
-                mas)
-                    placeholder="__MAS_PACKAGES__"
-                    if [ "$GITHUB_ACTIONS" == "y" ]; then
-                        packages_string=""
-                    else
-                        packages_string=$(printf '__n__      %s;' "${package_names[@]}")
-                    fi
-                    ;;
-            esac
-            "${SED_CMD[@]}" "s|${placeholder}|${packages_string}|g" "$nix_homebrew_apps_file"
-            "${SED_CMD[@]}" "s|__n__|\n|g" "$nix_homebrew_apps_file"
+            apply_homebrew_packages "$method"
             ;;
         script)
             ;;
         *)
-            if [ -n "$install_cmd" ]; then
-                echo "${install_cmd} ${package_names[*]}" >> "$install_script_path"
-            fi
+            append_native_package_command "$method"
             ;;
     esac
-done
+}
 
-if [[ "$DISTRO" == "Darwin" ]] ; then
-    "${SED_CMD[@]}" "s|__BREW_PACKAGES__||g; \
-                s|__CASK_PACKAGES__||g; \
-                s|__MAS_PACKAGES__||g" "$nix_homebrew_apps_file"
-fi
+finalize_homebrew_template() {
+    if [[ "$DISTRO" == "Darwin" ]]; then
+        "${SED_CMD[@]}" "s|__BREW_PACKAGES__||g; \
+                    s|__CASK_PACKAGES__||g; \
+                    s|__MAS_PACKAGES__||g" "$nix_homebrew_apps_file"
+    fi
+}
 
-echo "success \"Complete!\""  >> "$install_script_path"
+main() {
+    local method
+
+    title "Making packages install script"
+    detect_platform
+    parse_package_catalog
+    write_install_script_header
+    initialize_generated_nix_tree
+    append_nix_switch_command
+
+    for method in ${methods[$os_name]} "${common_methods[@]}"; do
+        process_method "$method"
+    done
+
+    finalize_homebrew_template
+    echo 'success "Complete!"' >> "$install_script_path"
+}
+
+main

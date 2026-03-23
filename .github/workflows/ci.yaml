@@ -14,9 +14,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            hostname: ubuntu-test
           - os: macos-latest
-            hostname: macos-test
 
     runs-on: ${{ matrix.os }}
 
@@ -28,38 +26,5 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
-      - name: Check TOML formatting
-        run: nix shell nixpkgs#taplo --command taplo fmt --check --config taplo.toml packages.toml
-
-      - name: Shellcheck scripts
-        run: |
-          nix shell nixpkgs#shellcheck --command \
-            shellcheck install.sh scripts/*.sh scripts/nix/*.sh
-
-      - name: Generate install artifacts
-        env:
-          REPO_DIR: ${{ github.workspace }}
-          TOML_FILE: ${{ github.workspace }}/packages.toml
-          INSTALL_SCRIPT: ${{ github.workspace }}/results/install_packages.sh
-          DEV_ENV: y
-          GUI_ENV: y
-          GITHUB_ACTIONS: y
-        run: |
-          mkdir -p "${GITHUB_WORKSPACE}/results"
-          . "${GITHUB_WORKSPACE}/nix/home-manager/programs/zsh/env.sh"
-          nix shell nixpkgs#bash nixpkgs#jq nixpkgs#yj nixpkgs#gnused --command \
-            bash "${GITHUB_WORKSPACE}/scripts/make_package_install_script.sh"
-
-      - name: Evaluate generated flake
-        env:
-          REPO_DIR: ${{ github.workspace }}
-          HOSTNAME_ENV: ${{ matrix.hostname }}
-          DEV_ENV: y
-          GUI_ENV: y
-        run: |
-          . "${GITHUB_WORKSPACE}/nix/home-manager/programs/zsh/env.sh"
-          . "${GITHUB_WORKSPACE}/scripts/common.sh"
-          CONFIGS_DIR="${GITHUB_WORKSPACE}/nix"
-          . "${GITHUB_WORKSPACE}/scripts/nix/setup.sh"
-          pre_setup_nix
-          nix flake show "${HOME}/.config/nix"
+      - name: Run make check
+        run: make check
