@@ -39,6 +39,10 @@ setup_env: create_env_file
 
 .PHONY: update_repository
 update_repository:
+	@if ! git -C "$(REPO_DIR)" diff --quiet || ! git -C "$(REPO_DIR)" diff --cached --quiet; then \
+		printf "%s\n" "Refusing to update: commit or stash local changes in $(REPO_DIR) before running make update."; \
+		exit 1; \
+	fi
 	@git -C "$(REPO_DIR)" pull --ff-only
 
 .PHONY: prepare_nix
