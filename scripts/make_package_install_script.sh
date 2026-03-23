@@ -3,7 +3,8 @@
 set -euo pipefail
 
 # variable
-CONFIGS_DIR="${REPO_DIR}/files"
+CONFIGS_DIR="${REPO_DIR}/nix"
+GENERATED_CONFIGS_DIR="${REPO_DIR}/results/generated"
 
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
@@ -48,7 +49,7 @@ cat << 'EOF' > "$install_script_path"
 set -eu
 
 # variable
-CONFIGS_DIR="${REPO_DIR}/files"
+CONFIGS_DIR="${REPO_DIR}/nix"
 NIX_DIR="${HOME}/.config/nix"
 
 . "${REPO_DIR}/scripts/common.sh"
@@ -62,21 +63,23 @@ EOF
 # packages
 echo "# package install/update commands" >> "$install_script_path"
 
-if [[ "$DISTRO" == "NixOS" ]] ||  [[ "$DISTRO" == "Darwin" ]] ; then
-    printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
-fi
-printf '{ ... }:\n{}\n' > "${CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+rm -rf "${GENERATED_CONFIGS_DIR}/nix"
+mkdir -p "${GENERATED_CONFIGS_DIR}/nix/home-manager" "${GENERATED_CONFIGS_DIR}/nix/systems/darwin" "${GENERATED_CONFIGS_DIR}/nix/systems/nixos"
 
-nix_homebrew_apps_file="${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
+if [[ "$DISTRO" == "NixOS" ]] ||  [[ "$DISTRO" == "Darwin" ]] ; then
+    printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
+fi
+printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+
+nix_homebrew_apps_file="${GENERATED_CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
 
 generate_nix_switch_command() {
     local os="$1"
     local output=""
 
     if [[ "$os" == "darwin" ]]; then
-        cp -f "${CONFIGS_DIR}/nix/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
+        cp -f "${CONFIGS_DIR}/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
         output+="title \"Setup with nix-darwin\"\n"
-        output+="cd \"\${NIX_DIR}\" && \"\${NIX_CMD[@]}\" flake update && cd -\n"
         output+="if ! command -v darwin-rebuild > /dev/null 2>&1; then\n"
         output+="    echo \"Setting up initial nix-darwin...\"\n"
         output+="    sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true\n"
@@ -87,13 +90,11 @@ generate_nix_switch_command() {
         output+="fi"
     elif [[ "$os" == "nixos" ]]; then
         output+="title \"Setup nixos\"\n"
-        output+="cd \"\${NIX_DIR}\" && \"\${NIX_CMD[@]}\" flake update && cd -\n"
         output+="sudo nixos-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}"
     else
         output+="title \"Install/Update packages from home-manager\"\n"
         output+="if command -v home-manager > /dev/null 2>&1; then\n"
-        output+="    echo \"Updating flakes and switching home-manager...\"\n"
-        output+="    \"\${NIX_CMD[@]}\" flake update --flake \${NIX_DIR}\n"
+        output+="    echo \"Switching home-manager with current flake.lock...\"\n"
         output+="    home-manager switch --flake \${NIX_DIR}\n"
         output+="else\n"
         output+="    echo \"Running home-manager via nix run...\"\n"
@@ -107,6 +108,7 @@ generate_nix_switch_command() {
 generate_nix_switch_command "$os_name"
 
 for method in ${methods[$os_name]} "${common_methods[@]}"; do
+    # shellcheck disable=SC2016
     IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | "${NIX_CMD[@]}" run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
       to_entries | .[] |
       select(
@@ -148,18 +150,18 @@ for method in ${methods[$os_name]} "${common_methods[@]}"; do
             package_prefix=""
             if [[ "$method" == "nix" ]]; then
                 if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]] ; then
-                    packages_nix_path="${CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
+                    packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
                     package_prefix="environment.systemPackages"
-                    programs_nix_dir="${CONFIGS_DIR}/nix/systems/${os_name}/programs"
+                    programs_nix_dir="${CONFIGS_DIR}/systems/${os_name}/programs"
                 else
-                    packages_nix_path="${CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+                    packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
                     package_prefix="home.packages"
-                    programs_nix_dir="${CONFIGS_DIR}/nix/home-manager/programs"
+                    programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
                 fi
             elif [[ "$method" == "nix-hm" ]]; then
-                packages_nix_path="${CONFIGS_DIR}/nix/home-manager/packages.nix"
+                packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/packages.nix"
                 package_prefix="home.packages"
-                programs_nix_dir="${CONFIGS_DIR}/nix/home-manager/programs"
+                programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
             fi
             mkdir -p "$programs_nix_dir"
 

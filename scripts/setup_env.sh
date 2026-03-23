@@ -2,9 +2,12 @@
 
 set -euo pipefail
 
-script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-repo_dir="$(CDPATH= cd -- "${script_dir}/.." && pwd)"
+script_dir="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
+repo_dir="$(CDPATH='' cd -- "${script_dir}/.." && pwd)"
 ENV_FILE="${ENV_FILE:-${repo_dir}/results/env_settings}"
+host_name=""
+is_dev=""
+is_gui=""
 
 ask_prompt() {
     local prompt="$1"
