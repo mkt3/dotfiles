@@ -2,10 +2,14 @@
 
 set -euo pipefail
 
-# shellcheck source=/dev/null
-. "${REPO_DIR}/scripts/common.sh"
+repo_dir="${TARGET_REPO_DIR:-${REPO_DIR:-}}"
+if [ -z "$repo_dir" ]; then
+    repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
 
-repo_dir="${TARGET_REPO_DIR:-$REPO_DIR}"
+# shellcheck source=/dev/null
+. "${repo_dir}/scripts/common.sh"
+
 config_file="${repo_dir}/.pre-commit-config.yaml"
 hook_file="$(git -C "$repo_dir" rev-parse --git-path hooks/pre-commit 2>/dev/null || true)"
 
