@@ -431,7 +431,7 @@
       };
       audio = {
         volumeStep = 1;
-        volumeOverdrive = false;
+        volumeOverdrive = true;
         cavaFrameRate = 5;
         visualizerType = "linear";
         mprisBlacklist = [ ];
