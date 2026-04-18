@@ -163,6 +163,10 @@ common = [{ name = "dust", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "csview", method = "nix-hm" }]
 
+[libsixel]
+type = "basic"
+common = [{ name = "libsixel", method = "nix-hm" }]
+
 [zoxide]
 type = "basic"
 common = [{ name = "zoxide", method = "nix-hm" }]
