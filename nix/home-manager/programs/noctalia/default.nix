@@ -1,6 +1,9 @@
 {
   config,
   noctalia,
+  lib,
+  username,
+  pkgs,
   ...
 }:
 {
@@ -9,7 +12,6 @@
   ];
   programs.noctalia-shell = {
     enable = true;
-    systemd.enable = true;
     settings = {
       settingsVersion = 0;
       bar = {
@@ -496,6 +498,20 @@
         screenUnlock = "";
         performanceModeEnabled = "";
         performanceModeDisabled = "";
+      };
+      idle = {
+        enabled = true;
+        screenOffTimeout = 900;
+        lockTimeout = 600;
+        suspendTimeout = 1800;
+        fadeDuration = 5;
+        screenOffCommand = "${lib.getExe pkgs.niri} msg action power-off-monitors";
+        lockCommand = "/etc/profiles/per-user/${username}/bin/noctalia-shell ipc call lockScreen lock";
+        suspendCommand = "${lib.getExe' pkgs.systemd "systemctl"} suspend";
+        resumeScreenOffCommand = "${lib.getExe pkgs.niri} msg action power-on-monitors";
+        resumeLockCommand = "${lib.getExe pkgs.niri} msg action power-on-monitors";
+        resumeSuspendCommand = "${lib.getExe pkgs.niri} msg action power-on-monitors";
+        customCommands = "[]";
       };
       desktopWidgets = {
         enabled = false;
