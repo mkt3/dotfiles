@@ -39,10 +39,6 @@ setup_env: create_env_file
 
 .PHONY: update_repository
 update_repository:
-	@if ! git -C "$(REPO_DIR)" diff --quiet || ! git -C "$(REPO_DIR)" diff --cached --quiet; then \
-		printf "%s\n" "Skipping git pull: local changes detected in $(REPO_DIR)."; \
-		exit 0; \
-	fi
 	@git -C "$(REPO_DIR)" pull --ff-only
 
 .PHONY: prepare_nix
