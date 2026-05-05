@@ -7,6 +7,7 @@ local keys = {
   {key = "LeftArrow",mods = "",action = wezterm.action.SendKey { key = "b", mods = "CTRL" }}, -- for keyball
   {key = "UpArrow",mods = "",action = wezterm.action.SendKey { key = "p", mods = "CTRL" }}, -- for keyball
   {key = "DownArrow",mods = "",action = wezterm.action.SendKey { key = "n", mods = "CTRL" }}, -- for keyball
+  {key = "q",mods ="CTRL",action = wezterm.action { SendString = "\x11" }},
   {key="t",mods="CMD",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
   {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
   {key="s",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{
@@ -27,6 +28,7 @@ return {
     { family = 'Noto Emoji', assume_emoji_presentation = true},
   },
   use_ime = true,
+  macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL',
   font_size = font_size,
   color_scheme = "nord",
   allow_square_glyphs_to_overflow_width = "Always",
