@@ -38,10 +38,7 @@
         "nix-command"
         "flakes"
       ];
-      use-xdg-base-directories = true;
       cores = 0;
-      download-buffer-size = 134217728;
-      trusted-users = [ username ];
     };
 
     gc = {
