@@ -553,6 +553,7 @@ common = [{ name = "anki-bin", method = "nix-hm" }]
 ## terminal emulator
 [wezterm]
 type = "gui"
+darwin = [{ name = "wezterm", method = "cask" }]
 common = [{ name = "wezterm", method = "nix-hm" }]
 
 ## cloud storage
@@ -606,6 +607,11 @@ common = [{ name = "codex", method = "nix-hm" }]
 [claude-code]
 type = "dev"
 common = [{ name = "claude-code", method = "nix-hm" }]
+
+### for claude-code
+[nodejs]
+type = "dev"
+common = [{ name = "nodejs", method = "nix-hm" }]
 
 ## font
 [font]

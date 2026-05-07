@@ -41,6 +41,7 @@
     ];
     extraConfig = ''
       set -g set-clipboard on
+      set -g allow-passthrough on
 
       bind r source-file ${config.xdg.configHome}/tmux/tmux.conf \; display "tmux.conf has been reloaded"
 
