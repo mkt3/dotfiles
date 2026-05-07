@@ -89,6 +89,25 @@
       set-option -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W #{?window_zoomed_flag, ,} #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
       set-option -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W #{?window_zoomed_flag, ,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
       set-option -g window-status-separator ""
-    '';
+
+      bind-key e run-shell '
+       DIR="#{pane_current_path}"
+       SESSION="#{session_id}"
+       WINDOW="#{window_id}"
+       EMACS_PANE="#{pane_id}"
+
+       tmux rename-window -t "$WINDOW" "dev"
+
+       TERMINAL_PANE=$(tmux split-window -t "$EMACS_PANE" -v -p 30 -c "$DIR" -P -F "##{pane_id}")
+
+       tmux select-pane -t "$EMACS_PANE"
+       CODEX_PANE=$(tmux split-window -t "$EMACS_PANE" -h -p 50 -c "$DIR" -P -F "##{pane_id}")
+
+       tmux send-keys -t "$EMACS_PANE" "emacs" C-m
+       tmux send-keys -t "$CODEX_PANE" "codex" C-m
+
+       tmux select-pane -t "$TERMINAL_PANE"
+       '
+   '';
   };
 }
