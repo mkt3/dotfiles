@@ -23,7 +23,7 @@ local function notify(title, message)
 end
 
 wezterm.on('user-var-changed', function(window, pane, name, value)
-  if name ~= 'codex_notify' then
+  if name ~= 'agent_notify' then
     return
   end
 

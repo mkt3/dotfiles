@@ -12,9 +12,4 @@
     source = ./setup_codex_notify.sh;
     executable = true;
   };
-
-  home.file.".local/bin/notify.sh" = {
-    source = ./notify.sh;
-    executable = true;
-  };
 }

@@ -613,6 +613,11 @@ common = [{ name = "claude-code", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "nodejs", method = "nix-hm" }]
 
+### notify for agent with ssh
+[agent-notify]
+type = "dev"
+common = [{ name = "agent-notify", method = "nix-hm" }]
+
 ## font
 [font]
 type = "gui"

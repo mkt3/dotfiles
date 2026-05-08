@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-title=${1:-Codex}
+title=${1:-Agent}
 shift || true
 message=${*:-Hook completed}
 
@@ -18,16 +18,16 @@ fi
 context="${context} cwd=${PWD}"
 message=$(printf '%s\n%s' "$message" "$context")
 
-case ${CODEX_NOTIFY_TRANSPORT:-uservar} in
+case ${AGENT_NOTIFY_TRANSPORT:-uservar} in
   osc9)
     osc=$(printf '\033]777;notify;%s;%s\033\\' "$title" "$message")
     ;;
   uservar)
     payload=$(printf '%s\n%s' "$title" "$message" | base64 | tr -d '\n')
-    osc=$(printf '\033]1337;SetUserVar=codex_notify=%s\a' "$payload")
+    osc=$(printf '\033]1337;SetUserVar=agent_notify=%s\a' "$payload")
     ;;
   *)
-    printf 'notify.sh: unsupported CODEX_NOTIFY_TRANSPORT: %s\n' "$CODEX_NOTIFY_TRANSPORT" >&2
+    printf 'notify.sh: unsupported AGENT_NOTIFY_TRANSPORT: %s\n' "$AGENT_NOTIFY_TRANSPORT" >&2
     exit 2
     ;;
 esac
