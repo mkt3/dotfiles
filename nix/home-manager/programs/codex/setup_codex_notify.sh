@@ -3,7 +3,7 @@ set -euo pipefail
 
 config_dir="${CODEX_HOME:-${HOME}/.codex}"
 config_file="${config_dir}/config.toml"
-notify_line='notify = ["sh", "-lc", "~/.local/bin/notify.sh Codex '\''turn complete'\'' >/dev/null 2>&1 || true"]'
+stop_command='~/.local/bin/notify.sh Codex '\''turn complete'\'' >/dev/null 2>&1 || true'
 permission_command='~/.local/bin/notify.sh Codex '\''approval required'\'' >/dev/null 2>&1 || true'
 
 mkdir -p "$config_dir"
@@ -11,23 +11,6 @@ touch "$config_file"
 
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
-
-if ! grep -Eq '^[[:space:]]*notify[[:space:]]*=' "$config_file"; then
-  awk -v notify_line="$notify_line" '
-    !inserted && $0 ~ /^[[:space:]]*\[/ {
-      print notify_line
-      print ""
-      inserted = 1
-    }
-    { print }
-    END {
-      if (!inserted) {
-        print notify_line
-      }
-    }
-  ' "$config_file" > "$tmp"
-  mv "$tmp" "$config_file"
-fi
 
 if grep -Eq '^[[:space:]]*\[features\][[:space:]]*$' "$config_file"; then
   if ! awk '
@@ -50,6 +33,50 @@ else
   {
     printf '\n[features]\n'
     printf 'codex_hooks = true\n'
+  } >> "$config_file"
+fi
+
+if grep -Eq '^[[:space:]]*\[tui\][[:space:]]*$' "$config_file"; then
+  awk '
+    /^[[:space:]]*\[tui\][[:space:]]*$/ {
+      in_tui = 1
+      seen_notifications = 0
+      print
+      next
+    }
+    /^[[:space:]]*\[/ {
+      if (in_tui && !seen_notifications) {
+        print "notifications = false"
+      }
+      in_tui = 0
+    }
+    in_tui && /^[[:space:]]*notifications[[:space:]]*=/ {
+      print "notifications = false"
+      seen_notifications = 1
+      next
+    }
+    { print }
+    END {
+      if (in_tui && !seen_notifications) {
+        print "notifications = false"
+      }
+    }
+  ' "$config_file" > "$tmp"
+  mv "$tmp" "$config_file"
+else
+  {
+    printf '\n[tui]\n'
+    printf 'notifications = false\n'
+  } >> "$config_file"
+fi
+
+if ! grep -Fq "$stop_command" "$config_file"; then
+  {
+    printf '\n[[hooks.Stop]]\n'
+    printf '[[hooks.Stop.hooks]]\n'
+    printf 'type = "command"\n'
+    printf 'command = "%s"\n' "$stop_command"
+    printf 'timeout = 5\n'
   } >> "$config_file"
 fi
 
