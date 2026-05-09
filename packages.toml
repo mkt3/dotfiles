@@ -575,7 +575,7 @@ darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
 ## launcher
 [launcher]
 type = "gui"
-darwin = [{ name = "raycast", method = "nix-hm" }]
+darwin = [{ name = "raycast", method = "cask" }]
 linux = [{ name = "rofi", method = "nix-hm" }]
 
 ## gui archiver
