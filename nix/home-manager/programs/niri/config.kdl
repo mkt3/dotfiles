@@ -250,7 +250,7 @@ spawn-sh-at-startup "noctalia-shell"
 spawn-sh-at-startup "nextcloud --background"
 spawn-sh-at-startup "thunar --daemon"
 spawn-at-startup "wezterm"
-spawn-at-startup "firefox"
+spawn-at-startup "vivaldi"
 spawn-at-startup "slack"
 spawn-at-startup "discord"
 spawn-at-startup "zotero"
@@ -271,7 +271,7 @@ window-rule {
 
 window-rule {
   match app-id=r#"^org\.wezfurlong\.wezterm$"#
-  match at-startup=true app-id=r#"firefox"#
+  match at-startup=true app-id=r#"vivaldi-stable"#
   open-on-workspace "main"
 }
 
