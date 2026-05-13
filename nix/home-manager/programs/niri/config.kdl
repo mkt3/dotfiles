@@ -249,7 +249,7 @@ animations {
 spawn-sh-at-startup "noctalia-shell"
 spawn-sh-at-startup "nextcloud --background"
 spawn-sh-at-startup "thunar --daemon"
-spawn-at-startup "vicinae" "server"
+//spawn-sh-at-startup "vicinae server --config ~/.config/vicinae/nix.json"
 spawn-at-startup "wezterm"
 spawn-at-startup "vivaldi"
 spawn-at-startup "slack"
