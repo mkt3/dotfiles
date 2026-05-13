@@ -1,9 +1,6 @@
 {
-  config,
   vicinae,
   vicinae-extensions,
-  lib,
-  username,
   pkgs,
   ...
 }:
