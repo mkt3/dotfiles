@@ -125,6 +125,7 @@ type = "basic"
 common = [
   { name = "git", method = "nix-hm" },
   { name = "prek", method = "nix-hm" },
+  { name = "gitleaks", method = "nix-hm" },
 ]
 
 [procs]
