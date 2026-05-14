@@ -96,3 +96,7 @@
 
 # Hide desktop widgets
 /usr/bin/defaults write com.apple.WindowManager StandardHideWidgets -bool true
+
+# Disable auto re-launch
+/usr/bin/defaults write com.apple.loginwindow TALLogoutSavesState -bool false
+/usr/bin/defaults write com.apple.loginwindow LoginwindowLaunchesRelaunchApps -bool false
