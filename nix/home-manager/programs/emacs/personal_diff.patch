@@ -1,13 +1,5 @@
-diff --git a/lisp/org/ol.el b/lisp/org/ol.el
-index ac0c308da21..3b37bda885b 100644
 --- a/lisp/org/ol.el
 +++ b/lisp/org/ol.el
-@@ -1919,7 +1919,7 @@ Use TAB to complete link prefixes, then RET for type-specific completion support
-     ;; Check if we can/should use a relative path.  If yes, simplify
-     ;; the link.
-     (let ((case-fold-search nil))
--      (when (string-match "\\`\\(file\\|docview\\):" link)
-+      (when (string-match "\\`\\(file\\|nov\\|docview\\):" link)
- 	(let* ((type (match-string-no-properties 0 link))
- 	       (path-start (match-end 0))
- 	       (search (and (string-match "::\\(.*\\)\\'" link)
+@@ -1542 +1542 @@
+-    (when (string-match "\\`\\(file\\|docview\\):" link)
++    (when (string-match "\\`\\(file\\|nov\\|docview\\):" link)

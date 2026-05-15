@@ -23,6 +23,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     xremap = {
       url = "github:xremap/nix-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,6 +59,7 @@
       self,
       nix-darwin,
       nixpkgs,
+      emacs-overlay,
       home-manager,
       nix-index-database,
       xremap,
@@ -75,7 +80,10 @@
       pkgs = import nixpkgs {
         config.allowUnfree = true;
         system = platform;
-        overlays = nixpkgs.lib.optionals (platform == "aarch64-darwin") [
+        overlays = [
+          emacs-overlay.overlays.emacs
+        ]
+        ++ nixpkgs.lib.optionals (platform == "aarch64-darwin") [
           inputs.brew-nix.overlays.default
         ];
       };

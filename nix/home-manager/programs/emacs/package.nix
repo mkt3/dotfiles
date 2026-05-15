@@ -36,7 +36,7 @@ if isDarwin then
     ];
   })
 else if isGUI then
-  (pkgs.emacs-pgtk.override { withXwidgets = true; }).overrideAttrs (old: {
+  (pkgs.emacs-git-pgtk.override { withXwidgets = true; }).overrideAttrs (old: {
     patches = (old.patches or [ ]) ++ [
       ./personal_diff.patch
       ./xwidget.patch
