@@ -7,7 +7,7 @@
 if isDarwin then
   pkgs.emacs.overrideAttrs (old: {
     patches = (old.patches or [ ]) ++ [
-      ./personal_diff.patch
+      ./org-link-nov-relative-path-emacs-30.2.patch
       # Fix OS window role (needed for window managers like yabai)
       (pkgs.fetchpatch {
         url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
@@ -38,7 +38,7 @@ if isDarwin then
 else if isGUI then
   (pkgs.emacs-git-pgtk.override { withXwidgets = true; }).overrideAttrs (old: {
     patches = (old.patches or [ ]) ++ [
-      ./personal_diff.patch
+      ./org-link-nov-relative-path-emacs-git.patch
       ./xwidget.patch
     ];
   })

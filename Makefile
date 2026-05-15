@@ -47,7 +47,7 @@ prepare_nix: $(INSTALL_SCRIPT)
 
 .PHONY: update_flake_lock
 update_flake_lock: prepare_nix
-	@cd "$(HOME)/.config/nix" && $(NIX_CMD) flake update
+	@GUI_ENV=$(GUI_ENV) REPO_DIR="$(REPO_DIR)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/common.sh"; . "$(REPO_DIR)/scripts/nix/setup.sh"; title "Setup GitHub token for Nix"; setup_nix_github_token_from_gh; cd "$(HOME)/.config/nix" && $(NIX_CMD) flake update'
 
 .PHONY: install_essential_packages
 install_essential_packages:

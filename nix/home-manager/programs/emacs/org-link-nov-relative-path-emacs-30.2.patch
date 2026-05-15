@@ -1,0 +1,12 @@
+--- a/lisp/org/ol.el
++++ b/lisp/org/ol.el
+@@ -2060,7 +2060,7 @@
+
+     ;; Check if we can/should use a relative path.  If yes, simplify
+     ;; the link.
+     (let ((case-fold-search nil))
+-      (when (string-match "\\`\\(file\\|docview\\):" link)
++      (when (string-match "\\`\\(file\\|nov\\|docview\\):" link)
+ 	(let* ((type (match-string-no-properties 0 link))
+ 	       (path-start (match-end 0))
+ 	       (search (and (string-match "::\\(.*\\)\\'" link)

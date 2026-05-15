@@ -16,13 +16,13 @@ if grep -Eq '^[[:space:]]*\[features\][[:space:]]*$' "$config_file"; then
   if ! awk '
     /^[[:space:]]*\[features\][[:space:]]*$/ { in_features = 1; next }
     /^[[:space:]]*\[/ { in_features = 0 }
-    in_features && /^[[:space:]]*codex_hooks[[:space:]]*=/ { found = 1 }
+    in_features && /^[[:space:]]*hooks[[:space:]]*=/ { found = 1 }
     END { exit found ? 0 : 1 }
   ' "$config_file"; then
     awk '
       /^[[:space:]]*\[features\][[:space:]]*$/ {
         print
-        print "codex_hooks = true"
+        print "hooks = true"
         next
       }
       { print }
@@ -32,7 +32,7 @@ if grep -Eq '^[[:space:]]*\[features\][[:space:]]*$' "$config_file"; then
 else
   {
     printf '\n[features]\n'
-    printf 'codex_hooks = true\n'
+    printf 'hooks = true\n'
   } >> "$config_file"
 fi
 

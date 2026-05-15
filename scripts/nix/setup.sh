@@ -6,6 +6,46 @@ if ! declare -p NIX_CMD >/dev/null 2>&1; then
     NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
 fi
 
+setup_nix_github_token_from_gh() {
+    if [ "${GUI_ENV:-n}" != "y" ]; then
+        if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
+            info "Skipping GitHub token setup for Nix because GUI_ENV is not enabled."
+        fi
+        return 0
+    fi
+
+    if ! command -v gh > /dev/null 2>&1; then
+        if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
+            info "Skipping GitHub token setup for Nix because gh is not installed."
+        fi
+        return 0
+    fi
+
+    local github_token=""
+    github_token=$(gh auth token 2>/dev/null || true)
+    if [ -z "$github_token" ]; then
+        if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
+            info "Skipping GitHub token setup for Nix because gh auth token is unavailable."
+        fi
+        return 0
+    fi
+
+    case "${NIX_CONFIG:-}" in
+        *"github.com="*)
+            if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
+                info "GitHub token for Nix is already configured in NIX_CONFIG."
+            fi
+            return 0
+            ;;
+    esac
+
+    export NIX_CONFIG="${NIX_CONFIG:+${NIX_CONFIG}
+}access-tokens = github.com=${github_token}"
+    if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
+        info "Configured GitHub token for Nix from gh auth token."
+    fi
+}
+
 detect_nix_platform() {
     local nix_platform
 

@@ -60,6 +60,8 @@ NIX_DIR="${HOME}/.config/nix"
 . "${REPO_DIR}/scripts/common.sh"
 . "${REPO_DIR}/scripts/nix/setup.sh"
 
+NIX_GITHUB_TOKEN_LOG=n setup_nix_github_token_from_gh
+
 # pre function
 title "Pre-setup nix"
 pre_setup_nix
