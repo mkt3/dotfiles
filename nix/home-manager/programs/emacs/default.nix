@@ -10,7 +10,7 @@
 {
   programs.emacs = {
     enable = true;
-    package = pkgs.patched-emacs;
+    package = import ./package.nix { inherit pkgs isDarwin isGUI; };
     extraPackages =
       epkgs:
       [
