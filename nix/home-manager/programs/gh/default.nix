@@ -11,9 +11,4 @@
       };
     };
   };
-
-  # home.file.".zshenv".text = ''
-  #   # github cli
-  #   export NIX_CONFIG="access-tokens = github.com=$(gh auth token)"
-  # '';
 }

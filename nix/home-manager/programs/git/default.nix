@@ -38,9 +38,9 @@
     };
 
     signing = {
-      signByDefault = true;
-      key = null;
       format = "openpgp";
+      signByDefault = true;
+      key = "AB1322B5A83A7EA4FE4AF3BF8E8400751C7F4E16";
     };
 
     ignores = [

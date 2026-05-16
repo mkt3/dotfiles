@@ -8,55 +8,57 @@
   config,
   ...
 }:
+let
+  enableLocalAgent = isDarwin || isNixOS || isGUI;
+  disableLocalAgent = isLinux && !enableLocalAgent;
+  gpgAgentUnits = [
+    "gpg-agent.service"
+    "gpg-agent.socket"
+    "gpg-agent-ssh.socket"
+    "gpg-agent-extra.socket"
+    "gpg-agent-browser.socket"
+  ];
+in
 {
-  # services.gpg-agent = lib.mkIf (isLinux && isGUI) {
-  #   enable = true;
-  #   maxCacheTtl = 60480000;
-  #   maxCacheTtlSsh = 60480000;
-  #   defaultCacheTtl = 60480000;
-  #   defaultCacheTtlSsh = 60480000;
-  # };
+  programs.gpg = {
+    enable = true;
+    publicKeys = [
+      {
+        source = ./keys/mkt3.github.gpg.asc;
+        trust = "ultimate";
+      }
+    ];
+    settings = lib.optionalAttrs disableLocalAgent {
+      no-autostart = true;
+    };
+  };
+
+  services.gpg-agent = lib.mkIf enableLocalAgent {
+    enable = true;
+    enableSshSupport = true;
+    maxCacheTtl = 60480000;
+    maxCacheTtlSsh = 60480000;
+    defaultCacheTtl = 60480000;
+    defaultCacheTtlSsh = 60480000;
+    pinentry.package = lib.mkIf isDarwin pkgs.pinentry_mac;
+  };
 
   home.packages = lib.optionals (isNixOS || isDarwin) [ pkgs.gnupg ];
 
   programs.zsh.envExtra = lib.mkAfter (
-    lib.concatStringsSep "\n" (
-      [
-        "# GnuPG"
-        "# default value is ~/.gnupg. If use non-default GnuPG Home directory, need to edit all socket files."
-        "export GNUPGHOME=\"${config.home.homeDirectory}/.gnupg\""
-        "export GPG_TTY=$(tty)"
-        "export SSH_AGENT_PID=\"\""
-      ]
-      ++ lib.optionals isLinux [
-        "export SSH_AUTH_SOCK=\"\${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh\""
-      ]
-      ++ lib.optionals isDarwin [
-        ''export SSH_AUTH_SOCK="${config.home.homeDirectory}/.gnupg/S.gpg-agent.ssh"''
-      ]
-    )
+    lib.concatStringsSep "\n" ([
+      "# GnuPG"
+      "# default value is ~/.gnupg. If use non-default GnuPG Home directory, need to edit all socket files."
+      "export GNUPGHOME=\"${config.home.homeDirectory}/.gnupg\""
+    ])
     + "\n"
   );
 
-  home.file = {
-    ".gnupg/gpg-agent.conf" = {
-      text = lib.mkMerge (
-        [
-          "max-cache-ttl 60480000"
-          "default-cache-ttl 60480000"
-          "max-cache-ttl-ssh 60480000"
-          "default-cache-ttl-ssh 60480000"
-        ]
-        ++ lib.optionals isDarwin [
-          "pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac"
-        ]
-      );
-    };
-  }
-  // lib.optionalAttrs (isLinux && !isNixOS && !isGUI) {
-    ".gnupg/gpg.conf" = {
-      text = "no-autostart";
-      onChange = "/usr/bin/systemctl --user mask gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket";
-    };
+  home.activation = lib.optionalAttrs disableLocalAgent {
+    maskGpgAgent = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if command -v systemctl >/dev/null 2>&1; then
+        systemctl --user mask ${lib.escapeShellArgs gpgAgentUnits}
+      fi
+    '';
   };
 }

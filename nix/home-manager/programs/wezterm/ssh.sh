@@ -31,9 +31,12 @@ if [[ "$ssh_host" = "" ]]; then
     :
 else
     echo -ne "\x1b]0;$ssh_host\x1b\\"
-    if [[ -z "${XDG_RUNTIME_DIR:-}" ]]; then
-        SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh" ssh -- "$ssh_host"
+    if command -v gpgconf >/dev/null 2>&1; then
+        ssh_auth_sock=$(gpgconf --list-dirs agent-ssh-socket)
+    elif [[ -z "${XDG_RUNTIME_DIR:-}" ]]; then
+        ssh_auth_sock="${HOME}/.gnupg/S.gpg-agent.ssh"
     else
-        SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh" ssh -- "$ssh_host"
+        ssh_auth_sock="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
     fi
+    SSH_AUTH_SOCK="$ssh_auth_sock" ssh -- "$ssh_host"
 fi
