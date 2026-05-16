@@ -3,7 +3,9 @@
 set -euo pipefail
 
 if [ -f "${HOME}/.zshenv" ]; then
+  set +u
   . "${HOME}/.zshenv"
+  set -u
 fi
 
 ssh_config_file="${HOME}/.ssh/extra_config"
