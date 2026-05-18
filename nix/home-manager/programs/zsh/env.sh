@@ -10,7 +10,12 @@ export DISTRO
 # PATH
 XDG_STATE_HOME=${XDG_STATE_HOME:-${HOME}/.local/state}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
-export XDG_STATE_HOME XDG_CONFIG_HOME
+XDG_CACHE_HOME=${XDG_CACHE_HOME:-${HOME}/.cache}
+export XDG_STATE_HOME XDG_CONFIG_HOME XDG_CACHE_HOME
+
+if [ -d /proc/driver/nvidia/gpus ] && [ -n "$(ls -A /proc/driver/nvidia/gpus 2>/dev/null)" ]; then
+    export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
+fi
 
 if [ "$DISTRO" = "NixOS" ]; then
     export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${PATH}"

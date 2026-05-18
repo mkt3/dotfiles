@@ -8,7 +8,7 @@
   };
 
   programs.zsh.envExtra = lib.mkAfter ''
-    # navi
+    # gtrash
     GTRASH_PUT_RM_MODE="true"
   '';
 
