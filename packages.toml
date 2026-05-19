@@ -320,6 +320,10 @@ common = [{ name = "nixd", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "nixfmt", method = "nix-hm" }]
 
+[nix-output-monitor]
+type = "dev"
+common = [{ name = "nix-output-monitor", method = "nix-hm" }]
+
 ## for python
 [python]
 type = "dev"
