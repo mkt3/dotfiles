@@ -1,11 +1,27 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-set -euo pipefail
+set -eu
 
 INSTALL_DIR="${INSTALL_DIR:-$HOME/workspace/ghq/github.com/mkt3/dotfiles}"
 REPO_URL="https://github.com/mkt3/dotfiles"
 
 CLONED=false
+
+canonical_repo_url() {
+    url="${1%/}"
+    url="${url%.git}"
+
+    case "$url" in
+        git@github.com:*)
+            url="https://github.com/${url#git@github.com:}"
+            ;;
+        ssh://git@github.com/*)
+            url="https://github.com/${url#ssh://git@github.com/}"
+            ;;
+    esac
+
+    printf '%s\n' "$url"
+}
 
 ensure_nix() {
     if command -v nix >/dev/null 2>&1; then
@@ -16,7 +32,7 @@ ensure_nix() {
 }
 
 load_nix() {
-    local profile_script=""
+    profile_script=""
 
     for profile_script in \
         "${HOME}/.nix-profile/etc/profile.d/nix.sh" \
@@ -49,7 +65,7 @@ elif [ ! -d "$INSTALL_DIR/.git" ]; then
 else
     origin_url="$(git -C "$INSTALL_DIR" remote get-url origin 2>/dev/null || true)"
 
-    if [ "$origin_url" != "$REPO_URL" ]; then
+    if [ "$(canonical_repo_url "$origin_url")" != "$(canonical_repo_url "$REPO_URL")" ]; then
         echo "install.sh expected $INSTALL_DIR to point to $REPO_URL, but found ${origin_url:-no origin remote}."
         exit 1
     fi
