@@ -69,6 +69,8 @@ else
         echo "install.sh expected $INSTALL_DIR to point to $REPO_URL, but found ${origin_url:-no origin remote}."
         exit 1
     fi
+
+    nix shell nixpkgs#git --command git -C "$INSTALL_DIR" pull --ff-only
 fi
 
 # shellcheck source=/dev/null

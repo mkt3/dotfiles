@@ -56,7 +56,9 @@ in
 
   home.activation = lib.optionalAttrs disableLocalAgent {
     maskGpgAgent = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      /usr/bin/systemctl --user mask ${lib.escapeShellArgs gpgAgentUnits}
+      if command -v systemctl >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
+        systemctl --user mask ${lib.escapeShellArgs gpgAgentUnits}
+      fi
     '';
   };
 }
