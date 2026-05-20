@@ -312,6 +312,10 @@ type = "dev"
 common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
 
 ## for nix
+[nh]
+type = "basic"
+common = [{ name = "nh", method = "nix-hm" }]
+
 [nixd]
 type = "dev"
 common = [{ name = "nixd", method = "nix-hm" }]
