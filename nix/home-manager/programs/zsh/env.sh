@@ -48,7 +48,7 @@ else
         . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
     fi
 
-    export PATH="${XDG_STATE_HOME}/nix/profile/bin:/nix/var/nix/profiles/default/bin:${PATH}"
+    export PATH="${XDG_STATE_HOME}/nix/profiles/profile/bin:/nix/var/nix/profiles/default/bin:${PATH}"
     export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
     export PATH="/usr/local/cuda/bin:${PATH}"
 fi
