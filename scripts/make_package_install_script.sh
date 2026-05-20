@@ -104,7 +104,7 @@ append_nix_switch_command() {
         output+="    home-manager switch --flake \${NIX_DIR}\n"
         output+="else\n"
         output+="    echo \"Running home-manager via nix run...\"\n"
-        output+="    \"\${NIX_CMD[@]}\" run home-manager/master -- init --switch --flake \${NIX_DIR}\n"
+        output+="    \"\${NIX_CMD[@]}\" run home-manager/master -- switch --flake \${NIX_DIR}\n"
         output+="fi\n"
         output+="export __ETC_PROFILE_NIX_SOURCED=\"\""
     fi
