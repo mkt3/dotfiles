@@ -62,6 +62,24 @@ NIX_DIR="${HOME}/.config/nix"
 
 NIX_GITHUB_TOKEN_LOG=n setup_nix_github_token_from_gh
 
+run_nh() {
+    env \
+        "NH_FLAKE=${NIX_DIR}" \
+        "NH_OS_FLAKE=${NIX_DIR}" \
+        "NH_HOME_FLAKE=${NIX_DIR}" \
+        "NH_DARWIN_FLAKE=${NIX_DIR}" \
+        nh "$@"
+}
+
+run_nixpkgs_nh() {
+    env \
+        "NH_FLAKE=${NIX_DIR}" \
+        "NH_OS_FLAKE=${NIX_DIR}" \
+        "NH_HOME_FLAKE=${NIX_DIR}" \
+        "NH_DARWIN_FLAKE=${NIX_DIR}" \
+        "${NIX_CMD[@]}" run nixpkgs#nh -- "$@"
+}
+
 # pre function
 title "Pre-setup nix"
 pre_setup_nix
@@ -90,30 +108,27 @@ append_nix_switch_command() {
         output+="    echo \"Setting up initial nix-darwin...\"\n"
         output+="    sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true\n"
         output+="    sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true\n"
-        output+="    NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt sudo \"\${NIX_CMD[@]}\" run nix-darwin -- switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
+        output+="    NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt run_nixpkgs_nh darwin switch \${NIX_DIR} -H \${HOSTNAME_ENV}\n"
         output+="elif command -v nh > /dev/null 2>&1; then\n"
-        output+="    nh darwin switch \${NIX_DIR} -H \${HOSTNAME_ENV}\n"
+        output+="    run_nh darwin switch \${NIX_DIR} -H \${HOSTNAME_ENV}\n"
         output+="else\n"
-        output+="    sudo darwin-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
+        output+="    run_nixpkgs_nh darwin switch \${NIX_DIR} -H \${HOSTNAME_ENV}\n"
         output+="fi"
     elif [[ "$os_name" == "nixos" ]]; then
         output+="title \"Setup nixos\"\n"
         output+="if command -v nh > /dev/null 2>&1; then\n"
-        output+="    nh os switch \${NIX_DIR} -H \${HOSTNAME_ENV}\n"
+        output+="    run_nh os switch \${NIX_DIR} -H \${HOSTNAME_ENV}\n"
         output+="else\n"
-        output+="    sudo nixos-rebuild switch --flake \${NIX_DIR}#\${HOSTNAME_ENV}\n"
+        output+="    run_nixpkgs_nh os switch \${NIX_DIR} -H \${HOSTNAME_ENV}\n"
         output+="fi"
     else
         output+="title \"Install/Update packages from home-manager\"\n"
         output+="if command -v nh > /dev/null 2>&1; then\n"
         output+="    echo \"Switching home-manager with nh and current flake.lock...\"\n"
-        output+="    nh home switch \${NIX_DIR} -c \${USER}\n"
-        output+="elif command -v home-manager > /dev/null 2>&1; then\n"
-        output+="    echo \"Switching home-manager with current flake.lock...\"\n"
-        output+="    home-manager switch --flake \${NIX_DIR}\n"
+        output+="    run_nh home switch \${NIX_DIR} -c \${USER}\n"
         output+="else\n"
-        output+="    echo \"Running home-manager via nix run...\"\n"
-        output+="    \"\${NIX_CMD[@]}\" run home-manager/master -- switch --flake \${NIX_DIR}\n"
+        output+="    echo \"Running nh via nix run with current flake.lock...\"\n"
+        output+="    run_nixpkgs_nh home switch \${NIX_DIR} -c \${USER}\n"
         output+="fi\n"
         output+="export __ETC_PROFILE_NIX_SOURCED=\"\""
     fi
