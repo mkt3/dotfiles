@@ -48,6 +48,8 @@
         ShowPathbar = true;
         FXDefaultSearchScope = "Sccf";
         FXPreferredViewStyle = "clmv";
+        NewWindowTarget = "Other";
+        NewWindowTargetPath = "file:///Users/${username}/Downloads/";
       };
 
       NSGlobalDomain.NSNavPanelExpandedStateForSaveMode = true;
