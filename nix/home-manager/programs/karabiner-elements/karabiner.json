@@ -351,6 +351,33 @@
             ]
           },
           {
+            "description": "In Finder, map Cmd+Q to Cmd+W",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": ["^com\\.apple\\.finder$"],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "q",
+                  "modifiers": {
+                    "mandatory": ["command"],
+                    "optional": ["caps_lock"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "w",
+                    "modifiers": ["command"]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "In Slack, map Cmd+T to Cmd+Shift+T",
             "manipulators": [
               {
