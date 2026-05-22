@@ -62,7 +62,7 @@ configure_ubuntu_nix_daemon_settings() {
 
     sudo mkdir -p "$(dirname "$nix_conf")"
     sudo touch "$nix_conf"
-    sudo cat "$nix_conf" > "$tmp_file"
+    sudo cat "$nix_conf" | tee "$tmp_file" >/dev/null
 
     upsert_nix_conf_token() {
         local key="$1"
