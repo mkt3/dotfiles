@@ -83,6 +83,7 @@ run_nixpkgs_nh() {
 # pre function
 title "Pre-setup nix"
 pre_setup_nix
+configure_ubuntu_nix_daemon_settings
 EOF
 
     echo "# package install/update commands" >> "$install_script_path"
