@@ -46,6 +46,74 @@ setup_nix_github_token_from_gh() {
     fi
 }
 
+configure_ubuntu_nix_daemon_settings() {
+    if [ "${DISTRO:-}" != "Ubuntu" ]; then
+        return 0
+    fi
+
+    if ! command -v sudo >/dev/null 2>&1; then
+        warning "Skipping Nix daemon trusted-users setup because sudo is unavailable."
+        return 0
+    fi
+
+    local nix_conf="/etc/nix/nix.custom.conf"
+    local tmp_file=""
+    tmp_file=$(mktemp)
+
+    sudo mkdir -p "$(dirname "$nix_conf")"
+    sudo touch "$nix_conf"
+    sudo cat "$nix_conf" > "$tmp_file"
+
+    upsert_nix_conf_token() {
+        local key="$1"
+        local token="$2"
+        local file="$3"
+        local next_file=""
+        next_file=$(mktemp)
+
+        awk -v key="$key" -v token="$token" '
+            BEGIN { seen = 0 }
+            /^[[:space:]]*#/ { print; next }
+            $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
+                seen = 1
+                line = $0
+                value = substr($0, index($0, "=") + 1)
+                if (index(" " value " ", " " token " ") == 0) {
+                    line = line " " token
+                }
+                print line
+                next
+            }
+            { print }
+            END {
+                if (!seen) {
+                    print key " = " token
+                }
+            }
+        ' "$file" > "$next_file"
+        mv "$next_file" "$file"
+    }
+
+    upsert_nix_conf_token "trusted-users" "root" "$tmp_file"
+    upsert_nix_conf_token "trusted-users" "$USER" "$tmp_file"
+
+    if sudo cmp -s "$tmp_file" "$nix_conf"; then
+        info "Nix daemon trusted-users is already configured for Ubuntu."
+        rm -f "$tmp_file"
+        return 0
+    fi
+
+    sudo install -m 0644 "$tmp_file" "$nix_conf"
+    rm -f "$tmp_file"
+    info "Updated $nix_conf to trust the current user."
+
+    if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files nix-daemon.service >/dev/null 2>&1; then
+        sudo systemctl restart nix-daemon.service || warning "Failed to restart nix-daemon.service. Restart it manually before running Nix commands with flake nixConfig."
+    else
+        warning "Restart the Nix daemon before running Nix commands with flake nixConfig."
+    fi
+}
+
 detect_nix_platform() {
     local nix_platform
 
