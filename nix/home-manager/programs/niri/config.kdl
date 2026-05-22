@@ -284,7 +284,7 @@ window-rule {
 }
 
 window-rule {
-  match app-id=r#"Slack"#
+  match app-id=r#"slack"#
   match app-id=r#"discord"#
   open-on-workspace "chat"
 }
