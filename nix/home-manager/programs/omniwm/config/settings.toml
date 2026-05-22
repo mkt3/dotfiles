@@ -171,11 +171,19 @@ layout = "tile"
 [[appRules]]
 appNameSubstring = "Emacs"
 assignToWorkspace = "6"
-axRole = "AXWindow"
-axSubrole = "AXStandardWindow"
 bundleId = "org.gnu.Emacs"
 id = "2F07CD91-98FE-4872-9127-9B89765DCF7F"
 layout = "tile"
+
+[[appRules]]
+bundleId = "com.raycast.macos"
+id = "03BC0FF6-9E17-4BED-A07E-C809CD14A2B1"
+layout = "float"
+
+[[appRules]]
+bundleId = "com.apple.systempreferences"
+id = "65D25D9B-EA16-4976-93CF-A284ACBB54B1"
+layout = "float"
 
 [[hotkeys]]
 binding = "Command+M"
