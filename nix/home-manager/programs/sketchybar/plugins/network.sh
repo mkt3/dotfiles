@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
+export PATH="@PATH@:/usr/sbin:/usr/bin:/sbin:/bin:${PATH:-}"
+
 IP_ADDRESS=$(scutil --nwi | grep address | sed 's/.*://' | tr -d ' ' | head -1)
 VPN=""
 
 active_iface=""
-if command -v wg > /dev/null 2>&1; then
+WG_BIN="@WG_BIN@"
+if [ ! -x "$WG_BIN" ]; then
+  WG_BIN=$(command -v wg || true)
+fi
+
+if [ -n "$WG_BIN" ]; then
   while read -r iface; do
     active_iface="$iface"
-  done < <(sudo -n wg show interfaces 2>/dev/null | tr ' ' '\n')
+  done < <(sudo -n "$WG_BIN" show interfaces 2>/dev/null | tr ' ' '\n')
 fi
 
 shopt -s nullglob

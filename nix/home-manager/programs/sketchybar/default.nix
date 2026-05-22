@@ -1,4 +1,27 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  networkPlugin =
+    builtins.replaceStrings
+      [
+        "@PATH@"
+        "@WG_BIN@"
+      ]
+      [
+        (lib.makeBinPath [
+          pkgs.coreutils
+          pkgs.gnugrep
+          pkgs.gnused
+          pkgs.wireguard-tools
+        ])
+        "/etc/profiles/per-user/${config.home.username}/bin/wg"
+      ]
+      (builtins.readFile ./plugins/network.sh);
+in
 {
   programs.sketchybar = {
     enable = true;
@@ -22,7 +45,7 @@
     executable = true;
   };
   xdg.configFile."sketchybar/plugins/network.sh" = {
-    text = builtins.readFile ./plugins/network.sh;
+    text = networkPlugin;
     executable = true;
   };
   xdg.configFile."sketchybar/plugins/org-task.sh" = {
