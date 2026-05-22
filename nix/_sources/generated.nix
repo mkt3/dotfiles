@@ -6,12 +6,12 @@
   dockerTools,
 }:
 {
-  vlc = {
-    pname = "vlc";
-    version = "3.0.21";
+  omniwm = {
+    pname = "omniwm";
+    version = "v0.4.9.3";
     src = fetchurl {
-      url = "https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-arm64.dmg";
-      sha256 = "sha256-Fd1lv2SJ2p7Gpn9VhcdMQKWJk6z/QagpWKkW3XQXgEQ=";
+      url = "https://github.com/BarutSRB/OmniWM/releases/download/v0.4.9.3/OmniWM-v0.4.9.3.zip";
+      sha256 = "sha256-Uly7qMH0K7R5RroFUBcpx0Ncx5kBu9vBuBwQT07px6g=";
     };
   };
 }

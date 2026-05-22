@@ -2,9 +2,13 @@
 # src.archpkg = "vivaldi"
 # fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
 
-[vlc]
-src.archpkg = "vlc"
-fetch.url = "https://get.videolan.org/vlc/$ver/macosx/vlc-$ver-arm64.dmg"
+# [vlc]
+# src.archpkg = "vlc"
+# fetch.url = "https://get.videolan.org/vlc/$ver/macosx/vlc-$ver-arm64.dmg"
+
+[omniwm]
+src.github = "BarutSRB/OmniWM"
+fetch.url = "https://github.com/BarutSRB/OmniWM/releases/download/$ver/OmniWM-$ver.zip"
 
 # [meetingbar]
 # src.github = "leits/MeetingBar"

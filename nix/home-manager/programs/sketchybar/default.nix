@@ -1,18 +1,14 @@
 { config, pkgs, ... }:
 {
-  home.packages = [ pkgs.sketchybar ];
-
-  xdg.configFile."sketchybar/sketchybarrc" = {
-    text = builtins.replaceStrings [ "~/.config" ] [ config.xdg.configHome ] (
-      builtins.readFile ./sketchybarrc
-    );
-    executable = true;
+  programs.sketchybar = {
+    enable = true;
+    config = {
+      text = builtins.replaceStrings [ "~/.config" ] [ config.xdg.configHome ] (
+        builtins.readFile ./sketchybarrc
+      );
+    };
   };
 
-  xdg.configFile."sketchybar/plugins/aerospace.sh" = {
-    text = builtins.readFile ./plugins/aerospace.sh;
-    executable = true;
-  };
   xdg.configFile."sketchybar/plugins/battery.sh" = {
     text = builtins.readFile ./plugins/battery.sh;
     executable = true;

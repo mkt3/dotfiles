@@ -111,7 +111,7 @@ pre_setup_nix() {
     local nix_platform=""
     local is_gui=""
 
-    # run_nvfetcher_if_needed
+    run_nvfetcher_if_needed
 
     nix_platform=$(detect_nix_platform)
     is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")

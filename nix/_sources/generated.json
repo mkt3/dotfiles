@@ -1,17 +1,17 @@
 {
-    "vlc": {
+    "omniwm": {
         "cargoLock": null,
         "date": null,
         "extract": null,
-        "name": "vlc",
+        "name": "omniwm",
         "passthru": null,
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-Fd1lv2SJ2p7Gpn9VhcdMQKWJk6z/QagpWKkW3XQXgEQ=",
+            "sha256": "sha256-Uly7qMH0K7R5RroFUBcpx0Ncx5kBu9vBuBwQT07px6g=",
             "type": "url",
-            "url": "https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-arm64.dmg"
+            "url": "https://github.com/BarutSRB/OmniWM/releases/download/v0.4.9.3/OmniWM-v0.4.9.3.zip"
         },
-        "version": "3.0.21"
+        "version": "v0.4.9.3"
     }
 }

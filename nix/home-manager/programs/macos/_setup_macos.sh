@@ -100,3 +100,6 @@
 # Disable auto re-launch
 /usr/bin/defaults write com.apple.loginwindow TALLogoutSavesState -bool false
 /usr/bin/defaults write com.apple.loginwindow LoginwindowLaunchesRelaunchApps -bool false
+
+# Spaces span all displays for  OmniWM
+/usr/bin/defaults write com.apple.spaces spans-displays -bool true

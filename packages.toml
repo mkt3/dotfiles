@@ -466,11 +466,13 @@ nixos = [
 [aerospace]
 type = "gui"
 darwin = [
-  { name = "aerospace", method = "nix-hm" },
-  { name = "jankyborders", method = "nix-hm" },
+  # { name = "aerospace", method = "nix-hm" },
+  { name = "omniwm", method = "nix-hm" },
+  # { name = "jankyborders", method = "nix-hm" },
   { name = "sketchybar", method = "nix-hm" },
   { name = "macskk", method = "cask" },
 ]
+
 
 # gui packages
 ## priner & scanner
@@ -553,7 +555,8 @@ linux = [
 ## research
 [zotero]
 type = "gui"
-common = [{ name = "zotero", method = "nix-hm" }]
+darwin = [{ name = "zotero", method = "cask" }]
+linux = [{ name = "zotero", method = "nix-hm" }]
 
 [anki]
 type = "gui"
