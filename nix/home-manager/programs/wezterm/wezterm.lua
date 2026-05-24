@@ -65,6 +65,7 @@ return {
     { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false},
     { family = 'Noto Emoji', assume_emoji_presentation = true},
   },
+  front_end = "WebGpu",
   use_ime = true,
   macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL',
   font_size = font_size,
