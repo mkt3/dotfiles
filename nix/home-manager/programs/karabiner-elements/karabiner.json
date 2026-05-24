@@ -326,14 +326,15 @@
             ]
           },
           {
-            "description": "Ctl-g to esc in Slack and Vivaldi",
+            "description": "Ctl-g to esc in Slack, Vivaldi and Raycast",
             "manipulators": [
               {
                 "conditions": [
                   {
                     "bundle_identifiers": [
                       "^com\\.tinyspeck\\.slackmacgap$",
-                      "^com\\.vivaldi\\.Vivaldi$"
+                      "^com\\.vivaldi\\.Vivaldi$",
+                      "^com\\.raycast\\.macos$"
                     ],
                     "type": "frontmost_application_if"
                   }
