@@ -1,5 +1,0 @@
---- a/lisp/org/ol.el
-+++ b/lisp/org/ol.el
-@@ -1542 +1542 @@
--    (when (string-match "\\`\\(file\\|docview\\):" link)
-+    (when (string-match "\\`\\(file\\|nov\\|docview\\):" link)

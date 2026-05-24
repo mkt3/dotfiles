@@ -1271,6 +1271,30 @@
              (read-only-mode 1)))
          (advice-add 'org-edit-src-exit :after #'my:enable-read-only)
 
+         (defun my:org-link-make-string-for-buffer-normalize-nov
+             (orig link &optional description interactive-p)
+           "Make nov links follow `org-link-file-path-type'."
+           (let ((case-fold-search nil))
+             (when (string-match "\\`nov:" link)
+               (let* ((type (match-string-no-properties 0 link))
+                      (path-start (match-end 0))
+                      (search (and (string-match "::\\(.*\\)\\'" link path-start)
+                                   (match-string 1 link)))
+                      (path
+                       (if search
+                           (substring-no-properties link path-start (match-beginning 0))
+                         (substring-no-properties link path-start)))
+                      (path (if (org-string-nw-p path) path (buffer-file-name)))
+                      (origpath path))
+                 (setq path (org-link--normalize-filename path org-link-file-path-type))
+                 (setq link (concat type path (and search (concat "::" search))))
+                 (when (equal description origpath)
+                   (setq description path)))))
+           (funcall orig link description interactive-p))
+         (advice-add 'org-link-make-string-for-buffer
+                     :around
+                     #'my:org-link-make-string-for-buffer-normalize-nov)
+
          (org-babel-do-load-languages
           'org-babel-load-languages
           '((emacs-lisp . t)
