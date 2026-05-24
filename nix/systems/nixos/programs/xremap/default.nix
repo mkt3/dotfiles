@@ -175,6 +175,9 @@
               }
             ];
 
+            # Disable accidental quit in GUI apps.
+            "C-q" = null;
+
             # # C-x YYY
             # "C-x" = {
             #   remap = {
