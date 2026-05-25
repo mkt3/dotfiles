@@ -27,7 +27,7 @@
 (setq gc-cons-threshold most-positive-fixnum)
 
 ;; Faster to disable these here (before they've been initialized)
-(push '(fullscreen . maximized) default-frame-alist)
+;; (push '(fullscreen . maximized) default-frame-alist)
 (push '(menu-bar-lines . nil) default-frame-alist)
 (push '(tool-bar-lines . nil) default-frame-alist)
 (push '(blink-cursor-mode. nil) default-frame-alist)

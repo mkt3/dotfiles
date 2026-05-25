@@ -17,7 +17,9 @@ stdenvNoCC.mkDerivation {
 
     mkdir -p $out/Applications/
     mkdir -p "$out/Applications/$sourceRoot"
+    mkdir -p $out/bin
     cp -R . "$out/Applications/$sourceRoot"
+    ln -s "$out/Applications/$sourceRoot/Contents/MacOS/omniwmctl" "$out/bin/omniwmctl"
 
     runHook postInstall
   '';

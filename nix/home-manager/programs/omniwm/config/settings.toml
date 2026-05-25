@@ -169,7 +169,6 @@ id = "C74382E6-9D49-4CCB-BD39-0742E5971D19"
 layout = "tile"
 
 [[appRules]]
-appNameSubstring = "Emacs"
 assignToWorkspace = "6"
 bundleId = "org.gnu.Emacs"
 id = "2F07CD91-98FE-4872-9127-9B89765DCF7F"
