@@ -24,4 +24,9 @@
     source = ./setup_codex_notify.sh;
     executable = true;
   };
+
+  programs.zsh.envExtra = lib.mkAfter ''
+    # codex
+    export CODEX_HOME="${config.xdg.configHome}/codex"
+  '';
 }

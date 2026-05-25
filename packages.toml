@@ -617,6 +617,10 @@ common = [{ name = "gh", method = "nix-hm" }]
 type = "dev"
 common = [{ name = "codex", method = "nix-hm" }]
 
+[agent-skills]
+type = "dev"
+common = [{ name = "agent-skills", method = "nix-hm" }]
+
 [claude-code]
 type = "dev"
 common = [{ name = "claude-code", method = "nix-hm" }]

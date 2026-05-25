@@ -23,4 +23,9 @@
     source = ./setup_claude_code_notify.sh;
     executable = true;
   };
+
+  programs.zsh.envExtra = lib.mkAfter ''
+    # claude code
+    export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude"
+  '';
 }
