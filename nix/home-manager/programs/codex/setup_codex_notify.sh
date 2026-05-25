@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-config_dir="${CODEX_HOME:-${HOME}/.codex}"
+config_dir="${CODEX_HOME:-${HOME}/.config/codex}"
 config_file="${config_dir}/config.toml"
 stop_command='~/.local/bin/notify.sh Codex '\''turn complete'\'' >/dev/null 2>&1 || true'
 permission_command='~/.local/bin/notify.sh Codex '\''approval required'\'' >/dev/null 2>&1 || true'

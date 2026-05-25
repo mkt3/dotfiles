@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-settings_dir="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
+settings_dir="${CLAUDE_CONFIG_DIR:-${HOME}/.config/claude}"
 settings_file="${settings_dir}/settings.json"
 stop_command="~/.local/bin/notify.sh 'Claude Code' 'turn complete' >/dev/null 2>&1 || true"
 permission_command="~/.local/bin/notify.sh 'Claude Code' 'approval required' >/dev/null 2>&1 || true"
