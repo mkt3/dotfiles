@@ -169,6 +169,12 @@ id = "C74382E6-9D49-4CCB-BD39-0742E5971D19"
 layout = "tile"
 
 [[appRules]]
+bundleId = "org.gnu.Emacs"
+id = "94013990-BC3E-4383-83E0-0C2F1A78E839"
+layout = "float"
+titleSubstring = "posframe"
+
+[[appRules]]
 assignToWorkspace = "6"
 bundleId = "org.gnu.Emacs"
 id = "2F07CD91-98FE-4872-9127-9B89765DCF7F"
