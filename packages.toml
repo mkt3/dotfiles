@@ -467,9 +467,9 @@ nixos = [
 [aerospace]
 type = "gui"
 darwin = [
-  # { name = "aerospace", method = "nix-hm" },
-  { name = "omniwm", method = "nix-hm" },
-  # { name = "jankyborders", method = "nix-hm" },
+  { name = "aerospace", method = "nix-hm" },
+  #{ name = "omniwm", method = "nix-hm" },
+  { name = "jankyborders", method = "nix-hm" },
   { name = "sketchybar", method = "nix-hm" },
   { name = "macskk", method = "cask" },
 ]
