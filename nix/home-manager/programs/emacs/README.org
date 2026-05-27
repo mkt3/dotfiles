@@ -69,10 +69,14 @@
         (getenv "HOME")))
      (defconst my:d:org (expand-file-name "orgnotes" my:d:data-dir))
      (defconst my:d:org-gtd (expand-file-name "gtd" my:d:org))
+     (defconst my:f:org-gtd (expand-file-name "gtd.org" my:d:org-gtd))
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
      (defconst my:f:bib (expand-file-name "zotero/zotero.bib" my:d:data-dir))
      (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
      (defconst my:d:org-hugo (or (getenv "ORG_HUGO") ""))
+     (defvar my:plstore nil)
+     (defvar my:refile-targets nil)
+     (defvar my:roam-task-tag "todo")
    #+end_src
 * Builtin config
 ** key-translation-map
@@ -253,7 +257,7 @@
        :custom
        (plstore-encrypt-to (getenv "GPG_KEY_ID"))
        :config
-       (setq store (plstore-open (expand-file-name "plstore.plist" my:d:password-store))))
+       (setq my:plstore (plstore-open (expand-file-name "plstore.plist" my:d:password-store))))
 
      (use-package auth-source
        :if (file-directory-p my:d:password-store)
@@ -1115,7 +1119,7 @@
           (add-hook 'before-save-hook #'nix-format-before-save nil t)
           (setq fill-column 100)
           (eglot-ensure))
-        :hook (nix-mode . my/nix-mode-setup)
+        :hook (nix-mode-hook . my/nix-mode-setup)
         :init
         (with-eval-after-load 'eglot
           (setf (alist-get 'nix-mode eglot-server-programs) '("nixd"))))
@@ -1207,7 +1211,7 @@
          :ensure t
          :custom
          (typescript-indent-level 2)
-         :hook (typescript-ts-mode-hook . (eglot-ensure)))
+         :hook (typescript-ts-mode-hook . eglot-ensure))
      #+end_src
 ** Markup Languages
 *** Org
@@ -1236,7 +1240,7 @@
          (org-log-done 'time)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
-         (org-capture-templates `(("i" " Inbox" entry (file+headline org-gtd-file "Inbox")
+         (org-capture-templates `(("i" " Inbox" entry (file+headline my:f:org-gtd "Inbox")
                                    "** TODO %^{Brief Description}")))
          :config
          (keymap-unset orgtbl-mode-map "<backspace>")
@@ -1333,62 +1337,13 @@
                 ("C-c g" . gtd)
                 :map org-mode-map
                 ("C-c C-w" . org-refile))
-         :init
-         (defvar org-gtd-file (expand-file-name "gtd.org" my:d:org-gtd))
+         :preface
+         (defvar org-clock-current-task-file
+           (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
 
          (defun gtd ()
            (interactive)
-           (find-file org-gtd-file))
-         (when (and (eq system-type 'gnu/linux) (display-graphic-p) (executable-find "gdrive"))
-           (run-at-time 0 (* 5 60)
-                        (lambda ()
-                          (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:data-dir)))))
-         :hook ((before-save-hook . my:org-roam-update-task-tag)
-                (org-clock-in-hook . org-clock-current-task-to-file)
-                (org-clock-out-hook . org-clock-clear-file-after-clock-out))
-         :preface
-         (setq my:roam-task-tag "todo")
-         (defun my:org-roam-todo-entry-p ()
-           "Return non-nil if current buffer has any todo entry."
-           (seq-find (lambda (type) (eq type 'todo))
-                     (org-element-map (org-element-parse-buffer 'headline)
-                         'headline
-                       (lambda (h)
-                         (org-element-property :todo-type h)))))
-         (defun my:org-roam-note-buffer-p ()
-           "Return non-nil if the currently visited buffer is an Org Roam note."
-           (and buffer-file-name
-                (string-prefix-p (expand-file-name (file-name-as-directory org-roam-directory))
-                                 (file-name-directory buffer-file-name))))
-
-         (defun my:org-roam-update-task-tag ()
-           "Update `my:roam-task-tag' in the current buffer."
-           (when (and (not (active-minibuffer-window))
-                      (my:org-roam-note-buffer-p))
-             (save-excursion
-               (goto-char (point-min))
-               (if (my:org-roam-todo-entry-p)
-                   (org-roam-tag-add (list my:roam-task-tag))
-                 (org-roam-tag-remove (list my:roam-task-tag))))))
-
-         (defun my:org-roam-get-task-files ()
-           "Return a list of note files containing 'my:roam-task-tag'."
-           (seq-uniq
-            (mapcar 'car
-                    (org-roam-db-query
-                     [:select [nodes:file]
-                              :from tags
-                              :left-join nodes
-                              :on (= tags:node-id nodes:id)
-                              :where (like tag $s1)] (concat "%" my:roam-task-tag "%")))))
-         (defun my:org-agenda-update-files (&rest _)
-           "Update the value of `org-agenda-files' and `my:refile-targets'."
-           (let ((task-files (my:org-roam-get-task-files)))
-             (setq org-agenda-files (append (list my:d:org-gtd) task-files))
-             (setq my:refile-targets (append (list org-gtd-file) task-files))
-             (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
-         (defvar org-clock-current-task-file
-           (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
+           (find-file my:f:org-gtd))
 
          (defun org-clock-current-task-to-file ()
            (with-temp-file org-clock-current-task-file
@@ -1397,6 +1352,13 @@
          (defun org-clock-clear-file-after-clock-out ()
            (with-temp-file org-clock-current-task-file
              (insert "")))
+         :hook ((org-clock-in-hook . org-clock-current-task-to-file)
+                (org-clock-out-hook . org-clock-clear-file-after-clock-out))
+         :init
+         (when (and (eq system-type 'gnu/linux) (display-graphic-p) (executable-find "gdrive"))
+           (run-at-time 0 (* 5 60)
+                        (lambda ()
+                          (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:data-dir)))))
          :custom
          (org-agenda-window-setup 'other-tab)
          (org-agenda-span 'day)
@@ -1409,18 +1371,19 @@
          (org-agenda-custom-commands '(("t" todo "TODO")
                                        ("A" todo)))
          :config
-         (require 'org-roam)
          (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
          (add-to-list 'org-modules 'org-habit t)
          (setq org-agenda-prefix-format
                '((agenda . " %i %-15:c%?-12t% s")
                  (todo . " %i %-12:c")
                  (tags . " %i %-12:c")
-                 (search . " %i %-12:c")))
+                 (search . " %i %-12:c"))))
 
-         (dolist (fn '(org-agenda org-todo-list org-refile))
-           (advice-add fn :before #'my:org-agenda-update-files))
-         )
+         (when (file-directory-p my:d:org-roam)
+           (require 'org-roam)
+           (add-hook 'before-save-hook #'my:org-roam-update-task-tag)
+           (dolist (fn '(org-agenda org-todo-list org-refile))
+             (advice-add fn :before #'my:org-agenda-update-files)))
 
        (use-package org-super-agenda
          :ensure t
@@ -1463,7 +1426,7 @@
                 ("C-c n l" . org-roam-buffer-toggle)
                 ("C-c n c" . citar-insert-citation)
                 ("C-c n j" . org-roam-dailies-capture-today)
-                ("C-c n d" . org-roam-dailies-find-date)
+                ("C-c n d" . org-roam-dailies-goto-date)
                 ("C-c n e" . org-roam-extract-subtree)
                 ("C-c n p" . citar-open))
          :init
@@ -1556,7 +1519,49 @@
              (error "")))
          (setq org-roam-node-display-template
                (concat "${type:22} ${title:60} " (propertize "${tags:30}" 'face 'org-tag)))
-         (org-roam-db-autosync-enable)
+         (org-roam-db-autosync-mode 1)
+
+         (defun my:org-roam-todo-entry-p ()
+           "Return non-nil if current buffer has any todo entry."
+           (seq-find (lambda (type) (eq type 'todo))
+                     (org-element-map (org-element-parse-buffer 'headline)
+                         'headline
+                       (lambda (h)
+                         (org-element-property :todo-type h)))))
+
+         (defun my:org-roam-note-buffer-p ()
+           "Return non-nil if the currently visited buffer is an Org Roam note."
+           (and buffer-file-name
+                (string-prefix-p (expand-file-name (file-name-as-directory org-roam-directory))
+                                 (file-name-directory buffer-file-name))))
+
+         (defun my:org-roam-update-task-tag ()
+           "Update `my:roam-task-tag' in the current buffer."
+           (when (and (not (active-minibuffer-window))
+                      (my:org-roam-note-buffer-p))
+             (save-excursion
+               (goto-char (point-min))
+               (if (my:org-roam-todo-entry-p)
+                   (org-roam-tag-add (list my:roam-task-tag))
+                 (org-roam-tag-remove (list my:roam-task-tag))))))
+
+         (defun my:org-roam-get-task-files ()
+           "Return a list of note files containing 'my:roam-task-tag'."
+           (seq-uniq
+            (mapcar 'car
+                    (org-roam-db-query
+                     [:select [nodes:file]
+                              :from tags
+                              :left-join nodes
+                              :on (= tags:node-id nodes:id)
+                              :where (like tag $s1)] (concat "%" my:roam-task-tag "%")))))
+
+         (defun my:org-agenda-update-files (&rest _)
+           "Update the value of `org-agenda-files' and `my:refile-targets'."
+           (let ((task-files (my:org-roam-get-task-files)))
+             (setq org-agenda-files (append (list my:d:org-gtd) task-files))
+             (setq my:refile-targets (append (list my:f:org-gtd) task-files))
+             (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
 
          (defun my:org-roam-node-filter (node dir &optional exclude)
            "Filter org-roam nodes by directory.
@@ -1608,7 +1613,7 @@
          :ensure t
          :after (citar embark)
          :no-require
-         :hook (citar-mode . citar-embark-mode)
+         :hook (citar-mode-hook . citar-embark-mode)
          :custom
          (citar-at-point-function 'embark-act)
          :config
