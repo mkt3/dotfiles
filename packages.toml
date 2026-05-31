@@ -205,14 +205,12 @@ common = [{ name = "viddy", method = "nix-hm" }]
 type = "basic"
 common = [
   { name = "yazi", method = "nix-hm" },
-  { name = "libreoffice", method = "nix-hm" },
-  { name = "libreoffice", method = "nix-hm" },
   { name = "poppler-utils", method = "nix-hm" },
 ]
 ## for yazi
 [wl-clipboard]
 type = "gui"
-common = [{ name = "wl-clipboard", method = "nix-hm" }]
+linux = [{ name = "wl-clipboard", method = "nix-hm" }]
 
 ## toml
 [taplo]
