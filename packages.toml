@@ -197,6 +197,10 @@ common = [{ name = "ssh_config", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "ldns", method = "nix-hm" }]
 
+[viddy]
+type = "basic"
+common = [{ name = "viddy", method = "nix-hm" }]
+
 ## toml
 [taplo]
 type = "basic"
