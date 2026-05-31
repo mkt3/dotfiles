@@ -109,6 +109,6 @@
 
        tmux select-pane -t "$TERMINAL_PANE"
        '
-   '';
+    '';
   };
 }

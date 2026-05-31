@@ -201,6 +201,19 @@ common = [{ name = "ldns", method = "nix-hm" }]
 type = "basic"
 common = [{ name = "viddy", method = "nix-hm" }]
 
+[yazi]
+type = "basic"
+common = [
+  { name = "yazi", method = "nix-hm" },
+  { name = "libreoffice", method = "nix-hm" },
+  { name = "libreoffice", method = "nix-hm" },
+  { name = "poppler-utils", method = "nix-hm" },
+]
+## for yazi
+# [clipboard-jh]
+# type = "gui"
+# linux = [{ name = "clipboard-jh", method = "nix-hm" }]
+
 ## toml
 [taplo]
 type = "basic"
