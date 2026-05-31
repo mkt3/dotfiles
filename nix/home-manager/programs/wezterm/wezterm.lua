@@ -22,6 +22,64 @@ local function notify(title, message)
   wezterm.background_child_process { 'notify-send', title, message }
 end
 
+local function trim(value)
+  return tostring(value or ''):gsub('^%s+', ''):gsub('%s+$', '')
+end
+
+local function tmux_current_command(pane)
+  local tty = pane:get_tty_name()
+  if tty == nil or tty == '' then
+    return nil
+  end
+
+  local success, clients = wezterm.run_child_process {
+    'tmux',
+    'list-clients',
+    '-F',
+    '#{client_tty}\t#{session_name}:#{window_index}.#{pane_index}',
+  }
+  if not success then
+    return nil
+  end
+
+  for line in clients:gmatch('[^\r\n]+') do
+    local client_tty, target = line:match('^([^\t]+)\t(.+)$')
+    if client_tty == tty then
+      local ok, command = wezterm.run_child_process {
+        'tmux',
+        'display-message',
+        '-p',
+        '-t',
+        target,
+        '#{pane_current_command}',
+      }
+      if ok then
+        return trim(command)
+      end
+    end
+  end
+
+  return nil
+end
+
+local function is_yazi_pane(pane)
+  local process_name = pane:get_foreground_process_name() or ''
+  if process_name:match('yazi$') then
+    return true
+  end
+
+  return tmux_current_command(pane) == 'yazi'
+end
+
+local function paste_or_yazi_paste(window, pane)
+  if is_yazi_pane(pane) then
+    window:perform_action(wezterm.action.SendKey { key = 'p', mods = 'CTRL' }, pane)
+    return
+  end
+
+  window:perform_action(wezterm.action.PasteFrom 'Clipboard', pane)
+end
+
 wezterm.on('user-var-changed', function(window, pane, name, value)
   if name ~= 'agent_notify' then
     return
@@ -48,6 +106,7 @@ local keys = {
   {key = "/",mods = "CTRL",action = wezterm.action.SendKey { key = "_", mods = "CTRL" }},
   {key="t",mods="CMD",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
   {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
+  {key="v",mods="CMD",action=wezterm.action_callback(paste_or_yazi_paste)},
   {key="s",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{
     args={shell, "-lc", "~/.config/wezterm/ssh.sh"},
   }},
