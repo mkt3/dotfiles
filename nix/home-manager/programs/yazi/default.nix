@@ -110,6 +110,7 @@
         };
       };
       nord = pkgs.yaziPlugins.nord;
+      clipboard = pkgs.yaziPlugins.clipboard;
       # office = pkgs.yaziPlugins.office;
     };
 
@@ -137,6 +138,25 @@
           ];
           run = "plugin chmod";
           desc = "Chmod on selected files";
+        }
+        {
+          on = [ "y" ];
+          run = [
+            "yank"
+            "plugin clipboard -- --action=copy"
+          ];
+        }
+        {
+          on = [ "<C-p>" ];
+          run = "plugin clipboard -- --action=paste";
+        }
+        {
+          on = [ "<D-v>" ];
+          run = "plugin clipboard -- --action=paste";
+        }
+        {
+          on = [ "<D-p>" ];
+          run = "plugin clipboard -- --action=paste";
         }
       ];
     };

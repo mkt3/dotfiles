@@ -210,9 +210,9 @@ common = [
   { name = "poppler-utils", method = "nix-hm" },
 ]
 ## for yazi
-# [clipboard-jh]
-# type = "gui"
-# linux = [{ name = "clipboard-jh", method = "nix-hm" }]
+[wl-clipboard]
+type = "gui"
+common = [{ name = "wl-clipboard", method = "nix-hm" }]
 
 ## toml
 [taplo]
