@@ -1,7 +1,10 @@
-local wezterm = require 'wezterm';
-local shell = os.getenv("SHELL") or "/bin/zsh";
+local wezterm = require 'wezterm'
+local act = wezterm.action
 
-local function applescript_string(value)
+local shell = os.getenv('SHELL') or '/bin/zsh'
+local is_macos = wezterm.target_triple:find('apple%-darwin') ~= nil
+
+local function shell_quote_applescript(value)
   value = tostring(value or '')
   value = value:gsub('\\', '\\\\')
   value = value:gsub('"', '\\"')
@@ -9,21 +12,42 @@ local function applescript_string(value)
   return '"' .. value .. '"'
 end
 
-local function notify(title, message)
-  if wezterm.target_triple:find('apple%-darwin') then
-    local script = 'display notification ' ..
-        applescript_string(message) ..
-        ' with title ' ..
-        applescript_string(title)
-    wezterm.background_child_process { 'osascript', '-e', script }
-    return
-  end
-
-  wezterm.background_child_process { 'notify-send', title, message }
-end
-
 local function trim(value)
   return tostring(value or ''):gsub('^%s+', ''):gsub('%s+$', '')
+end
+
+local function is_executable(path)
+  return wezterm.run_child_process { '/bin/test', '-x', path }
+end
+
+local function current_username()
+  local home = os.getenv('HOME') or ''
+  return home:match('/([^/]+)$')
+end
+
+local function resolve_tmux_command()
+  local user = current_username()
+  if not user then
+    return 'tmux'
+  end
+
+  local per_user_tmux = '/etc/profiles/per-user/' .. user .. '/bin/tmux'
+  return is_executable(per_user_tmux) and per_user_tmux or 'tmux'
+end
+
+local tmux = resolve_tmux_command()
+
+local function notify(title, message)
+  if is_macos then
+    local script = 'display notification '
+      .. shell_quote_applescript(message)
+      .. ' with title '
+      .. shell_quote_applescript(title)
+
+    wezterm.background_child_process { 'osascript', '-e', script }
+  else
+    wezterm.background_child_process { 'notify-send', title, message }
+  end
 end
 
 local function tmux_current_command(pane)
@@ -33,7 +57,7 @@ local function tmux_current_command(pane)
   end
 
   local success, clients = wezterm.run_child_process {
-    'tmux',
+    tmux,
     'list-clients',
     '-F',
     '#{client_tty}\t#{session_name}:#{window_index}.#{pane_index}',
@@ -46,7 +70,7 @@ local function tmux_current_command(pane)
     local client_tty, target = line:match('^([^\t]+)\t(.+)$')
     if client_tty == tty then
       local ok, command = wezterm.run_child_process {
-        'tmux',
+        tmux,
         'display-message',
         '-p',
         '-t',
@@ -73,11 +97,11 @@ end
 
 local function paste_or_yazi_paste(window, pane)
   if is_yazi_pane(pane) then
-    window:perform_action(wezterm.action.SendKey { key = 'p', mods = 'CTRL' }, pane)
+    window:perform_action(act.SendKey { key = 'p', mods = 'CTRL' }, pane)
     return
   end
 
-  window:perform_action(wezterm.action.PasteFrom 'Clipboard', pane)
+  window:perform_action(act.PasteFrom 'Clipboard', pane)
 end
 
 wezterm.on('user-var-changed', function(window, pane, name, value)
@@ -97,48 +121,51 @@ wezterm.on('user-var-changed', function(window, pane, name, value)
 end)
 
 local keys = {
-  {key = "Delete",mods = "",action = wezterm.action.SendKey { key = "d", mods = "CTRL" } }, -- for keyball
-  {key = "RightArrow",mods = "",action = wezterm.action.SendKey { key = "f", mods = "CTRL" }}, -- for keyball
-  {key = "LeftArrow",mods = "",action = wezterm.action.SendKey { key = "b", mods = "CTRL" }}, -- for keyball
-  {key = "UpArrow",mods = "",action = wezterm.action.SendKey { key = "p", mods = "CTRL" }}, -- for keyball
-  {key = "DownArrow",mods = "",action = wezterm.action.SendKey { key = "n", mods = "CTRL" }}, -- for keyball
-  {key = "q",mods = "CTRL",action = wezterm.action { SendString = "\x11" }},
-  {key = "/",mods = "CTRL",action = wezterm.action.SendKey { key = "_", mods = "CTRL" }},
-  {key="t",mods="CMD",action=wezterm.action.SpawnTab 'CurrentPaneDomain'},
-  {key="w",mods="CMD",action=wezterm.action.CloseCurrentTab{confirm=false}},
-  {key="v",mods="CMD",action=wezterm.action_callback(paste_or_yazi_paste)},
-  {key="s",mods="CMD",action=wezterm.action.SpawnCommandInNewTab{
-    args={shell, "-lc", "~/.config/wezterm/ssh.sh"},
-  }},
+  -- keyball
+  { key = 'Delete', mods = '', action = act.SendKey { key = 'd', mods = 'CTRL' } },
+  { key = 'RightArrow', mods = '', action = act.SendKey { key = 'f', mods = 'CTRL' } },
+  { key = 'LeftArrow', mods = '', action = act.SendKey { key = 'b', mods = 'CTRL' } },
+  { key = 'UpArrow', mods = '', action = act.SendKey { key = 'p', mods = 'CTRL' } },
+  { key = 'DownArrow', mods = '', action = act.SendKey { key = 'n', mods = 'CTRL' } },
+
+  { key = 'q', mods = 'CTRL', action = act.SendString '\x11' },
+  { key = '/', mods = 'CTRL', action = act.SendKey { key = '_', mods = 'CTRL' } },
+
+  { key = 't', mods = 'CMD', action = act.SpawnTab 'CurrentPaneDomain' },
+  { key = 'w', mods = 'CMD', action = act.CloseCurrentTab { confirm = false } },
+  { key = 'v', mods = 'CMD', action = wezterm.action_callback(paste_or_yazi_paste) },
+  {
+    key = 's',
+    mods = 'CMD',
+    action = act.SpawnCommandInNewTab {
+      args = { shell, '-lc', '~/.config/wezterm/ssh.sh' },
+    },
+  },
 }
 
-font_size = 14.0
-if wezterm.target_triple == 'aarch64-apple-darwin' then
-  font_size = 16.0
-end
-
+local font_size = is_macos and 16.0 or 14.0
 
 return {
   font = wezterm.font_with_fallback {
-    { family = 'PlemolJP Console NF', assume_emoji_presentation = false},
-    { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false},
-    { family = 'Noto Emoji', assume_emoji_presentation = true},
+    { family = 'PlemolJP Console NF', assume_emoji_presentation = false },
+    { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false },
+    { family = 'Noto Emoji', assume_emoji_presentation = true },
   },
-  front_end = "WebGpu",
+  front_end = 'WebGpu',
   use_ime = true,
   macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL',
   font_size = font_size,
-  color_scheme = "nord",
-  allow_square_glyphs_to_overflow_width = "Always",
+  color_scheme = 'nord',
+  allow_square_glyphs_to_overflow_width = 'Always',
   adjust_window_size_when_changing_font_size = false,
   warn_about_missing_glyphs = true,
   window_padding = {
-    left = "0.5cell",
-    right = "0.5cell",
+    left = '0.5cell',
+    right = '0.5cell',
     top = 0,
     bottom = 0,
   },
-  keys=keys,
+  keys = keys,
   enable_wayland = true,
   window_close_confirmation = 'NeverPrompt',
   check_for_updates = false,

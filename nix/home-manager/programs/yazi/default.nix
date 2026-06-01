@@ -12,10 +12,10 @@
       mgr = {
         show_hidden = true;
       };
-      preview = {
-        max_width = 1000;
-        max_height = 1000;
-      };
+      # preview = {
+      #   max_width = 1000;
+      #   max_height = 1000;
+      # };
       plugin = {
         prepend_fetchers = [
           {
@@ -111,6 +111,32 @@
       };
       nord = pkgs.yaziPlugins.nord;
       clipboard = pkgs.yaziPlugins.clipboard;
+      toggle-pane = pkgs.yaziPlugins.toggle-pane;
+      bookmarks = {
+        package = pkgs.yaziPlugins.bookmarks;
+        setup = true;
+        settings = {
+          last_directory = {
+            enable = false;
+            persist = false;
+            mode = "dir";
+          };
+          persist = "all";
+          desc_format = "full";
+          file_pick_mode = "hover";
+          custom_desc_input = false;
+          show_keys = false;
+          notify = {
+            enable = false;
+            timeout = 1;
+            message = {
+              new = "New bookmark '<key>' -> '<folder>'";
+              delete = "Deleted bookmark in '<key>'";
+              delete_all = "Deleted all bookmarks";
+            };
+          };
+        };
+      };
       # office = pkgs.yaziPlugins.office;
     };
 
@@ -151,13 +177,42 @@
           run = "plugin clipboard -- --action=paste";
         }
         {
-          on = [ "<D-v>" ];
-          run = "plugin clipboard -- --action=paste";
+          on = [ "T" ];
+          run = "plugin toggle-pane min-preview";
+          desc = "Show or hide the preview pane";
         }
         {
-          on = [ "<D-p>" ];
-          run = "plugin clipboard -- --action=paste";
+          on = [ "i" ];
+          run = "plugin toggle-pane max-preview";
+          desc = "Maximize or restore the preview pane";
         }
+        {
+          on = [ "m" ];
+          run = "plugin bookmarks save";
+          desc = "Save current position as a bookmark";
+        }
+        {
+          on = [ "'" ];
+          run = "plugin bookmarks jump";
+          desc = "Jump to a bookmark";
+        }
+        {
+          on = [
+            "b"
+            "d"
+          ];
+          run = "plugin bookmarks delete";
+          desc = "Delete a bookmark";
+        }
+        {
+          on = [
+            "b"
+            "D"
+          ];
+          run = "plugin bookmarks delete_all";
+          desc = "Delete all bookmarks";
+        }
+
       ];
     };
   };
