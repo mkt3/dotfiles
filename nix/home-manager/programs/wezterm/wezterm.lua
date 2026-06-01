@@ -16,23 +16,43 @@ local function trim(value)
   return tostring(value or ''):gsub('^%s+', ''):gsub('%s+$', '')
 end
 
-local function is_executable(path)
-  return wezterm.run_child_process { '/bin/test', '-x', path }
+local function file_exists(path)
+  local file = io.open(path, 'r')
+  if file then
+    file:close()
+    return true
+  end
+  return false
 end
 
 local function current_username()
-  local home = os.getenv('HOME') or ''
-  return home:match('/([^/]+)$')
+  return os.getenv('USER') or (os.getenv('HOME') or ''):match('/([^/]+)$')
 end
 
 local function resolve_tmux_command()
   local user = current_username()
-  if not user then
-    return 'tmux'
+  local home = os.getenv('HOME') or ''
+  local candidates = {}
+
+  if user then
+    table.insert(candidates, '/etc/profiles/per-user/' .. user .. '/bin/tmux')
+    table.insert(candidates, '/nix/var/nix/profiles/per-user/' .. user .. '/profile/bin/tmux')
   end
 
-  local per_user_tmux = '/etc/profiles/per-user/' .. user .. '/bin/tmux'
-  return is_executable(per_user_tmux) and per_user_tmux or 'tmux'
+  if home ~= '' then
+    table.insert(candidates, home .. '/.nix-profile/bin/tmux')
+    table.insert(candidates, home .. '/.local/state/nix/profile/bin/tmux')
+  end
+
+  table.insert(candidates, '/run/current-system/sw/bin/tmux')
+
+  for _, candidate in ipairs(candidates) do
+    if file_exists(candidate) then
+      return candidate
+    end
+  end
+
+  return nil
 end
 
 local tmux = resolve_tmux_command()
@@ -51,6 +71,10 @@ local function notify(title, message)
 end
 
 local function tmux_current_command(pane)
+  if not tmux then
+    return nil
+  end
+
   local tty = pane:get_tty_name()
   if tty == nil or tty == '' then
     return nil
