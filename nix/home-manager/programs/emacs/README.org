@@ -1379,12 +1379,6 @@
                  (tags . " %i %-12:c")
                  (search . " %i %-12:c"))))
 
-         (when (file-directory-p my:d:org-roam)
-           (require 'org-roam)
-           (add-hook 'before-save-hook #'my:org-roam-update-task-tag)
-           (dolist (fn '(org-agenda org-todo-list org-refile))
-             (advice-add fn :before #'my:org-agenda-update-files)))
-
        (use-package org-super-agenda
          :ensure t
          :after (org-agenda)
@@ -1562,6 +1556,10 @@
              (setq org-agenda-files (append (list my:d:org-gtd) task-files))
              (setq my:refile-targets (append (list my:f:org-gtd) task-files))
              (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
+
+         (add-hook 'before-save-hook #'my:org-roam-update-task-tag)
+         (dolist (fn '(org-agenda org-todo-list org-refile))
+           (advice-add fn :before #'my:org-agenda-update-files))
 
          (defun my:org-roam-node-filter (node dir &optional exclude)
            "Filter org-roam nodes by directory.
