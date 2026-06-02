@@ -69,7 +69,7 @@
   # Create a symlink in XDG_DATA_HOME/fonts pointing to /run/current-system/sw/share/X11/fonts
   fonts.fontDir.enable = true;
 
-  system.stateVersion = "26.05"; # Did you read the comment?
+  system.stateVersion = "26.05";
   nix = {
     settings = {
       auto-optimise-store = true;
@@ -84,4 +84,6 @@
       options = "--delete-older-than 7d";
     };
   };
+
+  security.sudo-rs.enable = true;
 }
