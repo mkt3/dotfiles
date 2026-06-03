@@ -60,6 +60,8 @@
     '';
 
     upower.enable = true;
+
+    ntpd-rs.enable = true;
   };
 
   networking.firewall = {

@@ -1114,6 +1114,16 @@
         :ensure t
         :mode ("\\.nix\\'" . nix-mode)
         :preface
+        (with-eval-after-load 'nix-format
+          (defun nix--format-call (buf nixfmt-bin)
+            "Format BUF using nixfmt."
+            (with-current-buffer (get-buffer-create "*nixfmt*")
+              (erase-buffer)
+              (insert-buffer-substring buf)
+              (if (zerop (call-process-region (point-min) (point-max) nixfmt-bin t t nil "-"))
+                  (nix--replace-buffer-contents (current-buffer) buf)
+                (error "Nixfmt failed, see *nixfmt* buffer for details")))))
+
         (defun my/nix-mode-setup ()
           "Custom setup for nix-mode."
           (add-hook 'before-save-hook #'nix-format-before-save nil t)

@@ -32,9 +32,9 @@ arch = [{ name = "zsh", method = "pacman" }]
 ubuntu = [{ name = "zsh", method = "apt" }]
 common = [{ name = "zsh", method = "nix-hm" }]
 
-[coreutils]
+[uutils-coreutils-noprefix]
 type = "basic"
-common = [{ name = "coreutils", method = "nix" }]
+common = [{ name = "uutils-coreutils-noprefix", method = "nix" }]
 
 [findutils]
 type = "basic"
