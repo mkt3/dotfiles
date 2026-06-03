@@ -22,6 +22,7 @@
     skills.enableAll = [ "local" ];
     skills.enable = [
       "frontend-design"
+      "skill-creator"
     ];
 
     targets.codex = {
