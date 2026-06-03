@@ -1419,6 +1419,7 @@
        (use-package org-roam
          :ensure t
          :after org
+         :demand t
          :if (file-directory-p my:d:org-roam)
          :bind (("C-c n a" . org-roam-alias-add)
                 ("C-c n f" . my:org-roam-node-find-excluding-dir)
