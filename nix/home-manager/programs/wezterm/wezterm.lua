@@ -176,6 +176,7 @@ return {
     { family = 'Noto Emoji', assume_emoji_presentation = true },
   },
   front_end = 'WebGpu',
+  webgpu_power_preference = "HighPerformance",
   use_ime = true,
   macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL',
   font_size = font_size,
