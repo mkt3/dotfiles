@@ -245,7 +245,6 @@ animations {
 //       path "${lib.getExe pkgs.xwayland-satellite}"
 // }
 
-spawn-sh-at-startup "noctalia-shell"
 spawn-sh-at-startup "nextcloud --background"
 spawn-sh-at-startup "thunar --daemon"
 spawn-at-startup "wezterm"
@@ -344,6 +343,13 @@ window-rule {
   clip-to-geometry true
 }
 
+window-rule {
+  match app-id="dev.noctalia.Noctalia.Settings"
+  open-floating true
+  default-column-width { fixed 1080; }
+  default-window-height { fixed 920; }
+}
+
 debug {
   // Allows notification actions and window activation from Noctalia and vicinae
   honor-xdg-activation-with-invalid-serial
@@ -391,7 +397,7 @@ binds {
   // Suggested binds for running programs: terminal, app launcher, screen locker.
   Alt+Space repeat=false { spawn "vicinae" "toggle"; }
   // Alt+Space hotkey-overlay-title="Run an Application" repeat=false { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
-  Mod+Ctrl+L hotkey-overlay-title="Lock the Screen" { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+  Mod+Ctrl+L hotkey-overlay-title="Lock the Screen" { spawn-sh "noctalia msg session lock"; }
   Mod+Y { spawn "vicinae" "vicinae://launch/clipboard/history"; }
 
   // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
@@ -403,23 +409,24 @@ binds {
   // The allow-when-locked=true property makes them work even when the session is locked.
   // Using spawn-sh allows to pass multiple arguments together with the command.
   // "-l 1.0" limits the volume to 100%.
-  XF86AudioRaiseVolume { spawn "noctalia-shell" "ipc" "call" "volume" "increase"; }
-  XF86AudioLowerVolume { spawn "noctalia-shell" "ipc" "call" "volume" "decrease"; }
-  XF86AudioMute { spawn "noctalia-shell" "ipc" "call" "volume" "muteOutput"; }
-  XF86AudioMicMute { spawn "noctalia-shell" "ipc" "call" "volume" "muteInput"; }
+  XF86AudioRaiseVolume { spawn-sh "noctalia msg volume-up"; }
+  XF86AudioLowerVolume { spawn-sh "noctalia msg volume-down"; }
+  XF86AudioMute { spawn-sh "noctalia msg volume-mute"; }
+  XF86AudioMicMute { spawn-sh "noctalia smg mic-mute"; }
 
   // Example media keys mapping using playerctl.
   // This will work with any MPRIS-enabled media player.
-  XF86AudioPlay { spawn "noctalia-shell" "ipc" "call" "media" "playPause"; }
-  XF86AudioStop { spawn "noctalia-shell" "ipc" "call" "media" "pause"; }
-  XF86AudioPrev { spawn "noctalia-shell" "ipc" "call" "media" "previous"; }
-  XF86AudioNext { spawn "noctalia-shell" "ipc" "call" "media" "next"; }
+  XF86AudioPlay { spawn-sh "noctalia msg media toggle"; }
+  XF86AudioStop { spawn-sh "noctalia msg media stop"; }
+  XF86AudioPrev { spawn-sh "noctalia msg media previous"; }
+  XF86AudioNext { spawn-sh "noctalia msg media next"; }
 
   // Example brightness key mappings for brightnessctl.
   // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
   // but you need to manually put each argument in separate "" quotes.
-  XF86MonBrightnessUp { spawn "noctalia-shell" "ipc" "call" "brightness" "increase"; }
-  XF86MonBrightnessDown { spawn "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
+  XF86MonBrightnessUp { spawn-sh "noctalia msg brightness-up"; }
+  XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
+
 
   // Open/close the Overview: a zoomed-out view of workspaces and windows.
   // You can also move the mouse into the top-left hot corner,

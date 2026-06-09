@@ -27,6 +27,7 @@
   );
 
   hardware.enableRedistributableFirmware = true;
+  hardware.i2c.enable = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";

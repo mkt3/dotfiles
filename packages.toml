@@ -476,6 +476,7 @@ nixos = [
   { name = "gnome-keyring", method = "nix-hm" },
   { name = "libsecret", method = "nix-hm" },
   { name = "seahorse", method = "nix-hm" },
+  { name = "ddcutil", method = "nix-hm" },
 ]
 
 ## macos
