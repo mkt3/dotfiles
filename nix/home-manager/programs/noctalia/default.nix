@@ -1,4 +1,3 @@
-[33mWarning: Bare invocation of nixfmt is deprecated. Use 'nixfmt -' for anonymous stdin.[39m
 {
   config,
   noctalia,
