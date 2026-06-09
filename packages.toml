@@ -700,6 +700,6 @@ type = "gui"
 darwin = [{ name = "macos", method = "nix-hm" }]
 
 ### external monitor control
-[monitorcontrol]
+[betterdisplay]
 type = "gui"
-darwin = [{ name = "monitorcontrol", method = "nix-hm" }]
+darwin = [{ name = "betterdisplay", method = "nix-hm" }]
