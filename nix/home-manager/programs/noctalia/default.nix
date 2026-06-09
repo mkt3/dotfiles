@@ -1,3 +1,4 @@
+[33mWarning: Bare invocation of nixfmt is deprecated. Use 'nixfmt -' for anonymous stdin.[39m
 {
   config,
   noctalia,
@@ -18,7 +19,7 @@
       bar.default = {
         margin_edge = 0;
         margin_ends = 0;
-        center = [ "active-window" ];
+        center = [ "active_window" ];
         end = [
           "media"
           "notifications"
