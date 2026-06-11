@@ -39,13 +39,7 @@ install_macos() {
 }
 
 install_linux() {
-    case "$DISTRO" in
-        "Arch Linux")
-            sudo pacman -S --needed --noconfirm pacman-contrib
-            ;;
-        *)
-            ;;
-    esac
+    :
 }
 
 install_essential_packages

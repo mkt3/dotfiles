@@ -17,7 +17,6 @@ gui_env=${GUI_ENV:-n}
 declare -A methods
 methods["ubuntu"]="apt"
 methods["darwin"]="brew cask mas"
-methods["arch"]="pacman aur"
 methods["nixos"]=""
 methods["otherlinux"]=""
 common_methods=("nix" "nix-hm")
@@ -33,7 +32,6 @@ json_content=""
 
 detect_platform() {
     case "$DISTRO" in
-        "Arch Linux") os_name="arch"; is_linux=true ;;
         "Ubuntu") os_name="ubuntu"; is_linux=true ;;
         "NixOS") os_name="nixos"; is_linux=true ;;
         "Darwin") os_name="darwin" ;;
@@ -165,14 +163,6 @@ append_native_package_command() {
         apt)
             echo "title \"Install/Update packages from apt\"" >> "$install_script_path"
             install_cmd="sudo apt-get -y install"
-            ;;
-        pacman)
-            echo "title \"Install/Update packages from pacman\"" >> "$install_script_path"
-            install_cmd="sudo pacman -S --needed --noconfirm"
-            ;;
-        aur)
-            echo "title \"Install/Update packages from aur\"" >> "$install_script_path"
-            install_cmd="yay -S --needed --noconfirm"
             ;;
     esac
 

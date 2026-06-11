@@ -18,7 +18,6 @@ It is not a plain collection of dotfiles. The repository also contains:
 ## Supported OS
 - macOS
 - Ubuntu (CLI only)
-- Arch Linux (CLI only)
 - NixOS
 
 ## Repository Structure
@@ -62,7 +61,7 @@ These values are stored in `results/env_settings`.
 
 ## OS-specific Behavior
 - macOS: applies system configuration through `nix-darwin` and Home Manager.
-- Ubuntu / Arch Linux: applies user configuration through Home Manager.
+- Ubuntu: applies user configuration through Home Manager.
 - NixOS: applies system configuration through `nixos-rebuild` and Home Manager.
 
 The package source can differ by OS. Some packages are installed via Nix, some via Home Manager modules, and some platform-specific packages may use native package managers or Homebrew-related configuration.
@@ -130,13 +129,13 @@ The supported package source keys are:
 
 - `common`: used on every supported platform
 - `linux`: added on Linux platforms in addition to `common`
-- `ubuntu`, `arch`, `darwin`, `nixos`: platform-specific additions
+- `ubuntu`, `darwin`, `nixos`: platform-specific additions
 
 The supported install methods are:
 
 - `nix`: install as a regular Nix package
 - `nix-hm`: install through Home Manager, usually for user packages or program modules
-- `apt`, `pacman`, `aur`: install through native Linux package managers
+- `apt`: install through Ubuntu's native package manager
 - `brew`, `cask`, `mas`: used for macOS Homebrew and App Store integration
 
 When a package `name` matches a directory under `nix/home-manager/programs/` or `nix/systems/*/programs/`, it is treated as a module import instead of a plain package name.
