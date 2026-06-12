@@ -272,6 +272,23 @@
                 (display-graphic-p))
        (server-start))
    #+end_src
+** Project
+   #+begin_src emacs-lisp
+     (use-package consult-ghq
+       :ensure t
+       :after (consult project)
+       :bind
+       ("C-x p o" . consult-ghq-switch-project)
+       :config
+       (defun my/consult-ghq-list-candidates-with-trailing-slash (orig-fun &rest args)
+         "Normalize consult-ghq candidates as directory names with trailing slash."
+         (mapcar #'file-name-as-directory
+                 (apply orig-fun args)))
+
+       (advice-add 'consult-ghq--list-candidates
+                   :around
+                   #'my/consult-ghq-list-candidates-with-trailing-slash))
+   #+end_src
 ** Misc
    #+begin_src emacs-lisp
      (setopt

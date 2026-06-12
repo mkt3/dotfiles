@@ -6,7 +6,5 @@
     initrd.systemd.enable = true;
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-
-    bootspec.enable = true;
   };
 }
