@@ -67,6 +67,9 @@
 
       pkgs = import nixpkgs {
         config.allowUnfree = true;
+        overlays = [
+          (import ./home-manager/overlays/recoll)
+        ];
         system = platform;
       };
       isLinux = pkgs.stdenv.hostPlatform.isLinux;

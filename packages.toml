@@ -545,7 +545,8 @@ linux = [{ name = "vivaldi", method = "nix-hm" }]
 ### for keymap
 [google-chrome]
 type = "gui"
-common = [{ name = "google-chrome", method = "nix-hm" }]
+darwin = [{ name = "google-chrome", method = "cask" }]
+linux = [{ name = "google-chrome", method = "nix-hm" }]
 
 ### sub browser
 [firefox]
@@ -608,7 +609,6 @@ linux = [{ name = "xarchiver", method = "nix-hm" }]
 ## recoll
 [recoll]
 type = "gui"
-darwin = [{ name = "recoll", method = "cask" }]
 common = [{ name = "recoll", method = "nix-hm" }]
 
 # hugo

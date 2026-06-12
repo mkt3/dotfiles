@@ -13,18 +13,14 @@ let
     else
       "${config.home.homeDirectory}/Nextcloud";
 
-  recollHelperPath = if isDarwin then "recollhelperpath = /opt/homebrew/bin" else "";
-
-  recollPathEnv =
+  recollHelperPath =
     if isDarwin then
-      ''
-        export PATH="''${PATH}:/Applications/Recoll.app/Contents/MacOS"
-      ''
+      "recollhelperpath = ${config.home.profileDirectory}/bin:/run/current-system/sw/bin:/opt/homebrew/bin"
     else
       "";
 in
 {
-  home.packages = lib.optionals (!isDarwin) [ pkgs.recoll ];
+  home.packages = [ pkgs.recoll ];
 
   xdg.configFile."recoll/recoll.conf" = {
     text = ''
@@ -43,6 +39,7 @@ in
   programs.zsh.envExtra = lib.mkAfter ''
     # recoll
     export RECOLL_CONFDIR="${config.xdg.configHome}/recoll"
-    ${recollPathEnv}
+    export RECOLL_DATADIR="${pkgs.recoll}/share/recoll"
+    export PYTHONPATH="${pkgs.recoll}/lib/python3.13/site-packages:${pkgs.recoll}/lib/python3.13/site-packages/recoll:''${PYTHONPATH:-}"
   '';
 }

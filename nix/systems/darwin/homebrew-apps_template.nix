@@ -9,9 +9,7 @@
     };
     greedyCasks = true;
 
-    taps = [
-      "nailuoGG/recoll"
-    ];
+    taps = [ ];
 
     brews = [__BREW_PACKAGES__
     ];

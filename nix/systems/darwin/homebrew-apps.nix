@@ -9,9 +9,7 @@
     };
     greedyCasks = true;
 
-    taps = [
-      "nailuoGG/recoll"
-    ];
+    taps = [ ];
 
     brews = [
       "pdfpc"
@@ -21,7 +19,6 @@
       "macskk"
       "vivaldi"
       "google-drive"
-      "recoll"
       "karabiner-elements"
     ];
 
