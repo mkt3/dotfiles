@@ -43,7 +43,7 @@
        (auto-package-update-delete-old-versions t)
        (auto-package-update-hide-results t)
        (auto-package-update-interval 1)
-       (auto-package-update-excluded-packages '(pdf-tools jinx mu4e ox-hugo eglot-booster typst-ts-mode consult-tramp dired-details-r atomic-chrome))
+       (auto-package-update-excluded-packages '(pdf-tools mu4e ox-hugo eglot-booster typst-ts-mode consult-tramp dired-details-r atomic-chrome))
        :hook (emacs-startup-hook . auto-package-update-maybe))
    #+end_src
 * Initialize
@@ -922,9 +922,9 @@
        ;; :bind (nil
        ;;        :map eglot-mode-map
        ;;        ("C-c a" . eglot-code-actions))
-       :hook (eglot-managed-mode-hook . my/eglot-capf)
+       :hook (eglot-managed-mode-hook . my:eglot-capf)
        :config
-       (defun my/eglot-capf ()
+       (defun my:eglot-capf ()
          (setq-local completion-at-point-functions
                      (list (cape-capf-super
                             #'tempel-complete
@@ -985,18 +985,6 @@
                    (expand-file-name "ruff/ruff.toml"
                                      (or (getenv "XDG_CONFIG_HOME") "~/.config")))))
    #+end_src
-* Writing
-** Spell Checker
-*** jinx
-    This uses natively-compiled code, I install this alongside emacs via nix.
-    #+begin_src emacs-lisp
-      (use-package jinx
-        :bind (nil
-               :map jinx-mode-map
-               ("C-;" . jinx-correct)
-               ("C-x @ ;" . jinx-correct) ; for wezterm
-               ("C-M-$" . jinx-languages)))
-    #+end_src
 * Coding
 ** General
 *** makefile
@@ -1108,12 +1096,12 @@
                   (nix--replace-buffer-contents (current-buffer) buf)
                 (error "Nixfmt failed, see *nixfmt* buffer for details")))))
 
-        (defun my/nix-mode-setup ()
+        (defun my:nix-mode-setup ()
           "Custom setup for nix-mode."
           (add-hook 'before-save-hook #'nix-format-before-save nil t)
           (setq fill-column 100)
           (eglot-ensure))
-        :hook (nix-mode-hook . my/nix-mode-setup)
+        :hook (nix-mode-hook . my:nix-mode-setup)
         :init
         (with-eval-after-load 'eglot
           (setf (alist-get 'nix-mode eglot-server-programs) '("nixd"))))
@@ -1257,7 +1245,7 @@
            (interactive)
            (let ((browse-url-browser-function 'browse-url-default-browser))
              (org-open-at-point)))
-         (advice-add 'org-edit-special :before (lambda (&rest args) (read-only-mode -1)))
+         (advice-add 'org-edit-special :before (lambda (&rest _args) (read-only-mode -1)))
          (defun my:enable-read-only ()
            "Enable read-only mode for certain conditions."
            (when (or (save-excursion
@@ -1489,14 +1477,6 @@
                       (> (buffer-size) 0))
              (read-only-mode 1)))
 
-         (add-hook 'org-mode-hook 'my:org-roam-read-only)
-         (add-hook 'org-mode-hook (lambda ()
-                                    (setq-local time-stamp-active t
-                                                time-stamp-line-limit 18
-                                                time-stamp-start "^#\\+last_modified: [ \t]*"
-                                                time-stamp-end "$"
-                                                time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
-                                    (add-hook 'before-save-hook 'time-stamp nil 'local)))
          (cl-defmethod org-roam-node-type ((node org-roam-node))
            "Return the TYPE of NODE."
            (condition-case nil
@@ -1533,6 +1513,20 @@
                    (org-roam-tag-add (list my:roam-task-tag))
                  (org-roam-tag-remove (list my:roam-task-tag))))))
 
+         (defun my:org-roam-setup-buffer ()
+           "Set up org-roam-local buffer behavior."
+           (when (my:org-roam-note-buffer-p)
+             (my:org-roam-read-only)
+             (setq-local time-stamp-active t
+                         time-stamp-line-limit 18
+                         time-stamp-start "^#\\+last_modified: [ \t]*"
+                         time-stamp-end "$"
+                         time-stamp-format "\[%Y-%m-%d %a %H:%M\]")
+             (add-hook 'before-save-hook #'time-stamp nil t)
+             (add-hook 'before-save-hook #'my:org-roam-update-task-tag nil t)))
+
+         (add-hook 'org-mode-hook #'my:org-roam-setup-buffer)
+
          (defun my:org-roam-get-task-files ()
            "Return a list of note files containing 'my:roam-task-tag'."
            (seq-uniq
@@ -1551,7 +1545,6 @@
              (setq my:refile-targets (append (list my:f:org-gtd) task-files))
              (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
 
-         (add-hook 'before-save-hook #'my:org-roam-update-task-tag)
          (dolist (fn '(org-agenda org-todo-list org-refile))
            (advice-add fn :before #'my:org-agenda-update-files))
 
@@ -2041,8 +2034,8 @@
              (when (thing-at-point 'url)
                (browse-url (thing-at-point 'url))))))
        (setq mu4e-headers-auto-update t)
-       (setq mu4e-headers-skip-duplicates t)
-       (setq mu4e-headers-sort-field :date)
+       (setq mu4e-search-skip-duplicates t)
+       (setq mu4e-search-sort-field :date)
        (setq mu4e-index-cleanup t)
        (setq mu4e-update-interval 300)
        (setq mu4e-attachment-dir "~/Downloads")
@@ -2053,12 +2046,12 @@
        (setq message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n")
        ;; M-x find-function RET message-citation-line-format for docs:
        (setq message-citation-line-function 'message-insert-formatted-citation-line)
-       (setq mu4e-headers-include-related nil)
+       (setq mu4e-search-include-related nil)
        (setq mu4e-context-policy 'pick-first)
        (setq mu4e-compose-context-policy 'ask-if-none)
        ;; https://github.com/djcb/mu/issues/1136#issuecomment-1229005006
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
-             (lambda (docid msg target)
+             (lambda (docid _msg target)
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
        ;; for sending mails
        (require 'smtpmail)

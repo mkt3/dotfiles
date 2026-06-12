@@ -14,7 +14,6 @@
     extraPackages =
       epkgs:
       [
-        epkgs.jinx
         (epkgs.treesit-grammars.with-grammars (
           p: with p; [
             tree-sitter-bash
