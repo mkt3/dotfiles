@@ -60,11 +60,11 @@ These values are stored in `results/env_settings`.
    - applies the configuration
 
 ## OS-specific Behavior
-- macOS: applies system configuration through `nix-darwin` and Home Manager.
+- macOS: applies system configuration through `nix-darwin` and Home Manager. Homebrew packages are declared in the generated nix-darwin Homebrew module.
 - Ubuntu: applies user configuration through Home Manager.
 - NixOS: applies system configuration through `nixos-rebuild` and Home Manager.
 
-The package source can differ by OS. Some packages are installed via Nix, some via Home Manager modules, and some platform-specific packages may use native package managers or Homebrew-related configuration.
+The package source can differ by OS. Some packages are installed via Nix, some via Home Manager modules, and some platform-specific packages may use native package managers or nix-darwin's Homebrew integration.
 
 ## Update
 Run the installer again:
@@ -136,7 +136,7 @@ The supported install methods are:
 - `nix`: install as a regular Nix package
 - `nix-hm`: install through Home Manager, usually for user packages or program modules
 - `apt`: install through Ubuntu's native package manager
-- `brew`, `cask`, `mas`: used for macOS Homebrew and App Store integration
+- `brew`, `cask`, `mas`: rendered into nix-darwin's Homebrew module on macOS
 
 When a package `name` matches a directory under `nix/home-manager/programs/` or `nix/systems/*/programs/`, it is treated as a module import instead of a plain package name.
 Use `nix-hm` for Home Manager program modules and `nix` for system-level modules when applicable.

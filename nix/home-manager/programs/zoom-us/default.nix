@@ -6,8 +6,7 @@
   ...
 }:
 {
-  home.packages =
-    lib.optionals isDarwin [ pkgs.brewCasks.zoom ] ++ lib.optionals (!isDarwin) [ pkgs.zoom-us ];
+  home.packages = lib.optionals (!isDarwin) [ pkgs.zoom-us ];
 
   programs.zsh.envExtra = lib.mkAfter ''
     # zoom

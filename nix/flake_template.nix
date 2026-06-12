@@ -21,14 +21,6 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    brew-nix = {
-      url = "github:BatteredBunny/brew-nix";
-      inputs.brew-api.follows = "brew-api";
-    };
-    brew-api = {
-      url = "github:BatteredBunny/brew-api";
-      flake = false;
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -76,9 +68,6 @@
       pkgs = import nixpkgs {
         config.allowUnfree = true;
         system = platform;
-        overlays = nixpkgs.lib.optionals (platform == "aarch64-darwin") [
-          inputs.brew-nix.overlays.default
-        ];
       };
       isLinux = pkgs.stdenv.hostPlatform.isLinux;
       isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
