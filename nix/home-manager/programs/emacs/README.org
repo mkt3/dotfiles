@@ -672,7 +672,7 @@
                ("M-y" . consult-yank-pop)
                ;; M-g bindings in `goto-map'
                ("M-g e" . consult-compile-error)
-               ("M-g f" . consult-flycheck)
+               ("M-g f" . consult-flymake)
                ("M-g g" . consult-goto-line)
                ("M-g M-g" . consult-goto-line)
                ("M-g o" . consult-outline)
@@ -934,13 +934,6 @@
                            #'cape-file)
                      )))
 
-     (use-package flycheck-eglot
-       :ensure t
-       :after (flycheck eglot)
-       :custom (flycheck-eglot-exclusive nil)
-       :config
-       (global-flycheck-eglot-mode 1))
-
      (use-package jsonrpc
        :ensure t
        :defer t
@@ -957,49 +950,40 @@
    #+end_src
 ** Flymake
    #+begin_src emacs-lisp
-     ;; (use-package flymake
-     ;;   :ensure t
-     ;;   :bind (nil
-     ;;          :map flymake-mode-map
-     ;;          ("C-c C-p" . flymake-goto-prev-error)
-     ;;          ("C-c C-n" . flymake-goto-next-error))
-     ;;   ;; :config
-     ;;   ;; (set-face-background 'flymake-errline "red4")
-     ;;   ;; (set-face-background 'flymake-warnline "DarkOrange")
-     ;;   )
-
-     ;; (use-package flymake-diagnostic-at-point
-     ;;   :ensure t
-     ;;   :after flymake
-     ;;   :config
-     ;;   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
-     ;;   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
-   #+end_src
-** Flycheck
-   #+begin_src emacs-lisp
-     (use-package flycheck
-       :ensure t
-       :custom
-       (flycheck-display-errors-delay 0.3)
-       (flycheck-textlint-plugin-alist ())
-       :init
-       (global-flycheck-mode 1)
-       :hook ((flycheck-mode-hook . flycheck-set-indication-mode)
-              (emacs-startup-hook . my:disable-flycheck-in-scratch))
+     (use-package flymake
+       :ensure nil
+       :bind (nil
+              :map flymake-mode-map
+              ("C-c C-p" . flymake-goto-prev-error)
+              ("C-c C-n" . flymake-goto-next-error))
        :config
-       (setq-default flycheck-indication-mode 'left-margin)
-       (defun my:disable-flycheck-in-scratch ()
-         (when (string= (buffer-name) "*scratch*")
-           (flycheck-mode -1))))
+       (set-face-attribute 'flymake-error nil
+                           :background "#551327"
+                           :underline '(:style wave :color "#ff7a5f"))
+       (set-face-attribute 'flymake-warning nil
+                           :background "#403f22"
+                           :underline '(:style wave :color "#f0c060"))
+       (set-face-attribute 'flymake-note nil
+                           :background "#104324"
+                           :underline '(:style wave :color "#30c489")))
 
-     (use-package flycheck-posframe
+     (use-package flymake-diagnostic-at-point
        :ensure t
-       :if (display-graphic-p)
-       :after flycheck
-       :hook (flycheck-mode-hook . flycheck-posframe-mode))
-     ;; (use-package flycheck-inline
-     ;;   :ensure t
-     ;;   :hook (flycheck-mode-hook . flycheck-inline-mode))
+       :after flymake
+       :hook (flymake-mode-hook . flymake-diagnostic-at-point-mode))
+
+     (use-package flymake-ruff
+       :ensure t
+       :hook (eglot-managed-mode-hook
+              . (lambda ()
+                  (when (derived-mode-p 'python-mode 'python-ts-mode)
+                    (flymake-ruff-load))))
+       :config
+       (setq flymake-ruff--default-configs
+             (list "ruff.toml"
+                   ".ruff.toml"
+                   (expand-file-name "ruff/ruff.toml"
+                                     (or (getenv "XDG_CONFIG_HOME") "~/.config")))))
    #+end_src
 * Writing
 ** Spell Checker
@@ -1149,7 +1133,6 @@
       (use-package python
         :custom
         (python-indent-guess-indent-offset-verbose . nil)
-        (flycheck-python-ruff-config '("ruff.toml" ".ruff.toml"))
         :hook (python-ts-mode-hook . eglot-ensure))
 
       (use-package reformatter
