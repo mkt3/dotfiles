@@ -45,7 +45,6 @@
 
     ignores = [
       ".DS_Store"
-      ".envrc"
       ".direnv"
       ".venv"
     ];
