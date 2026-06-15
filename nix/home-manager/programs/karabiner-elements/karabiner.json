@@ -5,6 +5,38 @@
       "complex_modifications": {
         "rules": [
           {
+            "description": "In PowerPoint, send C-j to macSKK as Kana",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.microsoft\\.Powerpoint$"
+                    ],
+                    "type": "frontmost_application_if"
+                  },
+                  {
+                    "input_sources": [
+                      {
+                        "input_source_id": "^net\\.mtgto\\.inputmethod\\.macSKK\\.(ascii|hiragana|katakana|hankaku|eisu)$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": ["control"],
+                    "optional": ["caps_lock"]
+                  }
+                },
+                "to": [{ "key_code": "japanese_kana" }],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "Emacs key bindings",
             "manipulators": [
               {
