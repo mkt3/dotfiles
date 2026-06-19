@@ -31,6 +31,7 @@
             tree-sitter-html
             tree-sitter-javascript
             tree-sitter-json
+            tree-sitter-just
             tree-sitter-make
             tree-sitter-markdown
             tree-sitter-markdown-inline

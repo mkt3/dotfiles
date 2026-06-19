@@ -1011,6 +1011,15 @@
         :hook (makefile-mode-hook . (lambda ()
                                       (setq tab-width 4))))
     #+end_src
+*** justfile
+    #+begin_src emacs-lisp
+      (use-package just-ts-mode
+        :ensure t
+        :mode ("\\justfile\\'" . just-ts-mode)
+        :hook (just-ts-mode-hook . (lambda ()
+                                     (setq tab-width 4))))
+    #+end_src
+
 *** tree-sitter
     #+begin_src emacs-lisp
       (use-package treesit
