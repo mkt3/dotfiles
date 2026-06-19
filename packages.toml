@@ -21,6 +21,11 @@ nixos = [{ name = "gcc", method = "nix" }]
 type = "basic"
 nixos = [{ name = "gnumake", method = "nix" }]
 
+# task runner
+[just]
+type = "basic"
+nixos = [{ name = "just", method = "nix-hm" }]
+
 # CLI command packages
 [bash]
 type = "basic"
