@@ -9,7 +9,7 @@
     vicinae.homeManagerModules.default
   ];
 
-  services.vicinae = {
+  programs.vicinae = {
     enable = true;
     systemd = {
       enable = true;
@@ -34,8 +34,8 @@
       };
 
       telemetry = {
-		    system_info = false;
-	    };
+        system_info = false;
+      };
 
       font = {
         normal = {
