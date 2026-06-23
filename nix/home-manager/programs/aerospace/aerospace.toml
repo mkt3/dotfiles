@@ -187,7 +187,7 @@ inherit-env-vars = true
 PATH = '/etc/profiles/per-user/${USER}/bin:/run/current-system/sw/bin:${PATH}'
 
 [[on-window-detected]]
-if.app-id = 'com.vivaldi.Vicaldi'
+if.app-id = 'com.vivaldi.Vivaldi'
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
