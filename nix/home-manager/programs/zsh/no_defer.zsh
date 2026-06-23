@@ -7,7 +7,13 @@ fi
 
 # Tmux
 if [[ ! -n $TMUX ]]; then
-    bindkey -s '^Qo' '~/.local/bin/tmux_session.sh\n'
+    function _tmux_session_widget {
+        BUFFER='~/.local/bin/tmux_session.sh'
+        CURSOR=$#BUFFER
+        zle .accept-line
+    }
+    zle -N _tmux_session_widget
+    bindkey '^Qo' _tmux_session_widget
 fi
 
 if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
