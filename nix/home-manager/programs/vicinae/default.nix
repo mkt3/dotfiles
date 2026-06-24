@@ -1,22 +1,14 @@
 {
-  vicinae,
   vicinae-extensions,
   pkgs,
   ...
 }:
 {
-  imports = [
-    vicinae.homeManagerModules.default
-  ];
-
   programs.vicinae = {
     enable = true;
     systemd = {
       enable = true;
       autoStart = true;
-      environment = {
-        USE_LAYER_SHELL = 1;
-      };
     };
     settings = {
       "$schema" = "https://vicinae.com/schemas/config.json";
