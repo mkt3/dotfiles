@@ -18,9 +18,14 @@
       input = "anthropic-skills";
       subdir = "skills";
     };
+    sources.mattpocock = {
+      input = "mattpocock-skills";
+      subdir = "skills/productivity";
+    };
 
     skills.enableAll = [ "local" ];
     skills.enable = [
+      "grilling"
       "frontend-design"
       "skill-creator"
     ];
