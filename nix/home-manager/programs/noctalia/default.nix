@@ -15,6 +15,9 @@
       audio = {
         enable_overdrive = true;
       };
+      battery = {
+        warning_threshold = 15;
+      };
       bar.default = {
         margin_edge = 0;
         margin_ends = 0;
