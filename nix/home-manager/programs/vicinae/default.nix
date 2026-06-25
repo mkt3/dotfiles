@@ -1,8 +1,4 @@
-{
-  vicinae-extensions,
-  pkgs,
-  ...
-}:
+{ ... }:
 {
   programs.vicinae = {
     enable = true;
@@ -70,11 +66,5 @@
         };
       };
     };
-    extensions = with vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-      bluetooth
-      chromium-bookmarks
-      nix
-      power-profile
-    ];
   };
 }
