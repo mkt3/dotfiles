@@ -124,10 +124,10 @@ append_nix_switch_command() {
         output+="title \"Install/Update packages from home-manager\"\n"
         output+="if command -v nh > /dev/null 2>&1; then\n"
         output+="    echo \"Switching home-manager with nh and current flake.lock...\"\n"
-        output+="    run_nh home switch \${NIX_DIR} -c \${USER}\n"
+        output+="    run_nh home switch \${NIX_DIR} -c \${USER} --show-activation-logs\n"
         output+="else\n"
         output+="    echo \"Running nh via nix run with current flake.lock...\"\n"
-        output+="    run_nixpkgs_nh home switch \${NIX_DIR} -c \${USER}\n"
+        output+="    run_nixpkgs_nh home switch \${NIX_DIR} -c \${USER} --show-activation-logs\n"
         output+="fi\n"
         output+="export __ETC_PROFILE_NIX_SOURCED=\"\""
     fi
