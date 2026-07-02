@@ -10,10 +10,12 @@
       "--ansi"
     ];
 
-    fileWidgetCommand = "rg --files --hidden --follow --ignore-file=${config.xdg.configHome}/ripgrep/ignore";
-    fileWidgetOptions = [
-      "--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
-    ];
+    fileWidget = {
+      command = "rg --files --hidden --follow --ignore-file=${config.xdg.configHome}/ripgrep/ignore";
+      options = [
+        "--preview 'bat  --color=always --style=header,grid --line-range :100 {}'"
+      ];
+    };
 
     tmux = {
       enableShellIntegration = true;
