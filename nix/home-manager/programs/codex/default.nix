@@ -1,4 +1,3 @@
-[33mWarning: Bare invocation of nixfmt is deprecated. Use 'nixfmt -' for anonymous stdin.[39m
 {
   config,
   lib,
@@ -6,12 +5,6 @@
   pkgs,
   ...
 }:
-let
-  codexDefaultHome = "${config.xdg.configHome}/codex";
-  codexNextcloudHome = "${config.home.homeDirectory}/Nextcloud/personal_config/codex";
-
-  codexHome = if builtins.pathExists codexNextcloudHome then codexNextcloudHome else codexDefaultHome;
-in
 {
   home.packages = [
     llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex
@@ -34,6 +27,6 @@ in
 
   programs.zsh.envExtra = lib.mkAfter ''
     # codex
-    export CODEX_HOME="${codexHome}"
+    export CODEX_HOME="${config.xdg.configHome}/codex"
   '';
 }
