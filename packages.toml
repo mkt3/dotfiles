@@ -616,11 +616,6 @@ linux = [{ name = "xarchiver", method = "nix-hm" }]
 type = "gui"
 common = [{ name = "recoll", method = "nix-hm" }]
 
-# hugo
-[hugo]
-type = "gui"
-linux = [{ name = "hugo", method = "nix-hm" }]
-
 ## github cli
 [gh]
 type = "gui"
