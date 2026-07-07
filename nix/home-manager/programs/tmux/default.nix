@@ -71,6 +71,7 @@
       bind t popup -w90% -h90% -E btm -b
       bind b popup -w90% -h90% -E btm
       bind g popup -w90% -h90% -d '#{pane_current_path}' -E lazygit
+      bind p popup -w90% -h90% -E 'k9s -A'
       bind o popup -w90% -h90% -E ${config.home.homeDirectory}/.local/bin/tmux_session.sh
       bind n popup -w90% -h90% -E 'window=$(tmux display -p -F "#S:#I.#P") && export FZF_DEFAULT_OPTS="-m --layout=reverse --border" && navi --print | tr -d "\n" | tmux load-buffer -b tmp - && tmux paste-buffer -drp -t $window -b tmp'
 

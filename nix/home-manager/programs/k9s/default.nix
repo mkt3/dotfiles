@@ -72,7 +72,7 @@
             warn = 70;
           };
         };
-        defaultView = "";
+        defaultView = "pods";
       };
     };
   };

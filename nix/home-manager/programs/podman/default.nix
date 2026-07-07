@@ -9,6 +9,9 @@
         "transports": {
           "docker": {
             "localhost:5000": [{ "type": "insecureAcceptAnything" }]
+          },
+          "containers-storage": {
+            "": [{ "type": "insecureAcceptAnything" }]
           }
         }
       }
