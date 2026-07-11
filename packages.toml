@@ -534,7 +534,7 @@ linux = [{ name = "discord", method = "nix-hm" }]
 [zoom]
 type = "gui"
 darwin = [{ name = "zoom", method = "cask" }]
-linux = [{ name = "zoom-us", method = "nix-hm" }]
+#linux = [{ name = "zoom-us", method = "nix-hm" }]
 
 ### macos only
 [MeetingBar]
