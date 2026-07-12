@@ -12,7 +12,7 @@ It is not a plain collection of dotfiles. The repository also contains:
 
 - bootstrap scripts for first-time setup
 - package definitions in `packages.toml`
-- Nix modules that read the package catalog directly, plus scripts that generate native package-manager install artifacts
+- Nix modules that read the package catalog directly, plus a script that installs Ubuntu packages through apt
 - host-specific Nix configurations for macOS and NixOS
 
 ## Supported OS
@@ -55,7 +55,7 @@ These values are stored in `results/env_settings`.
 4. Run `make`, which:
    - prompts for environment settings if needed
    - installs essential non-Nix prerequisites
-   - evaluates Nix packages directly from `packages.toml` and generates native package-manager install artifacts
+   - evaluates Nix and Homebrew packages directly from `packages.toml` and generates the Ubuntu apt command
    - prepares a flake in `~/.config/nix`
    - applies the configuration
 
@@ -116,7 +116,7 @@ runs the local verification flow used to catch the same class of issues as CI be
 
 ## Development Notes
 ### Package changes
-If you update `packages.toml`, Nix and Home Manager packages are selected directly during evaluation. Native package-manager artifacts, such as nix-darwin's Homebrew module, are generated under `results/generated/`.
+If you update `packages.toml`, Nix, Home Manager, and nix-darwin Homebrew packages are selected directly during evaluation. On Ubuntu, the apt command remains part of the generated install script.
 
 ### `packages.toml` conventions
 Each table in `packages.toml` represents one logical package group.
@@ -137,6 +137,8 @@ The supported install methods are:
 - `nix-hm`: install through Home Manager, usually for user packages or program modules
 - `apt`: install through Ubuntu's native package manager
 - `brew`, `cask`, `mas`: rendered into nix-darwin's Homebrew module on macOS
+
+Entries using `mas` must provide an App Store ID separately, for example `{ name = "Xcode", id = 497799835, method = "mas" }`.
 
 When a package `name` matches a directory under `nix/home-manager/programs/` or `nix/systems/*/programs/`, it is treated as a module import instead of a plain package name.
 Use `nix-hm` for Home Manager program modules and `nix` for system-level modules when applicable.

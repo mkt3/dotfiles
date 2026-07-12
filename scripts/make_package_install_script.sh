@@ -2,29 +2,21 @@
 
 set -euo pipefail
 
-# variable
-CONFIGS_DIR="${REPO_DIR}/nix"
-GENERATED_CONFIGS_DIR="${REPO_DIR}/results/generated"
-
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
-
-GITHUB_ACTIONS=${GITHUB_ACTIONS:-n}
 
 dev_env=${DEV_ENV:-n}
 gui_env=${GUI_ENV:-n}
 
 declare -A methods
 methods["ubuntu"]="apt"
-methods["darwin"]="brew cask mas"
+methods["darwin"]=""
 methods["nixos"]=""
 methods["otherlinux"]=""
 
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
-SED_CMD=("${NIX_CMD[@]}" run nixpkgs#gnused -- -i)
-nix_homebrew_apps_file="${GENERATED_CONFIGS_DIR}/nix/systems/darwin/homebrew-apps.nix"
 os_name=""
 is_linux=false
 json_content=""
@@ -86,16 +78,14 @@ EOF
     echo "# package install/update commands" >> "$install_script_path"
 }
 
-initialize_generated_nix_tree() {
-    rm -rf "${GENERATED_CONFIGS_DIR}/nix"
-    mkdir -p "${GENERATED_CONFIGS_DIR}/nix/systems/darwin"
+remove_generated_nix_tree() {
+    rm -rf "${REPO_DIR}/results/generated/nix"
 }
 
 append_nix_switch_command() {
     local output=""
 
     if [[ "$os_name" == "darwin" ]]; then
-        cp -f "${CONFIGS_DIR}/systems/darwin/homebrew-apps_template.nix" "$nix_homebrew_apps_file"
         output+="title \"Setup with nix-darwin\"\n"
         output+="if ! command -v darwin-rebuild > /dev/null 2>&1; then\n"
         output+="    echo \"Setting up initial nix-darwin...\"\n"
@@ -165,32 +155,6 @@ append_native_package_command() {
     fi
 }
 
-apply_homebrew_packages() {
-    local method="$1"
-    local placeholder=""
-    local packages_string=""
-
-    case "$method" in
-        brew)
-            placeholder="__BREW_PACKAGES__"
-            packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
-            ;;
-        cask)
-            placeholder="__CASK_PACKAGES__"
-            packages_string=$(printf '__n__      "%s"' "${package_names[@]}")
-            ;;
-        mas)
-            placeholder="__MAS_PACKAGES__"
-            if [ "$GITHUB_ACTIONS" != "y" ]; then
-                packages_string=$(printf '__n__      %s;' "${package_names[@]}")
-            fi
-            ;;
-    esac
-
-    "${SED_CMD[@]}" "s|${placeholder}|${packages_string}|g" "$nix_homebrew_apps_file"
-    "${SED_CMD[@]}" "s|__n__|\n|g" "$nix_homebrew_apps_file"
-}
-
 process_method() {
     local method="$1"
     local package_names=()
@@ -201,9 +165,6 @@ process_method() {
     fi
 
     case "$method" in
-        brew|cask|mas)
-            apply_homebrew_packages "$method"
-            ;;
         script)
             ;;
         *)
@@ -212,29 +173,24 @@ process_method() {
     esac
 }
 
-finalize_homebrew_template() {
-    if [[ "$DISTRO" == "Darwin" ]]; then
-        "${SED_CMD[@]}" "s|__BREW_PACKAGES__||g; \
-                    s|__CASK_PACKAGES__||g; \
-                    s|__MAS_PACKAGES__||g" "$nix_homebrew_apps_file"
-    fi
-}
-
 main() {
     local method
+    local platform_methods
 
     title "Making packages install script"
     detect_platform
-    parse_package_catalog
     write_install_script_header
-    initialize_generated_nix_tree
+    remove_generated_nix_tree
     append_nix_switch_command
 
-    for method in ${methods[$os_name]}; do
+    platform_methods="${methods[$os_name]}"
+    if [ -n "$platform_methods" ]; then
+        parse_package_catalog
+    fi
+    for method in $platform_methods; do
         process_method "$method"
     done
 
-    finalize_homebrew_template
     echo 'success "Complete!"' >> "$install_script_path"
 }
 
