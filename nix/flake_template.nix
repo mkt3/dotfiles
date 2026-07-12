@@ -55,12 +55,15 @@
       ...
     }:
     let
-      platform = "__SYSTEM__";
-      hostname = "__HOSTNAME__";
-      username = "__USERNAME__";
-      homeDirectory = "__HOMEDIRECTORY__";
-      isGUI = "__ISGUI__";
-      isDev = "__ISDEV__";
+      host = builtins.fromJSON (builtins.readFile ./host.json);
+      inherit (host)
+        platform
+        hostname
+        username
+        homeDirectory
+        isGUI
+        isDev
+        ;
 
       pkgs = import nixpkgs {
         config.allowUnfree = true;

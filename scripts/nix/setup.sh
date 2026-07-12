@@ -158,21 +158,38 @@ copy_nixos_hardware_config() {
     fi
 }
 
-render_main_flake() {
-    local nix_main_flake="$1"
+write_host_json() {
+    local host_json="$1"
     local nix_platform="$2"
     local host_name="$3"
     local is_gui="$4"
     local is_dev="$5"
+    local tmp_file=""
 
-    "${NIX_CMD[@]}" run nixpkgs#gnused -- -i \
-        -e "s|__SYSTEM__|${nix_platform}|g" \
-        -e "s|__HOSTNAME__|${host_name}|g" \
-        -e "s|__USERNAME__|${USER}|g" \
-        -e "s|__HOMEDIRECTORY__|${HOME}|g" \
-        -e "s|\"__ISGUI__\"|${is_gui}|g" \
-        -e "s|\"__ISDEV__\"|${is_dev}|g" \
-        "$nix_main_flake"
+    tmp_file=$(mktemp "${host_json}.tmp.XXXXXX")
+    if env \
+        HOST_CONFIG_PLATFORM="$nix_platform" \
+        HOST_CONFIG_HOSTNAME="$host_name" \
+        HOST_CONFIG_USERNAME="$USER" \
+        HOST_CONFIG_HOME="$HOME" \
+        HOST_CONFIG_IS_GUI="$is_gui" \
+        HOST_CONFIG_IS_DEV="$is_dev" \
+        "${NIX_CMD[@]}" eval --impure --json --expr '
+          {
+            platform = builtins.getEnv "HOST_CONFIG_PLATFORM";
+            hostname = builtins.getEnv "HOST_CONFIG_HOSTNAME";
+            username = builtins.getEnv "HOST_CONFIG_USERNAME";
+            homeDirectory = builtins.getEnv "HOST_CONFIG_HOME";
+            isGUI = builtins.getEnv "HOST_CONFIG_IS_GUI" == "true";
+            isDev = builtins.getEnv "HOST_CONFIG_IS_DEV" == "true";
+          }
+        ' > "$tmp_file"; then
+        chmod 600 "$tmp_file"
+        mv -f "$tmp_file" "$host_json"
+    else
+        rm -f "$tmp_file"
+        return 1
+    fi
 }
 
 pre_setup_nix() {
@@ -183,6 +200,7 @@ pre_setup_nix() {
     local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
     local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
     local nix_main_flake="${nix_main_flake_dir}/flake.nix"
+    local host_json="${nix_main_flake_dir}/host.json"
     local host_name="$HOSTNAME_ENV"
     local nix_platform=""
     local is_gui=""
@@ -198,7 +216,7 @@ pre_setup_nix() {
     cp -f "$nix_main_template_flake" "$nix_main_flake"
     rm -f "$nix_main_template_flake"
     copy_nixos_hardware_config "$nix_main_flake_dir"
-    render_main_flake "$nix_main_flake" "$nix_platform" "$host_name" "$is_gui" "$is_dev"
+    write_host_json "$host_json" "$nix_platform" "$host_name" "$is_gui" "$is_dev"
 
     info "Finished pre-setup for nix"
 }

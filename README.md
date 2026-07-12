@@ -29,6 +29,7 @@ It is not a plain collection of dotfiles. The repository also contains:
 - `nix/systems/darwin/`: nix-darwin modules for macOS.
 - `nix/systems/nixos/`: NixOS modules for system-level Linux configuration.
 - `results/`: generated local artifacts such as `env_settings` and generated Nix files.
+- `~/.config/nix/host.json`: generated machine-local input containing the host-specific values consumed by the flake.
 
 ## Installation
 ### First-time setup
@@ -60,7 +61,7 @@ These values are stored in `results/env_settings`.
    - applies the configuration
 
 ## OS-specific Behavior
-- macOS: applies system configuration through `nix-darwin` and Home Manager. Homebrew packages are declared in the generated nix-darwin Homebrew module.
+- macOS: applies system configuration through `nix-darwin` and Home Manager. Homebrew packages are selected directly from `packages.toml` by the nix-darwin module.
 - Ubuntu: applies user configuration through Home Manager.
 - NixOS: applies system configuration through `nixos-rebuild` and Home Manager.
 
@@ -82,6 +83,7 @@ make apply
 ```
 
 applies your current configuration using the existing `flake.lock`.
+The generated flake reads `host.json` as a regular source file, so applying and checking it do not require impure evaluation.
 It also refreshes this repository's `pre-commit` hooks when `.pre-commit-config.yaml` is present.
 Use this when you want to reflect your own config changes without pulling newer upstream inputs.
 
