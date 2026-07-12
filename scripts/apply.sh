@@ -31,6 +31,46 @@ run_nixpkgs_nh() {
         "${NIX_CMD[@]}" run nixpkgs#nh -- "$@"
 }
 
+show_homebrew_changes() (
+    if [ "$DISTRO" != "Darwin" ] || ! command -v brew >/dev/null 2>&1; then
+        return 0
+    fi
+
+    local package_output
+    local package_type
+    local package_name
+    local package_id
+    local tmp_dir
+    local brewfile
+
+    tmp_dir="$(mktemp -d)"
+    trap 'rm -rf "$tmp_dir"' EXIT
+    brewfile="${tmp_dir}/Brewfile"
+
+    package_output=$(env \
+        HOMEBREW_PACKAGES_NIX="${REPO_DIR}/nix/homebrew-packages.nix" \
+        DEV_ENV="${DEV_ENV:-n}" \
+        GUI_ENV="${GUI_ENV:-n}" \
+        "${NIX_CMD[@]}" eval --impure --raw --expr '
+          import (builtins.getEnv "HOMEBREW_PACKAGES_NIX") {
+            isDev = builtins.getEnv "DEV_ENV" == "y";
+            isGUI = builtins.getEnv "GUI_ENV" == "y";
+          }
+        ')
+
+    while IFS=$'\t' read -r package_type package_name package_id; do
+        case "$package_type" in
+            brew) printf 'brew "%s"\n' "$package_name" ;;
+            cask) printf 'cask "%s"\n' "$package_name" ;;
+            mas) printf 'mas "%s", id: %s\n' "$package_name" "$package_id" ;;
+        esac
+    done <<< "$package_output" > "$brewfile"
+
+    title "Homebrew changes"
+    brew bundle check --verbose --file="$brewfile" || true
+    brew bundle cleanup --file="$brewfile" || true
+)
+
 install_apt_packages() {
     local package
     local package_output
@@ -74,27 +114,27 @@ apply_configuration() {
                 sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true
                 sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true
                 NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt \
-                    run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                    run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --diff always
             elif command -v nh >/dev/null 2>&1; then
-                run_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                run_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --diff always
             else
-                run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --diff always
             fi
             ;;
         NixOS)
             title "Setup NixOS"
             if command -v nh >/dev/null 2>&1; then
-                run_nh os switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                run_nh os switch "$NIX_DIR" -H "$HOSTNAME_ENV" --diff always
             else
-                run_nixpkgs_nh os switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                run_nixpkgs_nh os switch "$NIX_DIR" -H "$HOSTNAME_ENV" --diff always
             fi
             ;;
         *)
             title "Install/Update packages from Home Manager"
             if command -v nh >/dev/null 2>&1; then
-                run_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs
+                run_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs --diff always
             else
-                run_nixpkgs_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs
+                run_nixpkgs_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs --diff always
             fi
             export __ETC_PROFILE_NIX_SOURCED=""
             ;;
@@ -106,5 +146,6 @@ NIX_GITHUB_TOKEN_LOG=n setup_nix_github_token_from_gh
 pre_setup_nix
 configure_ubuntu_nix_daemon_settings
 install_apt_packages
+show_homebrew_changes
 apply_configuration
 success "Complete!"
