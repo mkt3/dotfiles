@@ -84,6 +84,7 @@ make apply
 
 applies your current configuration using the existing `flake.lock`.
 The generated flake reads `host.json` as a regular source file, so applying and checking it do not require impure evaluation.
+Repository-managed Nix directories are replaced during preparation, while machine-local files such as `flake.lock` and `nix.conf` remain in `~/.config/nix`.
 It also refreshes this repository's `pre-commit` hooks when `.pre-commit-config.yaml` is present.
 Use this when you want to reflect your own config changes without pulling newer upstream inputs.
 

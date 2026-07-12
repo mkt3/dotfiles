@@ -129,13 +129,23 @@ detect_nix_platform() {
 sync_flake_sources() {
     local nix_config_dir="$1"
     local nix_main_flake_dir="$2"
-
-    if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
-        cp -f "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
-    fi
+    local source_path=""
+    local source_name=""
 
     mkdir -p "$nix_main_flake_dir"
-    cp -Rf "${nix_config_dir}/." "$nix_main_flake_dir"
+
+    shopt -s dotglob nullglob
+    for source_path in "${nix_config_dir}"/*; do
+        source_name="$(basename "$source_path")"
+        case "$source_name" in
+            flake.lock|nix.conf) continue ;;
+        esac
+
+        rm -rf "${nix_main_flake_dir:?}/${source_name}"
+        cp -Rf "$source_path" "$nix_main_flake_dir/"
+    done
+    shopt -u dotglob nullglob
+
     cp -f "${REPO_DIR}/packages.toml" "$nix_main_flake_dir/packages.toml"
 }
 

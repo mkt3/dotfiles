@@ -8,12 +8,18 @@ HOSTNAME_ENV="${HOSTNAME_ENV:-check-host}"
 DEV_ENV="${DEV_ENV:-y}"
 GUI_ENV="${GUI_ENV:-y}"
 
+existing_nix_dir="${XDG_CONFIG_HOME:-${HOME}/.config}/nix"
 tmp_dir="$(CDPATH='' cd -- "$(mktemp -d)" && pwd -P)"
 trap 'rm -rf "$tmp_dir"' EXIT
 
 export XDG_CONFIG_HOME="${tmp_dir}/config"
 export XDG_CACHE_HOME="${tmp_dir}/cache"
 export CONFIGS_DIR="${REPO_DIR}/nix"
+
+if [ -f "${existing_nix_dir}/flake.lock" ]; then
+    mkdir -p "${XDG_CONFIG_HOME}/nix"
+    cp -f "${existing_nix_dir}/flake.lock" "${XDG_CONFIG_HOME}/nix/flake.lock"
+fi
 
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
