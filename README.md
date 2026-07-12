@@ -86,7 +86,6 @@ applies your current configuration using the existing `flake.lock`.
 The generated flake reads `host.json` as a regular source file, so applying and checking it do not require impure evaluation.
 Repository-managed Nix directories are replaced during preparation, while machine-local files such as `flake.lock` and `nix.conf` remain in `~/.config/nix`.
 Apply, update, and upgrade operations use a per-user process lock so that two terminals cannot modify the configuration concurrently.
-Before switching, `nh` displays the Nix package diff. On macOS, Homebrew Bundle also reports missing packages and dry-runs the cleanup list before nix-darwin applies it.
 It also refreshes this repository's `pre-commit` hooks when `.pre-commit-config.yaml` is present.
 Use this when you want to reflect your own config changes without pulling newer upstream inputs.
 
