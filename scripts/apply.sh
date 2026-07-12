@@ -74,11 +74,11 @@ apply_configuration() {
                 sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true
                 sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true
                 NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt \
-                    run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                    run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
             elif command -v nh >/dev/null 2>&1; then
-                run_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                run_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
             else
-                run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
+                run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
             fi
             ;;
         NixOS)
