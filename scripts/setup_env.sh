@@ -9,6 +9,8 @@ host_name=""
 is_dev=""
 is_gui=""
 
+umask 077
+
 ask_prompt() {
     local prompt="$1"
     local result_var="$2"
@@ -39,10 +41,20 @@ ask_yes_no() {
     done
 }
 
+ask_hostname() {
+    while true; do
+        ask_prompt "What's the unique hostname for this system configuration" host_name
+        if [[ "$host_name" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+            break
+        fi
+        echo "Hostname may contain only letters, numbers, dots, underscores, and hyphens."
+    done
+}
+
 
 echo "--- Environment Setup Wizard ---"
 
-ask_prompt "What's the unique hostname for this system configuration" host_name
+ask_hostname
 
 ask_yes_no "Is this a development environment? (Installs coding/tooling packages)" is_dev
 ask_yes_no "Is this a GUI environment? (Installs desktop/window manager packages)" is_gui
@@ -54,5 +66,6 @@ echo "Saving environment variables to $ENV_FILE"
     echo "DEV_ENV=${is_dev}"
     echo "GUI_ENV=${is_gui}"
 } > "$ENV_FILE"
+chmod 600 "$ENV_FILE"
 
 echo "Setup complete."

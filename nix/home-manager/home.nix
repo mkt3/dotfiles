@@ -1,7 +1,6 @@
 {
   username,
   homeDirectory,
-  lib,
   nix-index-database,
   ...
 }:
@@ -10,13 +9,6 @@
     inherit username homeDirectory;
     stateVersion = "26.05";
     extraOutputsToInstall = [ "dev" ];
-
-    activation = {
-      rmSomething = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        rm -rf ${homeDirectory}/.nix-defexpr
-        rm -rf ${homeDirectory}/.nix-profile
-      '';
-    };
   };
 
   xdg.enable = true;
@@ -34,6 +26,7 @@
 
   nix = {
     settings = {
+      use-xdg-base-directories = true;
       experimental-features = [
         "nix-command"
         "flakes"

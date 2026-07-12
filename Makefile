@@ -33,9 +33,7 @@ create_env_file:
 
 .PHONY: setup_env
 setup_env: create_env_file
-	@$(eval HOSTNAME_ENV=$(shell grep 'HOSTNAME_ENV' $(ENV_FILE) | cut -d '=' -f2))
-	@$(eval DEV_ENV=$(shell grep 'DEV_ENV' $(ENV_FILE) | cut -d '=' -f2))
-	@$(eval GUI_ENV=$(shell grep 'GUI_ENV' $(ENV_FILE) | cut -d '=' -f2))
+	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash "$(REPO_DIR)/scripts/load_env_settings.sh"
 
 .PHONY: update_repository
 update_repository:
@@ -43,11 +41,11 @@ update_repository:
 
 .PHONY: prepare_nix
 prepare_nix: $(INSTALL_SCRIPT)
-	@HOSTNAME_ENV=$(HOSTNAME_ENV) DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) REPO_DIR="$(REPO_DIR)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/common.sh"; CONFIGS_DIR="$(REPO_DIR)/nix"; . "$(REPO_DIR)/scripts/nix/setup.sh"; pre_setup_nix'
+	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/scripts/common.sh"; CONFIGS_DIR="$(REPO_DIR)/nix"; . "$(REPO_DIR)/scripts/nix/setup.sh"; pre_setup_nix'
 
 .PHONY: update_flake_lock
 update_flake_lock: prepare_nix
-	@GUI_ENV=$(GUI_ENV) REPO_DIR="$(REPO_DIR)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/common.sh"; . "$(REPO_DIR)/scripts/nix/setup.sh"; title "Setup GitHub token for Nix"; setup_nix_github_token_from_gh; cd "$(HOME)/.config/nix" && $(NIX_CMD) flake update'
+	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/scripts/common.sh"; . "$(REPO_DIR)/scripts/nix/setup.sh"; title "Setup GitHub token for Nix"; setup_nix_github_token_from_gh; cd "$(HOME)/.config/nix" && $(NIX_CMD) flake update'
 
 .PHONY: install_essential_packages
 install_essential_packages:
@@ -55,11 +53,11 @@ install_essential_packages:
 
 .PHONY: $(INSTALL_SCRIPT)
 $(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
-	@DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) . "${REPO_DIR}/nix/home-manager/programs/zsh/env.sh" && $(NIX_CMD) run nixpkgs#bash $(MAKE_INSTALL_SCRIPT)
+	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/nix/home-manager/programs/zsh/env.sh"; $(NIX_CMD) run nixpkgs#bash "$(MAKE_INSTALL_SCRIPT)"'
 
 .PHONY: install_packages
 install_packages: $(INSTALL_SCRIPT)
-	@HOSTNAME_ENV=$(HOSTNAME_ENV) DEV_ENV=$(DEV_ENV) GUI_ENV=$(GUI_ENV) /usr/bin/env bash "$(INSTALL_SCRIPT)"
+	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; /usr/bin/env bash "$(INSTALL_SCRIPT)"'
 
 .PHONY: install_git_hooks
 install_git_hooks:
@@ -84,7 +82,7 @@ check:
 	@$(NIX_CMD) shell nixpkgs#taplo --command taplo fmt --check --config "$(REPO_DIR)/taplo.toml" "$(TOML_FILE)"
 	@$(NIX_CMD) shell nixpkgs#shellcheck --command shellcheck "$(REPO_DIR)/install.sh" "$(REPO_DIR)"/scripts/*.sh "$(REPO_DIR)"/scripts/nix/*.sh
 	@REPO_DIR="$(REPO_DIR)" TOML_FILE="$(TOML_FILE)" INSTALL_SCRIPT="$(INSTALL_SCRIPT)" DEV_ENV=y GUI_ENV=y GITHUB_ACTIONS=y /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/common.sh"; nix --extra-experimental-features "nix-command flakes" run nixpkgs#bash -- "$(REPO_DIR)/scripts/make_package_install_script.sh"'
-	@REPO_DIR="$(REPO_DIR)" HOSTNAME_ENV=check-host DEV_ENV=y GUI_ENV=y /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/common.sh"; CONFIGS_DIR="$(REPO_DIR)/nix"; . "$(REPO_DIR)/scripts/nix/setup.sh"; pre_setup_nix; nix --extra-experimental-features "nix-command flakes" flake show "$(HOME)/.config/nix"'
+	@REPO_DIR="$(REPO_DIR)" HOSTNAME_ENV=check-host DEV_ENV=y GUI_ENV=y /usr/bin/env bash "$(REPO_DIR)/scripts/check_flake.sh"
 
 .PHONY: lint
 lint:
