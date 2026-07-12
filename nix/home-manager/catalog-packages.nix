@@ -11,7 +11,6 @@ let
     method:
     import ../package-catalog.nix {
       inherit
-        lib
         os
         isDev
         isGUI

@@ -12,7 +12,7 @@ It is not a plain collection of dotfiles. The repository also contains:
 
 - bootstrap scripts for first-time setup
 - package definitions in `packages.toml`
-- Nix modules that read the package catalog directly, plus a script that installs Ubuntu packages through apt
+- Nix expressions that read the package catalog directly, plus a small script that executes apt on Ubuntu
 - host-specific Nix configurations for macOS and NixOS
 
 ## Supported OS
@@ -55,7 +55,7 @@ These values are stored in `results/env_settings`.
 4. Run `make`, which:
    - prompts for environment settings if needed
    - installs essential non-Nix prerequisites
-   - evaluates Nix and Homebrew packages directly from `packages.toml` and generates the Ubuntu apt command
+   - evaluates Nix, Homebrew, and apt package selections directly from `packages.toml`
    - prepares a flake in `~/.config/nix`
    - applies the configuration
 
@@ -116,7 +116,7 @@ runs the local verification flow used to catch the same class of issues as CI be
 
 ## Development Notes
 ### Package changes
-If you update `packages.toml`, Nix, Home Manager, and nix-darwin Homebrew packages are selected directly during evaluation. On Ubuntu, the apt command remains part of the generated install script.
+If you update `packages.toml`, Nix, Home Manager, nix-darwin Homebrew, and Ubuntu apt packages are selected by Nix evaluation. On Ubuntu, the generated install script only executes the resulting apt command.
 
 ### `packages.toml` conventions
 Each table in `packages.toml` represents one logical package group.

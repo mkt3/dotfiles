@@ -5,34 +5,19 @@ set -euo pipefail
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
 
-dev_env=${DEV_ENV:-n}
-gui_env=${GUI_ENV:-n}
+DISTRO="${DISTRO_OVERRIDE:-$DISTRO}"
 
-declare -A methods
-methods["ubuntu"]="apt"
-methods["darwin"]=""
-methods["nixos"]=""
-methods["otherlinux"]=""
-
-toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
 
 os_name=""
-is_linux=false
-json_content=""
 
 detect_platform() {
     case "$DISTRO" in
-        "Ubuntu") os_name="ubuntu"; is_linux=true ;;
-        "NixOS") os_name="nixos"; is_linux=true ;;
+        "Ubuntu") os_name="ubuntu" ;;
+        "NixOS") os_name="nixos" ;;
         "Darwin") os_name="darwin" ;;
-        *) os_name="${DISTRO,,}"; is_linux=true ;;
+        *) os_name="${DISTRO,,}" ;;
     esac
-}
-
-parse_package_catalog() {
-    info "Parsing TOML file to JSON..."
-    json_content=$("${NIX_CMD[@]}" run nixpkgs#yj -- -t < "$toml_file")
 }
 
 write_install_script_header() {
@@ -119,78 +104,51 @@ append_nix_switch_command() {
     echo -e "$output" >> "$install_script_path"
 }
 
-get_package_names_for_method() {
-    local method="$1"
+append_apt_package_command() {
+    local package
+    local package_output
+    local packages=()
 
-    # shellcheck disable=SC2016
-    IFS=$'\n' read -r -d '' -a package_names < <(echo "$json_content" | "${NIX_CMD[@]}" run nixpkgs#jq -- --arg os "$os_name" --arg method "$method" --arg dev_env "$dev_env" --arg gui_env "$gui_env" --argjson is_linux "$is_linux" -r '
-      to_entries | .[] |
-      select(
-        (.value.common != null or ($is_linux and .value.linux != null) or .value[$os] != null) and
-        (.value.type == "basic" or ($dev_env == "y" and .value.type == "dev") or ($gui_env == "y" and .value.type == "gui"))
-      ) |
-        if $os != "darwin" then
-          (.value.common[]?, .value.linux[]?, .value[$os][]?)
-        else
-          (.value.common[]?, .value[$os][]?)
-        end |
-      select(.method == $method) |
-      .name |
-      select(. != null)' && printf '\0')
-}
-
-append_native_package_command() {
-    local method="$1"
-    local install_cmd=""
-
-    case "$method" in
-        apt)
-            echo "title \"Install/Update packages from apt\"" >> "$install_script_path"
-            install_cmd="sudo apt-get -y install"
-            ;;
-    esac
-
-    if [ -n "$install_cmd" ]; then
-        echo "${install_cmd} ${package_names[*]}" >> "$install_script_path"
-    fi
-}
-
-process_method() {
-    local method="$1"
-    local package_names=()
-
-    get_package_names_for_method "$method"
-    if [ ${#package_names[@]} -eq 0 ]; then
+    if [ "$os_name" != "ubuntu" ]; then
         return 0
     fi
 
-    case "$method" in
-        script)
-            ;;
-        *)
-            append_native_package_command "$method"
-            ;;
-    esac
+    package_output=$(env \
+        APT_PACKAGES_NIX="${REPO_DIR}/nix/apt-packages.nix" \
+        DEV_ENV="${DEV_ENV:-n}" \
+        GUI_ENV="${GUI_ENV:-n}" \
+        "${NIX_CMD[@]}" eval --impure --raw --expr '
+          import (builtins.getEnv "APT_PACKAGES_NIX") {
+            isDev = builtins.getEnv "DEV_ENV" == "y";
+            isGUI = builtins.getEnv "GUI_ENV" == "y";
+          }
+        ')
+
+    while IFS= read -r package; do
+        if [ -n "$package" ]; then
+            packages+=("$package")
+        fi
+    done <<< "$package_output"
+
+    if [ ${#packages[@]} -eq 0 ]; then
+        return 0
+    fi
+
+    {
+        echo 'title "Install/Update packages from apt"'
+        printf 'sudo apt-get -y install'
+        printf ' %q' "${packages[@]}"
+        printf '\n'
+    } >> "$install_script_path"
 }
 
 main() {
-    local method
-    local platform_methods
-
     title "Making packages install script"
     detect_platform
     write_install_script_header
     remove_generated_nix_tree
     append_nix_switch_command
-
-    platform_methods="${methods[$os_name]}"
-    if [ -n "$platform_methods" ]; then
-        parse_package_catalog
-    fi
-    for method in $platform_methods; do
-        process_method "$method"
-    done
-
+    append_apt_package_command
     echo 'success "Complete!"' >> "$install_script_path"
 }
 
