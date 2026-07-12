@@ -80,6 +80,7 @@ clean:
 check:
 	@mkdir -p "$(RESULTS_DIR)"
 	@$(NIX_CMD) shell nixpkgs#taplo --command taplo fmt --check --config "$(REPO_DIR)/taplo.toml" "$(TOML_FILE)"
+	@$(NIX_CMD) eval --raw --file "$(REPO_DIR)/nix/check-package-catalog.nix"
 	@git -C "$(REPO_DIR)" ls-files -z '*.sh' | $(NIX_CMD) shell nixpkgs#shellcheck --command xargs -0 shellcheck
 	@REPO_DIR="$(REPO_DIR)" TOML_FILE="$(TOML_FILE)" INSTALL_SCRIPT="$(INSTALL_SCRIPT)" DEV_ENV=y GUI_ENV=y GITHUB_ACTIONS=y /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/common.sh"; nix --extra-experimental-features "nix-command flakes" run nixpkgs#bash -- "$(REPO_DIR)/scripts/make_package_install_script.sh"'
 	@REPO_DIR="$(REPO_DIR)" HOSTNAME_ENV=check-host DEV_ENV=y GUI_ENV=y /usr/bin/env bash "$(REPO_DIR)/scripts/check_flake.sh"

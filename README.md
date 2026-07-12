@@ -175,7 +175,8 @@ GitHub Actions runs lightweight checks on Ubuntu and macOS for pushes and pull r
 Current CI covers:
 
 - `taplo fmt --check` for `packages.toml`
-- `shellcheck` for bootstrap and setup scripts
+- Nix-based schema and duplicate validation for `packages.toml`
+- `shellcheck` for every tracked shell script
 - generation of install artifacts from `packages.toml`
 - `nix flake show` against the generated flake layout
 
