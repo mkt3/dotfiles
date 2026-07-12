@@ -142,13 +142,17 @@ sync_flake_sources() {
 copy_nixos_hardware_config() {
     local nix_main_flake_dir="$1"
     local nixos_systems_dir="${nix_main_flake_dir}/systems/nixos"
+    local hardware_config="${NIXOS_HARDWARE_CONFIG_OVERRIDE:-/etc/nixos/hardware-configuration.nix}"
 
     if [ "$DISTRO" != "NixOS" ]; then
         return 0
     fi
 
     if [ -d "$nixos_systems_dir" ]; then
-        cp -f "/etc/nixos/hardware-configuration.nix" "$nixos_systems_dir"
+        if [ ! -f "$hardware_config" ]; then
+            error "NixOS hardware configuration not found: $hardware_config"
+        fi
+        cp -f "$hardware_config" "$nixos_systems_dir/hardware-configuration.nix"
     else
         warning "Warning: NixOS systems directory not found at $nixos_systems_dir. Skipping hardware config copy."
     fi

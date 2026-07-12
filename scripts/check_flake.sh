@@ -22,6 +22,19 @@ export CONFIGS_DIR="${REPO_DIR}/nix"
 
 DISTRO="${CHECK_DISTRO:-$DISTRO}"
 
+if [ "$DISTRO" = "NixOS" ] && [ ! -f /etc/nixos/hardware-configuration.nix ]; then
+    hardware_config="${tmp_dir}/hardware-configuration.nix"
+    printf '%s\n' \
+        '{ ... }:' \
+        '{' \
+        '  fileSystems."/" = {' \
+        '    device = "/dev/disk/by-label/nixos";' \
+        '    fsType = "ext4";' \
+        '  };' \
+        '}' > "$hardware_config"
+    export NIXOS_HARDWARE_CONFIG_OVERRIDE="$hardware_config"
+fi
+
 pre_setup_nix
 flake_ref="path:${XDG_CONFIG_HOME}/nix"
 nix --extra-experimental-features "nix-command flakes" flake show "$flake_ref"

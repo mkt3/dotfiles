@@ -177,8 +177,8 @@ Current CI covers:
 - `taplo fmt --check` for `packages.toml`
 - Nix-based schema and duplicate validation for `packages.toml`
 - `shellcheck` for every shell script in the working tree
-- generation of install artifacts from `packages.toml`
 - `nix flake show` against the generated flake layout
+- closure evaluation for Ubuntu Home Manager, NixOS, and nix-darwin configurations
 
 CI does not perform full machine setup. It does not run `darwin-rebuild switch`, `nixos-rebuild switch`, GUI app installation, or App Store dependent flows.
 
