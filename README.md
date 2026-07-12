@@ -166,8 +166,16 @@ Useful local checks:
 ```bash
 make help
 make check
+make check-format
+make check-catalog
+make check-shell
+make check-workflow
+make check-flake
+make check-nixos
 make lint
 ```
+
+Use `make check` before pushing to run the complete suite. During development, the individual `check-*` targets provide faster feedback for the area being changed.
 
 ## CI
 GitHub Actions runs lightweight checks on Ubuntu and macOS for pushes and pull requests to `main`.
@@ -177,6 +185,7 @@ Current CI covers:
 - `taplo fmt --check` for `packages.toml`
 - Nix-based schema and duplicate validation for `packages.toml`
 - `shellcheck` for every shell script in the working tree
+- `actionlint` for GitHub Actions workflows
 - `nix flake show` against the generated flake layout
 - closure evaluation for Ubuntu Home Manager, NixOS, and nix-darwin configurations
 

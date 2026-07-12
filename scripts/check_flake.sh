@@ -8,7 +8,7 @@ HOSTNAME_ENV="${HOSTNAME_ENV:-check-host}"
 DEV_ENV="${DEV_ENV:-y}"
 GUI_ENV="${GUI_ENV:-y}"
 
-tmp_dir="$(mktemp -d)"
+tmp_dir="$(CDPATH='' cd -- "$(mktemp -d)" && pwd -P)"
 trap 'rm -rf "$tmp_dir"' EXIT
 
 export XDG_CONFIG_HOME="${tmp_dir}/config"

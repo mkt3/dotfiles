@@ -19,6 +19,12 @@ help:
 		"make update   Pull repo and update flake.lock without applying" \
 		"make upgrade  Update and then apply configuration" \
 		"make check    Run local checks similar to CI" \
+		"make check-format    Check packages.toml formatting" \
+		"make check-catalog   Validate the package catalog" \
+		"make check-shell     Run ShellCheck on all shell scripts" \
+		"make check-workflow  Validate GitHub Actions workflows" \
+		"make check-flake     Evaluate the current OS configuration" \
+		"make check-nixos     Evaluate the NixOS configuration" \
 		"make lint     Format packages.toml with taplo" \
 		"make clean    Remove generated artifacts under results/"
 
@@ -71,12 +77,31 @@ clean:
 	rm -rf $(RESULTS_DIR)
 
 .PHONY: check
-check:
-	@mkdir -p "$(RESULTS_DIR)"
+check: check-format check-catalog check-shell check-workflow check-flake
+
+.PHONY: check-format
+check-format:
 	@$(NIX_CMD) shell nixpkgs#taplo --command taplo fmt --check --config "$(REPO_DIR)/taplo.toml" "$(TOML_FILE)"
+
+.PHONY: check-catalog
+check-catalog:
 	@$(NIX_CMD) eval --raw --file "$(REPO_DIR)/nix/check-package-catalog.nix"
+
+.PHONY: check-shell
+check-shell:
 	@$(NIX_CMD) shell nixpkgs#ripgrep nixpkgs#shellcheck --command sh -c 'rg --files -0 -g "*.sh" "$$1" | xargs -0 shellcheck' sh "$(REPO_DIR)"
+
+.PHONY: check-workflow
+check-workflow:
+	@$(NIX_CMD) shell nixpkgs#actionlint --command actionlint "$(REPO_DIR)/.github/workflows/ci.yaml"
+
+.PHONY: check-flake
+check-flake:
 	@REPO_DIR="$(REPO_DIR)" HOSTNAME_ENV=check-host DEV_ENV=y GUI_ENV=y /usr/bin/env bash "$(REPO_DIR)/scripts/check_flake.sh"
+
+.PHONY: check-nixos
+check-nixos:
+	@REPO_DIR="$(REPO_DIR)" HOSTNAME_ENV=check-host DEV_ENV=y GUI_ENV=y CHECK_DISTRO=NixOS NIX_PLATFORM_OVERRIDE=x86_64-linux /usr/bin/env bash "$(REPO_DIR)/scripts/check_flake.sh"
 
 .PHONY: lint
 lint:

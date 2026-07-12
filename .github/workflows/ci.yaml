@@ -31,7 +31,4 @@ jobs:
 
       - name: Evaluate NixOS configuration
         if: runner.os == 'Linux'
-        env:
-          CHECK_DISTRO: NixOS
-          NIX_PLATFORM_OVERRIDE: x86_64-linux
-        run: bash scripts/check_flake.sh
+        run: make check-nixos
