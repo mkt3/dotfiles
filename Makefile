@@ -26,7 +26,7 @@ help:
 		"make check-flake     Evaluate the current OS configuration" \
 		"make check-nixos     Evaluate the NixOS configuration" \
 		"make lint     Format packages.toml with taplo" \
-		"make clean    Remove generated artifacts under results/"
+		"make reset-env  Remove saved host, development, and GUI choices"
 
 .PHONY: create_env_file
 create_env_file:
@@ -64,17 +64,29 @@ install_git_hooks:
 	@REPO_DIR="$(REPO_DIR)" /usr/bin/env bash "$(REPO_DIR)/scripts/install_git_hooks.sh"
 
 .PHONY: apply
-apply: setup_env install_essential_packages install_packages install_git_hooks
+apply:
+	@/usr/bin/env bash "$(REPO_DIR)/scripts/with_lock.sh" $(MAKE) --no-print-directory -j1 _apply
 
 .PHONY: update
-update: setup_env update_repository update_flake_lock
+update:
+	@/usr/bin/env bash "$(REPO_DIR)/scripts/with_lock.sh" $(MAKE) --no-print-directory -j1 _update
 
 .PHONY: upgrade
-upgrade: update apply
+upgrade:
+	@/usr/bin/env bash "$(REPO_DIR)/scripts/with_lock.sh" $(MAKE) --no-print-directory -j1 _upgrade
 
-.PHONY: clean
-clean:
-	rm -rf $(RESULTS_DIR)
+.PHONY: _apply
+_apply: setup_env install_essential_packages install_packages install_git_hooks
+
+.PHONY: _update
+_update: setup_env update_repository update_flake_lock
+
+.PHONY: _upgrade
+_upgrade: _update _apply
+
+.PHONY: reset-env
+reset-env:
+	rm -f "$(ENV_FILE)"
 
 .PHONY: check
 check: check-format check-catalog check-shell check-workflow check-flake

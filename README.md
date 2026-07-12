@@ -74,7 +74,7 @@ Run the installer again:
 sh <(curl -sSL https://raw.githubusercontent.com/mkt3/dotfiles/main/install.sh)
 ```
 
-This reuses the existing repository and current environment settings unless you remove `results/env_settings`.
+This reuses the existing repository and current environment settings. Run `make reset-env` to remove the saved hostname and dev/GUI choices before the next apply.
 
 For local operation after bootstrap:
 
@@ -85,6 +85,7 @@ make apply
 applies your current configuration using the existing `flake.lock`.
 The generated flake reads `host.json` as a regular source file, so applying and checking it do not require impure evaluation.
 Repository-managed Nix directories are replaced during preparation, while machine-local files such as `flake.lock` and `nix.conf` remain in `~/.config/nix`.
+Apply, update, and upgrade operations use a per-user process lock so that two terminals cannot modify the configuration concurrently.
 It also refreshes this repository's `pre-commit` hooks when `.pre-commit-config.yaml` is present.
 Use this when you want to reflect your own config changes without pulling newer upstream inputs.
 

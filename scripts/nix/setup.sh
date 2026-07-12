@@ -146,6 +146,7 @@ sync_flake_sources() {
     done
     shopt -u dotglob nullglob
 
+    rm -f "${nix_main_flake_dir}/flake_template.nix"
     cp -f "${REPO_DIR}/packages.toml" "$nix_main_flake_dir/packages.toml"
 }
 
@@ -203,11 +204,11 @@ write_host_json() {
 }
 
 pre_setup_nix() {
-    info "Creating symlink for nix"
+    info "Preparing Nix configuration"
 
     local nix_config_dir="${CONFIGS_DIR}"
     local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
-    local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
+    local nix_source_flake="${nix_main_flake_dir}/flake.source.nix"
     local nix_main_flake="${nix_main_flake_dir}/flake.nix"
     local host_json="${nix_main_flake_dir}/host.json"
     local host_name="$HOSTNAME_ENV"
@@ -222,8 +223,8 @@ pre_setup_nix() {
     is_dev=$([ "$DEV_ENV" = "y" ] && echo "true" || echo "false")
 
     sync_flake_sources "$nix_config_dir" "$nix_main_flake_dir"
-    cp -f "$nix_main_template_flake" "$nix_main_flake"
-    rm -f "$nix_main_template_flake"
+    cp -f "$nix_source_flake" "$nix_main_flake"
+    rm -f "$nix_source_flake"
     copy_nixos_hardware_config "$nix_main_flake_dir"
     write_host_json "$host_json" "$nix_platform" "$host_name" "$is_gui" "$is_dev"
 
