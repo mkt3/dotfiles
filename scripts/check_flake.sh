@@ -20,5 +20,23 @@ export CONFIGS_DIR="${REPO_DIR}/nix"
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/nix/setup.sh"
 
+DISTRO="${CHECK_DISTRO:-$DISTRO}"
+
 pre_setup_nix
-nix --extra-experimental-features "nix-command flakes" flake show "path:${XDG_CONFIG_HOME}/nix"
+flake_ref="path:${XDG_CONFIG_HOME}/nix"
+nix --extra-experimental-features "nix-command flakes" flake show "$flake_ref"
+
+case "$DISTRO" in
+    NixOS)
+        nix --extra-experimental-features "nix-command flakes" eval --raw \
+            "${flake_ref}#nixosConfigurations.\"${HOSTNAME_ENV}\".config.system.build.toplevel.drvPath"
+        ;;
+    Darwin)
+        nix --extra-experimental-features "nix-command flakes" eval --raw \
+            "${flake_ref}#darwinConfigurations.\"${HOSTNAME_ENV}\".system.drvPath"
+        ;;
+    *)
+        nix --extra-experimental-features "nix-command flakes" eval --raw \
+            "${flake_ref}#homeConfigurations.\"${USER}\".activationPackage.drvPath"
+        ;;
+esac

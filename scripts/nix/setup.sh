@@ -117,6 +117,11 @@ configure_ubuntu_nix_daemon_settings() {
 detect_nix_platform() {
     local nix_platform
 
+    if [ -n "${NIX_PLATFORM_OVERRIDE:-}" ]; then
+        echo "$NIX_PLATFORM_OVERRIDE"
+        return 0
+    fi
+
     nix_platform=$(echo "$(uname -m)-$(uname -s)" | tr '[:upper:]' '[:lower:]')
     echo "${nix_platform/arm64-darwin/aarch64-darwin}"
 }
@@ -132,6 +137,7 @@ sync_flake_sources() {
 
     mkdir -p "$nix_main_flake_dir"
     cp -Rf "${nix_config_dir}/." "$nix_main_flake_dir"
+    cp -f "${REPO_DIR}/packages.toml" "$nix_main_flake_dir/packages.toml"
     if [ -d "$generated_nix_config_dir" ]; then
         cp -Rf "${generated_nix_config_dir}/." "$nix_main_flake_dir"
     fi
@@ -157,6 +163,7 @@ render_main_flake() {
     local nix_platform="$2"
     local host_name="$3"
     local is_gui="$4"
+    local is_dev="$5"
 
     "${NIX_CMD[@]}" run nixpkgs#gnused -- -i \
         -e "s|__SYSTEM__|${nix_platform}|g" \
@@ -164,6 +171,7 @@ render_main_flake() {
         -e "s|__USERNAME__|${USER}|g" \
         -e "s|__HOMEDIRECTORY__|${HOME}|g" \
         -e "s|\"__ISGUI__\"|${is_gui}|g" \
+        -e "s|\"__ISDEV__\"|${is_dev}|g" \
         "$nix_main_flake"
 }
 
@@ -178,17 +186,19 @@ pre_setup_nix() {
     local host_name="$HOSTNAME_ENV"
     local nix_platform=""
     local is_gui=""
+    local is_dev=""
 
     # run_nvfetcher_if_needed
 
     nix_platform=$(detect_nix_platform)
     is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
+    is_dev=$([ "$DEV_ENV" = "y" ] && echo "true" || echo "false")
 
     sync_flake_sources "$nix_config_dir" "$generated_nix_config_dir" "$nix_main_flake_dir"
     cp -f "$nix_main_template_flake" "$nix_main_flake"
     rm -f "$nix_main_template_flake"
     copy_nixos_hardware_config "$nix_main_flake_dir"
-    render_main_flake "$nix_main_flake" "$nix_platform" "$host_name" "$is_gui"
+    render_main_flake "$nix_main_flake" "$nix_platform" "$host_name" "$is_gui" "$is_dev"
 
     info "Finished pre-setup for nix"
 }

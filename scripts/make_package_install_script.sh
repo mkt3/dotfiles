@@ -19,7 +19,6 @@ methods["ubuntu"]="apt"
 methods["darwin"]="brew cask mas"
 methods["nixos"]=""
 methods["otherlinux"]=""
-common_methods=("nix" "nix-hm")
 
 toml_file=${TOML_FILE:-"../toml_file"}
 install_script_path=${INSTALL_SCRIPT:-"../results/install_packages.sh"}
@@ -89,12 +88,7 @@ EOF
 
 initialize_generated_nix_tree() {
     rm -rf "${GENERATED_CONFIGS_DIR}/nix"
-    mkdir -p "${GENERATED_CONFIGS_DIR}/nix/home-manager" "${GENERATED_CONFIGS_DIR}/nix/systems/darwin" "${GENERATED_CONFIGS_DIR}/nix/systems/nixos"
-
-    if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]]; then
-        printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
-    fi
-    printf '{ ... }:\n{}\n' > "${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
+    mkdir -p "${GENERATED_CONFIGS_DIR}/nix/systems/darwin"
 }
 
 append_nix_switch_command() {
@@ -171,69 +165,6 @@ append_native_package_command() {
     fi
 }
 
-resolve_nix_targets() {
-    local method="$1"
-
-    programs_nix_dir=""
-    packages_nix_path=""
-    package_prefix=""
-
-    if [[ "$method" == "nix" ]]; then
-        if [[ "$DISTRO" == "NixOS" ]] || [[ "$DISTRO" == "Darwin" ]]; then
-            packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/systems/${os_name}/system_packages.nix"
-            package_prefix="environment.systemPackages"
-            programs_nix_dir="${CONFIGS_DIR}/systems/${os_name}/programs"
-        else
-            packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/system_packages.nix"
-            package_prefix="home.packages"
-            programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
-        fi
-    else
-        packages_nix_path="${GENERATED_CONFIGS_DIR}/nix/home-manager/packages.nix"
-        package_prefix="home.packages"
-        programs_nix_dir="${CONFIGS_DIR}/home-manager/programs"
-    fi
-}
-
-write_nix_package_module() {
-    local method="$1"
-    local package
-    local package_list=()
-    local program_list=()
-    local packages=""
-    local programs=""
-
-    resolve_nix_targets "$method"
-    mkdir -p "$programs_nix_dir"
-
-    for package in "${package_names[@]}"; do
-        if [ -d "$programs_nix_dir/$package" ]; then
-            program_list+=("$package")
-        else
-            package_list+=("$package")
-        fi
-    done
-
-    packages=$([ ${#package_list[@]} -ne 0 ] && printf '    %s\n' "${package_list[@]}" || echo "")
-    programs=$([ ${#program_list[@]} -ne 0 ] && printf '    ./programs/%s\n' "${program_list[@]}" || echo "")
-
-    cat <<EOF > "$packages_nix_path"
-{ pkgs, ... }:
-let
-  programModules = [
-${programs}
-  ];
-in
-{
-  imports = programModules;
-
-  ${package_prefix} = with pkgs; [
-${packages}
-  ];
-}
-EOF
-}
-
 apply_homebrew_packages() {
     local method="$1"
     local placeholder=""
@@ -270,9 +201,6 @@ process_method() {
     fi
 
     case "$method" in
-        nix|nix-hm)
-            write_nix_package_module "$method"
-            ;;
         brew|cask|mas)
             apply_homebrew_packages "$method"
             ;;
@@ -302,7 +230,7 @@ main() {
     initialize_generated_nix_tree
     append_nix_switch_command
 
-    for method in ${methods[$os_name]} "${common_methods[@]}"; do
+    for method in ${methods[$os_name]}; do
         process_method "$method"
     done
 

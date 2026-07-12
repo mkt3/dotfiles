@@ -14,8 +14,7 @@
   xdg.enable = true;
 
   imports = [
-    ./system_packages.nix
-    ./packages.nix
+    ./catalog-packages.nix
     nix-index-database.homeModules.default
   ];
 

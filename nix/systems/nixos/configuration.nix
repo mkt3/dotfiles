@@ -8,7 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./system_packages.nix
+    ./catalog-packages.nix
   ]
   ++ (
     if hostname == "personal-lt" then

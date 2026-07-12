@@ -60,6 +60,7 @@
       username = "__USERNAME__";
       homeDirectory = "__HOMEDIRECTORY__";
       isGUI = "__ISGUI__";
+      isDev = "__ISDEV__";
 
       pkgs = import nixpkgs {
         config.allowUnfree = true;
@@ -70,10 +71,7 @@
       };
       isLinux = pkgs.stdenv.hostPlatform.isLinux;
       isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
-      isNixOS =
-        pkgs.stdenv.hostPlatform.isLinux && (builtins.match ".*nixos.*" (pkgs.stdenv.system) != null);
-
-      specialArgs = inputs // {
+      commonSpecialArgs = inputs // {
         inputs = inputs;
         inherit
           platform
@@ -81,50 +79,71 @@
           hostname
           homeDirectory
           isGUI
+          isDev
           isLinux
           isDarwin
-          isNixOS
           ;
       };
     in
     {
-      nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
-        inherit pkgs specialArgs;
-        modules = [
-          ./systems/common/host-users.nix
-          ./systems/nixos/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users."${username}" = import ./home-manager/home.nix;
-            home-manager.extraSpecialArgs = specialArgs;
-          }
-        ];
-      };
-      darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
-        inherit pkgs specialArgs;
-        modules = [
-          ./systems/common/host-users.nix
-          ./systems/darwin/system.nix
-          ./systems/darwin/system_packages.nix
-          ./systems/darwin/homebrew-apps.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users."${username}" = import ./home-manager/home.nix;
-            home-manager.extraSpecialArgs = specialArgs;
-          }
-        ];
-      };
-      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = specialArgs;
-        modules = [
-          { nix.package = pkgs.nix; }
-          (import ./home-manager/home.nix)
-        ];
-      };
+      nixosConfigurations."${hostname}" =
+        let
+          specialArgs = commonSpecialArgs // {
+            os = "nixos";
+            isNixOS = true;
+          };
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit pkgs specialArgs;
+          modules = [
+            ./systems/common/host-users.nix
+            ./systems/nixos/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users."${username}" = import ./home-manager/home.nix;
+              home-manager.extraSpecialArgs = specialArgs;
+            }
+          ];
+        };
+      darwinConfigurations."${hostname}" =
+        let
+          specialArgs = commonSpecialArgs // {
+            os = "darwin";
+            isNixOS = false;
+          };
+        in
+        nix-darwin.lib.darwinSystem {
+          inherit pkgs specialArgs;
+          modules = [
+            ./systems/common/host-users.nix
+            ./systems/darwin/system.nix
+            ./systems/darwin/catalog-packages.nix
+            ./systems/darwin/homebrew-apps.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users."${username}" = import ./home-manager/home.nix;
+              home-manager.extraSpecialArgs = specialArgs;
+            }
+          ];
+        };
+      homeConfigurations."${username}" =
+        let
+          specialArgs = commonSpecialArgs // {
+            os = "ubuntu";
+            isNixOS = false;
+          };
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          extraSpecialArgs = specialArgs;
+          modules = [
+            { nix.package = pkgs.nix; }
+            (import ./home-manager/home.nix)
+          ];
+        };
     };
 }

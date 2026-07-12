@@ -12,7 +12,7 @@ It is not a plain collection of dotfiles. The repository also contains:
 
 - bootstrap scripts for first-time setup
 - package definitions in `packages.toml`
-- scripts that generate Nix modules and install scripts
+- Nix modules that read the package catalog directly, plus scripts that generate native package-manager install artifacts
 - host-specific Nix configurations for macOS and NixOS
 
 ## Supported OS
@@ -55,7 +55,7 @@ These values are stored in `results/env_settings`.
 4. Run `make`, which:
    - prompts for environment settings if needed
    - installs essential non-Nix prerequisites
-   - generates package install artifacts from `packages.toml`
+   - evaluates Nix packages directly from `packages.toml` and generates native package-manager install artifacts
    - prepares a flake in `~/.config/nix`
    - applies the configuration
 
@@ -116,7 +116,7 @@ runs the local verification flow used to catch the same class of issues as CI be
 
 ## Development Notes
 ### Package changes
-If you update `packages.toml`, the repository generates install artifacts and Nix fragments under `results/generated/`.
+If you update `packages.toml`, Nix and Home Manager packages are selected directly during evaluation. Native package-manager artifacts, such as nix-darwin's Homebrew module, are generated under `results/generated/`.
 
 ### `packages.toml` conventions
 Each table in `packages.toml` represents one logical package group.
