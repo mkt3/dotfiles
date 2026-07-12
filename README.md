@@ -28,7 +28,7 @@ It is not a plain collection of dotfiles. The repository also contains:
 - `nix/home-manager/`: Home Manager modules for user-level configuration.
 - `nix/systems/darwin/`: nix-darwin modules for macOS.
 - `nix/systems/nixos/`: NixOS modules for system-level Linux configuration.
-- `results/`: generated local artifacts such as `env_settings` and generated Nix files.
+- `results/`: generated local artifacts such as `env_settings` and the Ubuntu install script.
 - `~/.config/nix/host.json`: generated machine-local input containing the host-specific values consumed by the flake.
 
 ## Installation

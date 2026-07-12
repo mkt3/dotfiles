@@ -128,8 +128,7 @@ detect_nix_platform() {
 
 sync_flake_sources() {
     local nix_config_dir="$1"
-    local generated_nix_config_dir="$2"
-    local nix_main_flake_dir="$3"
+    local nix_main_flake_dir="$2"
 
     if [ -f "${XDG_CONFIG_HOME}/nix/flake.lock" ]; then
         cp -f "${XDG_CONFIG_HOME}/nix/flake.lock" "$nix_config_dir"
@@ -138,9 +137,6 @@ sync_flake_sources() {
     mkdir -p "$nix_main_flake_dir"
     cp -Rf "${nix_config_dir}/." "$nix_main_flake_dir"
     cp -f "${REPO_DIR}/packages.toml" "$nix_main_flake_dir/packages.toml"
-    if [ -d "$generated_nix_config_dir" ]; then
-        cp -Rf "${generated_nix_config_dir}/." "$nix_main_flake_dir"
-    fi
 }
 
 copy_nixos_hardware_config() {
@@ -196,7 +192,6 @@ pre_setup_nix() {
     info "Creating symlink for nix"
 
     local nix_config_dir="${CONFIGS_DIR}"
-    local generated_nix_config_dir="${REPO_DIR}/results/generated/nix"
     local nix_main_flake_dir="${XDG_CONFIG_HOME}/nix"
     local nix_main_template_flake="${nix_main_flake_dir}/flake_template.nix"
     local nix_main_flake="${nix_main_flake_dir}/flake.nix"
@@ -212,7 +207,7 @@ pre_setup_nix() {
     is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
     is_dev=$([ "$DEV_ENV" = "y" ] && echo "true" || echo "false")
 
-    sync_flake_sources "$nix_config_dir" "$generated_nix_config_dir" "$nix_main_flake_dir"
+    sync_flake_sources "$nix_config_dir" "$nix_main_flake_dir"
     cp -f "$nix_main_template_flake" "$nix_main_flake"
     rm -f "$nix_main_template_flake"
     copy_nixos_hardware_config "$nix_main_flake_dir"

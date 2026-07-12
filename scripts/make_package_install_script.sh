@@ -63,10 +63,6 @@ EOF
     echo "# package install/update commands" >> "$install_script_path"
 }
 
-remove_generated_nix_tree() {
-    rm -rf "${REPO_DIR}/results/generated/nix"
-}
-
 append_nix_switch_command() {
     local output=""
 
@@ -146,7 +142,6 @@ main() {
     title "Making packages install script"
     detect_platform
     write_install_script_header
-    remove_generated_nix_tree
     append_nix_switch_command
     append_apt_package_command
     echo 'success "Complete!"' >> "$install_script_path"
