@@ -22,13 +22,13 @@ It is not a plain collection of dotfiles. The repository also contains:
 
 ## Repository Structure
 - `install.sh`: bootstrap entrypoint. Installs Nix if needed, clones this repository if missing, and runs `make`.
-- `Makefile`: orchestrates environment setup, package script generation, and package application.
+- `Makefile`: orchestrates environment setup, package application, updates, and checks.
 - `packages.toml`: package catalog. Packages are grouped by type (`basic`, `dev`, `gui`) and install method.
-- `scripts/`: shell scripts for bootstrap, environment prompts, install script generation, and Nix setup.
+- `scripts/`: shell scripts for bootstrap, environment prompts, package application, and Nix setup.
 - `nix/home-manager/`: Home Manager modules for user-level configuration.
 - `nix/systems/darwin/`: nix-darwin modules for macOS.
 - `nix/systems/nixos/`: NixOS modules for system-level Linux configuration.
-- `results/`: generated local artifacts such as `env_settings` and the Ubuntu install script.
+- `results/`: machine-local state such as `env_settings`.
 - `~/.config/nix/host.json`: generated machine-local input containing the host-specific values consumed by the flake.
 
 ## Installation
@@ -118,7 +118,7 @@ runs the local verification flow used to catch the same class of issues as CI be
 
 ## Development Notes
 ### Package changes
-If you update `packages.toml`, Nix, Home Manager, nix-darwin Homebrew, and Ubuntu apt packages are selected by Nix evaluation. On Ubuntu, the generated install script only executes the resulting apt command.
+If you update `packages.toml`, Nix, Home Manager, nix-darwin Homebrew, and Ubuntu apt packages are selected by Nix evaluation. The tracked apply script executes the resulting apt command on Ubuntu.
 
 ### `packages.toml` conventions
 Each table in `packages.toml` represents one logical package group.
@@ -176,7 +176,7 @@ Current CI covers:
 
 - `taplo fmt --check` for `packages.toml`
 - Nix-based schema and duplicate validation for `packages.toml`
-- `shellcheck` for every tracked shell script
+- `shellcheck` for every shell script in the working tree
 - generation of install artifacts from `packages.toml`
 - `nix flake show` against the generated flake layout
 

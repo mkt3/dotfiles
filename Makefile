@@ -3,8 +3,6 @@ REPO_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 RESULTS_DIR := $(REPO_DIR)/results
 TOML_FILE := $(REPO_DIR)/packages.toml
 ENV_FILE := $(RESULTS_DIR)/env_settings
-INSTALL_SCRIPT := $(RESULTS_DIR)/install_packages.sh
-MAKE_INSTALL_SCRIPT := $(REPO_DIR)/scripts/make_package_install_script.sh
 DISTRO := $(shell uname -s)
 NIX_CMD := nix --extra-experimental-features "nix-command flakes"
 ifeq ($(DISTRO),Linux)
@@ -40,7 +38,7 @@ update_repository:
 	@git -C "$(REPO_DIR)" pull --ff-only
 
 .PHONY: prepare_nix
-prepare_nix: $(INSTALL_SCRIPT)
+prepare_nix: setup_env
 	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/scripts/common.sh"; CONFIGS_DIR="$(REPO_DIR)/nix"; . "$(REPO_DIR)/scripts/nix/setup.sh"; pre_setup_nix'
 
 .PHONY: update_flake_lock
@@ -51,13 +49,9 @@ update_flake_lock: prepare_nix
 install_essential_packages:
 	@/usr/bin/env bash "$(REPO_DIR)/scripts/install_essential_packages.sh"
 
-.PHONY: $(INSTALL_SCRIPT)
-$(INSTALL_SCRIPT): setup_env $(TOML_FILE) $(MAKE_INSTALL_SCRIPT)
-	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/nix/home-manager/programs/zsh/env.sh"; $(NIX_CMD) run nixpkgs#bash "$(MAKE_INSTALL_SCRIPT)"'
-
 .PHONY: install_packages
-install_packages: $(INSTALL_SCRIPT)
-	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; /usr/bin/env bash "$(INSTALL_SCRIPT)"'
+install_packages: setup_env
+	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; /usr/bin/env bash "$(REPO_DIR)/scripts/apply.sh"'
 
 .PHONY: install_git_hooks
 install_git_hooks:
@@ -81,8 +75,7 @@ check:
 	@mkdir -p "$(RESULTS_DIR)"
 	@$(NIX_CMD) shell nixpkgs#taplo --command taplo fmt --check --config "$(REPO_DIR)/taplo.toml" "$(TOML_FILE)"
 	@$(NIX_CMD) eval --raw --file "$(REPO_DIR)/nix/check-package-catalog.nix"
-	@git -C "$(REPO_DIR)" ls-files -z '*.sh' | $(NIX_CMD) shell nixpkgs#shellcheck --command xargs -0 shellcheck
-	@REPO_DIR="$(REPO_DIR)" TOML_FILE="$(TOML_FILE)" INSTALL_SCRIPT="$(INSTALL_SCRIPT)" DEV_ENV=y GUI_ENV=y GITHUB_ACTIONS=y /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/common.sh"; nix --extra-experimental-features "nix-command flakes" run nixpkgs#bash -- "$(REPO_DIR)/scripts/make_package_install_script.sh"'
+	@$(NIX_CMD) shell nixpkgs#ripgrep nixpkgs#shellcheck --command sh -c 'rg --files -0 -g "*.sh" "$$1" | xargs -0 shellcheck' sh "$(REPO_DIR)"
 	@REPO_DIR="$(REPO_DIR)" HOSTNAME_ENV=check-host DEV_ENV=y GUI_ENV=y /usr/bin/env bash "$(REPO_DIR)/scripts/check_flake.sh"
 
 .PHONY: lint
