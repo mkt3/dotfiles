@@ -58,6 +58,7 @@
       host = builtins.fromJSON (builtins.readFile ./host.json);
       inherit (host)
         platform
+        os
         hostname
         username
         homeDirectory
@@ -88,7 +89,7 @@
           ;
       };
     in
-    {
+    nixpkgs.lib.optionalAttrs (os == "nixos") {
       nixosConfigurations."${hostname}" =
         let
           specialArgs = commonSpecialArgs // {
@@ -110,6 +111,8 @@
             }
           ];
         };
+    }
+    // nixpkgs.lib.optionalAttrs (os == "darwin") {
       darwinConfigurations."${hostname}" =
         let
           specialArgs = commonSpecialArgs // {
@@ -133,6 +136,8 @@
             }
           ];
         };
+    }
+    // nixpkgs.lib.optionalAttrs (os == "ubuntu") {
       homeConfigurations."${username}" =
         let
           specialArgs = commonSpecialArgs // {

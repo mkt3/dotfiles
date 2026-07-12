@@ -172,14 +172,16 @@ copy_nixos_hardware_config() {
 write_host_json() {
     local host_json="$1"
     local nix_platform="$2"
-    local host_name="$3"
-    local is_gui="$4"
-    local is_dev="$5"
+    local os_name="$3"
+    local host_name="$4"
+    local is_gui="$5"
+    local is_dev="$6"
     local tmp_file=""
 
     tmp_file=$(mktemp "${host_json}.tmp.XXXXXX")
     if env \
         HOST_CONFIG_PLATFORM="$nix_platform" \
+        HOST_CONFIG_OS="$os_name" \
         HOST_CONFIG_HOSTNAME="$host_name" \
         HOST_CONFIG_USERNAME="$USER" \
         HOST_CONFIG_HOME="$HOME" \
@@ -188,6 +190,7 @@ write_host_json() {
         "${NIX_CMD[@]}" eval --impure --json --expr '
           {
             platform = builtins.getEnv "HOST_CONFIG_PLATFORM";
+            os = builtins.getEnv "HOST_CONFIG_OS";
             hostname = builtins.getEnv "HOST_CONFIG_HOSTNAME";
             username = builtins.getEnv "HOST_CONFIG_USERNAME";
             homeDirectory = builtins.getEnv "HOST_CONFIG_HOME";
@@ -213,12 +216,18 @@ pre_setup_nix() {
     local host_json="${nix_main_flake_dir}/host.json"
     local host_name="$HOSTNAME_ENV"
     local nix_platform=""
+    local os_name=""
     local is_gui=""
     local is_dev=""
 
     # run_nvfetcher_if_needed
 
     nix_platform=$(detect_nix_platform)
+    case "$DISTRO" in
+        Darwin) os_name="darwin" ;;
+        NixOS) os_name="nixos" ;;
+        *) os_name="ubuntu" ;;
+    esac
     is_gui=$([ "$GUI_ENV" = "y" ] && echo "true" || echo "false")
     is_dev=$([ "$DEV_ENV" = "y" ] && echo "true" || echo "false")
 
@@ -226,7 +235,7 @@ pre_setup_nix() {
     cp -f "$nix_source_flake" "$nix_main_flake"
     rm -f "$nix_source_flake"
     copy_nixos_hardware_config "$nix_main_flake_dir"
-    write_host_json "$host_json" "$nix_platform" "$host_name" "$is_gui" "$is_dev"
+    write_host_json "$host_json" "$nix_platform" "$os_name" "$host_name" "$is_gui" "$is_dev"
 
     info "Finished pre-setup for nix"
 }

@@ -29,7 +29,7 @@ It is not a plain collection of dotfiles. The repository also contains:
 - `nix/systems/darwin/`: nix-darwin modules for macOS.
 - `nix/systems/nixos/`: NixOS modules for system-level Linux configuration.
 - `results/`: machine-local state such as `env_settings`.
-- `~/.config/nix/host.json`: generated machine-local input containing the host-specific values consumed by the flake.
+- `~/.config/nix/host.json`: generated machine-local input containing the OS, platform, and host-specific values consumed by the flake.
 
 ## Installation
 ### First-time setup
