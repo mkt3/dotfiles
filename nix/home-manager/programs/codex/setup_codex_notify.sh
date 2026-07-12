@@ -3,14 +3,36 @@ set -euo pipefail
 
 config_dir="${CODEX_HOME:-${HOME}/.config/codex}"
 config_file="${config_dir}/config.toml"
-stop_command='~/.local/bin/notify.sh Codex '\''turn complete'\'' >/dev/null 2>&1 || true'
-permission_command='~/.local/bin/notify.sh Codex '\''approval required'\'' >/dev/null 2>&1 || true'
+stop_command="${HOME}/.local/bin/notify.sh Codex 'turn complete' >/dev/null 2>&1 || true"
+permission_command="${HOME}/.local/bin/notify.sh Codex 'approval required' >/dev/null 2>&1 || true"
+# These literal tildes identify commands written by the previous version.
+# shellcheck disable=SC2088
+legacy_stop_command="~/.local/bin/notify.sh Codex 'turn complete' >/dev/null 2>&1 || true"
+# shellcheck disable=SC2088
+legacy_permission_command="~/.local/bin/notify.sh Codex 'approval required' >/dev/null 2>&1 || true"
 
 mkdir -p "$config_dir"
 touch "$config_file"
 
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
+
+rewrite_legacy_command() {
+  local old_command="$1"
+  local new_command="$2"
+
+  awk -v old_command="$old_command" -v new_command="$new_command" '
+    $0 == "command = \"" old_command "\"" {
+      print "command = \"" new_command "\""
+      next
+    }
+    { print }
+  ' "$config_file" > "$tmp"
+  mv "$tmp" "$config_file"
+}
+
+rewrite_legacy_command "$legacy_stop_command" "$stop_command"
+rewrite_legacy_command "$legacy_permission_command" "$permission_command"
 
 if grep -Eq '^[[:space:]]*\[features\][[:space:]]*$' "$config_file"; then
   if ! awk '

@@ -20,6 +20,8 @@ message=$(printf '%s\n%s' "$message" "$context")
 
 case ${AGENT_NOTIFY_TRANSPORT:-uservar} in
   osc9)
+    # The trailing backslash is part of the OSC string terminator.
+    # shellcheck disable=SC1003
     osc=$(printf '\033]777;notify;%s;%s\033\\' "$title" "$message")
     ;;
   uservar)
@@ -34,6 +36,8 @@ esac
 
 emit() {
   if [ -n "${TMUX:-}" ]; then
+    # The trailing backslash is part of the tmux passthrough terminator.
+    # shellcheck disable=SC1003
     printf '\033Ptmux;\033%s\033\\' "$osc"
   else
     printf '%s' "$osc"

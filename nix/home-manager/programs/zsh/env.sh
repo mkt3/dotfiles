@@ -1,6 +1,9 @@
+# shellcheck shell=sh
+
 # Platform Arch
-export OS="$(uname -s)"
-export ARCH="$(uname -m)"
+OS="$(uname -s)"
+ARCH="$(uname -m)"
+export OS ARCH
 DISTRO="$OS"
 if [ "$DISTRO" = "Linux" ]; then
     DISTRO=$(awk -F= '$1=="NAME"{print $2}' /etc/os-release | tr -d '"')
@@ -45,6 +48,7 @@ else
     export PATH="${LINUX_DEFAULT_PATH}:${PATH}"
 
     if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+        # shellcheck source=/dev/null
         . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
     fi
 

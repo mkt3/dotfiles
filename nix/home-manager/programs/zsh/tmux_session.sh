@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function get_source_list() {
-    local session color icon green="\e[32m" blue="\e[34m" reset="\e[m" opened="\ue5fe" unopened="\ue5ff"
+    local green="\e[32m" blue="\e[34m" reset="\e[m" opened="\ue5fe" unopened="\ue5ff"
     local session_list
     mapfile -t session_list < <(tmux list-sessions -F "#S" 2>/dev/null)
 

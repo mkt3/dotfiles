@@ -4,6 +4,7 @@ set -euo pipefail
 
 if [ -f "${HOME}/.zshenv" ]; then
   set +u
+  # shellcheck source=/dev/null
   . "${HOME}/.zshenv"
   set -u
 fi
