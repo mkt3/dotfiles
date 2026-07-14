@@ -167,31 +167,7 @@ local keys = {
   },
 }
 
-local font_size = is_macos and 16.0 or 14.0
-
 return {
-  font = wezterm.font_with_fallback {
-    { family = 'PlemolJP Console NF', assume_emoji_presentation = false },
-    { family = 'Symbols Nerd Font Mono', assume_emoji_presentation = false },
-    { family = 'Noto Emoji', assume_emoji_presentation = true },
-  },
-  front_end = 'WebGpu',
-  webgpu_power_preference = "HighPerformance",
-  use_ime = true,
-  macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL',
-  font_size = font_size,
-  color_scheme = 'nord',
-  allow_square_glyphs_to_overflow_width = 'Always',
-  adjust_window_size_when_changing_font_size = false,
-  warn_about_missing_glyphs = true,
-  window_padding = {
-    left = '0.5cell',
-    right = '0.5cell',
-    top = 0,
-    bottom = 0,
-  },
+  front_end = file_exists('/proc/driver/nvidia/version') and 'OpenGL' or 'WebGpu',
   keys = keys,
-  enable_wayland = true,
-  window_close_confirmation = 'NeverPrompt',
-  check_for_updates = false,
 }
