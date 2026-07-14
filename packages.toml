@@ -439,32 +439,12 @@ nixos = [
   { name = "xwayland-satellite", method = "nix-hm" },
 ]
 
-# [hyprland]
-# type = "gui"
-# nixos = [
-#   { name = "hyprland", method = "nix" },
-#   { name = "hyprland", method = "nix-hm" },
-#   { name = "xdg-desktop-portal-hyprland", method = "nix" },
-#   { name = "hyprshot", method = "nix-hm" },
-#   { name = "hyprcursor", method = "nix-hm" },
-# ]
-
 ## linux ui
 [noctaria]
 type = "gui"
 nixos = [
   { name = "noctalia", method = "nix-hm" },
 ]
-# [composable-ui]
-# nixos = [
-#   { name = "waybar", method = "nix-hm"n },
-#   { name = "playerctl", method = "nix-hm" },
-#   { name = "brightnessctl", method = "nix-hm" },
-#   { name = "swaybg", method = "nix-hm" },
-#   { name = "mako", method = "nix-hm" },
-#   { name = "networkmanagerapplet", method = "nix-hm" },
-#   { name = "pwvucontrol", method = "nix-hm" },
-# ]
 
 ## other compornet
 [gui-others]
@@ -536,7 +516,6 @@ linux = [{ name = "discord", method = "nix-hm" }]
 [zoom]
 type = "gui"
 darwin = [{ name = "zoom", method = "cask" }]
-#linux = [{ name = "zoom-us", method = "nix-hm" }]
 
 ### macos only
 [MeetingBar]

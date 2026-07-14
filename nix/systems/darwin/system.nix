@@ -90,7 +90,7 @@
       CustomUserPreferences = {
         NSGlobalDomain = {
           NSAutomaticTextCompletionEnabled = 0;
-          SLSMenuBarUseBlurredAppearance = 1;
+          SLSMenuBarUseBlurredAppearance = true;
         };
 
         "com.apple.desktopservices" = {
