@@ -18,12 +18,6 @@
 
   system = {
     # defaults.smb.NetBIOSName = hostname;
-    # activationScripts are executed every time you boot the system or run `nixos-rebuild` / `darwin-rebuild`.
-    # activationScripts.postUserActivation.text = ''
-    #   # activateSettings -u will reload the settings from the database and apply them to the current session,
-    #   # so we do not need to logout and login again to make the changes take effect.
-    #   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    # '';
     primaryUser = username;
 
     stateVersion = 6;
@@ -52,6 +46,11 @@
         NewWindowTargetPath = "file:///Users/${username}/Downloads/";
       };
 
+      controlcenter = {
+        Bluetooth = true;
+        Sound = true;
+      };
+
       NSGlobalDomain.NSNavPanelExpandedStateForSaveMode = true;
       NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
       NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
@@ -69,6 +68,7 @@
       # universalaccess.reduceTransparency = true;
 
       dock = {
+        appswitcher-all-displays = true;
         autohide = true;
         autohide-delay = 0.0;
         magnification = true;
@@ -85,6 +85,66 @@
         location = "${homeDirectory}/Downloads";
       };
 
+      spaces.spans-displays = true;
+
+      CustomUserPreferences = {
+        NSGlobalDomain = {
+          NSAutomaticTextCompletionEnabled = 0;
+          SLSMenuBarUseBlurredAppearance = 1;
+        };
+
+        "com.apple.desktopservices" = {
+          DSDontWriteNetworkStores = true;
+          DSDontWriteUSBStores = true;
+        };
+
+        "com.apple.frameworks.diskimages".auto-open-ro-root = true;
+
+        "com.apple.finder" = {
+          OpenWindowForNewRemovableDisk = true;
+          ShowRecentTags = false;
+          SidebarShowingiCloudDesktop = false;
+          SidebarShowingSignedIntoiCloud = false;
+          SidebarDevicesSectionDisclosedState = true;
+          SidebarPlacesSectionDisclosedState = true;
+          DisableAllAnimations = true;
+        };
+
+        "com.apple.systemuiserver" = {
+          "NSStatusItem Visible Siri" = false;
+          "NSStatusItem Visible com.apple.menuextra.battery" = true;
+          "NSStatusItem Visible com.apple.menuextra.clock" = true;
+        };
+
+        "com.apple.screencapture".name = "ss_";
+
+        "com.apple.TextEdit" = {
+          RichText = 0;
+          PlainTextEncoding = 4;
+          PlainTextEncodingForWrite = 4;
+        };
+
+        "com.apple.systempreferences".TMShowUnsupportedNetworkVolumes = 1;
+
+        # com.apple.universalaccess is protected on recent macOS releases.
+        # This is the domain used by the Accessibility UI for Reduce Motion.
+        "com.apple.Accessibility".ReduceMotionEnabled = 1;
+
+        "com.apple.HIToolbox" = {
+          AppleDictationAutoEnable = 1;
+          AppleGlobalTextInputProperties.TextInputGlobalPropertyPerContextInput = 1;
+        };
+
+        "com.apple.WindowManager" = {
+          EnableStandardClickToShowDesktop = false;
+          StandardHideWidgets = true;
+        };
+
+        "com.apple.loginwindow" = {
+          TALLogoutSavesState = false;
+          LoginwindowLaunchesRelaunchApps = false;
+        };
+      };
     };
   };
 
