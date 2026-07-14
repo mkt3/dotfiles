@@ -18,6 +18,8 @@ let
       "recollhelperpath = ${config.home.profileDirectory}/bin:/run/current-system/sw/bin:/opt/homebrew/bin"
     else
       "";
+
+  recollPythonPath = "${pkgs.recoll}/${pkgs.python3.sitePackages}";
 in
 {
   home.packages = [ pkgs.recoll ];
@@ -40,6 +42,6 @@ in
     # recoll
     export RECOLL_CONFDIR="${config.xdg.configHome}/recoll"
     export RECOLL_DATADIR="${pkgs.recoll}/share/recoll"
-    export PYTHONPATH="${pkgs.recoll}/lib/python3.13/site-packages:${pkgs.recoll}/lib/python3.13/site-packages/recoll:''${PYTHONPATH:-}"
+    export PYTHONPATH="${recollPythonPath}:''${PYTHONPATH:-}"
   '';
 }

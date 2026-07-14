@@ -355,6 +355,8 @@ type = "dev"
 common = [{ name = "basedpyright", method = "nix-hm" }]
 
 ### for python build
+[python-native-build-deps]
+type = "dev"
 ubuntu = [
   { name = "build-essential", method = "apt" },
   { name = "libbz2-dev", method = "apt" },

@@ -10,7 +10,6 @@
 
   programs.zsh.envExtra = lib.mkAfter ''
     # python
-    export PYTHONUSERBASE="${config.home.homeDirectory}/.local"
     export PYTHONDONTWRITEBYTECODE=1
 
     # ipython path

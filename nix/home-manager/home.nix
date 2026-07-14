@@ -1,4 +1,6 @@
 {
+  lib,
+  os,
   username,
   homeDirectory,
   nix-index-database,
@@ -33,10 +35,10 @@
       cores = 0;
     };
 
-    gc = {
+    gc = lib.mkIf (os == "ubuntu") {
       automatic = true;
       dates = "daily";
-      options = "--delete-older-than 3d";
+      options = "--delete-older-than 7d";
     };
   };
 }
