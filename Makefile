@@ -18,6 +18,7 @@ help:
 		"make apply    Apply current config with existing flake.lock" \
 		"make update   Pull repo and update flake.lock without applying" \
 		"make upgrade  Update and then apply configuration" \
+		"make upgrade-nix  Upgrade the Ubuntu Nix installation" \
 		"make check    Run local checks similar to CI" \
 		"make check-format    Check packages.toml formatting" \
 		"make check-catalog   Validate the package catalog" \
@@ -55,6 +56,10 @@ update_flake_lock: prepare_nix
 install_essential_packages:
 	@/usr/bin/env bash "$(REPO_DIR)/scripts/install_essential_packages.sh"
 
+.PHONY: upgrade-nix
+upgrade-nix:
+	@REPO_DIR="$(REPO_DIR)" /usr/bin/env bash "$(REPO_DIR)/scripts/upgrade_nix.sh"
+
 .PHONY: install_packages
 install_packages: setup_env
 	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; /usr/bin/env bash "$(REPO_DIR)/scripts/apply.sh"'
@@ -82,7 +87,7 @@ _apply: setup_env install_essential_packages install_packages install_git_hooks
 _update: setup_env update_repository update_flake_lock
 
 .PHONY: _upgrade
-_upgrade: _update _apply
+_upgrade: _update upgrade-nix _apply
 
 .PHONY: reset-env
 reset-env:
