@@ -27,7 +27,8 @@ current_version="$(nix --version)"
 info "Current version: ${current_version}"
 
 # The official Nix installer uses the root profile for multi-user installs.
-sudo -i nix upgrade-nix
+nix_profile="/nix/var/nix/profiles/default"
+sudo -i nix upgrade-nix --profile "$nix_profile"
 
 hash -r
 updated_version="$(nix --version)"
