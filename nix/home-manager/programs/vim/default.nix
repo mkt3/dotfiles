@@ -1,9 +1,9 @@
 { pkgs, ... }:
 {
-  home.packages = [ pkgs.vim ];
-
-  xdg.configFile."vim/vimrc" = {
-    text = ''
+  programs.vim = {
+    enable = true;
+    packageConfigurable = pkgs.vim;
+    extraConfig = ''
       scriptencoding utf-8
       set encoding=utf-8
 

@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ ... }:
 {
-  home.packages = [ pkgs.aerospace ];
-
-  xdg.configFile."aerospace/aerospace.toml".source = ./aerospace.toml;
+  programs.aerospace = {
+    enable = true;
+    launchd.enable = true;
+    settings = builtins.fromTOML (builtins.readFile ./aerospace.toml);
+  };
 }
