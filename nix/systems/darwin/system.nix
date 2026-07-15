@@ -118,14 +118,6 @@
 
         "com.apple.screencapture".name = "ss_";
 
-        "com.apple.TextEdit" = {
-          RichText = 0;
-          PlainTextEncoding = 4;
-          PlainTextEncodingForWrite = 4;
-        };
-
-        "com.apple.systempreferences".TMShowUnsupportedNetworkVolumes = 1;
-
         # com.apple.universalaccess is protected on recent macOS releases.
         # This is the domain used by the Accessibility UI for Reduce Motion.
         "com.apple.Accessibility".ReduceMotionEnabled = 1;
