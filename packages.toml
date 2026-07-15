@@ -406,9 +406,9 @@ type = "dev"
 common = [{ name = "awscli2", method = "nix-hm" }]
 
 ## config for docker
-[docker-conf]
+[docker-cli]
 type = "dev"
-linux = [{ name = "docker-conf", method = "nix-hm" }]
+linux = [{ name = "docker-cli", method = "nix-hm" }]
 
 # podman for build/push
 [podman]

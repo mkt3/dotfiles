@@ -10,6 +10,7 @@
   home = {
     inherit username homeDirectory;
     stateVersion = "26.05";
+    preferXdgDirectories = true;
     extraOutputsToInstall = [ "dev" ];
   };
 
