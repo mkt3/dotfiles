@@ -14,10 +14,16 @@ umask 077
 ask_prompt() {
     local prompt="$1"
     local result_var="$2"
+    local default_answer="${3:-}"
     local answer
 
     while true; do
-        read -r -p "$prompt: " answer
+        if [[ -n "$default_answer" ]]; then
+            read -r -p "$prompt [$default_answer]: " answer
+            answer="${answer:-$default_answer}"
+        else
+            read -r -p "$prompt: " answer
+        fi
         if [[ -n "$answer" ]]; then
             printf -v "$result_var" '%s' "$answer"
             break
@@ -42,8 +48,15 @@ ask_yes_no() {
 }
 
 ask_hostname() {
+    local default_host_name=""
+
+    default_host_name="$(hostname -s 2>/dev/null || true)"
+    if [[ ! "$default_host_name" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+        default_host_name=""
+    fi
+
     while true; do
-        ask_prompt "What's the unique hostname for this system configuration" host_name
+        ask_prompt "What's the unique hostname for this system configuration" host_name "$default_host_name"
         if [[ "$host_name" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
             break
         fi
