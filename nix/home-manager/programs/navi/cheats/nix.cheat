@@ -3,7 +3,7 @@
 $ project_type: echo "minimal\npython"
 
 # Delete generations older than 7 days
-nh clean all --keep-since 7d --no-gcroots --verbose
+nh clean all --keep-since 7d --no-gcroots
 
 # Verify, check contents, and repair the Nix store
 sudo nix-store --verify --check-contents --repair
