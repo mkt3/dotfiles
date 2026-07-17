@@ -26,7 +26,10 @@
           EOF
         '')
       ];
-      outputs."Unknown-2".edid = "lg-hdr-4k.bin";
+      outputs = {
+        "Unknown-1".edid = "lg-hdr-4k.bin";
+        "Unknown-2".edid = "lg-hdr-4k.bin";
+      };
     };
   };
 
