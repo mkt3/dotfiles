@@ -224,7 +224,7 @@
         }
         {
           name = "Slack";
-          application.only = [ "Slack" ];
+          application.only = [ "slack" ];
           remap = {
             "Super-Shift-a" = "C-Shift-a";
             "Super-a" = "C-Shift-a";
@@ -238,7 +238,7 @@
             "Super-5" = "C-5";
             "Super-6" = "C-6";
             "Super-7" = "C-7";
-            "Super-8" = "C-9";
+            "Super-8" = "C-8";
             "Super-9" = "C-9";
           };
         }
