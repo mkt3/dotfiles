@@ -1,16 +1,32 @@
 {
-  pkgs,
+  hostname,
   lib,
+  noctalia-greeter,
+  pkgs,
   ...
 }:
 {
+  imports = [
+    noctalia-greeter.nixosModules.default
+  ];
+
   services.greetd = {
+    settings.default_session.user = "greeter";
+  };
+
+  programs.noctalia-greeter = {
     enable = true;
     settings = {
-      default_session = {
-        command = "${lib.getExe pkgs.tuigreet} --time --asterisks --cmd niri-session";
-        user = "greeter";
+      session.default = "niri";
+      cursor = {
+        theme = "Nordzy-cursors";
+        size = 24;
+        path = "${pkgs.nordzy-cursor-theme}/share/icons";
       };
+      keyboard.layout = "us";
+    }
+    // lib.optionalAttrs (hostname == "personal-dt") {
+      output.layout = "Unknown-1:0,0; Unknown-2:0,0; HDMI-A-1:480,1440";
     };
   };
 
