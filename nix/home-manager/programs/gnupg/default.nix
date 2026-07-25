@@ -36,6 +36,7 @@ in
   services.gpg-agent = lib.mkIf enableLocalAgent {
     enable = true;
     enableExtraSocket = true;
+    enableScDaemon = false;
     enableSshSupport = true;
     maxCacheTtl = 86400;
     maxCacheTtlSsh = 86400;
