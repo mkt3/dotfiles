@@ -35,12 +35,20 @@ in
 
   services.gpg-agent = lib.mkIf enableLocalAgent {
     enable = true;
+    enableExtraSocket = true;
     enableSshSupport = true;
-    maxCacheTtl = 60480000;
-    maxCacheTtlSsh = 60480000;
-    defaultCacheTtl = 60480000;
-    defaultCacheTtlSsh = 60480000;
-    pinentry.package = lib.mkIf isDarwin pkgs.pinentry_mac;
+    maxCacheTtl = 86400;
+    maxCacheTtlSsh = 86400;
+    defaultCacheTtl = 86400;
+    defaultCacheTtlSsh = 86400;
+    noAllowExternalCache = true;
+    pinentry.package =
+      if isDarwin then
+        pkgs.pinentry_mac
+      else if isGUI then
+        pkgs.pinentry-qt
+      else
+        pkgs.pinentry-curses;
   };
 
   home.packages = lib.optionals (isNixOS || isDarwin) [ pkgs.gnupg ];

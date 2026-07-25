@@ -1,10 +1,3 @@
-# gpg-agent
-if [[ "$OS" == 'Darwin' ]]; then
-    if command -v gpgconf > /dev/null && ! pgrep -u "$USER" gpg-agent > /dev/null; then
-        gpgconf --launch gpg-agent
-    fi
-fi
-
 # Tmux
 if [[ ! -n $TMUX ]]; then
     function _tmux_session_widget {

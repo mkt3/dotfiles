@@ -25,4 +25,14 @@
       name = "Nordzy-dark";
     };
   };
+
+  qt = {
+    enable = true;
+    style.name = "kvantum";
+    kvantum = {
+      enable = true;
+      themes = [ pkgs.nordic ];
+      settings.General.theme = "Nordic";
+    };
+  };
 }
