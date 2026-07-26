@@ -63,10 +63,6 @@ common = [
   { name = "lesspipe", method = "nix" },
 ]
 
-[tree]
-type = "basic"
-common = [{ name = "tree", method = "nix" }]
-
 [rsync]
 type = "basic"
 common = [{ name = "rsync", method = "nix" }]
@@ -97,10 +93,6 @@ common = [{ name = "pv", method = "nix-hm" }]
 [direnv]
 type = "basic"
 common = [{ name = "direnv", method = "nix-hm" }]
-
-[yj]
-type = "basic"
-common = [{ name = "yj", method = "nix-hm" }]
 
 [jq]
 type = "basic"
