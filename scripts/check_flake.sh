@@ -43,19 +43,18 @@ fi
 
 pre_setup_nix
 flake_ref="path:${XDG_CONFIG_HOME}/nix"
-nix --extra-experimental-features "nix-command flakes" flake show "$flake_ref"
+"${NIX_CMD[@]}" flake show "$flake_ref"
 
 case "$DISTRO" in
     NixOS)
-        nix --extra-experimental-features "nix-command flakes" eval --raw \
-            "${flake_ref}#nixosConfigurations.\"${HOSTNAME_ENV}\".config.system.build.toplevel.drvPath"
+        configuration_attr="nixosConfigurations.\"${HOSTNAME_ENV}\".config.system.build.toplevel.drvPath"
         ;;
     Darwin)
-        nix --extra-experimental-features "nix-command flakes" eval --raw \
-            "${flake_ref}#darwinConfigurations.\"${HOSTNAME_ENV}\".system.drvPath"
+        configuration_attr="darwinConfigurations.\"${HOSTNAME_ENV}\".system.drvPath"
         ;;
     *)
-        nix --extra-experimental-features "nix-command flakes" eval --raw \
-            "${flake_ref}#homeConfigurations.\"${USER}\".activationPackage.drvPath"
+        configuration_attr="homeConfigurations.\"${USER}\".activationPackage.drvPath"
         ;;
 esac
+
+"${NIX_CMD[@]}" eval --raw "${flake_ref}#${configuration_attr}"

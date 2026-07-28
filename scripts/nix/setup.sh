@@ -6,44 +6,70 @@ if ! declare -p NIX_CMD >/dev/null 2>&1; then
     NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
 fi
 
+log_nix_github_token_status() {
+    if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
+        info "$1"
+    fi
+}
+
 setup_nix_github_token_from_gh() {
     if [ "${GUI_ENV:-n}" != "y" ]; then
-        if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
-            info "Skipping GitHub token setup for Nix because GUI_ENV is not enabled."
-        fi
+        log_nix_github_token_status "Skipping GitHub token setup for Nix because GUI_ENV is not enabled."
         return 0
     fi
 
     if ! command -v gh > /dev/null 2>&1; then
-        if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
-            info "Skipping GitHub token setup for Nix because gh is not installed."
-        fi
+        log_nix_github_token_status "Skipping GitHub token setup for Nix because gh is not installed."
         return 0
     fi
 
     local github_token=""
     github_token=$(gh auth token 2>/dev/null || true)
     if [ -z "$github_token" ]; then
-        if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
-            info "Skipping GitHub token setup for Nix because gh auth token is unavailable."
-        fi
+        log_nix_github_token_status "Skipping GitHub token setup for Nix because gh auth token is unavailable."
         return 0
     fi
 
     case "${NIX_CONFIG:-}" in
         *"github.com="*)
-            if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
-                info "GitHub token for Nix is already configured in NIX_CONFIG."
-            fi
+            log_nix_github_token_status "GitHub token for Nix is already configured in NIX_CONFIG."
             return 0
             ;;
     esac
 
     export NIX_CONFIG="${NIX_CONFIG:+${NIX_CONFIG}
 }access-tokens = github.com=${github_token}"
-    if [ "${NIX_GITHUB_TOKEN_LOG:-y}" = "y" ]; then
-        info "Configured GitHub token for Nix from gh auth token."
-    fi
+    log_nix_github_token_status "Configured GitHub token for Nix from gh auth token."
+}
+
+upsert_nix_conf_token() {
+    local key="$1"
+    local token="$2"
+    local file="$3"
+    local next_file=""
+    next_file=$(mktemp)
+
+    awk -v key="$key" -v token="$token" '
+        BEGIN { seen = 0 }
+        /^[[:space:]]*#/ { print; next }
+        $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
+            seen = 1
+            line = $0
+            value = substr($0, index($0, "=") + 1)
+            if (index(" " value " ", " " token " ") == 0) {
+                line = line " " token
+            }
+            print line
+            next
+        }
+        { print }
+        END {
+            if (!seen) {
+                print key " = " token
+            }
+        }
+    ' "$file" > "$next_file"
+    mv "$next_file" "$file"
 }
 
 configure_ubuntu_nix_daemon_settings() {
@@ -63,36 +89,6 @@ configure_ubuntu_nix_daemon_settings() {
     sudo mkdir -p "$(dirname "$nix_conf")"
     sudo touch "$nix_conf"
     sudo cat "$nix_conf" | tee "$tmp_file" >/dev/null
-
-    upsert_nix_conf_token() {
-        local key="$1"
-        local token="$2"
-        local file="$3"
-        local next_file=""
-        next_file=$(mktemp)
-
-        awk -v key="$key" -v token="$token" '
-            BEGIN { seen = 0 }
-            /^[[:space:]]*#/ { print; next }
-            $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
-                seen = 1
-                line = $0
-                value = substr($0, index($0, "=") + 1)
-                if (index(" " value " ", " " token " ") == 0) {
-                    line = line " " token
-                }
-                print line
-                next
-            }
-            { print }
-            END {
-                if (!seen) {
-                    print key " = " token
-                }
-            }
-        ' "$file" > "$next_file"
-        mv "$next_file" "$file"
-    }
 
     upsert_nix_conf_token "trusted-users" "root" "$tmp_file"
     upsert_nix_conf_token "trusted-users" "$USER" "$tmp_file"
@@ -243,32 +239,26 @@ pre_setup_nix() {
 run_nvfetcher_if_needed() {
     local nvfetcher_last_run_file="${REPO_DIR}/results/nvfetcher_last_run"
     local one_day_in_seconds=86400
-    local should_run_nvfetcher="true"
+    local last_run_timestamp=""
+    local current_timestamp=""
+    local time_diff=""
+    local nvfetcher_command=()
 
     mkdir -p "${REPO_DIR}/results"
 
     if [ -f "$nvfetcher_last_run_file" ]; then
-        local last_run_timestamp
         last_run_timestamp=$(cat "$nvfetcher_last_run_file" 2>/dev/null || echo 0)
-
-        local current_timestamp
         current_timestamp=$(date +%s)
-
-        local time_diff=$((current_timestamp - last_run_timestamp))
+        time_diff=$((current_timestamp - last_run_timestamp))
 
         if [ "$time_diff" -lt "$one_day_in_seconds" ]; then
             info "nvfetcher skipped. Last run was within the last $((time_diff / 3600)) hours."
-            should_run_nvfetcher="false"
+            return 0
         fi
-    fi
-
-    if [ "$should_run_nvfetcher" != "true" ]; then
-        return 0
     fi
 
     info "Updating nix packages with nvfetcher (more than 24 hours elapsed or first run)"
 
-    local nvfetcher_command
     if command -v nvfetcher > /dev/null 2>&1; then
         nvfetcher_command=(nvfetcher)
     else

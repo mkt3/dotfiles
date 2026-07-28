@@ -13,22 +13,30 @@ REPO_DIR="${REPO_DIR:-$(CDPATH='' cd -- "${script_dir}/.." && pwd)}"
 export CONFIGS_DIR="${REPO_DIR}/nix"
 NIX_DIR="${XDG_CONFIG_HOME}/nix"
 
-run_nh() {
+run_with_nh_environment() {
     env \
         "NH_FLAKE=${NIX_DIR}" \
         "NH_OS_FLAKE=${NIX_DIR}" \
         "NH_HOME_FLAKE=${NIX_DIR}" \
         "NH_DARWIN_FLAKE=${NIX_DIR}" \
-        nh "$@"
+        "$@"
+}
+
+run_nh() {
+    run_with_nh_environment nh "$@"
 }
 
 run_nixpkgs_nh() {
-    env \
-        "NH_FLAKE=${NIX_DIR}" \
-        "NH_OS_FLAKE=${NIX_DIR}" \
-        "NH_HOME_FLAKE=${NIX_DIR}" \
-        "NH_DARWIN_FLAKE=${NIX_DIR}" \
+    run_with_nh_environment \
         "${NIX_CMD[@]}" run nixpkgs#nh -- "$@"
+}
+
+run_available_nh() {
+    if command -v nh >/dev/null 2>&1; then
+        run_nh "$@"
+    else
+        run_nixpkgs_nh "$@"
+    fi
 }
 
 install_apt_packages() {
@@ -75,27 +83,17 @@ apply_configuration() {
                 sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true
                 NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt \
                     run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
-            elif command -v nh >/dev/null 2>&1; then
-                run_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
             else
-                run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
+                run_available_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
             fi
             ;;
         NixOS)
             title "Setup NixOS"
-            if command -v nh >/dev/null 2>&1; then
-                run_nh os switch "$NIX_DIR" -H "$HOSTNAME_ENV"
-            else
-                run_nixpkgs_nh os switch "$NIX_DIR" -H "$HOSTNAME_ENV"
-            fi
+            run_available_nh os switch "$NIX_DIR" -H "$HOSTNAME_ENV"
             ;;
         *)
             title "Install/Update packages from Home Manager"
-            if command -v nh >/dev/null 2>&1; then
-                run_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs
-            else
-                run_nixpkgs_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs
-            fi
+            run_available_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs
             export __ETC_PROFILE_NIX_SOURCED=""
             ;;
     esac
