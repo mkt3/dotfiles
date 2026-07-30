@@ -492,8 +492,7 @@ linux = [{ name = "zathura", method = "nix-hm" }]
 ## pdf pesenter
 [pdfpc]
 type = "gui"
-darwin = [{ name = "pdfpc", method = "brew" }]
-linux = [{ name = "pdfpc", method = "nix-hm" }]
+common = [{ name = "pdfpc", method = "nix-hm" }]
 
 ## communication tools
 [slack]
