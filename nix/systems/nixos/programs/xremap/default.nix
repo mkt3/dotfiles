@@ -155,6 +155,7 @@
             ];
 
             # Undo
+            "C-z" = "Super-z";
             "C-slash" = [
               "C-z"
               {
