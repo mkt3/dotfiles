@@ -16,10 +16,9 @@
   gtk = {
     enable = true;
     theme = {
-      package = pkgs.nordic;
-      name = "Nordic";
+      package = pkgs.adw-gtk3;
+      name = "adw-gtk3-dark";
     };
-    gtk4.theme = config.gtk.theme;
     iconTheme = {
       package = pkgs.nordzy-icon-theme;
       name = "Nordzy-dark";
@@ -28,11 +27,19 @@
 
   qt = {
     enable = true;
-    style.name = "kvantum";
-    kvantum = {
-      enable = true;
-      themes = [ pkgs.nordic ];
-      settings.General.theme = "Nordic";
+    platformTheme.name = "qtct";
+    style.name = "fusion";
+    qt5ctSettings.Appearance = {
+      style = "Fusion";
+      custom_palette = true;
+      color_scheme_path = "${config.xdg.configHome}/qt5ct/colors/noctalia.conf";
+      icon_theme = "Nordzy-dark";
+    };
+    qt6ctSettings.Appearance = {
+      style = "Fusion";
+      custom_palette = true;
+      color_scheme_path = "${config.xdg.configHome}/qt6ct/colors/noctalia.conf";
+      icon_theme = "Nordzy-dark";
     };
   };
 }

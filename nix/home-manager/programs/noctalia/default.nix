@@ -69,9 +69,13 @@
         mode = "dark";
 
         templates = {
-          builtin_ids = [ ];
+          builtin_ids = [
+            "gtk3"
+            "gtk4"
+            "qt"
+          ];
           community_ids = [ ];
-          enable_builtin_templates = false;
+          enable_builtin_templates = true;
           enable_community_templates = false;
         };
       };
