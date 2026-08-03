@@ -29,7 +29,7 @@ build_target() {
         USE_SYNTHETIC_NIXOS_HARDWARE="y" \
         SKIP_FLAKE_SHOW="y" \
         BUILD_OUTPUT_FILE="$target_output" \
-        /usr/bin/env bash "${REPO_DIR}/scripts/check_flake.sh"
+        /usr/bin/env bash "${REPO_DIR}/scripts/check_flake.sh" > /dev/null
 
     store_path="$(<"$target_output")"
     if [ -z "$store_path" ]; then
