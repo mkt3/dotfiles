@@ -134,7 +134,7 @@ sync_flake_sources() {
     for source_path in "${nix_config_dir}"/*; do
         source_name="$(basename "$source_path")"
         case "$source_name" in
-            flake.lock|nix.conf) continue ;;
+            nix.conf) continue ;;
         esac
 
         rm -rf "${nix_main_flake_dir:?}/${source_name}"
@@ -144,6 +144,17 @@ sync_flake_sources() {
 
     rm -f "${nix_main_flake_dir}/flake_template.nix"
     cp -f "${REPO_DIR}/packages.toml" "$nix_main_flake_dir/packages.toml"
+}
+
+sync_flake_lock_to_repo() {
+    local source_lock="$1"
+
+    if [ ! -f "$source_lock" ]; then
+        echo "flake.lock was not generated: $source_lock" >&2
+        return 1
+    fi
+
+    cp -f "$source_lock" "${REPO_DIR}/nix/flake.lock"
 }
 
 copy_nixos_hardware_config() {

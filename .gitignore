@@ -2,5 +2,4 @@
 *~
 !.gitkeep
 /results
-nix/flake.lock
 nix/nix.conf

@@ -82,9 +82,9 @@ For local operation after bootstrap:
 make apply
 ```
 
-applies your current configuration using the existing `flake.lock`.
+applies your current configuration using the repository's tracked `nix/flake.lock`.
 The generated flake reads `host.json` as a regular source file, so applying and checking it do not require impure evaluation.
-Repository-managed Nix directories are replaced during preparation, while machine-local files such as `flake.lock` and `nix.conf` remain in `~/.config/nix`.
+Repository-managed Nix directories, including `flake.lock`, are replaced during preparation, while the machine-local `nix.conf` remains in `~/.config/nix`.
 Apply, update, and upgrade operations use a per-user process lock so that two terminals cannot modify the configuration concurrently.
 It also refreshes this repository's `pre-commit` hooks when `.pre-commit-config.yaml` is present.
 Use this when you want to reflect your own config changes without pulling newer upstream inputs.
@@ -93,7 +93,9 @@ Use this when you want to reflect your own config changes without pulling newer 
 make update
 ```
 
-updates the repository and Nix inputs without switching the system.
+updates the repository and Nix inputs without switching the system. The updated
+`flake.lock` is copied back to `nix/flake.lock`; review and commit that change so
+all hosts and the cache builder use the same pinned inputs.
 This is mainly useful when you want to inspect or verify updates before applying them.
 
 ```bash
@@ -124,6 +126,32 @@ make check
 ```
 
 runs the local verification flow used to catch the same class of issues as CI before pushing changes.
+
+## Homelab Nix Cache
+
+Linux hosts use the LAN-only Attic cache at
+`https://attic.mkt3.dev/dotfiles`. The Nix daemon is configured to fall back to
+other substituters or local builds when the homelab cache is unavailable, so
+being away from the LAN does not make the cache a deployment dependency.
+macOS hosts continue to build normally without using Attic.
+
+Build the maximal NixOS profile used to warm the shared cache with:
+
+```bash
+make build-cache-targets
+```
+
+This builds a NixOS CUI/dev/GUI system profile from the repository's committed
+`flake.lock`, using temporary generated host inputs. Its closure contains the
+shared Nix packages needed by the smaller profiles, so Ubuntu keeps its normal
+per-machine Home Manager build and reuses matching paths from Attic. The
+command prints the resulting store path so the metis-plus cache builder can
+push its closure. Push credentials belong only on that server and must not be
+committed.
+
+Attic skips unchanged paths and paths signed by the configured NixOS and
+Numtide upstream caches. Linux clients only need the public cache key; they do
+not need push credentials.
 
 ## Development Notes
 ### Package changes

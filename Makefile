@@ -26,6 +26,7 @@ help:
 		"make check-workflow  Validate GitHub Actions workflows" \
 		"make check-flake     Evaluate the current OS configuration" \
 		"make check-nixos     Evaluate the NixOS configuration" \
+		"make build-cache-targets  Build the NixOS cache-warming profile" \
 		"make lint     Format packages.toml with taplo" \
 		"make reset-env  Remove saved host, development, and GUI choices"
 
@@ -50,7 +51,7 @@ prepare_nix: setup_env
 
 .PHONY: update_flake_lock
 update_flake_lock: prepare_nix
-	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/scripts/common.sh"; . "$(REPO_DIR)/scripts/nix/setup.sh"; title "Setup GitHub token for Nix"; setup_nix_github_token_from_gh; cd "$(HOME)/.config/nix" && $(NIX_CMD) flake update'
+	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/scripts/common.sh"; . "$(REPO_DIR)/scripts/nix/setup.sh"; title "Setup GitHub token for Nix"; setup_nix_github_token_from_gh; cd "$(HOME)/.config/nix" && $(NIX_CMD) flake update && sync_flake_lock_to_repo "$(HOME)/.config/nix/flake.lock"'
 
 .PHONY: install_essential_packages
 install_essential_packages:
@@ -119,6 +120,10 @@ check-flake:
 .PHONY: check-nixos
 check-nixos:
 	@REPO_DIR="$(REPO_DIR)" HOSTNAME_ENV=check-host DEV_ENV=y GUI_ENV=y CHECK_DISTRO=NixOS NIX_PLATFORM_OVERRIDE=x86_64-linux /usr/bin/env bash "$(REPO_DIR)/scripts/check_flake.sh"
+
+.PHONY: build-cache-targets
+build-cache-targets:
+	@REPO_DIR="$(REPO_DIR)" /usr/bin/env bash "$(REPO_DIR)/scripts/build_cache_targets.sh"
 
 .PHONY: lint
 lint:
