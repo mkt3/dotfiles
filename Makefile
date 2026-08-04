@@ -16,7 +16,7 @@ all: upgrade
 help:
 	@printf "%s\n" \
 		"make apply    Apply current config with existing flake.lock" \
-		"make update   Pull repo and update flake.lock without applying" \
+		"make update   Pull repo without applying" \
 		"make upgrade  Update and then apply configuration" \
 		"make upgrade-nix  Upgrade the Ubuntu Nix installation" \
 		"make check    Run local checks similar to CI" \
@@ -26,6 +26,7 @@ help:
 		"make check-workflow  Validate GitHub Actions workflows" \
 		"make check-flake     Evaluate the current OS configuration" \
 		"make check-nixos     Evaluate the NixOS configuration" \
+		"make update-cache-flake-lock  Update flake.lock for the cache builder" \
 		"make build-cache-targets  Build the NixOS cache-warming profile" \
 		"make lint     Format packages.toml with taplo" \
 		"make reset-env  Remove saved host, development, and GUI choices"
@@ -49,9 +50,9 @@ update_repository:
 prepare_nix: setup_env
 	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/scripts/common.sh"; CONFIGS_DIR="$(REPO_DIR)/nix"; . "$(REPO_DIR)/scripts/nix/setup.sh"; pre_setup_nix'
 
-.PHONY: update_flake_lock
-update_flake_lock: prepare_nix
-	@REPO_DIR="$(REPO_DIR)" ENV_FILE="$(ENV_FILE)" /usr/bin/env bash -c '. "$(REPO_DIR)/scripts/load_env_settings.sh"; . "$(REPO_DIR)/scripts/common.sh"; . "$(REPO_DIR)/scripts/nix/setup.sh"; title "Setup GitHub token for Nix"; setup_nix_github_token_from_gh; cd "$(HOME)/.config/nix" && $(NIX_CMD) flake update && sync_flake_lock_to_repo "$(HOME)/.config/nix/flake.lock"'
+.PHONY: update-cache-flake-lock
+update-cache-flake-lock:
+	@REPO_DIR="$(REPO_DIR)" /usr/bin/env bash "$(REPO_DIR)/scripts/update_cache_flake_lock.sh"
 
 .PHONY: install_essential_packages
 install_essential_packages:
@@ -85,7 +86,7 @@ upgrade:
 _apply: setup_env install_essential_packages install_packages install_git_hooks
 
 .PHONY: _update
-_update: setup_env update_repository update_flake_lock
+_update: setup_env update_repository
 
 .PHONY: _upgrade
 _upgrade: _update upgrade-nix _apply

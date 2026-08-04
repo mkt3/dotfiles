@@ -93,10 +93,10 @@ Use this when you want to reflect your own config changes without pulling newer 
 make update
 ```
 
-updates the repository and Nix inputs without switching the system. The updated
-`flake.lock` is copied back to `nix/flake.lock`; review and commit that change so
-all hosts and the cache builder use the same pinned inputs.
-This is mainly useful when you want to inspect or verify updates before applying them.
+updates the repository without switching the system. Nix inputs are updated by
+the metis-plus cache builder, which commits a new `nix/flake.lock` only after its
+NixOS cache target has been built and pushed successfully. This keeps the lock
+published on `main` aligned with the contents available from Attic.
 
 ```bash
 make upgrade
@@ -135,7 +135,14 @@ other substituters or local builds when the homelab cache is unavailable, so
 being away from the LAN does not make the cache a deployment dependency.
 macOS hosts continue to build normally without using Attic.
 
-Build the maximal NixOS profile used to warm the shared cache with:
+Update the shared lock in the synthetic cache-builder environment with:
+
+```bash
+make update-cache-flake-lock
+```
+
+This command is intended for the metis-plus cache builder. Build the maximal
+NixOS profile used to warm the shared cache with:
 
 ```bash
 make build-cache-targets
