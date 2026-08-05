@@ -2,6 +2,8 @@
 {
   services.podman = {
     enable = true;
+    autoUpdate.enable = false;
+
     settings = {
       policy = {
         default = [ { type = "reject"; } ];
