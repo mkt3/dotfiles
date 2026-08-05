@@ -129,11 +129,12 @@ runs the local verification flow used to catch the same class of issues as CI be
 
 ## Homelab Nix Cache
 
-Linux hosts use the LAN-only Attic cache at
-`https://attic.mkt3.dev/dotfiles`. The Nix daemon is configured to fall back to
-other substituters or local builds when the homelab cache is unavailable, so
-being away from the LAN does not make the cache a deployment dependency.
-macOS hosts continue to build normally without using Attic.
+NixOS hosts use the LAN-only Attic cache at
+`https://attic.mkt3.dev/dotfiles`. The first apply uses the existing Nix
+settings; after the switch, the declarative NixOS cache settings take effect.
+Nix falls back to other substituters or local builds when the homelab cache is
+unavailable, so being away from the LAN does not make the cache a deployment
+dependency. Ubuntu and macOS hosts do not use Attic.
 
 Update the shared lock in the synthetic cache-builder environment with:
 
@@ -150,14 +151,12 @@ make build-cache-targets
 
 This builds a NixOS CUI/dev/GUI system profile from the repository's committed
 `flake.lock`, using temporary generated host inputs. Its closure contains the
-shared Nix packages needed by the smaller profiles, so Ubuntu keeps its normal
-per-machine Home Manager build and reuses matching paths from Attic. The
-command prints the resulting store path so the metis-plus cache builder can
-push its closure. Push credentials belong only on that server and must not be
-committed.
+shared Nix packages needed by the smaller NixOS profiles. The command prints
+the resulting store path so the metis-plus cache builder can push its closure.
+Push credentials belong only on that server and must not be committed.
 
 Attic skips unchanged paths and paths signed by the configured NixOS and
-Numtide upstream caches. Linux clients only need the public cache key; they do
+Numtide upstream caches. NixOS clients only need the public cache key; they do
 not need push credentials.
 
 ## Development Notes
