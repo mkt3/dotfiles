@@ -11,7 +11,7 @@ COLOR_YELLOW="\033[1;33m"
 COLOR_NONE="\033[0m"
 
 # shellcheck disable=SC2034
-NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
+NIX_CMD=(nix)
 
 
 title() {

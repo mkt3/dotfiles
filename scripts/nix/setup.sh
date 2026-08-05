@@ -3,7 +3,7 @@
 set -euo pipefail
 
 if ! declare -p NIX_CMD >/dev/null 2>&1; then
-    NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
+    NIX_CMD=(nix)
 fi
 
 log_nix_github_token_status() {

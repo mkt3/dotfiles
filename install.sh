@@ -28,7 +28,7 @@ ensure_nix() {
         return 0
     fi
 
-    curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
+    curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 }
 
 load_nix() {

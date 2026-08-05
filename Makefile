@@ -4,7 +4,7 @@ RESULTS_DIR := $(REPO_DIR)/results
 TOML_FILE := $(REPO_DIR)/packages.toml
 ENV_FILE := $(RESULTS_DIR)/env_settings
 DISTRO := $(shell uname -s)
-NIX_CMD := nix --extra-experimental-features "nix-command flakes"
+NIX_CMD := nix
 ifeq ($(DISTRO),Linux)
     DISTRO := $(shell grep -oP '(?<=^NAME=).+' /etc/os-release | tr -d '"')
 endif

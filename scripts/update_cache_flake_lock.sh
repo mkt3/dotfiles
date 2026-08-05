@@ -17,7 +17,7 @@ export NIX_PLATFORM_OVERRIDE="x86_64-linux"
 export USER="${USER:-attic-cache-builder}"
 
 export DISTRO="NixOS"
-NIX_CMD=(nix --extra-experimental-features "nix-command flakes")
+NIX_CMD=(nix)
 
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
