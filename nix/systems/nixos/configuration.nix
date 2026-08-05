@@ -2,6 +2,7 @@
   username,
   hostname,
   nixos-hardware,
+  pkgs,
   ...
 }:
 
@@ -25,6 +26,8 @@
     else
       [ ./defaultboot.nix ]
   );
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   hardware.enableRedistributableFirmware = true;
   hardware.i2c.enable = true;
