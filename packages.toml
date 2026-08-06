@@ -522,8 +522,7 @@ linux = [{ name = "vivaldi", method = "nix-hm" }]
 ### for keymap
 [google-chrome]
 type = "gui"
-darwin = [{ name = "google-chrome", method = "cask" }]
-linux = [{ name = "google-chrome", method = "nix-hm" }]
+common = [{ name = "google-chrome", method = "nix-hm" }]
 
 ### sub browser
 [firefox]
