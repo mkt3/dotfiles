@@ -84,7 +84,7 @@
         "https://attic.mkt3.dev/dotfiles"
       ];
       extra-trusted-public-keys = [
-        "dotfiles:yGnrUjr7sB73uHLMByDpZKW4CKY6pzFBknFQ2CKv8q0="
+        "dotfiles:7J4oj4BAhUu7preUG6BSUCbwiKPs2je6vgFXsorQWoI="
       ];
       experimental-features = [
         "nix-command"
