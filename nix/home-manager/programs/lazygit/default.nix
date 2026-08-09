@@ -5,9 +5,9 @@
     enableZshIntegration = true;
     settings = {
       git = {
-        pagers = [
+        diffRenderers = [
           {
-            pager = "delta --dark --paging=never --24-bit-color=auto -n";
+            command = "delta --dark --paging=never --24-bit-color=auto -n";
             colorArg = "always";
           }
         ];
