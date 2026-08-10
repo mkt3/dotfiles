@@ -32,7 +32,12 @@ let
   allowedEntryKeys = [
     "name"
     "method"
+    "kind"
     "id"
+  ];
+  allowedKinds = [
+    "package"
+    "module"
   ];
 
   contains = value: values: builtins.elem value values;
@@ -62,6 +67,16 @@ let
         (ensure (
           entry ? method && builtins.isString method && contains method allowedMethods
         ) "${label} entry '${name}' has an unsupported method")
+        (ensure (
+          entry ? kind && builtins.isString entry.kind && contains entry.kind allowedKinds
+        ) "${label} entry '${name}' must have kind 'package' or 'module'")
+        (ensure (
+          (entry.kind or null) != "module"
+          || contains method [
+            "nix"
+            "nix-hm"
+          ]
+        ) "${label} entry '${name}' uses kind 'module' with unsupported method ${methodName}")
         (ensure (method != "apt" || source == "ubuntu") "${label} entry '${name}' uses apt outside ubuntu")
         (ensure (
           !(contains method [
@@ -72,8 +87,9 @@ let
           || source == "darwin"
         ) "${label} entry '${name}' uses ${methodName} outside darwin")
         (ensure (
-          method != "mas" || (entry ? id && builtins.isInt entry.id)
-        ) "${label} mas entry '${name}' must have an integer id")
+          method != "mas" || (entry ? id && builtins.isInt entry.id && entry.id > 0)
+        ) "${label} mas entry '${name}' must have a positive integer id")
+        (ensure (method == "mas" || !(entry ? id)) "${label} non-mas entry '${name}' must not have an id")
       ] true;
 
   checkGroup =
@@ -121,14 +137,23 @@ let
       )
     );
 
-  selectedNames =
+  programsDirFor =
     os: method:
-    (import ./package-catalog.nix {
+    if method == "nix-hm" || os == "ubuntu" then
+      ./home-manager/programs
+    else if os == "nixos" then
+      ./systems/nixos/programs
+    else
+      ./systems/darwin/programs;
+
+  selectedCatalog =
+    os: method:
+    import ./package-catalog.nix {
       inherit catalogFile os method;
       isDev = true;
       isGUI = true;
-      programsDir = ./.;
-    }).names;
+      programsDir = programsDirFor os method;
+    };
 
   selectionChecks =
     builtins.concatMap
@@ -137,11 +162,24 @@ let
         map (
           method:
           let
-            duplicates = duplicateNames (selectedNames os method);
+            selected = selectedCatalog os method;
+            duplicates = duplicateNames selected.names;
+            classificationCheck =
+              if
+                contains method [
+                  "nix"
+                  "nix-hm"
+                ]
+              then
+                builtins.deepSeq selected.moduleNames (builtins.deepSeq selected.packageNames true)
+              else
+                true;
           in
-          ensure (
-            duplicates == [ ]
-          ) "${os}/${method} contains duplicate packages: ${builtins.concatStringsSep ", " duplicates}"
+          builtins.deepSeq classificationCheck (
+            ensure (
+              duplicates == [ ]
+            ) "${os}/${method} contains duplicate packages: ${builtins.concatStringsSep ", " duplicates}"
+          )
         ) allowedMethods
       )
       [

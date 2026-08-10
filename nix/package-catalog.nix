@@ -17,11 +17,24 @@ let
   entries = builtins.concatMap entriesFor (builtins.filter enabled (builtins.attrValues catalog));
   matchedEntries = builtins.filter (entry: entry.method == method) entries;
   names = map (entry: entry.name) matchedEntries;
-  isModule = name: builtins.pathExists (programsDir + "/${name}");
+  moduleEntries = builtins.filter (entry: entry.kind == "module") matchedEntries;
+  packageEntries = builtins.filter (entry: entry.kind == "package") matchedEntries;
+  moduleName =
+    entry:
+    if builtins.pathExists (programsDir + "/${entry.name}") then
+      entry.name
+    else
+      throw "module not found for ${method}: ${entry.name}";
+  packageName =
+    entry:
+    if builtins.pathExists (programsDir + "/${entry.name}") then
+      throw "package '${entry.name}' for ${method} conflicts with a module of the same name"
+    else
+      entry.name;
 in
 {
   entries = matchedEntries;
   inherit names;
-  moduleNames = builtins.filter isModule names;
-  packageNames = builtins.filter (name: !isModule name) names;
+  moduleNames = map moduleName moduleEntries;
+  packageNames = map packageName packageEntries;
 }

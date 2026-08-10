@@ -1,424 +1,424 @@
 # nix system
 [nh]
 type = "basic"
-common = [{ name = "nh", method = "nix-hm" }]
+common = [{ name = "nh", method = "nix-hm", kind = "module" }]
 
 [nvfetcher]
 type = "basic"
-common = [{ name = "nvfetcher", method = "nix-hm" }]
+common = [{ name = "nvfetcher", method = "nix-hm", kind = "package" }]
 
 # xdg config
 [xdg-utils]
 type = "basic"
-common = [{ name = "xdg-utils", method = "nix-hm" }]
+common = [{ name = "xdg-utils", method = "nix-hm", kind = "package" }]
 
 # build package
 [gcc]
 type = "basic"
-nixos = [{ name = "gcc", method = "nix" }]
+nixos = [{ name = "gcc", method = "nix", kind = "package" }]
 
 [gnumake]
 type = "basic"
-nixos = [{ name = "gnumake", method = "nix" }]
+nixos = [{ name = "gnumake", method = "nix", kind = "package" }]
 
 # task runner
 [just]
 type = "basic"
-common = [{ name = "just", method = "nix-hm" }]
+common = [{ name = "just", method = "nix-hm", kind = "package" }]
 
 # CLI command packages
 [bash]
 type = "basic"
-common = [{ name = "bash", method = "nix" }]
+common = [{ name = "bash", method = "nix", kind = "package" }]
 
 [zsh]
 type = "basic"
-ubuntu = [{ name = "zsh", method = "apt" }]
-common = [{ name = "zsh", method = "nix-hm" }]
+ubuntu = [{ name = "zsh", method = "apt", kind = "package" }]
+common = [{ name = "zsh", method = "nix-hm", kind = "module" }]
 
 [uutils-coreutils-noprefix]
 type = "basic"
-common = [{ name = "uutils-coreutils-noprefix", method = "nix" }]
+common = [{ name = "uutils-coreutils-noprefix", method = "nix", kind = "package" }]
 
 [findutils]
 type = "basic"
-common = [{ name = "findutils", method = "nix" }]
+common = [{ name = "findutils", method = "nix", kind = "package" }]
 
 [grep]
 type = "basic"
-common = [{ name = "gnugrep", method = "nix" }]
+common = [{ name = "gnugrep", method = "nix", kind = "package" }]
 
 [sed]
 type = "basic"
-common = [{ name = "gnused", method = "nix" }]
+common = [{ name = "gnused", method = "nix", kind = "package" }]
 
 [gawk]
 type = "basic"
-common = [{ name = "gawk", method = "nix" }]
+common = [{ name = "gawk", method = "nix", kind = "package" }]
 
 [less]
 type = "basic"
 common = [
-  { name = "less", method = "nix" },
-  { name = "lesspipe", method = "nix" },
+  { name = "less", method = "nix", kind = "package" },
+  { name = "lesspipe", method = "nix", kind = "package" },
 ]
 
 [rsync]
 type = "basic"
-common = [{ name = "rsync", method = "nix" }]
+common = [{ name = "rsync", method = "nix", kind = "package" }]
 
 [zip]
 type = "basic"
 common = [
-  { name = "zip", method = "nix" },
-  { name = "unzip", method = "nix" },
-  { name = "wzip", method = "nix-hm" },
+  { name = "zip", method = "nix", kind = "package" },
+  { name = "unzip", method = "nix", kind = "package" },
+  { name = "wzip", method = "nix-hm", kind = "module" },
 ]
 
 [tar]
 type = "basic"
 common = [
-  { name = "gnutar", method = "nix-hm" },
-  { name = "zstd", method = "nix-hm" },
+  { name = "gnutar", method = "nix-hm", kind = "package" },
+  { name = "zstd", method = "nix-hm", kind = "package" },
 ]
 
 [unarchiver]
 type = "basic"
-common = [{ name = "unar", method = "nix" }]
+common = [{ name = "unar", method = "nix", kind = "package" }]
 
 [pv]
 type = "basic"
-common = [{ name = "pv", method = "nix-hm" }]
+common = [{ name = "pv", method = "nix-hm", kind = "package" }]
 
 [direnv]
 type = "basic"
-common = [{ name = "direnv", method = "nix-hm" }]
+common = [{ name = "direnv", method = "nix-hm", kind = "module" }]
 
 [jq]
 type = "basic"
-common = [{ name = "jq", method = "nix-hm" }]
+common = [{ name = "jq", method = "nix-hm", kind = "package" }]
 
 [fzf]
 type = "basic"
-common = [{ name = "fzf", method = "nix-hm" }]
+common = [{ name = "fzf", method = "nix-hm", kind = "module" }]
 
 [duf]
 type = "basic"
-common = [{ name = "duf", method = "nix-hm" }]
+common = [{ name = "duf", method = "nix-hm", kind = "package" }]
 
 [fastfetch]
 type = "basic"
-common = [{ name = "fastfetch", method = "nix-hm" }]
+common = [{ name = "fastfetch", method = "nix-hm", kind = "package" }]
 
 [gtrash]
 type = "basic"
-common = [{ name = "gtrash", method = "nix-hm" }]
+common = [{ name = "gtrash", method = "nix-hm", kind = "module" }]
 
 [file]
 type = "basic"
-common = [{ name = "file", method = "nix-hm" }]
+common = [{ name = "file", method = "nix-hm", kind = "package" }]
 
 [tmux]
 type = "basic"
 common = [
-  { name = "tmux", method = "nix-hm" },
-  { name = "tmux-mem-cpu-load", method = "nix-hm" },
+  { name = "tmux", method = "nix-hm", kind = "module" },
+  { name = "tmux-mem-cpu-load", method = "nix-hm", kind = "package" },
 ]
 
 [git]
 type = "basic"
 common = [
-  { name = "git", method = "nix-hm" },
-  { name = "prek", method = "nix-hm" },
-  { name = "gitleaks", method = "nix-hm" },
+  { name = "git", method = "nix-hm", kind = "module" },
+  { name = "prek", method = "nix-hm", kind = "module" },
+  { name = "gitleaks", method = "nix-hm", kind = "package" },
 ]
 
 [procs]
 type = "basic"
-common = [{ name = "procs", method = "nix-hm" }]
+common = [{ name = "procs", method = "nix-hm", kind = "package" }]
 
 [bat]
 type = "basic"
-common = [{ name = "bat", method = "nix-hm" }]
+common = [{ name = "bat", method = "nix-hm", kind = "module" }]
 
 [fd]
 type = "basic"
-common = [{ name = "fd", method = "nix-hm" }]
+common = [{ name = "fd", method = "nix-hm", kind = "package" }]
 
 [sd]
 type = "basic"
-common = [{ name = "sd", method = "nix-hm" }]
+common = [{ name = "sd", method = "nix-hm", kind = "package" }]
 
 [ripgrep]
 type = "basic"
-common = [{ name = "ripgrep", method = "nix-hm" }]
+common = [{ name = "ripgrep", method = "nix-hm", kind = "module" }]
 
 [delta]
 type = "basic"
-common = [{ name = "delta", method = "nix-hm" }]
+common = [{ name = "delta", method = "nix-hm", kind = "module" }]
 
 [lsd]
 type = "basic"
-common = [{ name = "lsd", method = "nix-hm" }]
+common = [{ name = "lsd", method = "nix-hm", kind = "module" }]
 
 [dust]
 type = "basic"
-common = [{ name = "dust", method = "nix-hm" }]
+common = [{ name = "dust", method = "nix-hm", kind = "package" }]
 
 [csview]
 type = "basic"
-common = [{ name = "csview", method = "nix-hm" }]
+common = [{ name = "csview", method = "nix-hm", kind = "package" }]
 
 [libsixel]
 type = "basic"
-common = [{ name = "libsixel", method = "nix-hm" }]
+common = [{ name = "libsixel", method = "nix-hm", kind = "package" }]
 
 [zoxide]
 type = "basic"
-common = [{ name = "zoxide", method = "nix-hm" }]
+common = [{ name = "zoxide", method = "nix-hm", kind = "module" }]
 
 [navi]
 type = "basic"
-common = [{ name = "navi", method = "nix-hm" }]
+common = [{ name = "navi", method = "nix-hm", kind = "module" }]
 
 [lazygit]
 type = "basic"
-common = [{ name = "lazygit", method = "nix-hm" }]
+common = [{ name = "lazygit", method = "nix-hm", kind = "module" }]
 
 [ssh]
 type = "basic"
-common = [{ name = "ssh_config", method = "nix-hm" }]
+common = [{ name = "ssh_config", method = "nix-hm", kind = "module" }]
 
 [drill]
 type = "basic"
-common = [{ name = "ldns", method = "nix-hm" }]
+common = [{ name = "ldns", method = "nix-hm", kind = "package" }]
 
 [viddy]
 type = "basic"
-common = [{ name = "viddy", method = "nix-hm" }]
+common = [{ name = "viddy", method = "nix-hm", kind = "package" }]
 
 [yazi]
 type = "basic"
 common = [
-  { name = "yazi", method = "nix-hm" },
-  { name = "poppler-utils", method = "nix-hm" },
+  { name = "yazi", method = "nix-hm", kind = "module" },
+  { name = "poppler-utils", method = "nix-hm", kind = "package" },
 ]
 ## for yazi
 [wl-clipboard]
 type = "gui"
-linux = [{ name = "wl-clipboard", method = "nix-hm" }]
+linux = [{ name = "wl-clipboard", method = "nix-hm", kind = "package" }]
 
 ## toml
 [taplo]
 type = "basic"
-common = [{ name = "taplo", method = "nix-hm" }]
+common = [{ name = "taplo", method = "nix-hm", kind = "package" }]
 
 ## for html/css/json/eslint
 [vscode-langservers-extracted]
 type = "basic"
-common = [{ name = "vscode-langservers-extracted", method = "nix-hm" }]
+common = [{ name = "vscode-langservers-extracted", method = "nix-hm", kind = "package" }]
 
 ## for yaml
 [yaml-language-server]
 type = "basic"
-common = [{ name = "yaml-language-server", method = "nix-hm" }]
+common = [{ name = "yaml-language-server", method = "nix-hm", kind = "package" }]
 
 ## for markdown
 [marksman]
 type = "basic"
-common = [{ name = "marksman", method = "nix-hm" }]
+common = [{ name = "marksman", method = "nix-hm", kind = "package" }]
 
 ## security
 [openssl]
 type = "basic"
-darwin = [{ name = "openssl", method = "nix-hm" }]
-ubuntu = [{ name = "openssl", method = "apt" }]
+darwin = [{ name = "openssl", method = "nix-hm", kind = "package" }]
+ubuntu = [{ name = "openssl", method = "apt", kind = "package" }]
 
 [gnupg]
 type = "basic"
-ubuntu = [{ name = "gnupg", method = "apt" }]
-common = [{ name = "gnupg", method = "nix-hm" }]
+ubuntu = [{ name = "gnupg", method = "apt", kind = "package" }]
+common = [{ name = "gnupg", method = "nix-hm", kind = "module" }]
 
 [sops]
 type = "basic"
 common = [
-  { name = "sops", method = "nix-hm" },
-  { name = "age", method = "nix-hm" },
+  { name = "sops", method = "nix-hm", kind = "package" },
+  { name = "age", method = "nix-hm", kind = "package" },
 ]
 
 [macos-security]
 type = "basic"
 darwin = [
-  { name = "pinentry_mac", method = "nix-hm" },
-  { name = "pam-reattach", method = "nix-hm" },
+  { name = "pinentry_mac", method = "nix-hm", kind = "package" },
+  { name = "pam-reattach", method = "nix-hm", kind = "package" },
 ]
 
 ## downloader
 [wget]
 type = "basic"
-common = [{ name = "wget", method = "nix-hm" }]
+common = [{ name = "wget", method = "nix-hm", kind = "package" }]
 
 [curl]
 type = "basic"
-common = [{ name = "curl", method = "nix-hm" }]
+common = [{ name = "curl", method = "nix-hm", kind = "package" }]
 
 [aria2]
 type = "basic"
-common = [{ name = "aria2", method = "nix-hm" }]
+common = [{ name = "aria2", method = "nix-hm", kind = "package" }]
 
 ## top series
 [htop]
 type = "basic"
-common = [{ name = "htop", method = "nix-hm" }]
+common = [{ name = "htop", method = "nix-hm", kind = "package" }]
 
 [bottom]
 type = "basic"
-common = [{ name = "bottom", method = "nix-hm" }]
+common = [{ name = "bottom", method = "nix-hm", kind = "module" }]
 
 [iotop]
 type = "basic"
-linux = [{ name = "iotop", method = "nix-hm" }]
+linux = [{ name = "iotop", method = "nix-hm", kind = "package" }]
 
 ## Editor
 [vim]
 type = "basic"
-common = [{ name = "vim", method = "nix-hm" }]
+common = [{ name = "vim", method = "nix-hm", kind = "module" }]
 
 [emacs-basic]
 type = "basic"
 common = [
-  { name = "emacs", method = "nix-hm" },
-  { name = "hunspell", method = "nix" },
-  { name = "hunspellDicts.en_US", method = "nix" },
-  { name = "enchant", method = "nix-hm" },
-  { name = "emacs-lsp-booster", method = "nix-hm" },
-  { name = "pandoc", method = "nix-hm" },
-  { name = "cmigemo", method = "nix-hm" },
+  { name = "emacs", method = "nix-hm", kind = "module" },
+  { name = "hunspell", method = "nix", kind = "package" },
+  { name = "hunspellDicts.en_US", method = "nix", kind = "package" },
+  { name = "enchant", method = "nix-hm", kind = "package" },
+  { name = "emacs-lsp-booster", method = "nix-hm", kind = "package" },
+  { name = "pandoc", method = "nix-hm", kind = "package" },
+  { name = "cmigemo", method = "nix-hm", kind = "module" },
 ]
 
 [emacs-gui]
 type = "gui"
 common = [
-  { name = "isync", method = "nix-hm" },
-  { name = "msmtp", method = "nix-hm" },
-  { name = "mu", method = "nix-hm" },
-  { name = "goimapnotify", method = "nix-hm" },
+  { name = "isync", method = "nix-hm", kind = "package" },
+  { name = "msmtp", method = "nix-hm", kind = "package" },
+  { name = "mu", method = "nix-hm", kind = "package" },
+  { name = "goimapnotify", method = "nix-hm", kind = "package" },
 ]
 darwin = [
-  { name = "pngpaste", method = "nix-hm" },
+  { name = "pngpaste", method = "nix-hm", kind = "package" },
 ]
 
 ## repository management
 [ghq]
 type = "basic"
-common = [{ name = "ghq", method = "nix-hm" }]
+common = [{ name = "ghq", method = "nix-hm", kind = "module" }]
 
 # development packages
 ## SSO
 [saml2aws]
 type = "dev"
-common = [{ name = "saml2aws", method = "nix-hm" }]
+common = [{ name = "saml2aws", method = "nix-hm", kind = "package" }]
 
 ## shell script
 [shellcheck]
 type = "dev"
-common = [{ name = "shellcheck-minimal", method = "nix-hm" }]
+common = [{ name = "shellcheck-minimal", method = "nix-hm", kind = "package" }]
 
 ## for nix
 [nixd]
 type = "dev"
-common = [{ name = "nixd", method = "nix-hm" }]
+common = [{ name = "nixd", method = "nix-hm", kind = "package" }]
 
 [nixfmt]
 type = "dev"
-common = [{ name = "nixfmt", method = "nix-hm" }]
+common = [{ name = "nixfmt", method = "nix-hm", kind = "package" }]
 
 ## for python
 [python]
 type = "dev"
-common = [{ name = "python", method = "nix-hm" }]
+common = [{ name = "python", method = "nix-hm", kind = "module" }]
 
 [ruff]
 type = "dev"
-common = [{ name = "ruff", method = "nix-hm" }]
+common = [{ name = "ruff", method = "nix-hm", kind = "module" }]
 
 [pyright]
 type = "dev"
-common = [{ name = "basedpyright", method = "nix-hm" }]
+common = [{ name = "basedpyright", method = "nix-hm", kind = "package" }]
 
 ### for python build
 [python-native-build-deps]
 type = "dev"
 ubuntu = [
-  { name = "build-essential", method = "apt" },
-  { name = "libbz2-dev", method = "apt" },
-  { name = "libdb-dev", method = "apt" },
-  { name = "libreadline-dev", method = "apt" },
-  { name = "libffi-dev", method = "apt" },
-  { name = "libgdbm-dev", method = "apt" },
-  { name = "liblzma-dev", method = "apt" },
-  { name = "libncursesw5-dev", method = "apt" },
-  { name = "libsqlite3-dev", method = "apt" },
-  { name = "libssl-dev", method = "apt" },
-  { name = "zlib1g-dev", method = "apt" },
-  { name = "uuid-dev", method = "apt" },
+  { name = "build-essential", method = "apt", kind = "package" },
+  { name = "libbz2-dev", method = "apt", kind = "package" },
+  { name = "libdb-dev", method = "apt", kind = "package" },
+  { name = "libreadline-dev", method = "apt", kind = "package" },
+  { name = "libffi-dev", method = "apt", kind = "package" },
+  { name = "libgdbm-dev", method = "apt", kind = "package" },
+  { name = "liblzma-dev", method = "apt", kind = "package" },
+  { name = "libncursesw5-dev", method = "apt", kind = "package" },
+  { name = "libsqlite3-dev", method = "apt", kind = "package" },
+  { name = "libssl-dev", method = "apt", kind = "package" },
+  { name = "zlib1g-dev", method = "apt", kind = "package" },
+  { name = "uuid-dev", method = "apt", kind = "package" },
 ]
 
 [uv]
 type = "dev"
-common = [{ name = "uv", method = "nix-hm" }]
+common = [{ name = "uv", method = "nix-hm", kind = "package" }]
 
 ## for bash
 [bash-language-server]
 type = "dev"
-common = [{ name = "bash-language-server", method = "nix-hm" }]
+common = [{ name = "bash-language-server", method = "nix-hm", kind = "package" }]
 
 ## for lua
 [lua-lsp]
 type = "dev"
-common = [{ name = "lua53Packages.lua-lsp", method = "nix-hm" }]
+common = [{ name = "lua53Packages.lua-lsp", method = "nix-hm", kind = "package" }]
 
 ## for typescript
 [typescript-language-server]
 type = "dev"
-common = [{ name = "typescript-language-server", method = "nix-hm" }]
+common = [{ name = "typescript-language-server", method = "nix-hm", kind = "package" }]
 
 [typescript]
 type = "dev"
-common = [{ name = "typescript", method = "nix-hm" }]
+common = [{ name = "typescript", method = "nix-hm", kind = "package" }]
 
 ## google cloud sdk
 [google-cloud-sdk]
 type = "dev"
-common = [{ name = "google-cloud-sdk", method = "nix-hm" }]
+common = [{ name = "google-cloud-sdk", method = "nix-hm", kind = "package" }]
 
 ## aws cli
 [awscli2]
 type = "dev"
-common = [{ name = "awscli2", method = "nix-hm" }]
+common = [{ name = "awscli2", method = "nix-hm", kind = "module" }]
 
 ## config for docker
 [docker-cli]
 type = "dev"
-linux = [{ name = "docker-cli", method = "nix-hm" }]
+linux = [{ name = "docker-cli", method = "nix-hm", kind = "module" }]
 
 # podman for build/push
 [podman]
 type = "dev"
-linux = [{ name = "podman", method = "nix-hm" }]
+linux = [{ name = "podman", method = "nix-hm", kind = "module" }]
 
 ## kubernetes
 [kubectl]
 type = "dev"
-linux = [{ name = "kubectl", method = "nix-hm" }]
+linux = [{ name = "kubectl", method = "nix-hm", kind = "module" }]
 
 [k9s]
 type = "dev"
-linux = [{ name = "k9s", method = "nix-hm" }]
+linux = [{ name = "k9s", method = "nix-hm", kind = "module" }]
 
 [flux]
 type = "dev"
-linux = [{ name = "fluxcd", method = "nix-hm" }]
+linux = [{ name = "fluxcd", method = "nix-hm", kind = "package" }]
 
 
 # gui environment
@@ -426,39 +426,39 @@ linux = [{ name = "fluxcd", method = "nix-hm" }]
 [niri]
 type = "gui"
 nixos = [
-  { name = "niri", method = "nix" },
-  { name = "niri", method = "nix-hm" },
-  { name = "xwayland-satellite", method = "nix-hm" },
+  { name = "niri", method = "nix", kind = "module" },
+  { name = "niri", method = "nix-hm", kind = "module" },
+  { name = "xwayland-satellite", method = "nix-hm", kind = "package" },
 ]
 
 ## linux ui
 [noctaria]
 type = "gui"
 nixos = [
-  { name = "noctalia", method = "nix-hm" },
+  { name = "noctalia", method = "nix-hm", kind = "module" },
 ]
 
 ## other compornet
 [gui-others]
 type = "gui"
 nixos = [
-  { name = "nord", method = "nix-hm" },
-  { name = "fcitx5-skk", method = "nix-hm" },
-  { name = "gnome-keyring", method = "nix-hm" },
-  { name = "libsecret", method = "nix-hm" },
-  { name = "seahorse", method = "nix-hm" },
-  { name = "ddcutil", method = "nix-hm" },
+  { name = "nord", method = "nix-hm", kind = "module" },
+  { name = "fcitx5-skk", method = "nix-hm", kind = "module" },
+  { name = "gnome-keyring", method = "nix-hm", kind = "package" },
+  { name = "libsecret", method = "nix-hm", kind = "package" },
+  { name = "seahorse", method = "nix-hm", kind = "package" },
+  { name = "ddcutil", method = "nix-hm", kind = "package" },
 ]
 
 ## macos
 [aerospace]
 type = "gui"
 darwin = [
-  { name = "aerospace", method = "nix-hm" },
-  #{ name = "omniwm", method = "nix-hm" },
-  { name = "jankyborders", method = "nix-hm" },
-  { name = "sketchybar", method = "nix-hm" },
-  { name = "macskk", method = "cask" },
+  { name = "aerospace", method = "nix-hm", kind = "module" },
+  #{ name = "omniwm", method = "nix-hm", kind = "module" },
+  { name = "jankyborders", method = "nix-hm", kind = "package" },
+  { name = "sketchybar", method = "nix-hm", kind = "module" },
+  { name = "macskk", method = "cask", kind = "package" },
 ]
 
 
@@ -467,203 +467,203 @@ darwin = [
 [printer]
 type = "gui"
 nixos = [
-  { name = "printer", method = "nix" },
-  { name = "simple-scan", method = "nix-hm" },
+  { name = "printer", method = "nix", kind = "module" },
+  { name = "simple-scan", method = "nix-hm", kind = "package" },
 ]
 
 ## tex
 [latex]
 type = "gui"
-common = [{ name = "texliveMedium", method = "nix-hm" }]
+common = [{ name = "texliveMedium", method = "nix-hm", kind = "package" }]
 
 ## typst
 [typst]
 type = "gui"
 common = [
-  { name = "typst", method = "nix-hm" },
-  { name = "tinymist", method = "nix-hm" },
+  { name = "typst", method = "nix-hm", kind = "package" },
+  { name = "tinymist", method = "nix-hm", kind = "package" },
 ]
 
 ## pdf viewer
 [zathura]
 type = "gui"
-linux = [{ name = "zathura", method = "nix-hm" }]
+linux = [{ name = "zathura", method = "nix-hm", kind = "module" }]
 
 ## pdf pesenter
 [pdfpc]
 type = "gui"
-common = [{ name = "pdfpc", method = "nix-hm" }]
+common = [{ name = "pdfpc", method = "nix-hm", kind = "package" }]
 
 ## communication tools
 [slack]
 type = "gui"
-darwin = [{ name = "slack", method = "cask" }]
-linux = [{ name = "slack", method = "nix-hm" }]
+darwin = [{ name = "slack", method = "cask", kind = "package" }]
+linux = [{ name = "slack", method = "nix-hm", kind = "package" }]
 
 [discord]
 type = "gui"
-linux = [{ name = "discord", method = "nix-hm" }]
+linux = [{ name = "discord", method = "nix-hm", kind = "module" }]
 
 [zoom]
 type = "gui"
-darwin = [{ name = "zoom", method = "cask" }]
+darwin = [{ name = "zoom", method = "cask", kind = "package" }]
 
 ### macos only
 [MeetingBar]
 type = "gui"
-darwin = [{ name = "meetingbar", method = "nix-hm" }]
+darwin = [{ name = "meetingbar", method = "nix-hm", kind = "package" }]
 
 ## browser
 [vivaldi]
 type = "gui"
-darwin = [{ name = "vivaldi", method = "cask" }]
-linux = [{ name = "vivaldi", method = "nix-hm" }]
+darwin = [{ name = "vivaldi", method = "cask", kind = "package" }]
+linux = [{ name = "vivaldi", method = "nix-hm", kind = "module" }]
 
 ### for keymap
 [google-chrome]
 type = "gui"
-common = [{ name = "google-chrome", method = "nix-hm" }]
+common = [{ name = "google-chrome", method = "nix-hm", kind = "package" }]
 
 ### sub browser
 [firefox]
 type = "gui"
-linux = [{ name = "firefox", method = "nix-hm" }]
+linux = [{ name = "firefox", method = "nix-hm", kind = "package" }]
 
 ## media
 [vlc]
 type = "gui"
-common = [{ name = "vlc", method = "nix-hm" }]
+common = [{ name = "vlc", method = "nix-hm", kind = "module" }]
 linux = [
-  { name = "libdvdread", method = "nix-hm" },
-  { name = "libdvdnav", method = "nix-hm" },
-  { name = "libdvdcss", method = "nix-hm" },
+  { name = "libdvdread", method = "nix-hm", kind = "package" },
+  { name = "libdvdnav", method = "nix-hm", kind = "package" },
+  { name = "libdvdcss", method = "nix-hm", kind = "package" },
 ]
 
 ## research
 [zotero]
 type = "gui"
-darwin = [{ name = "zotero", method = "cask" }]
-linux = [{ name = "zotero", method = "nix-hm" }]
+darwin = [{ name = "zotero", method = "cask", kind = "package" }]
+linux = [{ name = "zotero", method = "nix-hm", kind = "package" }]
 
 [anki]
 type = "gui"
-common = [{ name = "anki-bin", method = "nix-hm" }]
+common = [{ name = "anki-bin", method = "nix-hm", kind = "package" }]
 
 ## terminal emulator
 [wezterm]
 type = "gui"
-common = [{ name = "wezterm", method = "nix-hm" }]
+common = [{ name = "wezterm", method = "nix-hm", kind = "module" }]
 
 ## cloud storage
 [nextcloud-client]
 type = "gui"
-linux = [{ name = "nextcloud-client", method = "nix-hm" }]
+linux = [{ name = "nextcloud-client", method = "nix-hm", kind = "package" }]
 
 [google-drive]
 type = "gui"
-darwin = [{ name = "google-drive", method = "cask" }]
-linux = [{ name = "gdrive3", method = "nix-hm" }]
+darwin = [{ name = "google-drive", method = "cask", kind = "package" }]
+linux = [{ name = "gdrive3", method = "nix-hm", kind = "package" }]
 
 ## libreoffice
 [libreoffice]
 type = "gui"
-linux = [{ name = "libreoffice-fresh", method = "nix-hm" }]
-darwin = [{ name = "libreoffice-bin", method = "nix-hm" }]
+linux = [{ name = "libreoffice-fresh", method = "nix-hm", kind = "package" }]
+darwin = [{ name = "libreoffice-bin", method = "nix-hm", kind = "package" }]
 
 ## launcher
 [launcher]
 type = "gui"
-darwin = [{ name = "raycast", method = "cask" }]
-linux = [{ name = "vicinae", method = "nix-hm" }]
+darwin = [{ name = "raycast", method = "cask", kind = "package" }]
+linux = [{ name = "vicinae", method = "nix-hm", kind = "module" }]
 
 ## gui archiver
 [xarchiver]
 type = "gui"
-linux = [{ name = "xarchiver", method = "nix-hm" }]
+linux = [{ name = "xarchiver", method = "nix-hm", kind = "package" }]
 
 ## recoll
 [recoll]
 type = "gui"
-common = [{ name = "recoll", method = "nix-hm" }]
+common = [{ name = "recoll", method = "nix-hm", kind = "module" }]
 
 ## github cli
 [gh]
 type = "gui"
-common = [{ name = "gh", method = "nix-hm" }]
+common = [{ name = "gh", method = "nix-hm", kind = "module" }]
 
 ## coding agent
 [codex]
 type = "dev"
-common = [{ name = "codex", method = "nix-hm" }]
+common = [{ name = "codex", method = "nix-hm", kind = "module" }]
 
 [agent-skills]
 type = "dev"
-common = [{ name = "agent-skills", method = "nix-hm" }]
+common = [{ name = "agent-skills", method = "nix-hm", kind = "module" }]
 
 [claude-code]
 type = "dev"
-common = [{ name = "claude-code", method = "nix-hm" }]
+common = [{ name = "claude-code", method = "nix-hm", kind = "module" }]
 
 ### for claude-code
 [nodejs]
 type = "dev"
-common = [{ name = "nodejs", method = "nix-hm" }]
+common = [{ name = "nodejs", method = "nix-hm", kind = "module" }]
 
 ### notify for agent with ssh
 [agent-notify]
 type = "dev"
-common = [{ name = "agent-notify", method = "nix-hm" }]
+common = [{ name = "agent-notify", method = "nix-hm", kind = "module" }]
 
 ## font
 [font]
 type = "gui"
-common = [{ name = "fonts", method = "nix-hm" }]
+common = [{ name = "fonts", method = "nix-hm", kind = "module" }]
 
 ## image editor
 [pinta]
 type = "gui"
-nixos = [{ name = "pinta", method = "nix-hm" }]
+nixos = [{ name = "pinta", method = "nix-hm", kind = "package" }]
 
 ## key remapper
 [keyremap]
 type = "gui"
 darwin = [
-  { name = "karabiner-elements", method = "cask" },
-  { name = "karabiner-elements", method = "nix-hm" },
+  { name = "karabiner-elements", method = "cask", kind = "package" },
+  { name = "karabiner-elements", method = "nix-hm", kind = "module" },
 ]
-nixos = [{ name = "xremap", method = "nix" }]
+nixos = [{ name = "xremap", method = "nix", kind = "module" }]
 
 ## dvd writing
 [growisofs]
 type = "gui"
-linux = [{ name = "dvdplusrwtools", method = "nix-hm" }]
+linux = [{ name = "dvdplusrwtools", method = "nix-hm", kind = "module" }]
 
 ## kde connect
 [kdeconnect]
 type = "gui"
-nixos = [{ name = "kdeconnect", method = "nix" }]
+nixos = [{ name = "kdeconnect", method = "nix", kind = "module" }]
 
 ## VPN
 [WireGuard]
 type = "gui"
-darwin = [{ name = "wireguard-tools", method = "nix" }]
-common = [{ name = "wireguard-tools", method = "nix-hm" }]
+darwin = [{ name = "wireguard-tools", method = "nix", kind = "module" }]
+common = [{ name = "wireguard-tools", method = "nix-hm", kind = "package" }]
 
 ## steam
 [steam]
 type = "gui"
-nixos = [{ name = "steam", method = "nix" }]
+nixos = [{ name = "steam", method = "nix", kind = "module" }]
 
 ## macos only
 [utils]
 type = "gui"
-darwin = [{ name = "appcleaner", method = "nix-hm" }]
+darwin = [{ name = "appcleaner", method = "nix-hm", kind = "package" }]
 
 [darwin]
 type = "gui"
-darwin = [{ name = "macos", method = "nix-hm" }]
+darwin = [{ name = "macos", method = "nix-hm", kind = "module" }]
 
 ### external monitor control
 [betterdisplay]
 type = "gui"
-darwin = [{ name = "betterdisplay", method = "cask" }]
+darwin = [{ name = "betterdisplay", method = "cask", kind = "package" }]
