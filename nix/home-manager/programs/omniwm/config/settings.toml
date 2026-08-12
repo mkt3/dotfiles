@@ -1,4 +1,5 @@
 monitorDwindleOverrides = []
+monitorGapOverrides = []
 monitorNiriOverrides = []
 monitorOrientationOverrides = []
 
@@ -24,15 +25,18 @@ maxTotalBytes = 67108864
 [dwindle]
 defaultSplitRatio = 1.0
 moveToRootStable = true
-singleWindowAspectRatio = "4:3"
+singleWindowFit = "fill"
 smartSplit = false
 splitWidthMultiplier = 1.0
 useGlobalGaps = true
 
 [focus]
+crossesMonitorAtEdge = false
 followsMouse = false
 followsWindowToMonitor = false
-moveMouseToFocusedWindow = false
+lockModifier = "off"
+moveCrossesMonitorAtEdge = false
+moveMouseToFocusedWindow = true
 
 [gaps]
 size = 0.0
@@ -44,48 +48,89 @@ right = 0.0
 top = 36.0
 
 [general]
-animationsEnabled = false
+animationsEnabled = true
 defaultLayoutType = "niri"
 hotkeysEnabled = true
-ipcEnabled = true
+hyperKeyModifiers = "Control+Option+Shift+Command"
+ipcEnabled = false
 preventSleepEnabled = false
+systemHyperTrigger = "None"
 updateChecksEnabled = false
 
 [gestures]
 fingerCount = 3
 invertDirection = true
+mouseMoveModifierKey = "option"
 mouseResizeModifierKey = "option"
 scrollEnabled = false
 scrollModifierKey = "optionShift"
 scrollSensitivity = 5.0
+trackpadScrollStyle = "snap"
+workspaceSwipeAxis = "vertical"
+workspaceSwipeEnabled = false
+workspaceSwipeFingerCount = 3
+
+[hiddenBar]
+enabled = true
+hiddenBundleIDs = []
+rehideIntervalSeconds = 5.0
 
 [mouseWarp]
-axis = "vertical"
+constrainToArrangement = false
+enabled = true
 margin = 1
-monitorOrder = ["LG HDR 4K", "CX133"]
 
 [niri]
 alwaysCenterSingleColumn = false
 centerFocusedColumn = "never"
-columnWidthPresets = [0.3333333333333333, 0.5, 0.6666666666666666]
+containerPrimarySpanPresets = [0.33, 0.5, 0.6666666666666666]
 infiniteLoop = false
-maxVisibleColumns = 2
-maxWindowsPerColumn = 10
-singleWindowAspectRatio = "none"
+singleWindowFit = "container_primary_span"
+visibleContainerCount = 2
+
+[overview]
+zoom = 1.0
+
+[overview.backdrop]
+alpha = 1.0
+blue = 0.08
+green = 0.05
+red = 0.05
+
+[overview.windowBorders]
+
+[overview.windowBorders.hovered]
+alpha = 1.0
+blue = 1.0
+green = 0.6
+red = 0.4
+
+[overview.windowBorders.normal]
+alpha = 0.5
+blue = 0.35
+green = 0.3
+red = 0.3
+
+[overview.windowBorders.selected]
+alpha = 1.0
+blue = 0.4
+green = 0.8
+red = 0.3
 
 [quakeTerminal]
 animationDuration = 0.2
 autoHide = false
+backgroundBlurRadius = 0
+backgroundEffect = "standardBlur"
 enabled = false
 heightPercent = 50.0
 monitorMode = "focusedWindow"
 opacity = 1.0
 position = "center"
-useCustomFrame = false
 widthPercent = 50.0
 
-[state]
-commandPaletteLastMode = "windows"
+[routing]
+mode = "custom"
 
 [statusBar]
 showAppNames = false
@@ -96,14 +141,18 @@ useWorkspaceId = false
 backgroundOpacity = 0.1
 deduplicateAppIcons = false
 enabled = false
+excludedBundleIDs = []
 height = 26.0
 hideEmptyWorkspaces = false
-labelFontSize = 12.0
-notchAware = false
+notchActiveZoneWidth = 180.0
+notchMode = "moveBelowMenuBar"
 position = "overlappingMenuBar"
 reserveLayoutSpace = false
+revealHoldMilliseconds = 200.0
+revealModifier = "off"
 showFloatingWindows = false
 showLabels = false
+systemStatsButton = false
 windowLevel = "popup"
 xOffset = 0.0
 yOffset = 0.0
@@ -113,6 +162,8 @@ alpha = 1.0
 blue = -1.0
 green = -1.0
 red = -1.0
+
+[workspaceBar.iconOverrides]
 
 [workspaceBar.textColor]
 alpha = 1.0
@@ -199,19 +250,19 @@ binding = "Shift+Command+M"
 id = "moveToWorkspace.0"
 
 [[hotkeys]]
-binding = "Command+,"
+binding = "Command+Comma"
 id = "switchWorkspace.1"
 
 [[hotkeys]]
-binding = "Shift+Command+,"
+binding = "Shift+Command+Comma"
 id = "moveToWorkspace.1"
 
 [[hotkeys]]
-binding = "Command+."
+binding = "Command+Period"
 id = "switchWorkspace.2"
 
 [[hotkeys]]
-binding = "Shift+Command+."
+binding = "Shift+Command+Period"
 id = "moveToWorkspace.2"
 
 [[hotkeys]]
@@ -231,11 +282,11 @@ binding = "Unassigned"
 id = "moveToWorkspace.4"
 
 [[hotkeys]]
-binding = "Command+/"
+binding = "Command+Slash"
 id = "switchWorkspace.5"
 
 [[hotkeys]]
-binding = "Shift+Command+/"
+binding = "Shift+Command+Slash"
 id = "moveToWorkspace.5"
 
 [[hotkeys]]
@@ -448,6 +499,38 @@ id = "focusMonitorLast"
 
 [[hotkeys]]
 binding = "Unassigned"
+id = "moveWorkspaceToMonitor.left"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWorkspaceToMonitor.right"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWorkspaceToMonitor.up"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWorkspaceToMonitor.down"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowToMonitor.left"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowToMonitor.right"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowToMonitor.up"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowToMonitor.down"
+
+[[hotkeys]]
+binding = "Unassigned"
 id = "toggleFullscreen"
 
 [[hotkeys]]
@@ -461,6 +544,14 @@ id = "moveColumn.left"
 [[hotkeys]]
 binding = "Shift+Command+L"
 id = "moveColumn.right"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumn.up"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumn.down"
 
 [[hotkeys]]
 binding = "Unassigned"
@@ -591,64 +682,64 @@ binding = "Unassigned"
 id = "moveColumnToIndex.9"
 
 [[hotkeys]]
-binding = "Unassigned"
-id = "cycleColumnWidthForward"
+binding = "Option+Period"
+id = "cycleSizeForward"
+
+[[hotkeys]]
+binding = "Option+Comma"
+id = "cycleSizeBackward"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "cycleColumnWidthBackward"
+id = "cycleWindowPrimarySpanForward"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "cycleWindowWidthForward"
+id = "cycleWindowPrimarySpanBackward"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "cycleWindowWidthBackward"
+id = "cycleWindowSecondarySpanForward"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "cycleWindowHeightForward"
-
-[[hotkeys]]
-binding = "Unassigned"
-id = "cycleWindowHeightBackward"
+id = "cycleWindowSecondarySpanBackward"
 
 [[hotkeys]]
 binding = "Command+Space"
-id = "toggleColumnFullWidth"
+id = "toggleContainerFullPrimarySpan"
+
+[[hotkeys]]
+binding = "Control+Option+F"
+id = "expandContainerToAvailablePrimarySpan"
+
+[[hotkeys]]
+binding = "Control+Option+R"
+id = "resetWindowSecondarySpan"
+
+[[hotkeys]]
+binding = "Option+Minus"
+id = "setContainerPrimarySpan.decrease10Percent"
+
+[[hotkeys]]
+binding = "Option+Equal"
+id = "setContainerPrimarySpan.increase10Percent"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "expandColumnToAvailableWidth"
+id = "setWindowPrimarySpan.decrease10Percent"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "resetWindowHeight"
+id = "setWindowPrimarySpan.increase10Percent"
 
 [[hotkeys]]
-binding = "Unassigned"
-id = "setColumnWidth.decrease10Percent"
+binding = "Option+Shift+Minus"
+id = "setWindowSecondarySpan.decrease10Percent"
 
 [[hotkeys]]
-binding = "Unassigned"
-id = "setColumnWidth.increase10Percent"
-
-[[hotkeys]]
-binding = "Unassigned"
-id = "setWindowWidth.decrease10Percent"
-
-[[hotkeys]]
-binding = "Unassigned"
-id = "setWindowWidth.increase10Percent"
-
-[[hotkeys]]
-binding = "Unassigned"
-id = "setWindowHeight.decrease10Percent"
-
-[[hotkeys]]
-binding = "Unassigned"
-id = "setWindowHeight.increase10Percent"
+binding = "Option+Shift+Equal"
+id = "setWindowSecondarySpan.increase10Percent"
 
 [[hotkeys]]
 binding = "Option+Shift+B"
@@ -668,35 +759,27 @@ id = "swapSplit"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "resizeGrow.left"
+id = "resizeGrow.horizontal"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "resizeGrow.right"
+id = "resizeGrow.vertical"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "resizeGrow.up"
+id = "resizeShrink.horizontal"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "resizeGrow.down"
+id = "resizeShrink.vertical"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "resizeShrink.left"
+id = "resizeFocusedWindow.grow"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "resizeShrink.right"
-
-[[hotkeys]]
-binding = "Unassigned"
-id = "resizeShrink.up"
-
-[[hotkeys]]
-binding = "Unassigned"
-id = "resizeShrink.down"
+id = "resizeFocusedWindow.shrink"
 
 [[hotkeys]]
 binding = "Unassigned"
@@ -752,7 +835,7 @@ id = "toggleWorkspaceBarVisibility"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "toggleHiddenBar"
+id = "toggleHiddenBarPanel"
 
 [[hotkeys]]
 binding = "Unassigned"
@@ -766,10 +849,26 @@ id = "toggleWorkspaceLayout"
 binding = "Unassigned"
 id = "toggleOverview"
 
+[[hotkeys]]
+binding = "Unassigned"
+id = "toggleSystemStats"
+
 [[monitorBarOverrides]]
 id = "C4042955-EE55-450D-B817-10E90B6F2706"
 monitorDisplayId = 2
 monitorName = "LG HDR 4K"
+
+[[monitorRoutingOverrides]]
+gridColumn = 0
+gridRow = 0
+monitorDisplayUUID = "DE16F3A6-0699-45DE-9617-701DF42575DC"
+monitorName = "LG HDR 4K"
+
+[[monitorRoutingOverrides]]
+gridColumn = 0
+gridRow = 1
+monitorDisplayUUID = "9318771D-0EF2-4354-834D-0ECD24410D31"
+monitorName = "CX133"
 
 [[workspaces]]
 displayName = "main"

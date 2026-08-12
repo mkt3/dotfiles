@@ -8,28 +8,36 @@ stdenvNoCC.mkDerivation {
 
   preferLocalBuild = true;
 
-  nativeBuildInputs = [ pkgs.unzip ];
+  dontUnpack = true;
+  strictDeps = true;
 
-  sourceRoot = "OmniWM.app";
+  nativeBuildInputs = [ pkgs.libarchive ];
 
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/Applications/
-    mkdir -p "$out/Applications/$sourceRoot"
-    mkdir -p $out/bin
-    cp -R . "$out/Applications/$sourceRoot"
-    ln -s "$out/Applications/$sourceRoot/Contents/MacOS/omniwmctl" "$out/bin/omniwmctl"
+    mkdir -p "$out/Applications" "$out/bin"
+    bsdtar -xf "$src" -C "$out/Applications"
+    ln -s "$out/Applications/OmniWM.app/Contents/MacOS/OmniWM" "$out/bin/OmniWM"
+    ln -s "$out/Applications/OmniWM.app/Contents/MacOS/omniwmctl" "$out/bin/omniwmctl"
 
     runHook postInstall
   '';
 
   meta = with lib; {
     description = "macOS tiling window manager inspired by Niri and Hyprland";
+    longDescription = ''
+      OmniWM is a macOS tiling window manager that is developer signed and
+      notarized. It features Niri-style scrolling columns and Hyprland-style
+      dwindle layouts, with a built-in quake terminal, command palette,
+      overview mode, and more.
+    '';
     homepage = "https://github.com/BarutSRB/OmniWM";
     changelog = "https://github.com/BarutSRB/OmniWM/releases/tag/${version}";
     license = licenses.gpl2Only;
+    mainProgram = "OmniWM";
     maintainers = [ ];
     platforms = lib.platforms.darwin;
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 }

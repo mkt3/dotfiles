@@ -227,7 +227,7 @@ pre_setup_nix() {
     local is_gui=""
     local is_dev=""
 
-    # run_nvfetcher_if_needed
+    run_nvfetcher_if_needed
 
     nix_platform=$(detect_nix_platform)
     case "$DISTRO" in

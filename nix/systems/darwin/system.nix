@@ -85,7 +85,9 @@
         location = "${homeDirectory}/Downloads";
       };
 
-      spaces.spans-displays = true;
+      # OmniWM requires "Displays have separate Spaces" to be enabled.
+      # false corresponds to enabling "Displays have separate Spaces".
+      spaces.spans-displays = false;
 
       CustomUserPreferences = {
         NSGlobalDomain = {
