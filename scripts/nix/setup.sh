@@ -227,8 +227,6 @@ pre_setup_nix() {
     local is_gui=""
     local is_dev=""
 
-    run_nvfetcher_if_needed
-
     nix_platform=$(detect_nix_platform)
     case "$DISTRO" in
         Darwin) os_name="darwin" ;;
@@ -245,43 +243,4 @@ pre_setup_nix() {
     write_host_json "$host_json" "$nix_platform" "$os_name" "$host_name" "$is_gui" "$is_dev"
 
     info "Finished pre-setup for nix"
-}
-
-run_nvfetcher_if_needed() {
-    local nvfetcher_last_run_file="${REPO_DIR}/results/nvfetcher_last_run"
-    local one_day_in_seconds=86400
-    local last_run_timestamp=""
-    local current_timestamp=""
-    local time_diff=""
-    local nvfetcher_command=()
-
-    mkdir -p "${REPO_DIR}/results"
-
-    if [ -f "$nvfetcher_last_run_file" ]; then
-        last_run_timestamp=$(cat "$nvfetcher_last_run_file" 2>/dev/null || echo 0)
-        current_timestamp=$(date +%s)
-        time_diff=$((current_timestamp - last_run_timestamp))
-
-        if [ "$time_diff" -lt "$one_day_in_seconds" ]; then
-            info "nvfetcher skipped. Last run was within the last $((time_diff / 3600)) hours."
-            return 0
-        fi
-    fi
-
-    info "Updating nix packages with nvfetcher (more than 24 hours elapsed or first run)"
-
-    if command -v nvfetcher > /dev/null 2>&1; then
-        nvfetcher_command=(nvfetcher)
-    else
-        nvfetcher_command=("${NIX_CMD[@]}" run github:berberman/nvfetcher --)
-    fi
-
-    if "${nvfetcher_command[@]}" \
-        -c "${REPO_DIR}/nix/nvfetcher.toml" \
-        -o "${REPO_DIR}/nix/_sources"; then
-        date +%s > "$nvfetcher_last_run_file"
-        info "nvfetcher execution successful. Timestamp updated."
-    else
-        warning "nvfetcher failed. Continuing setup with existing sources."
-    fi
 }

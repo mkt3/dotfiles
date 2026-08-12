@@ -24,6 +24,16 @@ NIX_CMD=(nix)
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/nix/setup.sh"
 
+info "Updating nvfetcher sources for the cache builder"
+if command -v nvfetcher > /dev/null 2>&1; then
+    nvfetcher_command=(nvfetcher)
+else
+    nvfetcher_command=("${NIX_CMD[@]}" run github:berberman/nvfetcher --)
+fi
+"${nvfetcher_command[@]}" \
+    -c "${REPO_DIR}/nix/nvfetcher.toml" \
+    -o "${REPO_DIR}/nix/_sources"
+
 hardware_config="${tmp_dir}/hardware-configuration.nix"
 printf '%s\n' \
     '{ ... }:' \

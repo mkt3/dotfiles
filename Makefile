@@ -26,7 +26,7 @@ help:
 		"make check-workflow  Validate GitHub Actions workflows" \
 		"make check-flake     Evaluate the current OS configuration" \
 		"make check-nixos     Evaluate the NixOS configuration" \
-		"make update-cache-flake-lock  Update flake.lock for the cache builder" \
+		"make update-cache-flake-lock  Update nvfetcher sources and flake.lock for the cache builder" \
 		"make build-cache-targets  Build the NixOS cache-warming profile" \
 		"make lint     Format packages.toml with taplo" \
 		"make reset-env  Remove saved host, development, and GUI choices"

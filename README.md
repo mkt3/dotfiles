@@ -136,14 +136,16 @@ Nix falls back to other substituters or local builds when the homelab cache is
 unavailable, so being away from the LAN does not make the cache a deployment
 dependency. Ubuntu and macOS hosts do not use Attic.
 
-Update the shared lock in the synthetic cache-builder environment with:
+Update the tracked nvfetcher sources and shared lock in the synthetic
+cache-builder environment with:
 
 ```bash
 make update-cache-flake-lock
 ```
 
-This command is intended for the metis-plus cache builder. Build the maximal
-NixOS profile used to warm the shared cache with:
+This command is intended for the daily metis-plus cache builder. Normal apply
+and upgrade operations use the committed sources and do not run nvfetcher
+locally. Build the maximal NixOS profile used to warm the shared cache with:
 
 ```bash
 make build-cache-targets

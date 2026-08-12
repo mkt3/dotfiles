@@ -3,10 +3,6 @@
 type = "basic"
 common = [{ name = "nh", method = "nix-hm", kind = "module" }]
 
-[nvfetcher]
-type = "basic"
-common = [{ name = "nvfetcher", method = "nix-hm", kind = "package" }]
-
 # xdg config
 [xdg-utils]
 type = "basic"
