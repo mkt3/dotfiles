@@ -263,10 +263,6 @@ type = "basic"
 common = [{ name = "aria2", method = "nix-hm", kind = "package" }]
 
 ## top series
-[htop]
-type = "basic"
-common = [{ name = "htop", method = "nix-hm", kind = "package" }]
-
 [bottom]
 type = "basic"
 common = [{ name = "bottom", method = "nix-hm", kind = "module" }]
