@@ -52,7 +52,7 @@ animationsEnabled = true
 defaultLayoutType = "niri"
 hotkeysEnabled = true
 hyperKeyModifiers = "Control+Option+Shift+Command"
-ipcEnabled = false
+ipcEnabled = true
 preventSleepEnabled = false
 systemHyperTrigger = "None"
 updateChecksEnabled = false
@@ -84,8 +84,8 @@ margin = 1
 alwaysCenterSingleColumn = false
 centerFocusedColumn = "never"
 containerPrimarySpanPresets = [0.33, 0.5, 0.6666666666666666]
-infiniteLoop = false
-singleWindowFit = "container_primary_span"
+infiniteLoop = true
+singleWindowFit = "fill"
 visibleContainerCount = 2
 
 [overview]
