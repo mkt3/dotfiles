@@ -1,7 +1,4 @@
 { ... }:
-let
-  nord = import ../nord/palette.nix;
-in
 {
   programs.lsd = {
     enable = true;
@@ -12,71 +9,49 @@ in
     };
 
     colors = {
-      user = nord.accent;
-      group = nord.accentBlue;
+      user = 182;
+      group = 110;
       permission = {
-        read = nord.success;
-        write = nord.warning;
-        exec = nord.purple;
-        exec-sticky = nord.orange;
-        no-access = nord.muted;
-        octal = nord.accent;
-        acl = nord.accentAlt;
-        context = nord.text;
+        read = 222;
+        write = 173;
+        exec = 167;
+        exec-sticky = 151;
+        no-access = 103;
+        octal = 110;
+        acl = 109;
+        context = 188;
       };
       date = {
-        hour-old = nord.success;
-        day-old = nord.accent;
-        older = nord.muted;
+        hour-old = 146;
+        day-old = 103;
+        older = 60;
       };
       size = {
-        none = nord.muted;
-        small = nord.success;
-        medium = nord.warning;
-        large = nord.danger;
+        none = 238;
+        small = 151;
+        medium = 109;
+        large = 167;
       };
       inode = {
-        valid = nord.accent;
-        invalid = nord.danger;
+        valid = 188;
+        invalid = 167;
       };
       links = {
-        valid = nord.accentAlt;
-        invalid = nord.danger;
+        valid = 110;
+        invalid = 167;
       };
-      tree-edge = nord.muted;
+      tree-edge = 152;
       git-status = {
-        default = nord.text;
-        unmodified = nord.muted;
-        ignored = nord.muted;
-        new-in-index = nord.success;
-        new-in-workdir = nord.accentAlt;
-        typechange = nord.orange;
-        deleted = nord.danger;
-        renamed = nord.accentBlue;
-        modified = nord.warning;
-        conflicted = nord.danger;
-      };
-      file-type = {
-        file = {
-          exec-uid = nord.warning;
-          uid-no-exec = nord.warning;
-          exec-no-uid = nord.success;
-          no-exec-no-uid = nord.text;
-        };
-        dir = {
-          uid = nord.accent;
-          no-uid = nord.accentBlue;
-        };
-        pipe = nord.purple;
-        symlink = {
-          default = nord.accentAlt;
-          broken = nord.danger;
-          missing-target = nord.danger;
-        };
-        block-device = nord.orange;
-        char-device = nord.orange;
-        socket = nord.purple;
-        special = nord.warning;
+        default = 238;
+        unmodified = 238;
+        ignored = 238;
+        new-in-index = 152;
+        new-in-workdir = 109;
+        typechange = 151;
+        deleted = 167;
+        renamed = 109;
+        modified = 110;
+        conflicted = 167;
       };
     };
   };
