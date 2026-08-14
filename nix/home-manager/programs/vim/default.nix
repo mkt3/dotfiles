@@ -3,6 +3,7 @@
   programs.vim = {
     enable = true;
     packageConfigurable = pkgs.vim;
+    plugins = [ pkgs.vimPlugins.nord-vim ];
     extraConfig = ''
       scriptencoding utf-8
       set encoding=utf-8
@@ -21,6 +22,8 @@
 
       syntax enable
       set background=dark
+      set termguicolors
+      colorscheme nord
       set number
       set cursorline
       "set cursorcolumn

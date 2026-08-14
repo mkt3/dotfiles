@@ -4,6 +4,9 @@
   lib,
   ...
 }:
+let
+  nord = import ../nord/palette.nix;
+in
 {
   programs.tmux = {
     enable = true;
@@ -80,16 +83,19 @@
 
       set -gu default-command
 
-      ## nord
-      set-option -g status-style bg=black,fg=white
-      set-option -g pane-border-style bg=default,fg=brightblack
-      set-option -g pane-active-border-style bg=default,fg=blue
-      set-option -g display-panes-colour black
-      set-option -g display-panes-active-colour brightblack
-      set-option -g status-left "#[fg=black,bg=cyan,bold] #h:#[fg=black,bg=cyan,nobold]#S #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
-      set-option -g status-right "#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] #(tmux-mem-cpu-load --interval 5 -a 1  -g 0) "
-      set-option -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W #{?window_zoomed_flag, ,} #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
-      set-option -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W #{?window_zoomed_flag, ,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+      ## Nord
+      set-option -g status-style "bg=${nord.background},fg=${nord.text}"
+      set-option -g pane-border-style "bg=default,fg=${nord.muted}"
+      set-option -g pane-active-border-style "bg=default,fg=${nord.accent}"
+      set-option -g display-panes-colour "${nord.muted}"
+      set-option -g display-panes-active-colour "${nord.accent}"
+      set-option -g message-style "bg=${nord.selection},fg=${nord.textBright}"
+      set-option -g mode-style "bg=${nord.accent},fg=${nord.background}"
+      set-option -g popup-border-style "fg=${nord.muted}"
+      set-option -g status-left "#[fg=${nord.background},bg=${nord.accent},bold] #h:#[fg=${nord.background},bg=${nord.accent},nobold]#S #[fg=${nord.accent},bg=${nord.background},nobold,noitalics,nounderscore]"
+      set-option -g status-right "#[fg=${nord.selection},bg=${nord.background},nobold,noitalics,nounderscore]#[fg=${nord.text},bg=${nord.selection}] #(tmux-mem-cpu-load --interval 5 -a 1  -g 0) "
+      set-option -g window-status-format "#[fg=${nord.background},bg=${nord.selection},nobold,noitalics,nounderscore] #[fg=${nord.text},bg=${nord.selection}]#I #[fg=${nord.text},bg=${nord.selection},nobold,noitalics,nounderscore] #[fg=${nord.text},bg=${nord.selection}]#W #{?window_zoomed_flag, ,} #[fg=${nord.selection},bg=${nord.background},nobold,noitalics,nounderscore]"
+      set-option -g window-status-current-format "#[fg=${nord.background},bg=${nord.accent},nobold,noitalics,nounderscore] #[fg=${nord.background},bg=${nord.accent}]#I #[fg=${nord.background},bg=${nord.accent},nobold,noitalics,nounderscore] #[fg=${nord.background},bg=${nord.accent}]#W #{?window_zoomed_flag, ,} #[fg=${nord.accent},bg=${nord.background},nobold,noitalics,nounderscore]"
       set-option -g window-status-separator ""
 
       bind-key e run-shell '

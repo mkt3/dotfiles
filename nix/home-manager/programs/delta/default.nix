@@ -3,9 +3,10 @@
   programs.delta = {
     enable = true;
     options = {
+      dark = true;
       navigate = true;
-      light = false;
       line-numbers = true;
+      syntax-theme = "Nord";
     };
   };
 

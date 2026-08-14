@@ -1,4 +1,7 @@
 { config, ... }:
+let
+  nord = import ../nord/palette.nix;
+in
 {
   programs.k9s = {
     enable = true;
@@ -35,6 +38,7 @@
           noIcons = false;
           defaultsToFullScreen = false;
           useFullGVRTitle = false;
+          skin = "nord";
         };
 
         skipLatestRevCheck = false;
@@ -73,6 +77,112 @@
           };
         };
         defaultView = "pods";
+      };
+    };
+
+    skins.nord.k9s = {
+      body = {
+        fgColor = nord.text;
+        bgColor = nord.background;
+        logoColor = nord.accent;
+      };
+      prompt = {
+        fgColor = nord.textBright;
+        bgColor = nord.background;
+        suggestColor = nord.accent;
+      };
+      info = {
+        fgColor = nord.accent;
+        sectionColor = nord.accentBlue;
+      };
+      dialog = {
+        fgColor = nord.text;
+        bgColor = nord.surface;
+        buttonFgColor = nord.background;
+        buttonBgColor = nord.accent;
+        buttonFocusFgColor = nord.background;
+        buttonFocusBgColor = nord.textBright;
+        labelFgColor = nord.text;
+        fieldFgColor = nord.accent;
+      };
+      frame = {
+        border = {
+          fgColor = nord.muted;
+          focusColor = nord.accent;
+        };
+        menu = {
+          fgColor = nord.text;
+          keyColor = nord.accent;
+          numKeyColor = nord.purple;
+        };
+        crumbs = {
+          fgColor = nord.background;
+          bgColor = nord.accentDark;
+          activeColor = nord.accent;
+        };
+        status = {
+          newColor = nord.accent;
+          modifyColor = nord.warning;
+          addColor = nord.success;
+          errorColor = nord.danger;
+          highlightColor = nord.accentBlue;
+          killColor = nord.muted;
+          completedColor = nord.success;
+        };
+        title = {
+          fgColor = nord.textBright;
+          bgColor = nord.background;
+          highlightColor = nord.accent;
+          counterColor = nord.purple;
+          filterColor = nord.accentAlt;
+        };
+      };
+      views = {
+        charts = {
+          bgColor = nord.background;
+          defaultDialColors = [
+            nord.accent
+            nord.accentBlue
+          ];
+          defaultChartColors = [
+            nord.accent
+            nord.accentBlue
+          ];
+        };
+        table = {
+          fgColor = nord.text;
+          bgColor = nord.background;
+          cursorFgColor = nord.textBright;
+          cursorBgColor = nord.selection;
+          markColor = nord.purple;
+          header = {
+            fgColor = nord.textBright;
+            bgColor = nord.surface;
+            sorterColor = nord.accent;
+          };
+        };
+        xray = {
+          fgColor = nord.text;
+          bgColor = nord.background;
+          cursorColor = nord.selection;
+          graphicColor = nord.accent;
+          showIcons = true;
+        };
+        yaml = {
+          keyColor = nord.accent;
+          colonColor = nord.muted;
+          valueColor = nord.text;
+        };
+        logs = {
+          fgColor = nord.text;
+          bgColor = nord.background;
+          indicator = {
+            fgColor = nord.accent;
+            bgColor = nord.background;
+            toggleOnColor = nord.success;
+            toggleOffColor = nord.muted;
+          };
+        };
       };
     };
   };

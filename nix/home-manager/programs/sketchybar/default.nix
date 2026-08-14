@@ -32,6 +32,11 @@ in
     };
   };
 
+  xdg.configFile."sketchybar/colors.sh" = {
+    text = builtins.readFile ./colors.sh;
+    executable = true;
+  };
+
   xdg.configFile."sketchybar/plugins/battery.sh" = {
     text = builtins.readFile ./plugins/battery.sh;
     executable = true;
@@ -58,6 +63,28 @@ in
   };
   xdg.configFile."sketchybar/plugins/volume.sh" = {
     text = builtins.readFile ./plugins/volume.sh;
+    executable = true;
+  };
+
+  xdg.configFile."sketchybar/items/workspaces.sh" = {
+    text = builtins.readFile ./items/workspaces.sh;
+    executable = true;
+  };
+
+  xdg.configFile."sketchybar/plugins/omniwm/start.sh" = {
+    text = builtins.readFile ./plugins/omniwm/start.sh;
+    executable = true;
+  };
+  xdg.configFile."sketchybar/plugins/omniwm/watch.sh" = {
+    text = builtins.readFile ./plugins/omniwm/watch.sh;
+    executable = true;
+  };
+  xdg.configFile."sketchybar/plugins/omniwm/refresh.sh" = {
+    text = builtins.readFile ./plugins/omniwm/refresh.sh;
+    executable = true;
+  };
+  xdg.configFile."sketchybar/plugins/omniwm/click.sh" = {
+    text = builtins.readFile ./plugins/omniwm/click.sh;
     executable = true;
   };
 }
