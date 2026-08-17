@@ -446,16 +446,16 @@ nixos = [
 [aerospace]
 type = "gui"
 darwin = [
-  # { name = "aerospace", method = "nix-hm", kind = "module" },
-  # { name = "jankyborders", method = "nix-hm", kind = "package" },
+  { name = "aerospace", method = "nix-hm", kind = "module" },
+  { name = "jankyborders", method = "nix-hm", kind = "package" },
+  { name = "sketchybar", method = "nix-hm", kind = "module" },
+  { name = "macskk", method = "cask", kind = "package" },
 ]
 
 [omniwm]
 type = "gui"
 darwin = [
-  { name = "omniwm", method = "nix-hm", kind = "module" },
-  { name = "sketchybar", method = "nix-hm", kind = "module" },
-  { name = "macskk", method = "cask", kind = "package" },
+  # { name = "omniwm", method = "nix-hm", kind = "module" },
 ]
 
 

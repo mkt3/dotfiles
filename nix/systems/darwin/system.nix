@@ -85,9 +85,8 @@
         location = "${homeDirectory}/Downloads";
       };
 
-      # OmniWM requires "Displays have separate Spaces" to be enabled.
-      # false corresponds to enabling "Displays have separate Spaces".
-      spaces.spans-displays = false;
+      # AeroSpace is more stable when "Displays have separate Spaces" is disabled.
+      spaces.spans-displays = true;
 
       CustomUserPreferences = {
         NSGlobalDomain = {
