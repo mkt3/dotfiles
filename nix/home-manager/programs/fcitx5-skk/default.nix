@@ -176,7 +176,9 @@
         ],
         "define": {
           "keymap": {
-            ";": "start-preedit-no-delete"
+            ";": "start-preedit-no-delete",
+            "/": null,
+            "\\": null
           }
         }
       }
@@ -190,7 +192,9 @@
         ],
         "define": {
           "keymap": {
-            ";": "start-preedit-no-delete"
+            ";": "start-preedit-no-delete",
+            "/": null,
+            "\\": null
           }
         }
       }

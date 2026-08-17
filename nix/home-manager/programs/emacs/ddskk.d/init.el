@@ -7,6 +7,9 @@
 ;; sticky shift
 (setq skk-sticky-key ";")
 
+;; "/" はそのまま入力する
+(add-to-list 'skk-rom-kana-rule-list '("/" nil "/"))
+
 ;;; 変換時に改行でも確定
 (setq skk-egg-like-newline t)
 
@@ -28,7 +31,6 @@
 (setq skk-katakana-mode-string "[ア]")
 (setq skk-jisx0208-latin-mode-string "[Ａ]")
 (setq skk-jisx0201-mode-string "[_ｱ]")
-(setq skk-abbrev-mode-string "[aA]")
 
 ;; カーソル付近にモード切り替えを表示する
 (setq skk-show-mode-show t); M-x skk-show-mode でトグル可。
