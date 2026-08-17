@@ -16,8 +16,8 @@
   gtk = {
     enable = true;
     theme = {
-      package = pkgs.adw-gtk3;
-      name = "adw-gtk3-dark";
+      package = pkgs.nordic;
+      name = "Nordic";
     };
     iconTheme = {
       package = pkgs.nordzy-icon-theme;
@@ -32,14 +32,19 @@
     qt5ctSettings.Appearance = {
       style = "Fusion";
       custom_palette = true;
-      color_scheme_path = "${config.xdg.configHome}/qt5ct/colors/noctalia.conf";
+      color_scheme_path = "${config.xdg.configHome}/qt5ct/colors/nord.conf";
       icon_theme = "Nordzy-dark";
     };
     qt6ctSettings.Appearance = {
       style = "Fusion";
       custom_palette = true;
-      color_scheme_path = "${config.xdg.configHome}/qt6ct/colors/noctalia.conf";
+      color_scheme_path = "${config.xdg.configHome}/qt6ct/colors/nord.conf";
       icon_theme = "Nordzy-dark";
     };
+  };
+
+  xdg.configFile = {
+    "qt5ct/colors/nord.conf".source = ./qtct-nord.conf;
+    "qt6ct/colors/nord.conf".source = ./qtct-nord.conf;
   };
 }
