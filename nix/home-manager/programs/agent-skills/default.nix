@@ -18,6 +18,10 @@
       input = "anthropic-skills";
       subdir = "skills";
     };
+    sources.ax = {
+      input = "ax";
+      subdir = "skills";
+    };
     sources.mattpocock = {
       input = "mattpocock-skills";
       subdir = "skills/productivity";
@@ -25,6 +29,7 @@
 
     skills.enableAll = [ "local" ];
     skills.enable = [
+      "ax"
       "grilling"
       "frontend-design"
       "skill-creator"

@@ -589,6 +589,10 @@ type = "gui"
 common = [{ name = "gh", method = "nix-hm", kind = "module" }]
 
 ## coding agent
+[ax]
+type = "dev"
+common = [{ name = "ax", method = "nix-hm", kind = "module" }]
+
 [codex]
 type = "dev"
 common = [{ name = "codex", method = "nix-hm", kind = "module" }]
