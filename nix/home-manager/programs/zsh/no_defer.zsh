@@ -40,7 +40,7 @@ fi
 
 USER_FONT=$'\Uf007 '
 prompt_common_0="%{%(?.${fg[$host_color]}.${fg[red]})%}[${USER_FONT}%n${OS_FONT}%m]%{${reset_color}%}%u"
-prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
+prompt_common_1=$'\Uf115 '"%~\${\${PWD:#/}:+/}"$'\n'"${V_ENV}"
 
 setopt prompt_subst
 
@@ -55,14 +55,14 @@ function _vcs_precmd {
     else
         V_ENV="("$'\Ue606 '"$V_ENV)"
     fi
-    prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
+    prompt_common_1=$'\Uf115 '"%~\${\${PWD:#/}:+/}"$'\n'"${V_ENV}"
     PROMPT="$prompt_common_0"'$(gitprompt)'"${prompt_common_1}%# "
 }
 
 add-zsh-hook precmd _vcs_precmd
 
 function _date_exec {
-    prompt_common_1=$'\Uf115 '"%~/"$'\n'"${V_ENV}"
+    prompt_common_1=$'\Uf115 '"%~\${\${PWD:#/}:+/}"$'\n'"${V_ENV}"
     PROMPT="${prompt_common_0}$(gitprompt)"${prompt_common_1}"[%D{%Y/%m/%d} %*] %# "
     zle .reset-prompt
     zle .accept-line
