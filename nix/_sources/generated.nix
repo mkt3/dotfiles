@@ -6,6 +6,14 @@
   dockerTools,
 }:
 {
+  chatgpt = {
+    pname = "chatgpt";
+    version = "26.814.41407";
+    src = fetchurl {
+      url = "https://persistent.oaistatic.com/codex-app-prod/ChatGPT-darwin-arm64-26.814.41407.zip";
+      sha256 = "sha256-XRmWFraF2Fo5Jk3BZZx2EAHEr5rd0JASACHS6kWi21w=";
+    };
+  };
   omniwm = {
     pname = "omniwm";
     version = "v0.6.2";

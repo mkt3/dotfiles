@@ -254,6 +254,11 @@ darwin = [
 type = "basic"
 common = [{ name = "wget", method = "nix-hm", kind = "package" }]
 
+## ChatGPT desktop app
+[chatgpt]
+type = "gui"
+darwin = [{ name = "chatgpt", method = "nix-hm", kind = "module" }]
+
 [curl]
 type = "basic"
 common = [{ name = "curl", method = "nix-hm", kind = "package" }]
