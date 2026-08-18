@@ -2,12 +2,6 @@
 src.github = "BarutSRB/OmniWM"
 fetch.url = "https://github.com/BarutSRB/OmniWM/releases/download/$ver/OmniWM-$ver.zip"
 
-[chatgpt]
-# Matches Homebrew Cask's Apple Silicon Sparkle feed.
-src.webpage = "https://persistent.oaistatic.com/codex-app-prod/appcast.xml"
-src.regex = "shortVersionString>([^<]+)"
-fetch.url = "https://persistent.oaistatic.com/codex-app-prod/ChatGPT-darwin-arm64-$ver.zip"
-
 # [scroll-reverser]
 # src.github_tag = "pilotmoon/Scroll-Reverser"
 # src.prefix = "v"

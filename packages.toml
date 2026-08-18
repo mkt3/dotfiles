@@ -257,7 +257,8 @@ common = [{ name = "wget", method = "nix-hm", kind = "package" }]
 ## ChatGPT desktop app
 [chatgpt]
 type = "gui"
-darwin = [{ name = "chatgpt", method = "nix-hm", kind = "module" }]
+darwin = [{ name = "chatgpt", method = "cask", kind = "package" }]
+linux = [{ name = "chatgpt", method = "nix-hm", kind = "module" }]
 
 [curl]
 type = "basic"
