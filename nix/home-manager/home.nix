@@ -22,10 +22,16 @@
   # macOS. The script never initiates interactive GitHub authentication.
   home.activation.sharedSKKDictionary = lib.mkIf isGUI (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      PATH=${lib.makeBinPath [
-        pkgs.git
-        pkgs.gh
-      ]}:"$PATH" ${lib.getExe pkgs.bash} ${./_setup_skk_dict.sh}
+      PATH=${
+        lib.makeBinPath [
+          pkgs.coreutils
+          pkgs.git
+          pkgs.gh
+          pkgs.openssh
+        ]
+      }:"$PATH" \
+        SSH_AUTH_SOCK="$(${lib.getExe' pkgs.gnupg "gpgconf"} --list-dirs agent-ssh-socket)" \
+        ${lib.getExe pkgs.bash} ${./_setup_skk_dict.sh}
     ''
   );
 
