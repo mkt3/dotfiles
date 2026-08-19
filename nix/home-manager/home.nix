@@ -1,6 +1,8 @@
 {
   lib,
+  pkgs,
   os,
+  isGUI,
   username,
   homeDirectory,
   nix-index-database,
@@ -15,6 +17,17 @@
   };
 
   xdg.enable = true;
+
+  # Keep the Git checkout available to graphical SKK clients on both NixOS and
+  # macOS. The script never initiates interactive GitHub authentication.
+  home.activation.sharedSKKDictionary = lib.mkIf isGUI (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      PATH=${lib.makeBinPath [
+        pkgs.git
+        pkgs.gh
+      ]}:"$PATH" ${lib.getExe pkgs.bash} ${./_setup_skk_dict.sh}
+    ''
+  );
 
   imports = [
     ./catalog-packages.nix
