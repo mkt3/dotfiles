@@ -53,6 +53,7 @@ in
   xdg.configFile = {
     "niri/config.kdl".source = ./config.kdl;
   }
+  // afterNiriDropIn "fcitx5-daemon.service"
   // afterNiriDropIn "xremap.service"
   // afterNiriDropIn "kanshi.service"
   // afterNiriDropIn "xdg-desktop-portal-wlr.service";

@@ -13,6 +13,13 @@ let
   });
 in
 {
+  # niri executes XDG autostart entries and Home Manager also manages
+  # fcitx5-daemon.service. Let systemd own the daemon: starting both creates
+  # two fcitx5 processes racing for the org.fcitx.Fcitx5 D-Bus name.
+  xdg.configFile."autostart/org.fcitx.Fcitx5.desktop".text = ''
+    [Desktop Entry]
+    Hidden=true
+  '';
 
   i18n.inputMethod = {
     enable = true;
