@@ -638,6 +638,21 @@
                       (cons my:skk-shared-jisyo 'utf-8))
          (defconst my:skk-shared-jisyo-backup
            (expand-file-name "SKK-JISYO.shared.BAK" skk-user-directory))
+         (defconst my:macskk-shared-jisyo
+           (expand-file-name
+            "Library/Containers/net.mtgto.inputmethod.macSKK/Data/Documents/Dictionaries/SKK-JISYO.shared"
+            "~"))
+         (defun my:skk-copy-shared-jisyo-to-macskk ()
+           "Copy the shared dictionary to macSKK's sandbox on macOS."
+           (when (eq system-type 'darwin)
+             (condition-case err
+                 (progn
+                   (make-directory (file-name-directory my:macskk-shared-jisyo) t)
+                   (copy-file (file-truename my:skk-shared-jisyo)
+                              my:macskk-shared-jisyo t t))
+               (file-error
+                (message "Failed to copy the shared dictionary to macSKK: %s"
+                         (error-message-string err))))))
          (defun my:skk-update-shared-jisyo-on-registration (original word &optional purge)
            "Save words registered via the registration prompt to the shared dictionary."
            (if (and skk-jisyo-updated (not purge))
@@ -646,7 +661,8 @@
                      (skk-share-private-jisyo nil)
                      (skk-save-jisyo-instantly nil))
                  (funcall original word purge)
-                 (skk-save-jisyo 'quiet))
+                 (skk-save-jisyo 'quiet)
+                 (my:skk-copy-shared-jisyo-to-macskk))
              (funcall original word purge)))
          (advice-add #'skk-update-jisyo :around
                      #'my:skk-update-shared-jisyo-on-registration)
@@ -655,7 +671,8 @@
            (let ((skk-jisyo (cons (file-truename my:skk-shared-jisyo) 'utf-8))
                  (skk-backup-jisyo my:skk-shared-jisyo-backup)
                  (skk-share-private-jisyo nil))
-             (funcall original arg)))
+             (funcall original arg)
+             (my:skk-copy-shared-jisyo-to-macskk)))
          (advice-add #'skk-purge-from-jisyo :around
                      #'my:skk-purge-from-shared-jisyo)))
 
