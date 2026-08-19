@@ -35,6 +35,26 @@
     ''
   );
 
+  # Keep paper notes available to Zotero, Citar, and Org-roam on GUI hosts.
+  # The script never overwrites local changes or starts GitHub authentication.
+  home.activation.paperNotes = lib.mkIf isGUI (
+    lib.hm.dag.entryAfter [ "sharedSKKDictionary" ] ''
+      PATH=${
+        lib.makeBinPath [
+          pkgs.coreutils
+          pkgs.git
+          pkgs.gh
+          pkgs.openssh
+        ]
+      }:"$PATH" \
+        SSH_AUTH_SOCK="$(${lib.getExe' pkgs.gnupg "gpgconf"} --list-dirs agent-ssh-socket)" \
+        ORG_ROAM_DIR="${homeDirectory}/${
+          if os == "darwin" then "GoogleDrive/local_data_dir" else "Nextcloud"
+        }/orgnotes/roam" \
+        ${lib.getExe pkgs.bash} ${./_setup_paper_notes.sh}
+    ''
+  );
+
   imports = [
     ./catalog-packages.nix
     nix-index-database.homeModules.default
