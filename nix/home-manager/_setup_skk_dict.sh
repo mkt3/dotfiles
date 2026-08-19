@@ -18,6 +18,6 @@ if [[ -d "$skk_dict_dir/.git" ]]; then
       echo "shared SKK dictionary: skipping pull because skk-dict could not be updated" >&2
     fi
   else
-    echo "shared SKK dictionary: skipping pull because skk-dict has local changes" >&2
+    echo "shared SKK dictionary: skipping pull because skk-dict has local changes; review, commit, and push them before running make again" >&2
   fi
 fi
