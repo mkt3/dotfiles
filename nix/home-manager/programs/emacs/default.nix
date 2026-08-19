@@ -7,6 +7,9 @@
   isGUI,
   ...
 }:
+let
+  sharedSKKDictionary = "${config.home.homeDirectory}/workspace/ghq/github.com/mkt3/skk-dict/SKK-JISYO.shared";
+in
 {
   programs.emacs = {
     enable = true;
@@ -133,6 +136,10 @@
         ]
       );
     };
+  }
+  // {
+    "emacs/SKK-JISYO.shared".source =
+      config.lib.file.mkOutOfStoreSymlink sharedSKKDictionary;
   }
   // lib.optionalAttrs isGUI {
     "enchant/en_US.dic" = {

@@ -615,6 +615,9 @@
    #+begin_src emacs-lisp
      (use-package ddskk
        :ensure t
+       ;; `skk-kakutei' can autoload `skk' without loading the `ddskk'
+       ;; feature, so load DDSKK here to ensure this block's `:config' runs.
+       :demand t
        :bind* (("C-j" . skk-kakutei)
                ("C-q j" . my:open-skk-input-buffer)
                ("C-x @ j" . skk-kakutei)) ;; for ctrl-j from wezterm
@@ -626,13 +629,41 @@
        (setq skk-init-file (expand-file-name "init.el" skk-user-directory ))
        (when (file-directory-p my:d:data-dir)
          (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:data-dir) 'utf-8)))
-       (setq viper-mode nil))
-
-     (use-package ddskk-posframe
-       :ensure t
-       :if (display-graphic-p)
+       (setq viper-mode nil)
        :config
-       (ddskk-posframe-mode 1))
+       (defconst my:skk-shared-jisyo
+         (locate-user-emacs-file "SKK-JISYO.shared"))
+       (when (file-exists-p my:skk-shared-jisyo)
+         (add-to-list 'skk-extra-jisyo-file-list
+                      (cons my:skk-shared-jisyo 'utf-8))
+         (defconst my:skk-shared-jisyo-backup
+           (expand-file-name "SKK-JISYO.shared.BAK" skk-user-directory))
+         (defun my:skk-update-shared-jisyo-on-registration (original word &optional purge)
+           "Save words registered via the registration prompt to the shared dictionary."
+           (if (and skk-jisyo-updated (not purge))
+               (let ((skk-jisyo (cons (file-truename my:skk-shared-jisyo) 'utf-8))
+                     (skk-backup-jisyo my:skk-shared-jisyo-backup)
+                     (skk-share-private-jisyo nil)
+                     (skk-save-jisyo-instantly nil))
+                 (funcall original word purge)
+                 (skk-save-jisyo 'quiet))
+             (funcall original word purge)))
+         (advice-add #'skk-update-jisyo :around
+                     #'my:skk-update-shared-jisyo-on-registration)
+         (defun my:skk-purge-from-shared-jisyo (original &optional arg)
+           "Purge the current candidate from the shared dictionary."
+           (let ((skk-jisyo (cons (file-truename my:skk-shared-jisyo) 'utf-8))
+                 (skk-backup-jisyo my:skk-shared-jisyo-backup)
+                 (skk-share-private-jisyo nil))
+             (funcall original arg)))
+         (advice-add #'skk-purge-from-jisyo :around
+                     #'my:skk-purge-from-shared-jisyo)))
+
+      (use-package ddskk-posframe
+        :ensure t
+        :if (display-graphic-p)
+        :config
+        (ddskk-posframe-mode 1))
    #+end_src
 ** puni
    #+begin_src emacs-lisp

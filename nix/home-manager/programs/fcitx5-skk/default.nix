@@ -1,4 +1,17 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+let
+  sharedSKKDictionaryList = pkgs.writeText "fcitx5-skk-dictionary_list" ''
+    type=file,file=$FCITX_CONFIG_DIR/skk/user.dict,mode=readwrite
+    type=file,file=${config.home.homeDirectory}/.config/emacs/SKK-JISYO.shared,mode=readonly,encoding=UTF-8
+    type=file,file=${pkgs.skkDictionaries.l}/share/skk/SKK-JISYO.L,mode=readonly,encoding=EUC-JP
+  '';
+
+  fcitx5-skk-with-shared-dictionary = pkgs.fcitx5-skk.overrideAttrs (old: {
+    postInstall = (old.postInstall or "") + ''
+      install -Dm644 ${sharedSKKDictionaryList} $out/share/fcitx5/skk/dictionary_list
+    '';
+  });
+in
 {
 
   i18n.inputMethod = {
@@ -9,7 +22,7 @@
       addons = with pkgs; [
         fcitx5-gtk
         kdePackages.fcitx5-qt
-        fcitx5-skk
+        fcitx5-skk-with-shared-dictionary
         fcitx5-nord
       ];
       settings = {
