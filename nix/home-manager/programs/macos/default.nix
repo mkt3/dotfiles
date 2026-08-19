@@ -5,6 +5,9 @@
 }:
 {
   home.activation.macosMutablePreferences = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${lib.getExe pkgs.bash} ${./_setup_macos.sh}
+    PATH=${lib.makeBinPath [
+      pkgs.git
+      pkgs.gh
+    ]}:"$PATH" ${lib.getExe pkgs.bash} ${./_setup_macos.sh}
   '';
 }
