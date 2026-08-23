@@ -1298,6 +1298,7 @@
          (org-use-speed-commands t)
          (org-startup-with-latex-preview nil)
          (org-log-done 'time)
+         (org-clock-into-drawer t)
          (org-adapt-indentation t)
          (org-confirm-babel-evaluate nil)
          (org-capture-templates `(("i" " Inbox" entry (file+headline my:f:org-gtd "Inbox")
@@ -1388,6 +1389,38 @@
          :ensure t
          :hook (org-mode-hook . org-superstar-mode))
      #+end_src
+**** org-pomodoro
+     #+begin_src emacs-lisp
+       (use-package org-pomodoro
+         :ensure t
+         :after org
+         :custom
+         (org-pomodoro-length 52)
+         (org-pomodoro-short-break-length 17)
+         (org-pomodoro-long-break-length 17)
+         (org-pomodoro-long-break-frequency 1)
+         (org-pomodoro-manual-break t)
+         (org-pomodoro-clock-break nil)
+         (org-pomodoro-keep-killed-pomodoro-time t)
+         :config
+         ;; Keep notifications native while retaining alert's minibuffer copy.
+         (alert-add-rule
+          :category "org-pomodoro"
+          :style (pcase system-type
+                   ('darwin 'osx-notifier)
+                   ('gnu/linux 'notifications)
+                   (_ 'message))))
+
+       (defun my:org-pomodoro-clock-out-before-exit (&rest _args)
+         "Clock out an active work session before Emacs offers to save buffers."
+         (when (and (bound-and-true-p org-pomodoro-state)
+                    (memq org-pomodoro-state '(:pomodoro :overtime))
+                    (org-clocking-p))
+           (org-clock-out nil t)))
+
+       (advice-add 'save-buffers-kill-emacs
+                   :before #'my:org-pomodoro-clock-out-before-exit)
+     #+end_src
 **** org gtd
      #+begin_src emacs-lisp
        (use-package org-agenda
@@ -1400,6 +1433,18 @@
          :preface
          (defvar org-clock-current-task-file
            (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
+
+         (defun my:org-clock-report-files ()
+           "Return GTD and Org-roam project files for clock reports."
+           (let* ((project-directory (expand-file-name "project" my:d:org-roam))
+                  (files
+                   (seq-uniq
+                    (append
+                     (when (file-directory-p my:d:org-gtd)
+                       (directory-files-recursively my:d:org-gtd "\\.org\\(?:\\.gpg\\)?\\'"))
+                     (when (file-directory-p project-directory)
+                       (directory-files-recursively project-directory "\\.org\\(?:\\.gpg\\)?\\'"))))))
+             (seq-uniq (append files (org-add-archive-files files)))))
 
          (defun gtd ()
            (interactive)
