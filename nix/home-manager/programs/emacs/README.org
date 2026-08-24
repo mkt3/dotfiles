@@ -2391,11 +2391,12 @@
              (gt-translator
               :taker   (gt-taker :text 'word :pick 'paragraph)
               :engines engine-list
-              :render  (gt-buffer-render)))
+              :render  (lambda ()
+                         (if (and (require 'posframe nil t)
+                                  (posframe-workable-p))
+                             (gt-posframe-pop-render)
+                           (gt-buffer-render)))))
        (setq gts-buffer-follow-p t))
-
-                                             ; https://github.com/lorniu/go-translate?tab=readme-ov-file
-     ;; (use-package plz :ensure t)
    #+end_src
 ** recoll
    #+begin_src emacs-lisp
