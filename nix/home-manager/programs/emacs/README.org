@@ -206,11 +206,14 @@
      (use-package paren
        :custom
        (show-paren-delay 0.0)
+       (show-paren-not-in-comments-or-strings 'on-mismatch)
        :config
        (show-paren-mode 1))
    #+end_src
 ** Window
    #+begin_src emacs-lisp
+     (setopt split-window-preferred-direction 'longest)
+
      (use-package windmove
        :custom
        (windmove-wrap-around t)
@@ -316,6 +319,7 @@
        (kill-read-only-ok            t)
        (eval-expression-print-length nil)
        (eval-expression-print-level  nil)
+       (exchange-point-and-mark-highlight-region nil)
        (column-number-mode            t)
        :bind ("C-x j" . eval-print-last-sexp))
    #+end_src
@@ -395,26 +399,23 @@
        :ensure t
        :hook (prog-mode-hook . rainbow-delimiters-mode))
    #+end_src
-** moody
+** Mode line
    #+begin_src emacs-lisp
-     (use-package minions
-       :ensure t
-       :custom
-       (minions-mode-line-lighter "[+]")
-       :config
-       (minions-mode 1))
-
-
-     (use-package moody
-       :ensure t
-       :after minions
-       :custom
-       (x-underline-at-descent-line t)
-       :config
-       (moody-replace-mode-line-front-space)
-       (moody-replace-mode-line-buffer-identification)
-       (moody-replace-vc-mode))
+     (setopt mode-line-collapse-minor-modes t
+             mode-line-collapse-minor-modes-to "[+]")
    #+end_src
+
+*** moody
+    #+begin_src emacs-lisp
+      (use-package moody
+        :ensure t
+        :custom
+        (x-underline-at-descent-line t)
+        :config
+        (moody-replace-mode-line-front-space)
+        (moody-replace-mode-line-buffer-identification)
+        (moody-replace-vc-mode))
+    #+end_src
 ** nyan-mode
    #+begin_src emacs-lisp
      (use-package nyan-mode
@@ -1077,6 +1078,7 @@
     #+begin_src emacs-lisp
       (use-package treesit
         :custom
+        (treesit-auto-install-grammar 'never)
         (treesit-font-lock-level 3)
         :config
         (dolist (pair '((yaml-mode . yaml-ts-mode)
@@ -2018,7 +2020,13 @@
 * Filer
   #+begin_src emacs-lisp
     (use-package dired
-      :hook (dired-mode-hook . dired-omit-mode)
+      :init
+      (defun my-dired-disable-symlink-check-on-remote ()
+        "Disable symlink validity checks in remote Dired buffers."
+        (when (file-remote-p default-directory)
+          (setq-local dired-check-symlinks nil)))
+      :hook ((dired-mode-hook . dired-omit-mode)
+             (dired-mode-hook . my-dired-disable-symlink-check-on-remote))
       :bind (nil
              :map dired-mode-map
              ("["  . dired-prev-subdir)

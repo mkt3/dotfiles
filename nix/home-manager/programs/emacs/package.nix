@@ -5,36 +5,31 @@
 }:
 
 if isDarwin then
-  pkgs.emacs.overrideAttrs (old: {
+  pkgs.emacs31.overrideAttrs (old: {
     patches = (old.patches or [ ]) ++ [
-      # Fix OS window role (needed for window managers like yabai)
+      # Fix limited x-colors when NS Emacs is dumped in a headless environment
       (pkgs.fetchpatch {
-        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
-        sha256 = "+z/KfsBm1lvZTZNiMbxzXQGRTjkCFO4QPlEK35upjsE=";
+        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/fix-ns-x-colors.patch";
+        sha256 = "nl0+JqjTiNOgALaX1YJ2lkXKk61Ze0ETdE3rpLiai54=";
       })
       # Make Emacs aware of OS-level light/dark mode
       (pkgs.fetchpatch {
-        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/system-appearance.patch";
-        sha256 = "3QLq91AQ6E921/W9nfDjdOUWR8YVsqBAT/W9c1woqAw=";
+        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/system-appearance.patch";
+        sha256 = "Uyg1A9te0oh+nXM7qq+A8sgQ5mjngumIvaWFWgsevrQ=";
       })
       # Enable rounded window with no decoration
       (pkgs.fetchpatch {
-        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/round-undecorated-frame.patch";
-        sha256 = "fesZ0H3LO6T2AiRV8ASozKxZBpvVzwLEcLDy6rctR6c=";
+        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/round-undecorated-frame.patch";
+        sha256 = "yUMKHq2B4xOz0od/9vgET7KUQe7MfMQgAFFdfI7GOA8=";
       })
-      # Fix severe scrolling lag on macOS Tahoe
+      # Fix crashes when scrolling on macOS
       (pkgs.fetchpatch {
-        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/fix-macos-tahoe-scrolling.patch";
-        sha256 = "Hf9oZ5ImBnxTLa6yS02UDzBEgJEGAwNq/svJ3S35uKw=";
-      })
-      # Fix limited x-colors when NS Emacs is dumped in a headless environment
-      (pkgs.fetchpatch {
-        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/fix-ns-x-colors.patch";
-        sha256 = "oe3DFgEXwp0cZJl+ufWqTonaeWSliikTRsVDNbcy4Yw=";
+        url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/fix-ns-scroll-crash.patch";
+        sha256 = "MlC/bkXNyz9MvArOLS0yAEZDMcv7NGE5gFVOMexF/mw=";
       })
     ];
   })
 else if isGUI then
-  pkgs.emacs-pgtk
+  pkgs.emacs31-pgtk
 else
-  pkgs.emacs-nox
+  pkgs.emacs31-nox
