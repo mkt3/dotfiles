@@ -34,7 +34,8 @@ input {
   // All commented-out settings here are examples, not defaults.
   touchpad {
     // off
-    tap
+    // Tap-to-click is disabled while diagnosing physical click handling.
+    // tap
     dwt
     // dwtp
     // drag false
