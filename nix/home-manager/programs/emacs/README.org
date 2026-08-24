@@ -497,15 +497,15 @@
 ** dimmer
    Visually highlight the selected buffer.
    #+begin_src emacs-lisp
-     (use-package dimmer
-       :ensure t
-       :custom
-       (dimmer-fraction  0.5)
-       (dimmer-exclusion-regexp-list  '(".*Minibuf.*" ".*which-key.*" ".*NeoTree.*"
-                                        ".*Messages.*" ".*Async.*" ".*Warnings.*" ".*LV.*"
-                                        ".*Ilist.*"))
-       :config
-       (dimmer-mode 1))
+     ;; (use-package dimmer
+     ;;   :ensure t
+     ;;   :custom
+     ;;   (dimmer-fraction  0.5)
+     ;;   (dimmer-exclusion-regexp-list  '(".*Minibuf.*" ".*which-key.*" ".*NeoTree.*"
+     ;;                                    ".*Messages.*" ".*Async.*" ".*Warnings.*" ".*LV.*"
+     ;;                                    ".*Ilist.*"))
+     ;;   :config
+     ;;   (dimmer-mode 1))
    #+end_src
 ** Whitespace
    #+begin_src emacs-lisp
@@ -851,12 +851,6 @@
     #+end_src
 *** corfu
     #+begin_src emacs-lisp
-      (use-package corfu-terminal
-        :ensure t
-        :if (not (display-graphic-p))
-        :config
-        (corfu-terminal-mode 1))
-
       (use-package corfu
         :ensure t
         :custom ((corfu-auto t)
@@ -2399,11 +2393,7 @@
              (gt-translator
               :taker   (gt-taker :text 'word :pick 'paragraph)
               :engines engine-list
-              :render  (lambda ()
-                         (if (and (require 'posframe nil t)
-                                  (posframe-workable-p))
-                             (gt-posframe-pop-render)
-                           (gt-buffer-render)))))
+              :render  (gt-posframe-pop-render)))
        (setq gts-buffer-follow-p t))
    #+end_src
 ** recoll
