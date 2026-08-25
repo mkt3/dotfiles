@@ -20,6 +20,16 @@
 ;; Load prefers the newest version of a file
 (setq load-prefer-newer t)
 
+;; Enable Emacs's built-in OSC 52 clipboard backend inside tmux.
+;; tmux terminals intentionally use this separate, conservative capability
+;; list instead of probing the terminal emulator outside tmux.
+(setq xterm-tmux-extra-capabilities '(modifyOtherKeys setSelection))
+
+;; Emacs 31 auto-enables this for a directly attached WezTerm, but cannot
+;; identify WezTerm through tmux's terminal type.
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1))
+
 ;; Inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
 
