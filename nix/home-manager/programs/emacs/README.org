@@ -313,7 +313,7 @@
       enable-recursive-minibuffers t
       ring-bell-function 'ignore
       text-quoting-style 'straight
-      user-full-name (getenv "NAME")
+      user-full-name (or (getenv "NAME") "Makoto Morinaga")
       completion-lazy-hilit t
       process-adaptive-read-buffering t
       require-final-newline t
@@ -1409,15 +1409,18 @@
            (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
 
          (defun my:org-clock-report-files ()
-           "Return GTD and Org-roam project files for clock reports."
+           "Return GTD, project, and daily-note files for clock reports."
            (let* ((project-directory (expand-file-name "project" my:d:org-roam))
+                  (daily-notes-directory (expand-file-name "daily_notes" my:d:org-roam))
                   (files
                    (seq-uniq
                     (append
                      (when (file-directory-p my:d:org-gtd)
                        (directory-files-recursively my:d:org-gtd "\\.org\\(?:\\.gpg\\)?\\'"))
                      (when (file-directory-p project-directory)
-                       (directory-files-recursively project-directory "\\.org\\(?:\\.gpg\\)?\\'"))))))
+                       (directory-files-recursively project-directory "\\.org\\(?:\\.gpg\\)?\\'"))
+                     (when (file-directory-p daily-notes-directory)
+                       (directory-files-recursively daily-notes-directory "\\.org\\(?:\\.gpg\\)?\\'"))))))
              (seq-uniq (append files (org-add-archive-files files)))))
 
          (defun gtd ()
@@ -1499,7 +1502,7 @@
                 ("C-c n r" . org-roam-ref-add)
                 ("C-c n l" . org-roam-buffer-toggle)
                 ("C-c n c" . citar-insert-citation)
-                ("C-c n j" . org-roam-dailies-capture-today)
+                ("C-c n j" . my:org-roam-dailies-capture-today)
                 ("C-c n d" . org-roam-dailies-goto-date)
                 ("C-c n e" . org-roam-extract-subtree)
                 ("C-c n p" . citar-open))
@@ -1568,6 +1571,53 @@
                                     "#+title: %<%Y-%m>"
                                     ("%<%Y-%m-%d %a>")))))
          :config
+         (defun my:org-roam-dailies-capture-today ()
+           "Visit today's daily note and add its clocktable once."
+           (interactive)
+           (org-roam-dailies-capture-today t "j")
+           (let ((date (format-time-string "%Y-%m-%d")))
+             (save-excursion
+               (org-back-to-heading t)
+               (while (> (org-outline-level) 1)
+                 (org-up-heading-safe))
+               (let* ((summary-level (1+ (org-outline-level)))
+                      (subtree-end
+                       (copy-marker (save-excursion (org-end-of-subtree t t))))
+                      summary-position)
+                 (save-excursion
+                   (forward-line 1)
+                   (while (and (not summary-position)
+                               (re-search-forward org-heading-regexp subtree-end t))
+                     (let ((heading-position (line-beginning-position)))
+                       (save-excursion
+                         (goto-char heading-position)
+                         (when (and (= (org-outline-level) summary-level)
+                                    (string= (org-get-heading t t t t) "Clock summary"))
+                           (setq summary-position heading-position))))))
+                 (unless summary-position
+                   (org-back-to-heading t)
+                   (org-end-of-meta-data t)
+                   (unless (bolp) (insert "\n"))
+                   (setq summary-position (point))
+                   (insert (format "%s Clock summary\n"
+                                   (make-string summary-level ?*))))
+                 (set-marker subtree-end nil)
+               (goto-char summary-position)
+               (let ((summary-end (copy-marker (org-entry-end-position))))
+                 (unless (re-search-forward
+                          (format "^[ \t]*#\\+BEGIN: clocktable .*:block %s[ \t]"
+                                  (regexp-quote date))
+                          summary-end t)
+                   (org-back-to-heading t)
+                   (org-end-of-meta-data t)
+                   (unless (bolp) (insert "\n"))
+                   (insert
+                    (format "#+BEGIN: clocktable :scope my:org-clock-report-files :block %s :maxlevel 3 :fileskip0 t\n#+END:\n"
+                            date)))
+                 (set-marker summary-end nil))))
+             (save-buffer)
+             (goto-char (point-max))))
+
          (defun my:org-roam-read-only ()
            "Enable read-only mode for org-roam files, unless the buffer is empty."
            (when (and (buffer-file-name)
