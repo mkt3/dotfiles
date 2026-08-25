@@ -10,22 +10,22 @@ if isDarwin then
       # Fix limited x-colors when NS Emacs is dumped in a headless environment
       (pkgs.fetchpatch {
         url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/fix-ns-x-colors.patch";
-        sha256 = "nl0+JqjTiNOgALaX1YJ2lkXKk61Ze0ETdE3rpLiai54=";
+        sha256 = "oe3DFgEXwp0cZJl+ufWqTonaeWSliikTRsVDNbcy4Yw=";
       })
       # Make Emacs aware of OS-level light/dark mode
       (pkgs.fetchpatch {
         url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/system-appearance.patch";
-        sha256 = "Uyg1A9te0oh+nXM7qq+A8sgQ5mjngumIvaWFWgsevrQ=";
+        sha256 = "4+2U+4+2tpuaThNJfZOjy1JPnneGcsoge9r+WpgNDko=";
       })
       # Enable rounded window with no decoration
       (pkgs.fetchpatch {
         url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/round-undecorated-frame.patch";
-        sha256 = "yUMKHq2B4xOz0od/9vgET7KUQe7MfMQgAFFdfI7GOA8=";
+        sha256 = "KCMEvJzN1OkwFYoMLpZghvdeoO1Ckcxk3Mo19YAf850=";
       })
       # Fix crashes when scrolling on macOS
       (pkgs.fetchpatch {
         url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-31/fix-ns-scroll-crash.patch";
-        sha256 = "MlC/bkXNyz9MvArOLS0yAEZDMcv7NGE5gFVOMexF/mw=";
+        sha256 = "syC9un5Vy1+bmBWIc+TEwTCM/nfPIxd4IhWYdEfP4qE=";
       })
     ];
   })
