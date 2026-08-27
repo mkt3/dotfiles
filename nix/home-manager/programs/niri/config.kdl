@@ -408,7 +408,7 @@ binds {
   XF86AudioRaiseVolume { spawn-sh "noctalia msg volume-up"; }
   XF86AudioLowerVolume { spawn-sh "noctalia msg volume-down"; }
   XF86AudioMute { spawn-sh "noctalia msg volume-mute"; }
-  XF86AudioMicMute { spawn-sh "noctalia smg mic-mute"; }
+  XF86AudioMicMute { spawn-sh "noctalia msg mic-mute"; }
 
   // Example media keys mapping using playerctl.
   // This will work with any MPRIS-enabled media player.
