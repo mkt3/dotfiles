@@ -4,7 +4,17 @@
 #+startup: content
 #+startup: nohideblocks
 
-* Header
+* Overview
+  This is the literate source for the Emacs configuration.
+  =init.el= loads this file with =org-babel-load-file=, which generates and evaluates =README.el=.
+  Edit this file instead of the generated file.
+
+  Home Manager installs Emacs 31, the tree-sitter grammars, and the files that cannot be managed by =use-package=.
+  Most Emacs packages are installed on demand from the archives configured below.
+
+  The file-local variable on the first line opens this file read-only.
+  Use =C-x C-q= before editing it directly in Emacs.
+* Generated file header
  #+begin_src emacs-lisp
    ;;; README.el --- init file for Emacs -*- coding: utf-8; lexical-binding: t -*-
 
@@ -12,13 +22,16 @@
 
    ;; Author: Makoto Morinaga <makoto@mkt3.dev>
 
+   ;;; Commentary:
+   ;; This file is generated from README.org.  Edit the Org source instead.
+
    ;;; Code:
  #+end_src
-* Custom
+* Customize output
   #+begin_src emacs-lisp
     (setopt custom-file (locate-user-emacs-file "custom.el"))
   #+end_src
-* Packages
+* Package management
 ** Package manager
    #+begin_src emacs-lisp
      (eval-and-compile
@@ -46,7 +59,7 @@
        (auto-package-update-excluded-packages '(pdf-tools mu4e ox-hugo eglot-booster typst-ts-mode consult-tramp dired-details-r atomic-chrome))
        :hook (emacs-startup-hook . auto-package-update-maybe))
    #+end_src
-* Initialize
+* Initialization
 ** Load Path
    #+begin_src emacs-lisp
      (use-package exec-path-from-shell
@@ -83,7 +96,7 @@
      (defvar my:refile-targets nil)
      (defvar my:roam-task-tag "todo")
    #+end_src
-* Builtin config
+* Built-in configuration
 ** key-translation-map
    for keyball
    #+begin_src emacs-lisp
@@ -106,7 +119,7 @@
      (pixel-scroll-precision-mode 1)
    #+end_src
 ** symlink
-   Disable visiting symlink targets
+   Follow symbolic links without prompting while retaining the symbolic path as the visited file name.
    #+begin_src emacs-lisp
      (use-package vc-hooks :custom (vc-follow-symlinks t))
      (setopt find-file-visit-truename nil)
@@ -127,7 +140,7 @@
 
      (use-package adaptive-wrap
        :ensure t
-       :hook ((markdown-mode-hook org-mode-hook nov-mode-hook) . adaptive-wrap-prefix-mode))
+       :hook ((markdown-ts-mode-hook org-mode-hook nov-mode-hook) . adaptive-wrap-prefix-mode))
    #+end_src
 ** Delete
    #+begin_src emacs-lisp
@@ -1098,8 +1111,6 @@
         :config
         (global-diff-hl-mode 1)
         (diff-hl-margin-mode 1)
-        (unless (display-graphic-p)
-          (diff-hl-margin-mode 1))
         :hook (magit-post-refresh-hook . diff-hl-magit-post-refresh))
     #+end_src
 *** Visual-regexp
@@ -1851,17 +1862,18 @@
      #+end_src
 *** Markdown
     #+begin_src emacs-lisp
-      (use-package markdown-mode
-        :ensure t
-        :mode (("\\.md\\'" . markdown-mode)
-               ("\\.markdown\\'" . markdown-mode)
-               (("README\\.md\\'" . gfm-mode)))
+      (use-package markdown-ts-mode
+        :ensure nil
+        :mode (("\\.md\\'" . markdown-ts-mode)
+               ("\\.mdx\\'" . markdown-ts-mode)
+               ("\\.markdown\\'" . markdown-ts-mode))
         :custom
-        (markdown-fontify-code-blocks-natively t)
-        (markdown-indent-on-enter 'indent-and-new-item)
-        :hook (markdown-mode-hook . (lambda ()
-                                      (setq tab-width 4)
-                                      (eglot-ensure))))
+        (markdown-ts-fontify-code-blocks-natively t)
+        :hook (markdown-ts-mode-hook . (lambda ()
+                                         (setq-local tab-width 4)
+                                         (eglot-ensure)))
+        :config
+        (require 'markdown-ts-mode-x))
     #+end_src
 *** YAML
     #+begin_src emacs-lisp
@@ -2339,8 +2351,8 @@
        :config
        (setq-default atomic-chrome-extension-type-list '(atomic-chrome))
        (setq-default atomic-chrome-url-major-mode-alist
-                     '(("github.com" . gfm-mode)
-                       ("gitlab.com" . gfm-mode)))
+                     '(("github.com" . markdown-ts-mode)
+                       ("gitlab.com" . markdown-ts-mode)))
        (atomic-chrome-start-server))
    #+end_src
 ** dictionary
