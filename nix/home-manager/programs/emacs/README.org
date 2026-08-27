@@ -498,7 +498,7 @@
                                   (project-name project-current)
                                 nil)))
            (if project-name
-               (let* ((dir (car (last project-current)))
+               (let* ((dir (project-root project-current))
                       (host-name (if (tramp-tramp-file-p dir)
                                      (tramp-file-name-host (tramp-dissect-file-name dir))
                                    "local"))
@@ -994,14 +994,24 @@
    #+end_src
 * Garbage collection
   #+begin_src emacs-lisp
+    (defvar my:garbage-collection-timer nil
+      "Timer used to run garbage collection while Emacs is idle.")
+
+    (defun my:restore-gc-cons-threshold ()
+      "Restore the garbage collection threshold after startup."
+      (setopt gc-cons-threshold (* 1024 1024 1024)))
+
     (setopt gc-cons-threshold most-positive-fixnum)
-    (add-hook 'emacs-startup-hook
-              (lambda ()
-                (setopt gc-cons-threshold (* 1024 1024 1024))))
+    (if after-init-time
+        (my:restore-gc-cons-threshold)
+      (add-hook 'emacs-startup-hook #'my:restore-gc-cons-threshold))
 
     (setopt gc-cons-percentage 0.2
           garbage-collection-messages t)
-    (run-with-idle-timer 60 t #'garbage-collect)
+    (when (timerp my:garbage-collection-timer)
+      (cancel-timer my:garbage-collection-timer))
+    (setq my:garbage-collection-timer
+          (run-with-idle-timer 60 t #'garbage-collect))
   #+end_src
 * LSP
 ** eglot
@@ -1225,11 +1235,24 @@
     #+end_src
 *** Rust
     #+begin_src emacs-lisp
-      (use-package rust-mode
-        :ensure t
+      (use-package rust-ts-mode
+        :ensure nil
+        :mode ("\\.rs\\'" . rust-ts-mode)
+        :preface
+        (defun my:eglot-format-buffer-when-managed ()
+          "Format the current buffer when it is managed by Eglot."
+          (when (eglot-managed-p)
+            (eglot-format-buffer)))
+
+        (defun my:eglot-format-on-save-setup ()
+          "Format with Eglot before saving when the buffer is managed."
+          (add-hook 'before-save-hook
+                    #'my:eglot-format-buffer-when-managed
+                    nil t))
         :custom
-        (rust-format-on-save t)
-        :hook (rust-ts-mode-hook . eglot-ensure))
+        (rust-ts-mode-indent-offset 4)
+        :hook ((rust-ts-mode-hook . eglot-ensure)
+               (rust-ts-mode-hook . my:eglot-format-on-save-setup)))
 
       (use-package cargo
         :ensure t
@@ -1253,14 +1276,24 @@
         :custom
         (css-indent-offset 2))
     #+end_src
-*** typescript / JavaScript
-**** typescript-mode
+*** JavaScript and TypeScript
      #+begin_src emacs-lisp
-       (use-package typescript-mode
-         :ensure t
+       (use-package js
+         :ensure nil
+         :mode (("\\.js\\'" . js-ts-mode)
+                ("\\.jsx\\'" . js-ts-mode))
          :custom
-         (typescript-indent-level 2)
-         :hook (typescript-ts-mode-hook . eglot-ensure))
+         (js-indent-level 2)
+         :hook (js-ts-mode-hook . eglot-ensure))
+
+       (use-package typescript-ts-mode
+         :ensure nil
+         :mode (("\\.ts\\'" . typescript-ts-mode)
+                ("\\.tsx\\'" . tsx-ts-mode))
+         :custom
+         (typescript-ts-indent-offset 2)
+         :hook ((typescript-ts-mode-hook . eglot-ensure)
+                (tsx-ts-mode-hook . eglot-ensure)))
      #+end_src
 ** Markup Languages
 *** Org
@@ -1971,12 +2004,11 @@
     #+end_src
 *** YAML
     #+begin_src emacs-lisp
-      (use-package yaml-mode
-        :ensure t
+      (use-package yaml-ts-mode
+        :ensure nil
         :hook (yaml-ts-mode-hook . eglot-ensure)
         :mode (("\\.yml\\'" . yaml-ts-mode)
-               ("\\.yaml\\'" . yaml-ts-mode))
-        :commands (yaml-ts-mode))
+               ("\\.yaml\\'" . yaml-ts-mode)))
     #+end_src
 *** Typst
     #+begin_src emacs-lisp
