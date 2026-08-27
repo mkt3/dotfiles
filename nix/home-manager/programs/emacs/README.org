@@ -29,6 +29,8 @@
  #+end_src
 * Customize output
   #+begin_src emacs-lisp
+    ;; Keep Customize output separate from the literate configuration.
+    ;; Do not load this file; README.org remains the sole source of truth.
     (setopt custom-file (locate-user-emacs-file "custom.el"))
   #+end_src
 * Package management
@@ -1009,6 +1011,8 @@
        ;;        :map eglot-mode-map
        ;;        ("C-c a" . eglot-code-actions))
        :hook (eglot-managed-mode-hook . my:eglot-capf)
+       :custom
+       (eglot-events-buffer-config '(:size 0 :format full))
        :config
        (defun my:eglot-capf ()
          (setq-local completion-at-point-functions
@@ -1023,9 +1027,8 @@
      (use-package jsonrpc
        :ensure t
        :defer t
-       :config
-       (setq jsonrpc-default-request-timeout 3000)
-       (fset #'jsonrpc--log-event #'ignore))
+       :custom
+       (jsonrpc-default-request-timeout 3000))
 
      (use-package eglot-booster
        :ensure nil
@@ -1459,11 +1462,11 @@
          :after org
          :if (file-directory-p my:d:org-gtd)
          :bind (("C-c d" . org-agenda)
-                ("C-c g" . gtd)
+                ("C-c g" . my:gtd)
                 :map org-mode-map
                 ("C-c C-w" . org-refile))
          :preface
-         (defvar org-clock-current-task-file
+         (defvar my:org-clock-current-task-file
            (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
          (defvar my:copy-calendar-timer nil
            "Timer used to copy calendar data periodically.")
@@ -1496,19 +1499,22 @@
                        (directory-files-recursively daily-notes-directory "\\.org\\(?:\\.gpg\\)?\\'"))))))
              (seq-uniq (append files (org-add-archive-files files)))))
 
-         (defun gtd ()
+         (defun my:gtd ()
+           "Open the main GTD file."
            (interactive)
            (find-file my:f:org-gtd))
 
-         (defun org-clock-current-task-to-file ()
-           (with-temp-file org-clock-current-task-file
+         (defun my:org-clock-current-task-to-file ()
+           "Write the current clock task to its status file."
+           (with-temp-file my:org-clock-current-task-file
              (insert (or org-clock-current-task ""))))
 
-         (defun org-clock-clear-file-after-clock-out ()
-           (with-temp-file org-clock-current-task-file
+         (defun my:org-clock-clear-file-after-clock-out ()
+           "Clear the clock task status file."
+           (with-temp-file my:org-clock-current-task-file
              (insert "")))
-         :hook ((org-clock-in-hook . org-clock-current-task-to-file)
-                (org-clock-out-hook . org-clock-clear-file-after-clock-out))
+         :hook ((org-clock-in-hook . my:org-clock-current-task-to-file)
+                (org-clock-out-hook . my:org-clock-clear-file-after-clock-out))
          :init
          (when (timerp my:copy-calendar-timer)
            (cancel-timer my:copy-calendar-timer))
@@ -1903,7 +1909,7 @@
          (org-hugo-base-dir my:d:org-hugo)
          (org-hugo-default-section-directory "posts")
          :config
-         (defun org-hugo-set-bundle-and-export-file-name (draft-position)
+         (defun my:org-hugo-set-bundle-and-export-file-name (draft-position)
            "Set the Hugo bundle from the ID and determine export file name based on #+lang."
            (goto-char (point-min))
            ;; Set hugo_bundle from ID if not already present
@@ -1924,14 +1930,14 @@
                (goto-char draft-position)
                (forward-line)
                (insert (concat "#+export_file_name: " export-file-name "\n")))))
-         (defun org-hugo-replace-last-modified ()
+         (defun my:org-hugo-replace-last-modified ()
            "Replace all '#+last_modified:' with '#+hugo_lastmod:' safely."
            (save-excursion
              (goto-char (point-min))
              (while (re-search-forward (rx bol "#+last_modified:") nil t)
                (replace-match "#+hugo_lastmod:"))))
 
-         (defun org-hugo-export-drafts ()
+         (defun my:org-hugo-export-drafts ()
            "Export all non-draft .org files in my:d:org-roam to markdown using org-hugo."
            (interactive)
            (let ((recentf-mode nil))
@@ -1942,8 +1948,8 @@
                    (let ((draft-position (re-search-forward "^#\\+hugo_draft: false$" nil t))
                          (modified (buffer-modified-p)))
                      (when draft-position
-                       (org-hugo-set-bundle-and-export-file-name draft-position)
-                       (org-hugo-replace-last-modified)
+                       (my:org-hugo-set-bundle-and-export-file-name draft-position)
+                       (my:org-hugo-replace-last-modified)
                        (org-hugo-export-to-md)
                        (set-buffer-modified-p modified))))
                  (kill-buffer))))))
