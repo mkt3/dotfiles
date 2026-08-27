@@ -533,6 +533,10 @@
        :demand t
        :delight
        :bind ("C-c W" . whitespace-cleanup)
+       :preface
+       (defun my:whitespace-cleanup-before-org-src-command (&rest _args)
+         "Clean whitespace before saving or exiting an Org source buffer."
+         (whitespace-cleanup))
        :custom
        (whitespace-style '(face trailing tabs spaces empty space-mark tab-mark))
        (whitespace-display-mappings '((space-mark ?\u3000 [?\u25a1])
@@ -557,8 +561,14 @@
        ;;                     :weight 'bold)
        ;; (set-face-attribute 'whitespace-empty nil
        ;;                     :background "Black")
-       (advice-add 'org-edit-src-save :before (lambda () (whitespace-cleanup)))
-       (advice-add 'org-edit-src-exit :before (lambda () (whitespace-cleanup)))
+       (unless (advice-member-p #'my:whitespace-cleanup-before-org-src-command
+                                'org-edit-src-save)
+         (advice-add 'org-edit-src-save :before
+                     #'my:whitespace-cleanup-before-org-src-command))
+       (unless (advice-member-p #'my:whitespace-cleanup-before-org-src-command
+                                'org-edit-src-exit)
+         (advice-add 'org-edit-src-exit :before
+                     #'my:whitespace-cleanup-before-org-src-command))
        :hook (org-src-mode-hook . whitespace-turn-on))
    #+end_src
 ** Goggles
@@ -1240,6 +1250,51 @@
 **** org-mode
      #+begin_src emacs-lisp
        (use-package org
+         :preface
+         (defun my:org-babel-trusted-file-p (file)
+           "Return non-nil when FILE is a trusted local Org file."
+           (and file
+                (not (file-remote-p file))
+                (or (file-equal-p file
+                                  (expand-file-name "README.org"
+                                                    user-emacs-directory))
+                    (and (file-directory-p my:d:org)
+                         (file-in-directory-p file my:d:org))
+                    (and (file-directory-p my:d:paper-notes)
+                         (file-in-directory-p file my:d:paper-notes)))))
+
+         (defun my:org-confirm-babel-evaluate (_language _body)
+           "Ask before evaluating Babel code outside trusted local files."
+           (not (my:org-babel-trusted-file-p buffer-file-name)))
+
+         (defun my:disable-read-only-before-org-edit-special (&rest _args)
+           "Disable read-only mode before editing an Org source block."
+           (read-only-mode -1))
+
+         (defun my:org-insert-clipboard-image ()
+           "Save the clipboard image and insert an Org file link."
+           (interactive)
+           (unless buffer-file-name
+             (user-error "Save the current Org buffer before inserting an image"))
+           (when (file-remote-p buffer-file-name)
+             (user-error "Clipboard image insertion is unavailable for remote files"))
+           (unless (executable-find "pngpaste")
+             (user-error "Cannot find pngpaste"))
+           (let* ((image-directory
+                   (expand-file-name
+                    (concat (file-name-nondirectory buffer-file-name) "_image")
+                    default-directory))
+                  (filename
+                   (expand-file-name
+                    (concat (format-time-string "%Y%m%d_%H%M%S") ".png")
+                    image-directory)))
+             (make-directory image-directory t)
+             (unless (eq 0 (call-process "pngpaste" nil nil nil filename))
+               (user-error "pngpaste failed to save the clipboard image"))
+             (insert
+              (org-link-make-string
+               (concat "file:" (file-relative-name filename default-directory))))
+             (org-link-preview-region)))
          :bind (("C-c l" . org-store-link)
                 ("C-c c" . org-capture)
                 :map org-mode-map
@@ -1262,32 +1317,21 @@
          (org-log-done 'time)
          (org-clock-into-drawer t)
          (org-adapt-indentation t)
-         (org-confirm-babel-evaluate nil)
+         (org-confirm-babel-evaluate #'my:org-confirm-babel-evaluate)
          (org-capture-templates `(("i" " Inbox" entry (file+headline my:f:org-gtd "Inbox")
                                    "** TODO %^{Brief Description}")))
          :config
          (keymap-unset orgtbl-mode-map "<backspace>")
-         (defun org-insert-clipboard-image ()
-           "Generate png file from a clipboard image and insert a link to current buffer."
-           (interactive)
-           (let* ((filename
-                   (concat (file-name-nondirectory (buffer-file-name))
-                           "_image/"
-                           (format-time-string "%Y%m%d_%H%M%S")
-                           ".png")))
-             (unless (file-exists-p (file-name-directory filename))
-               (make-directory (file-name-directory filename)))
-             (shell-command (concat "pngpaste " filename))
-             (if (file-exists-p filename)
-                 (insert (concat "[[file:" filename "]]")))
-             (org-display-inline-images)))
-         (bind-key "C-M-y" 'org-insert-clipboard-image)
+         (bind-key "C-M-y" #'my:org-insert-clipboard-image)
 
          (defun my:org-open-url-with-default ()
            (interactive)
            (let ((browse-url-browser-function 'browse-url-default-browser))
              (org-open-at-point)))
-         (advice-add 'org-edit-special :before (lambda (&rest _args) (read-only-mode -1)))
+         (unless (advice-member-p #'my:disable-read-only-before-org-edit-special
+                                  'org-edit-special)
+           (advice-add 'org-edit-special :before
+                       #'my:disable-read-only-before-org-edit-special))
          (defun my:enable-read-only ()
            "Enable read-only mode for certain conditions."
            (when (or (save-excursion
@@ -1395,6 +1439,15 @@
          :preface
          (defvar org-clock-current-task-file
            (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
+         (defvar my:copy-calendar-timer nil
+           "Timer used to copy calendar data periodically.")
+
+         (defun my:copy-calendar ()
+           "Start the calendar copy script."
+           (start-process
+            "copy-calendar" nil "bash"
+            (expand-file-name "personal_config/calendar/copy_calendar.sh"
+                              my:d:data-dir)))
 
          (defun my:org-clock-report-files ()
            "Return GTD, project, and daily-note files for clock reports."
@@ -1425,10 +1478,12 @@
          :hook ((org-clock-in-hook . org-clock-current-task-to-file)
                 (org-clock-out-hook . org-clock-clear-file-after-clock-out))
          :init
+         (when (timerp my:copy-calendar-timer)
+           (cancel-timer my:copy-calendar-timer))
+         (setq my:copy-calendar-timer nil)
          (when (and (eq system-type 'gnu/linux) (display-graphic-p) (executable-find "gdrive"))
-           (run-at-time 0 (* 5 60)
-                        (lambda ()
-                          (start-process "copy-calendar" nil "bash" (expand-file-name "personal_config/calendar/copy_calendar.sh" my:d:data-dir)))))
+           (setq my:copy-calendar-timer
+                 (run-at-time 0 (* 5 60) #'my:copy-calendar)))
          :custom
          (org-agenda-window-setup 'other-tab)
          (org-agenda-span 'day)
@@ -2324,12 +2379,12 @@
        :if (display-graphic-p)
        ;; :demand t ;  load-path has already been set by nix
        :mode ("\\.pdf\\'" . pdf-view-mode)
-       :commands (open-pdf-in-external-app)
+       :commands (my:open-pdf-in-external-app)
        :hook (pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1)))
        :bind (nil
               :map pdf-view-mode-map
               ("C-s" . isearch-forward)
-              ("C-c C-o" . open-pdf-in-external-app))
+              ("C-c C-o" . my:open-pdf-in-external-app))
        ;; :init
        ;; (unless (featurep 'pdf-tools)
        ;;   (pdf-loader-install))
@@ -2337,10 +2392,12 @@
        (setq-default pdf-view-display-size 'fit-page)
        (setq pdf-view-incompatible-modes '(linum-mode linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode))
        (setq pdf-annot-activate-created-annotations t)
-       (defun open-pdf-in-external-app ()
+       (defun my:open-pdf-in-external-app ()
+         "Open the current PDF with the operating system's default application."
          (interactive)
-         (let ((pdf-file-path (buffer-file-name)))
-           (start-process "open-pdf-external" nil "xdg-open" pdf-file-path))))
+         (unless buffer-file-name
+           (user-error "The current buffer is not visiting a PDF file"))
+         (browse-url-of-file buffer-file-name)))
    #+end_src
 ** atomic-chrome
    #+begin_src emacs-lisp
@@ -2419,15 +2476,27 @@
        :ensure t
        :demand t
        :if (executable-find "recoll")
+       :preface
+       (defvar my:recoll-index-timer nil
+         "Timer used to update the Recoll index periodically.")
+
+       (defun my:update-recoll-index ()
+         "Start a Recoll index update when its configuration is available."
+         (let ((config-directory (getenv "RECOLL_CONFDIR")))
+           (when (and config-directory (> (length config-directory) 0))
+             (start-process "recollindex" nil "recollindex"
+                            "-c" config-directory))))
        :bind (("C-c n s" . consult-recoll))
        :config
        (setq consult-recoll-inline-snippets t)
        (if (eq system-type 'darwin)
            (setq exec-path (append '("/Applications/Recoll.app/Contents/MacOS") exec-path)))
-       (when (display-graphic-p)
-         (run-at-time 0 (* 5 60)
-                      (lambda ()
-                        (start-process "recollindex" nil "recollindex" "-c" (getenv "RECOLL_CONFDIR"))))))
+       (when (timerp my:recoll-index-timer)
+         (cancel-timer my:recoll-index-timer))
+       (setq my:recoll-index-timer nil)
+       (when (and (display-graphic-p) (getenv "RECOLL_CONFDIR"))
+         (setq my:recoll-index-timer
+               (run-at-time 0 (* 5 60) #'my:update-recoll-index))))
    #+end_src
 * Footer
   #+begin_src emacs-lisp
