@@ -90,8 +90,8 @@
      (defconst my:d:org-roam-paper (expand-file-name "reference/paper" my:d:org-roam))
      (defconst my:f:paper-note-template (expand-file-name "templates/paper.org" my:d:paper-notes))
      (defconst my:f:bib (expand-file-name "references.bib" my:d:paper-notes))
-     (defconst my:d:password-store (or (getenv "PASSWORD_STORE_DIR") ""))
-     (defconst my:d:org-hugo (or (getenv "ORG_HUGO") ""))
+     (defconst my:d:password-store (getenv "PASSWORD_STORE_DIR"))
+     (defconst my:d:org-hugo (getenv "ORG_HUGO"))
      (defvar my:plstore nil)
      (defvar my:refile-targets nil)
      (defvar my:roam-task-tag "todo")
@@ -280,7 +280,8 @@
      (use-package password-store :ensure t)
 
      (use-package plstore
-       :if (file-directory-p my:d:password-store)
+       :if (and my:d:password-store
+                (file-directory-p my:d:password-store))
        :mode (("\\.plist\\'" . plstore-mode))
        :custom
        (plstore-encrypt-to (getenv "GPG_KEY_ID"))
@@ -288,11 +289,24 @@
        (setq my:plstore (plstore-open (expand-file-name "plstore.plist" my:d:password-store))))
 
      (use-package auth-source
-       :if (file-directory-p my:d:password-store)
+       :if (and my:d:password-store
+                (file-directory-p my:d:password-store))
        :custom
        (auth-source-gpg-encrypt-to (getenv "GPG_KEY_ID"))
        :config
        (add-to-list 'auth-sources (expand-file-name "plstore.plist" my:d:password-store)))
+
+     (defun my:auth-source-api-key (app)
+       "Return the API key stored for APP, or nil when none is available."
+       (require 'auth-source)
+       (let* ((match (car (auth-source-search :app app :max 1)))
+              (api-key (plist-get match :api-key))
+              (resolved-key
+               (if (functionp api-key)
+                   (funcall api-key)
+                 api-key)))
+         (unless (equal resolved-key "")
+           resolved-key)))
    #+end_src
 ** Server
    #+begin_src emacs-lisp
@@ -1271,6 +1285,20 @@
            "Disable read-only mode before editing an Org source block."
            (read-only-mode -1))
 
+         (defun my:org-clipboard-image-filename (directory)
+           "Return an unused timestamped PNG filename in DIRECTORY."
+           (let* ((timestamp (format-time-string "%Y%m%d_%H%M%S"))
+                  (suffix 0)
+                  (filename
+                   (expand-file-name (concat timestamp ".png") directory)))
+             (while (file-exists-p filename)
+               (setq suffix (1+ suffix)
+                     filename
+                     (expand-file-name
+                      (format "%s_%d.png" timestamp suffix)
+                      directory)))
+             filename))
+
          (defun my:org-insert-clipboard-image ()
            "Save the clipboard image and insert an Org file link."
            (interactive)
@@ -1280,21 +1308,19 @@
              (user-error "Clipboard image insertion is unavailable for remote files"))
            (unless (executable-find "pngpaste")
              (user-error "Cannot find pngpaste"))
-           (let* ((image-directory
-                   (expand-file-name
-                    (concat (file-name-nondirectory buffer-file-name) "_image")
-                    default-directory))
-                  (filename
-                   (expand-file-name
-                    (concat (format-time-string "%Y%m%d_%H%M%S") ".png")
-                    image-directory)))
+           (let ((image-directory
+                  (expand-file-name
+                   (concat (file-name-nondirectory buffer-file-name) "_image")
+                   default-directory)))
              (make-directory image-directory t)
-             (unless (eq 0 (call-process "pngpaste" nil nil nil filename))
-               (user-error "pngpaste failed to save the clipboard image"))
-             (insert
-              (org-link-make-string
-               (concat "file:" (file-relative-name filename default-directory))))
-             (org-link-preview-region)))
+             (let ((filename
+                    (my:org-clipboard-image-filename image-directory)))
+               (unless (eq 0 (call-process "pngpaste" nil nil nil filename))
+                 (user-error "pngpaste failed to save the clipboard image"))
+               (insert
+                (org-link-make-string
+                 (concat "file:" (file-relative-name filename default-directory))))
+               (org-link-preview-region))))
          :bind (("C-c l" . org-store-link)
                 ("C-c c" . org-capture)
                 :map org-mode-map
@@ -1441,13 +1467,19 @@
            (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
          (defvar my:copy-calendar-timer nil
            "Timer used to copy calendar data periodically.")
+         (defvar my:copy-calendar-process nil
+           "Process used to copy calendar data.")
 
          (defun my:copy-calendar ()
-           "Start the calendar copy script."
-           (start-process
-            "copy-calendar" nil "bash"
-            (expand-file-name "personal_config/calendar/copy_calendar.sh"
-                              my:d:data-dir)))
+           "Start the calendar copy script unless it is already running."
+           (unless (and (processp my:copy-calendar-process)
+                        (process-live-p my:copy-calendar-process))
+             (setq my:copy-calendar-process
+                   (start-process
+                    "copy-calendar" nil "bash"
+                    (expand-file-name
+                     "personal_config/calendar/copy_calendar.sh"
+                     my:d:data-dir)))))
 
          (defun my:org-clock-report-files ()
            "Return GTD, project, and daily-note files for clock reports."
@@ -1865,6 +1897,7 @@
          :after org
          :if (and my:d:org-roam
                   (file-directory-p my:d:org-roam)
+                  my:d:org-hugo
                   (file-directory-p my:d:org-hugo))
          :custom
          (org-hugo-base-dir my:d:org-hugo)
@@ -2432,22 +2465,25 @@
    #+begin_src emacs-lisp
      (use-package llm
        :ensure t
-       :if (file-directory-p my:d:password-store))
+       :if (and my:d:password-store
+                (file-directory-p my:d:password-store)))
 
      (use-package ellama
        :ensure t
        :after llm
        :bind ("C-c e" . ellama)
-       :if (file-directory-p my:d:password-store)
+       :if (and my:d:password-store
+                (file-directory-p my:d:password-store))
        :config
        (setopt ellama-language "English"
                ellama-auto-scroll t)
        (require 'llm-gemini)
-       (unless ellama-provider
-         (setopt ellama-provider
-                 (make-llm-gemini
-                  :key (plist-get (nth 0 (auth-source-search :app "gemini" :max 1)) :api-key)
-                  :chat-model "gemini-2.5-flash"))))
+       (let ((api-key (my:auth-source-api-key "gemini")))
+         (when (and (not ellama-provider) api-key)
+           (setopt ellama-provider
+                   (make-llm-gemini
+                    :key api-key
+                    :chat-model "gemini-2.5-flash")))))
    #+end_src
 ** Translate
    #+begin_src emacs-lisp
@@ -2457,17 +2493,18 @@
        :config
        (set-face-attribute 'gt-buffer-render-block-prefix-face nil :background "black")
        (setq gt-langs '(ja en))
-       (setq engine-list (list
-                          (gt-google-engine)
-                          (gt-bing-engine)))
-       (when (file-directory-p my:d:password-store)
-         (let ((deeplapi-key (plist-get (nth 0 (auth-source-search :app "deepl" :max 1)) :api-key)))
-           (setq engine-list (append (list (gt-deepl-engine :key deeplapi-key :pro nil)) engine-list))))
-       (setq gt-default-translator
-             (gt-translator
-              :taker   (gt-taker :text 'word :pick 'paragraph)
-              :engines engine-list
-              :render  (gt-posframe-pop-render)))
+       (let ((engines (list (gt-google-engine)
+                            (gt-bing-engine))))
+         (when (and my:d:password-store
+                    (file-directory-p my:d:password-store))
+           (let ((api-key (my:auth-source-api-key "deepl")))
+             (when api-key
+               (push (gt-deepl-engine :key api-key :pro nil) engines))))
+         (setq gt-default-translator
+               (gt-translator
+                :taker   (gt-taker :text 'word :pick 'paragraph)
+                :engines engines
+                :render  (gt-posframe-pop-render))))
        (setq gts-buffer-follow-p t))
    #+end_src
 ** recoll
@@ -2479,13 +2516,19 @@
        :preface
        (defvar my:recoll-index-timer nil
          "Timer used to update the Recoll index periodically.")
+       (defvar my:recoll-index-process nil
+         "Process used to update the Recoll index.")
 
        (defun my:update-recoll-index ()
-         "Start a Recoll index update when its configuration is available."
+         "Start a Recoll index update unless one is already running."
          (let ((config-directory (getenv "RECOLL_CONFDIR")))
-           (when (and config-directory (> (length config-directory) 0))
-             (start-process "recollindex" nil "recollindex"
-                            "-c" config-directory))))
+           (when (and config-directory
+                      (> (length config-directory) 0)
+                      (not (and (processp my:recoll-index-process)
+                                (process-live-p my:recoll-index-process))))
+             (setq my:recoll-index-process
+                   (start-process "recollindex" nil "recollindex"
+                                  "-c" config-directory)))))
        :bind (("C-c n s" . consult-recoll))
        :config
        (setq consult-recoll-inline-snippets t)
@@ -2494,9 +2537,12 @@
        (when (timerp my:recoll-index-timer)
          (cancel-timer my:recoll-index-timer))
        (setq my:recoll-index-timer nil)
-       (when (and (display-graphic-p) (getenv "RECOLL_CONFDIR"))
-         (setq my:recoll-index-timer
-               (run-at-time 0 (* 5 60) #'my:update-recoll-index))))
+       (let ((config-directory (getenv "RECOLL_CONFDIR")))
+         (when (and (display-graphic-p)
+                    config-directory
+                    (> (length config-directory) 0))
+           (setq my:recoll-index-timer
+                 (run-at-time 0 (* 5 60) #'my:update-recoll-index)))))
    #+end_src
 * Footer
   #+begin_src emacs-lisp
