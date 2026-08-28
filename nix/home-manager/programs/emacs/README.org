@@ -1,20 +1,39 @@
 -*- buffer-read-only: t -*-
-#+title: Configurations for Emacs
+#+title: Emacs Configuration
 #+author: Makoto Morinaga
 #+startup: content
 #+startup: nohideblocks
 
 * Overview
-  This is the literate source for the Emacs configuration.
-  =init.el= loads this file with =org-babel-load-file=, which generates and evaluates =README.el=.
-  Edit this file instead of the generated file.
+  This file is the literate source of the Emacs configuration.
+  On startup, =init.el= passes it to =org-babel-load-file=, which generates and evaluates =README.el=.
+  Changes therefore belong in =README.org=; =README.el= is a disposable build artifact.
 
-  Home Manager installs Emacs 31, the tree-sitter grammars, and the files that cannot be managed by =use-package=.
-  Most Emacs packages are installed on demand from the archives configured below.
+  Home Manager owns the Emacs build, tree-sitter grammars, platform-specific packages, and files needed before Emacs starts.
+  =early-init.el= contains settings that must run before package and frame initialization.
+  Most remaining packages are installed on demand by =use-package= from the archives configured below.
 
   The file-local variable on the first line opens this file read-only.
   Use =C-x C-q= before editing it directly in Emacs.
-* Generated file header
+
+** Applying changes
+   Run =make apply= at the repository root after changing Home Manager files.
+   A change to this file removes the generated =~/.config/emacs/README.el= during activation, so the next Emacs startup tangles it again.
+
+   To apply only a literate configuration change in a running Emacs session, evaluate =(org-babel-load-file (locate-user-emacs-file "README.org"))= or restart Emacs.
+   Start Emacs with =EMACS_PROFILE_STARTUP=1= and run =M-x use-package-report= to inspect package startup times.
+
+** Configuration boundaries
+   Keep settings in the earliest layer that requires them:
+
+   - =package.nix= selects the Emacs build and platform variant.
+   - =default.nix= installs grammars, native packages, and files managed by Home Manager.
+   - =early-init.el= configures package activation and the initial frame before normal initialization.
+   - =README.org= configures built-in features and packages loaded by =use-package=.
+
+   Credentials and machine-specific paths must come from environment variables or Home Manager rather than being embedded in generated Lisp.
+* Bootstrap
+** Generated file header
  #+begin_src emacs-lisp
    ;;; README.el --- init file for Emacs -*- coding: utf-8; lexical-binding: t -*-
 
@@ -27,14 +46,48 @@
 
    ;;; Code:
  #+end_src
-* Customize output
+** Runtime state and shared helpers
   #+begin_src emacs-lisp
+    (defun my:ensure-private-directory (directory)
+      "Create DIRECTORY when needed and restrict access to its owner."
+      (make-directory directory t)
+      (set-file-modes directory #o700)
+      directory)
+
+    (defun my:getenv-nonempty (name)
+      "Return environment variable NAME, or nil when unset or empty."
+      (let ((value (getenv name)))
+        (and value
+             (not (string= value ""))
+             value)))
+
+    (defun my:replace-timer (variable timer)
+      "Cancel the timer in VARIABLE and replace it with TIMER."
+      (when (and (boundp variable)
+                 (timerp (symbol-value variable)))
+        (cancel-timer (symbol-value variable)))
+      (set variable timer))
+
+    (defconst my:d:emacs-cache
+      (expand-file-name
+       "emacs/"
+       (or (my:getenv-nonempty "XDG_CACHE_HOME") "~/.cache/"))
+      "Directory for disposable Emacs data.")
+    (defconst my:d:emacs-state
+      (expand-file-name
+       "emacs/"
+       (or (my:getenv-nonempty "XDG_STATE_HOME") "~/.local/state/"))
+      "Directory for persistent Emacs state that is not configuration.")
+
+    (mapc #'my:ensure-private-directory
+          (list my:d:emacs-cache my:d:emacs-state))
+
     ;; Keep Customize output separate from the literate configuration.
     ;; Do not load this file; README.org remains the sole source of truth.
-    (setopt custom-file (locate-user-emacs-file "custom.el"))
+    (setopt custom-file (expand-file-name "custom.el" my:d:emacs-state))
   #+end_src
-* Package management
-** Package manager
+** Package management
+*** Archives and use-package
    #+begin_src emacs-lisp
      (eval-and-compile
        (customize-set-variable
@@ -42,27 +95,49 @@
                             ("melpa" . "https://melpa.org/packages/")
                             ("gnu" . "https://elpa.gnu.org/packages/")
                             ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+       (customize-set-variable
+        'package-archive-priorities '(("org" . 30)
+                                      ("gnu" . 20)
+                                      ("nongnu" . 15)
+                                      ("melpa" . 10)))
        (package-initialize)
        (setopt use-package-hook-name-suffix nil)
        (setopt use-package-vc-prefer-newest t))
 
-     (setopt use-package-compute-statistics t)
+     ;; Statistics retain timing data for every package, so collect them only
+     ;; during an explicit profiling run.
+     (setopt use-package-compute-statistics
+             (equal (my:getenv-nonempty "EMACS_PROFILE_STARTUP") "1"))
 
      (use-package gnu-elpa-keyring-update :ensure t)
    #+end_src
-** Auto package update
+*** Automatic package updates
    #+begin_src emacs-lisp
      (use-package auto-package-update
        :ensure t
+       :defer t
+       :preface
+       (defvar my:auto-package-update-timer nil
+         "Idle timer used to check for package updates.")
+
+       (defun my:schedule-auto-package-update ()
+         "Check for package updates after startup becomes idle."
+         (my:replace-timer
+          'my:auto-package-update-timer
+          (run-with-idle-timer
+           30 nil
+           (lambda ()
+             (setq my:auto-package-update-timer nil)
+             (auto-package-update-maybe)))))
        :custom
        (auto-package-update-delete-old-versions t)
        (auto-package-update-hide-results t)
        (auto-package-update-interval 1)
        (auto-package-update-excluded-packages '(pdf-tools mu4e ox-hugo eglot-booster typst-ts-mode consult-tramp dired-details-r atomic-chrome))
-       :hook (emacs-startup-hook . auto-package-update-maybe))
+       :hook (emacs-startup-hook . my:schedule-auto-package-update))
    #+end_src
 * Initialization
-** Load Path
+** Shell environment
    #+begin_src emacs-lisp
      (use-package exec-path-from-shell
        :ensure t
@@ -73,7 +148,7 @@
        :config
        (exec-path-from-shell-initialize))
    #+end_src
-** Constant
+** Paths and state
    #+begin_src emacs-lisp
      (defconst my:d:data-dir
        (expand-file-name
@@ -81,26 +156,30 @@
           ('darwin "GoogleDrive/local_data_dir")
           ('gnu/linux "Nextcloud")
           (_ "Nextcloud"))
-        (getenv "HOME")))
+        "~"))
      (defconst my:d:org (expand-file-name "orgnotes" my:d:data-dir))
      (defconst my:d:org-gtd (expand-file-name "gtd" my:d:org))
      (defconst my:f:org-gtd (expand-file-name "gtd.org" my:d:org-gtd))
      (defconst my:d:org-roam (expand-file-name "roam" my:d:org))
      (defconst my:d:paper-notes
-       (expand-file-name "workspace/ghq/github.com/mkt3/paper-notes" (getenv "HOME")))
+       (expand-file-name "workspace/ghq/github.com/mkt3/paper-notes" "~"))
      (defconst my:d:paper-notes-papers (expand-file-name "papers" my:d:paper-notes))
      (defconst my:d:org-roam-paper (expand-file-name "reference/paper" my:d:org-roam))
      (defconst my:f:paper-note-template (expand-file-name "templates/paper.org" my:d:paper-notes))
      (defconst my:f:bib (expand-file-name "references.bib" my:d:paper-notes))
-     (defconst my:d:password-store (getenv "PASSWORD_STORE_DIR"))
-     (defconst my:d:org-hugo (getenv "ORG_HUGO"))
+     (defconst my:d:password-store
+       (my:getenv-nonempty "PASSWORD_STORE_DIR"))
+     (defconst my:d:org-hugo (my:getenv-nonempty "ORG_HUGO"))
+     (defconst my:d:recoll-config
+       (my:getenv-nonempty "RECOLL_CONFDIR"))
+     (defconst my:gpg-key-id (my:getenv-nonempty "GPG_KEY_ID"))
      (defvar my:plstore nil)
      (defvar my:refile-targets nil)
      (defvar my:roam-task-tag "todo")
    #+end_src
-* Built-in configuration
-** key-translation-map
-   for keyball
+* Core editing
+** Key translation
+   Translate the physical keys used by Keyball before command lookup.
    #+begin_src emacs-lisp
      (dolist (mapping '(("<DEL>" . "C-h")
                         ("<deletechar>" . "C-d")
@@ -111,7 +190,7 @@
                         ))
        (define-key key-translation-map (kbd (car mapping)) (kbd (cdr mapping))))
    #+end_src
-** scroll
+** Scrolling
    #+begin_src emacs-lisp
      (setopt scroll-preserve-screen-position t
              scroll-margin 5
@@ -120,7 +199,7 @@
 
      (pixel-scroll-precision-mode 1)
    #+end_src
-** symlink
+** Symbolic links
    Follow symbolic links without prompting while retaining the symbolic path as the visited file name.
    #+begin_src emacs-lisp
      (use-package vc-hooks :custom (vc-follow-symlinks t))
@@ -135,7 +214,7 @@
      (setopt tab-always-indent t
              electric-indent-actions '(yank))
    #+end_src
-** Truncate line
+** Line wrapping
    #+begin_src emacs-lisp
      (setopt truncate-lines nil
              truncate-partial-width-windows nil)
@@ -144,7 +223,7 @@
        :ensure t
        :hook ((markdown-ts-mode-hook org-mode-hook nov-mode-hook) . adaptive-wrap-prefix-mode))
    #+end_src
-** Delete
+** Deletion
    #+begin_src emacs-lisp
      (bind-key "C-h" 'delete-backward-char)
      (bind-key "C-x ?" 'help-command)
@@ -173,34 +252,53 @@
        (uniquify-min-dir-content 1)
        (uniquify-ignore-buffers-re "^\\*[^*]+\\*$"))
    #+end_src
-** Save various history
+** Minibuffer history
    #+begin_src emacs-lisp
      (use-package savehist
        :custom
+       (savehist-file (expand-file-name "history" my:d:emacs-state))
        (savehist-autosave-interval 60)
        (history-delete-duplicates t)
        (history-length 1000)
-       (savehist-additional-variables '(kill-ring
-                                        search-ring
+       (savehist-additional-variables '(search-ring
                                         regexp-search-ring
                                         file-name-history
-                                        command-history
                                         extended-command-history))
        :config
        (savehist-mode))
    #+end_src
-** Line number
+** Line numbers
    #+begin_src emacs-lisp
      (use-package display-line-numbers
        :hook (prog-mode-hook . display-line-numbers-mode))
    #+end_src
-** Disable auto generate file
+** Backup and auto-save files
    #+begin_src emacs-lisp
-     (use-package files
-       :custom ((make-backup-files nil)
-                (auto-save-default nil)))
+     (let* ((backup-directory
+             (expand-file-name "backups/" my:d:emacs-cache))
+            (auto-save-directory
+             (expand-file-name "auto-save/" my:d:emacs-cache))
+            (tramp-auto-save-directory
+             (expand-file-name "tramp-auto-save/" my:d:emacs-cache)))
+       (mapc #'my:ensure-private-directory
+             (list backup-directory
+                   auto-save-directory
+                   tramp-auto-save-directory))
+
+       (setopt make-backup-files t
+               backup-by-copying t
+               backup-directory-alist `(("." . ,backup-directory))
+               version-control t
+               kept-new-versions 5
+               kept-old-versions 2
+               delete-old-versions t
+               auto-save-default t
+               auto-save-file-name-transforms
+               `((".*" ,auto-save-directory t))
+               auto-save-list-file-prefix
+               (expand-file-name ".saves-" auto-save-directory)))
    #+end_src
-** Time
+** Clock
    #+begin_src emacs-lisp
      (use-package time
        :custom
@@ -213,7 +311,7 @@
      (use-package autorevert
        :delight auto-revert-mode
        :custom
-       (auto-revert-interval 0.1)
+       (auto-revert-avoid-polling t)
        :config
        (global-auto-revert-mode 1))
    #+end_src
@@ -226,7 +324,7 @@
        :config
        (show-paren-mode 1))
    #+end_src
-** Window
+** Window navigation
    #+begin_src emacs-lisp
      (setopt split-window-preferred-direction 'longest)
 
@@ -245,25 +343,33 @@
        :config
        (repeat-mode 1))
    #+end_src
-** Save file browsing history
+** Recently visited files
    #+begin_src emacs-lisp
      (use-package recentf
        :custom
+       (recentf-save-file (expand-file-name "recentf" my:d:emacs-state))
        (recentf-exclude '(".recentf"
-                          "^/tmp\\.*"
+                          "^/tmp/"
                           "bookmarks"
                           "\\.gpg"
                           "Nextcloud/orgnotes"))
        :config
        (recentf-mode 1))
    #+end_src
-** Save last cursor position
+** Saved cursor positions
    #+begin_src emacs-lisp
      (use-package saveplace
+       :custom
+       (save-place-file (expand-file-name "places" my:d:emacs-state))
        :config
        (save-place-mode 1))
+
+     (use-package bookmark
+       :custom
+       (bookmark-default-file
+        (expand-file-name "bookmarks" my:d:emacs-state)))
    #+end_src
-** Encrypting/decrypting
+** Encryption and credentials
    #+begin_src emacs-lisp
      (use-package epg
        :custom
@@ -279,14 +385,18 @@
        (require 'epa-file)
        (epa-file-enable))
 
-     (use-package password-store :ensure t)
+     (use-package password-store
+       :ensure t
+       :commands (password-store-copy
+                  password-store-edit
+                  password-store-insert))
 
      (use-package plstore
        :if (and my:d:password-store
                 (file-directory-p my:d:password-store))
        :mode (("\\.plist\\'" . plstore-mode))
        :custom
-       (plstore-encrypt-to (getenv "GPG_KEY_ID"))
+       (plstore-encrypt-to my:gpg-key-id)
        :config
        (setq my:plstore (plstore-open (expand-file-name "plstore.plist" my:d:password-store))))
 
@@ -294,7 +404,7 @@
        :if (and my:d:password-store
                 (file-directory-p my:d:password-store))
        :custom
-       (auth-source-gpg-encrypt-to (getenv "GPG_KEY_ID"))
+       (auth-source-gpg-encrypt-to my:gpg-key-id)
        :config
        (add-to-list 'auth-sources (expand-file-name "plstore.plist" my:d:password-store)))
 
@@ -312,12 +422,18 @@
    #+end_src
 ** Server
    #+begin_src emacs-lisp
-     (when (and (not (server-running-p))
-                (display-graphic-p))
-       (server-start))
+     (when (display-graphic-p)
+       (require 'server)
+       (unless (server-running-p)
+         (server-start)))
    #+end_src
 ** Project
    #+begin_src emacs-lisp
+     (use-package project
+       :custom
+       (project-list-file
+        (expand-file-name "projects" my:d:emacs-state)))
+
      (use-package consult-ghq
        :ensure t
        :after consult
@@ -333,7 +449,7 @@
                    :around
                    #'my:consult-ghq-list-candidates-with-trailing-slash))
    #+end_src
-** Misc
+** General behavior
    #+begin_src emacs-lisp
      (setopt
       use-short-answers t
@@ -342,7 +458,7 @@
       enable-recursive-minibuffers t
       ring-bell-function 'ignore
       text-quoting-style 'straight
-      user-full-name (or (getenv "NAME") "Makoto Morinaga")
+      user-full-name (or (my:getenv-nonempty "NAME") "Makoto Morinaga")
       completion-lazy-hilit t
       process-adaptive-read-buffering t
       require-final-newline t
@@ -361,7 +477,7 @@
    #+end_src
 * Appearance
 ** Color theme
-*** ef-themes
+*** Ef themes
     #+begin_src emacs-lisp
       (use-package ef-themes
         :ensure t
@@ -399,8 +515,8 @@
      (use-package nerd-icons-dired
        :ensure t
        :hook (dired-mode-hook . (lambda ()
-                                  ;; avoid turning enabling nerd-icons-dired for tramp buffers
-                                  ;; as it seems to slow down the display
+                                  ;; Avoid enabling nerd-icons-dired for TRAMP buffers,
+                                  ;; as it seems to slow down display.
                                   (unless (file-remote-p default-directory)
                                     (nerd-icons-dired-mode 1)))))
 
@@ -429,7 +545,7 @@
      ;;   (highlight-indent-guides-responsive t)
      ;;   (highlight-indent-guides-character ?\|))
    #+end_src
-** rainbow-delimiters
+** Rainbow delimiters
    #+begin_src emacs-lisp
      (use-package rainbow-delimiters
        :ensure t
@@ -441,7 +557,7 @@
              mode-line-collapse-minor-modes-to "[+]")
    #+end_src
 
-*** moody
+*** Moody
     #+begin_src emacs-lisp
       (use-package moody
         :ensure t
@@ -452,14 +568,14 @@
         (moody-replace-mode-line-buffer-identification)
         (moody-replace-vc-mode))
     #+end_src
-** nyan-mode
+** Nyan mode
    #+begin_src emacs-lisp
      (use-package nyan-mode
        :ensure t
        :config
        (nyan-mode 1))
    #+end_src
-** tab-bar-mode
+** Tab bar
    #+begin_src emacs-lisp
      (use-package tab-bar
        :init (defvar my:tab-bar-map (make-sparse-keymap)
@@ -477,8 +593,8 @@
                           ("C-p" . tab-previous)))
          (keymap-set my:tab-bar-map (car binding) (cdr binding)))
        (dotimes (i 10)
-         (let ((tab i))
-           (keymap-set my:tab-bar-map (number-to-string tab)
+         (let ((tab (if (zerop i) 10 i)))
+           (keymap-set my:tab-bar-map (number-to-string i)
                        (lambda () (interactive) (tab-bar-select-tab tab)))))
        :custom
        (tab-bar-close-button-show      nil)
@@ -491,8 +607,8 @@
        (tab-bar-separator              "")
        :config
        (defun my:name-tab-by-project-or-default ()
-         "Return project name with hostname if in a project, or default tab-bar name if not.
-     The default tab-bar name uses the buffer name."
+         "Return a project and host name, or the default tab name.
+The default tab name uses the buffer name."
          (let* ((project-current (project-current))
                 (project-name (if project-current
                                   (project-name project-current)
@@ -507,9 +623,9 @@
                                    (format "%s@%s" project-name host-name))))
                  full-name)
              (tab-bar-tab-name-current))))
-       (setq tab-bar-tab-name-function #'my:name-tab-by-project-or-default)
-       (setq tab-bar-select-tab-modifiers '(meta))
-       (setq tab-bar-tab-hints t)
+       (setopt tab-bar-tab-name-function #'my:name-tab-by-project-or-default
+               tab-bar-select-tab-modifiers '(meta)
+               tab-bar-tab-hints t)
        (tab-bar-mode +1))
      (use-package project-tab-groups
        :ensure t
@@ -530,7 +646,7 @@
        (advice-add 'project-tab-groups-tab-group-name :around #'my:project-tab-groups-tab-group-name-advice)
        (project-tab-groups-mode 1))
    #+end_src
-** dimmer
+** Dimmer
    Visually highlight the selected buffer.
    #+begin_src emacs-lisp
      ;; (use-package dimmer
@@ -598,13 +714,13 @@
        :config
        (setq-default goggles-pulse t))
    #+end_src
-* UI
-** Wayland / x11
+* User interface
+** Wayland and X11
    #+begin_src emacs-lisp
      ;; (when (memq  window-system '(pgtk x))
      ;;   (setq x-super-keysym 'meta))
    #+end_src
-** mac
+** Emacs Mac port
    #+begin_src emacs-lisp
      (use-package mac
        :when (eq 'mac window-system)
@@ -618,7 +734,7 @@
        (mac-right-option-modifier 'meta)
        (mac-right-command-modifier 'hyper))
    #+end_src
-** ns
+** NS port
    #+begin_src emacs-lisp
      (use-package ns
        :if (eq 'ns window-system)
@@ -633,14 +749,14 @@
        (ns-right-command-modifier 'meta)
        (ns-function-modifier 'super))
    #+end_src
-** language
+** Language environment
    #+begin_src emacs-lisp
      (use-package mule
        :init
        (set-language-environment "Japanese")
        (prefer-coding-system 'utf-8))
    #+end_src
-** skk
+** Japanese input with SKK
    #+begin_src emacs-lisp
      (use-package ddskk
        :ensure t
@@ -711,7 +827,7 @@
         :config
         (ddskk-posframe-mode 1))
    #+end_src
-** puni
+** Puni
    #+begin_src emacs-lisp
      (use-package puni
        :ensure t
@@ -724,7 +840,7 @@
        (electric-pair-mode t))
       #+end_src
 ** Completion UI
-*** vertico
+*** Vertico
      #+begin_src emacs-lisp
        (use-package vertico
          :ensure t
@@ -748,7 +864,7 @@
                 ("RET" . vertico-directory-enter)
                 ("C-l" . vertico-directory-up)))
      #+end_src
-*** consult
+*** Consult
     #+begin_src emacs-lisp
       (use-package consult
         :ensure t
@@ -802,8 +918,7 @@
         (setq xref-show-xrefs-function #'consult-xref
               xref-show-definitions-function #'consult-xref)
         :config
-        (recentf-mode 1)
-        (require 'keymap) ;; keymap-substitute requires emacs version 29.1?
+        (require 'keymap)
         (require 'cl-seq)
         (keymap-substitute project-prefix-map #'project-find-regexp #'consult-ripgrep)
         (cl-nsubstitute-if
@@ -811,14 +926,14 @@
          (pcase-lambda (`(,cmd _)) (eq cmd #'project-find-regexp))
          project-switch-commands))
     #+end_src
-*** marginalia
+*** Marginalia
     #+begin_src emacs-lisp
       (use-package marginalia
         :ensure t
         :init
         (marginalia-mode 1))
     #+end_src
-*** orderless & migemo
+*** Orderless and Migemo
     #+begin_src emacs-lisp
       (use-package orderless
         :ensure t
@@ -832,7 +947,7 @@
         :custom
         (migemo-command "cmigemo")
         (migemo-options '("-q" "--emacs"))
-        (migemo-dictionary (getenv "CMIGEMO_DICT"))
+        (migemo-dictionary (my:getenv-nonempty "CMIGEMO_DICT"))
         (migemo-user-dictionary nil)
         (migemo-regex-dictionary nil)
         (migemo-coding-system 'utf-8-unix)
@@ -844,14 +959,14 @@
         (with-eval-after-load 'orderless
           (add-to-list 'orderless-matching-styles 'orderless-migemo)))
     #+end_src
-*** fussy
+*** Fussy
     #+begin_src emacs-lisp
       ;; (use-package fussy
       ;;   :ensure t
       ;;   :config
       ;;   (push 'fussy completion-styles))
     #+end_src
-*** embark
+*** Embark
     #+begin_src emacs-lisp
       (use-package embark
         :ensure t
@@ -861,7 +976,7 @@
         :ensure t
         :hook (embark-collect-mode-hook . consult-preview-at-point-mode))
     #+end_src
-*** tempel
+*** Tempel
     #+begin_src emacs-lisp
       (use-package tempel
         :ensure t
@@ -872,7 +987,7 @@
                             completion-at-point-functions)))
         :hook ((prog-mode-hook text-mode-hook org-mode-hook) . tempel-setup-capf))
     #+end_src
-*** corfu
+*** Corfu
     #+begin_src emacs-lisp
       (use-package corfu
         :ensure t
@@ -903,7 +1018,7 @@
         ;;(add-to-list 'completion-at-point-functions #'cape-line)
       )
     #+end_src
-** expand-region
+** Expand Region
    #+begin_src emacs-lisp
      (use-package expand-region
        :ensure t
@@ -916,7 +1031,7 @@
        ("C-=" . expreg-expand)
        ("C-+" . expreg-contract))
    #+end_src
-** which-key
+** Which Key
    #+begin_src emacs-lisp
      (use-package which-key
        :delight
@@ -930,7 +1045,7 @@
        :config
        (which-key-mode 1))
    #+end_src
-** ace-window
+** Ace Window
    #+begin_src emacs-lisp
      (use-package ace-window
        :ensure t
@@ -943,15 +1058,20 @@
        ;;                                      :foreground "#f1fa8c"))))
        )
    #+end_src
-** breadcrumb
+** Breadcrumb
    #+begin_src emacs-lisp
      (use-package breadcrumb
        :ensure t
        :config
        (breadcrumb-mode 1))
    #+end_src
-** undo
+** Undo
    #+begin_src emacs-lisp
+     ;; Preserve useful history when vundo or the idle timer triggers GC.
+     (setopt undo-limit (* 16 1024 1024)
+             undo-strong-limit (* 24 1024 1024)
+             undo-outer-limit (* 128 1024 1024))
+
      (use-package vundo
        :ensure t
        :bind (("C-x u" . vundo)
@@ -961,14 +1081,14 @@
               ("j" . vundo-next)
               ("k" . vundo-previous)))
    #+end_src
-** mwim
+** MWiM
    #+begin_src emacs-lisp
      (use-package mwim
        :ensure t
        :bind (("C-a" . mwim-beginning-of-code-or-line)
               ("C-e" . mwim-end-of-code-or-line)))
    #+end_src
-** dmacro
+** Dmacro
    #+begin_src emacs-lisp
      (use-package dmacro
        :ensure t
@@ -992,7 +1112,7 @@
               :map calc-alg-map
               ("?" . casual-calc-tmenu)))
    #+end_src
-* Garbage collection
+* Performance
   #+begin_src emacs-lisp
     (defvar my:garbage-collection-timer nil
       "Timer used to run garbage collection while Emacs is idle.")
@@ -1008,13 +1128,12 @@
 
     (setopt gc-cons-percentage 0.2
           garbage-collection-messages t)
-    (when (timerp my:garbage-collection-timer)
-      (cancel-timer my:garbage-collection-timer))
-    (setq my:garbage-collection-timer
-          (run-with-idle-timer 60 t #'garbage-collect))
+    (my:replace-timer
+     'my:garbage-collection-timer
+     (run-with-idle-timer 60 t #'garbage-collect))
   #+end_src
-* LSP
-** eglot
+* Language server support
+** Eglot
    #+begin_src emacs-lisp
      (use-package eglot
        ;; :bind (nil
@@ -1035,10 +1154,8 @@
                      )))
 
      (use-package jsonrpc
-       :ensure t
-       :defer t
-       :custom
-       (jsonrpc-default-request-timeout 3000))
+       :ensure nil
+       :defer t)
 
      (use-package eglot-booster
        :ensure nil
@@ -1082,18 +1199,21 @@
              (list "ruff.toml"
                    ".ruff.toml"
                    (expand-file-name "ruff/ruff.toml"
-                                     (or (getenv "XDG_CONFIG_HOME") "~/.config")))))
+                                     (or (my:getenv-nonempty
+                                          "XDG_CONFIG_HOME")
+                                         "~/.config")))))
    #+end_src
-* Coding
+* Programming
 ** General
-*** makefile
+*** Makefile
     #+begin_src emacs-lisp
-      (use-package makefile-mode
-        :mode ("\\Makefile\\'" . makefile-mode)
+      (use-package make-mode
+        :ensure nil
+        :mode ("Makefile\\'" . makefile-mode)
         :hook (makefile-mode-hook . (lambda ()
                                       (setq tab-width 4))))
     #+end_src
-*** justfile
+*** Justfile
     #+begin_src emacs-lisp
       (use-package just-ts-mode
         :ensure t
@@ -1102,7 +1222,7 @@
                                      (setq tab-width 4))))
     #+end_src
 
-*** tree-sitter
+*** Tree-sitter
     #+begin_src emacs-lisp
       (use-package treesit
         :custom
@@ -1110,13 +1230,13 @@
         (treesit-auto-install-grammar 'never)
         (treesit-font-lock-level 3))
     #+end_src
-*** envrc
+*** Direnv
     #+begin_src emacs-lisp
       (use-package envrc
         :ensure t
         :hook (after-init-hook . envrc-global-mode))
     #+end_src
-*** git
+*** Git
     #+begin_src emacs-lisp
       (use-package git-modes :ensure t)
 
@@ -1144,11 +1264,11 @@
 
       (use-package diff-hl
         :ensure t
-        :demand t
         :config
-        (global-diff-hl-mode 1)
         (diff-hl-margin-mode 1)
-        :hook (magit-post-refresh-hook . diff-hl-magit-post-refresh))
+        :hook ((prog-mode-hook . diff-hl-mode)
+               (dired-mode-hook . diff-hl-dired-mode)
+               (magit-post-refresh-hook . diff-hl-magit-post-refresh)))
     #+end_src
 *** Visual-regexp
     #+begin_src emacs-lisp
@@ -1157,8 +1277,8 @@
         :bind (("C-c r" . vr/replace)
                ("C-c q" . vr/query-replace)))
     #+end_src
-** languages
-*** emacs lisp
+** Languages
+*** Emacs Lisp
     #+begin_src emacs-lisp
       (use-package aggressive-indent
         :ensure t
@@ -1172,7 +1292,7 @@
         :ensure t
         :hook (emacs-lisp-mode-hook . highlight-quoted-mode))
     #+end_src
-*** Shell Script
+*** Shell scripts
     #+begin_src emacs-lisp
       (use-package sh-script
         :hook (bash-ts-mode-hook . eglot-ensure))
@@ -1217,7 +1337,7 @@
     #+begin_src emacs-lisp
       (use-package python
         :custom
-        (python-indent-guess-indent-offset-verbose . nil)
+        (python-indent-guess-indent-offset-verbose nil)
         :hook (python-ts-mode-hook . eglot-ensure))
 
       (use-package reformatter
@@ -1266,7 +1386,7 @@
         (lua-indent-level 2)
         (lua-ts-indent-offset 2))
     #+end_src
-*** css
+*** CSS
     #+begin_src emacs-lisp
       (use-package css-mode
         :hook (css-ts-mode-hook . eglot-ensure)
@@ -1295,9 +1415,9 @@
          :hook ((typescript-ts-mode-hook . eglot-ensure)
                 (tsx-ts-mode-hook . eglot-ensure)))
      #+end_src
-** Markup Languages
+** Markup languages
 *** Org
-**** org-mode
+**** Org mode
      #+begin_src emacs-lisp
        (use-package org
          :preface
@@ -1317,9 +1437,33 @@
            "Ask before evaluating Babel code outside trusted local files."
            (not (my:org-babel-trusted-file-p buffer-file-name)))
 
-         (defun my:disable-read-only-before-org-edit-special (&rest _args)
-           "Disable read-only mode before editing an Org source block."
-           (read-only-mode -1))
+         (defun my:org-buffer-read-only-by-policy-p ()
+           "Return non-nil when the current Org buffer should be read-only."
+           (or (save-excursion
+                 (goto-char (point-min))
+                 (search-forward " -*- buffer-read-only: t -*-" nil t))
+               (and buffer-file-name
+                    (string-match-p "/roam/config/" buffer-file-name))))
+
+         (defun my:org-edit-special-with-policy-read-only (original &rest args)
+           "Temporarily unlock a policy-based read-only Org source buffer."
+           (let ((source-buffer (current-buffer))
+                 (restore-read-only
+                  (my:org-buffer-read-only-by-policy-p))
+                 keep-unlocked)
+             (when restore-read-only
+               (read-only-mode -1))
+             (unwind-protect
+                 (prog1 (apply original args)
+                   (setq keep-unlocked
+                         (and restore-read-only
+                              (org-src-edit-buffer-p)
+                              (eq (org-src-source-buffer) source-buffer))))
+               (when (and restore-read-only
+                          (not keep-unlocked)
+                          (buffer-live-p source-buffer))
+                 (with-current-buffer source-buffer
+                   (read-only-mode 1))))))
 
          (defun my:org-clipboard-image-filename (directory)
            "Return an unused timestamped PNG filename in DIRECTORY."
@@ -1365,7 +1509,7 @@
                 :map org-src-mode-map
                 ("C-c C-'" . org-edit-src-exit))
          :init
-         (setq org-directory my:d:org)
+         (setopt org-directory my:d:org)
          :custom
          (org-startup-indent nil)
 
@@ -1390,17 +1534,13 @@
            (interactive)
            (let ((browse-url-browser-function 'browse-url-default-browser))
              (org-open-at-point)))
-         (unless (advice-member-p #'my:disable-read-only-before-org-edit-special
+         (unless (advice-member-p #'my:org-edit-special-with-policy-read-only
                                   'org-edit-special)
-           (advice-add 'org-edit-special :before
-                       #'my:disable-read-only-before-org-edit-special))
+           (advice-add 'org-edit-special :around
+                       #'my:org-edit-special-with-policy-read-only))
          (defun my:enable-read-only ()
-           "Enable read-only mode for certain conditions."
-           (when (or (save-excursion
-                       (goto-char (point-min))
-                       (search-forward " -*- buffer-read-only: t -*-" nil t))
-                     (and (buffer-file-name)
-                          (string-match-p "/roam/config/" (buffer-file-name))))
+           "Enable policy-based read-only mode."
+           (when (my:org-buffer-read-only-by-policy-p)
              (read-only-mode 1)))
          (advice-add 'org-edit-src-exit :after #'my:enable-read-only)
 
@@ -1457,11 +1597,13 @@
          :ensure t
          :hook (org-mode-hook . org-superstar-mode))
      #+end_src
-**** org-pomodoro
+**** Org Pomodoro
      #+begin_src emacs-lisp
        (use-package org-pomodoro
          :ensure t
          :after org
+         :commands (org-pomodoro)
+         :defer t
          :custom
          (org-pomodoro-length 52)
          (org-pomodoro-short-break-length 17)
@@ -1489,7 +1631,7 @@
        (advice-add 'save-buffers-kill-emacs
                    :before #'my:org-pomodoro-clock-out-before-exit)
      #+end_src
-**** org gtd
+**** Org GTD
      #+begin_src emacs-lisp
        (use-package org-agenda
          :after org
@@ -1500,22 +1642,27 @@
                 ("C-c C-w" . org-refile))
          :preface
          (defvar my:org-clock-current-task-file
-           (expand-file-name "org-clock-current-task.txt" user-emacs-directory))
+           (expand-file-name
+            "org-clock-current-task.txt" my:d:emacs-state))
          (defvar my:copy-calendar-timer nil
            "Timer used to copy calendar data periodically.")
          (defvar my:copy-calendar-process nil
            "Process used to copy calendar data.")
+         (defvar my:copy-calendar-script
+           (expand-file-name
+            "personal_config/calendar/copy_calendar.sh"
+            my:d:data-dir)
+           "Script used to copy calendar data.")
 
          (defun my:copy-calendar ()
            "Start the calendar copy script unless it is already running."
-           (unless (and (processp my:copy-calendar-process)
-                        (process-live-p my:copy-calendar-process))
+           (when (and (file-readable-p my:copy-calendar-script)
+                      (not (and (processp my:copy-calendar-process)
+                                (process-live-p my:copy-calendar-process))))
              (setq my:copy-calendar-process
                    (start-process
                     "copy-calendar" nil "bash"
-                    (expand-file-name
-                     "personal_config/calendar/copy_calendar.sh"
-                     my:d:data-dir)))))
+                    my:copy-calendar-script))))
 
          (defun my:org-clock-report-files ()
            "Return GTD, project, and daily-note files for clock reports."
@@ -1549,35 +1696,38 @@
          :hook ((org-clock-in-hook . my:org-clock-current-task-to-file)
                 (org-clock-out-hook . my:org-clock-clear-file-after-clock-out))
          :init
-         (when (timerp my:copy-calendar-timer)
-           (cancel-timer my:copy-calendar-timer))
-         (setq my:copy-calendar-timer nil)
-         (when (and (eq system-type 'gnu/linux) (display-graphic-p) (executable-find "gdrive"))
-           (setq my:copy-calendar-timer
-                 (run-at-time 0 (* 5 60) #'my:copy-calendar)))
+         (my:replace-timer 'my:copy-calendar-timer nil)
+         (when (and (eq system-type 'gnu/linux)
+                    (display-graphic-p)
+                    (executable-find "gdrive")
+                    (file-readable-p my:copy-calendar-script))
+           (my:replace-timer
+            'my:copy-calendar-timer
+            (run-at-time 0 (* 5 60) #'my:copy-calendar)))
          :custom
          (org-agenda-window-setup 'other-tab)
          (org-agenda-span 'day)
          (org-agenda-remove-tags t)
          (org-agenda-current-time-string "← now ───────────────────")
-         (org-agenda-todo-ignore-scheduled 'feature)
+         (org-agenda-todo-ignore-scheduled 'future)
          (org-agenda-skip-deadline-prewarning-if-scheduled t)
+         (org-agenda-prefix-format
+          '((agenda . " %i %-15:c%?-12t% s")
+            (todo . " %i %-12:c")
+            (tags . " %i %-12:c")
+            (search . " %i %-12:c")))
          (org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)")
                               (sequence "WAITING(w)" "SOMEDAY(s)" "|" "CANCELLED(c/!)")))
          (org-agenda-custom-commands '(("t" todo "TODO")
                                        ("A" todo)))
          :config
          (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
-         (add-to-list 'org-modules 'org-habit t)
-         (setq org-agenda-prefix-format
-               '((agenda . " %i %-15:c%?-12t% s")
-                 (todo . " %i %-12:c")
-                 (tags . " %i %-12:c")
-                 (search . " %i %-12:c"))))
+         (add-to-list 'org-modules 'org-habit t))
 
        (use-package org-super-agenda
          :ensure t
          :after (org-agenda)
+         :defer t
          :if (file-directory-p my:d:org-gtd)
          :custom
          (org-super-agenda-groups
@@ -1597,15 +1747,14 @@
             (:todo "SOMEDAY" :order 9)
             (:auto-category t
                             :order 4)))
-         :config
-         (org-super-agenda-mode 1))
+         :hook (org-agenda-mode-hook . org-super-agenda-mode))
       #+end_src
-**** org-roam
+**** Org-roam
      #+begin_src emacs-lisp
        (use-package org-roam
          :ensure t
          :after org
-         :demand t
+         :defer t
          :if (file-directory-p my:d:org-roam)
          :bind (("C-c n a" . org-roam-alias-add)
                 ("C-c n f" . my:org-roam-node-find-excluding-dir)
@@ -1622,6 +1771,27 @@
                 ("C-c n p" . citar-open))
          :init
          (setq org-roam-directory my:d:org-roam)
+
+         (defun my:load-org-roam-for-current-buffer ()
+           "Load Org-roam when the current file participates in its database."
+           (when (and buffer-file-name
+                      (or (file-in-directory-p buffer-file-name my:d:org-roam)
+                          (and (file-directory-p my:d:paper-notes-papers)
+                               (file-in-directory-p
+                                buffer-file-name my:d:paper-notes-papers))))
+             (require 'org-roam)
+             (my:org-roam-setup-buffer)
+             (my:paper-note-setup-buffer)))
+
+         (defun my:org-agenda-prepare-org-roam (&rest _args)
+           "Load Org-roam and update the files used by Org Agenda."
+           (require 'org-roam)
+           (my:org-agenda-update-files))
+
+         (add-hook 'org-mode-hook #'my:load-org-roam-for-current-buffer)
+         (dolist (function '(org-agenda org-todo-list org-refile))
+           (unless (advice-member-p #'my:org-agenda-prepare-org-roam function)
+             (advice-add function :before #'my:org-agenda-prepare-org-roam)))
          :custom
          (org-roam-dailies-directory "daily_notes/")
          ;; (org-format-latex-options (plist-put org-format-latex-options :foreground 'auto))
@@ -1788,8 +1958,6 @@
              (add-hook 'before-save-hook #'time-stamp nil t)
              (add-hook 'before-save-hook #'my:org-roam-update-task-tag nil t)))
 
-         (add-hook 'org-mode-hook #'my:org-roam-setup-buffer)
-
          (defun my:paper-note-buffer-p ()
            "Return non-nil if the current buffer visits a paper note."
            (and buffer-file-name
@@ -1808,10 +1976,8 @@
              (add-hook 'before-save-hook #'time-stamp nil t)
              (add-hook 'after-save-hook #'org-roam-db-update-file nil t)))
 
-         (add-hook 'org-mode-hook #'my:paper-note-setup-buffer)
-
          (defun my:org-roam-get-task-files ()
-           "Return a list of note files containing 'my:roam-task-tag'."
+           "Return note files containing `my:roam-task-tag'."
            (seq-uniq
             (mapcar 'car
                     (org-roam-db-query
@@ -1819,7 +1985,7 @@
                               :from tags
                               :left-join nodes
                               :on (= tags:node-id nodes:id)
-                              :where (like tag $s1)] (concat "%" my:roam-task-tag "%")))))
+                              :where (= tag $s1)] my:roam-task-tag))))
 
          (defun my:org-agenda-update-files (&rest _)
            "Update the value of `org-agenda-files' and `my:refile-targets'."
@@ -1828,12 +1994,9 @@
              (setq my:refile-targets (append (list my:f:org-gtd) task-files))
              (setq org-refile-targets '((my:refile-targets :maxlevel . 1)))))
 
-         (dolist (fn '(org-agenda org-todo-list org-refile))
-           (advice-add fn :before #'my:org-agenda-update-files))
-
          (defun my:org-roam-node-filter (node dir &optional exclude)
            "Filter org-roam nodes by directory.
-       If EXCLUDE is non-nil, exclude nodes in DIR, otherwise include only nodes in DIR."
+If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
            (let ((dir (file-truename (expand-file-name dir my:d:org-roam))))
              (if exclude
                  (not (string-prefix-p dir (file-truename (org-roam-node-file node))))
@@ -1975,17 +2138,29 @@
            (interactive)
            (let ((recentf-mode nil))
              (dolist (org-file (directory-files-recursively (expand-file-name "note" my:d:org-roam) "\\.org$"))
-               (with-current-buffer (find-file-noselect org-file nil nil nil)
-                 (save-excursion
-                   (goto-char (point-min))
-                   (let ((draft-position (re-search-forward "^#\\+hugo_draft: false$" nil t))
-                         (modified (buffer-modified-p)))
-                     (when draft-position
-                       (my:org-hugo-set-bundle-and-export-file-name draft-position)
-                       (my:org-hugo-replace-last-modified)
-                       (org-hugo-export-to-md)
-                       (set-buffer-modified-p modified))))
-                 (kill-buffer))))))
+               (let* ((existing-buffer (get-file-buffer org-file))
+                      (buffer (or existing-buffer
+                                  (find-file-noselect org-file nil nil nil))))
+                 (unwind-protect
+                     (with-current-buffer buffer
+                       (save-excursion
+                         (goto-char (point-min))
+                         (when-let ((draft-position
+                                     (re-search-forward
+                                      "^#\\+hugo_draft: false$" nil t)))
+                           (let ((change-group (prepare-change-group))
+                                 (modified (buffer-modified-p)))
+                             (unwind-protect
+                                 (progn
+                                   (activate-change-group change-group)
+                                   (my:org-hugo-set-bundle-and-export-file-name
+                                    draft-position)
+                                   (my:org-hugo-replace-last-modified)
+                                   (org-hugo-export-to-md))
+                               (cancel-change-group change-group)
+                               (set-buffer-modified-p modified))))))
+                   (unless existing-buffer
+                     (kill-buffer buffer))))))))
      #+end_src
 *** Markdown
     #+begin_src emacs-lisp
@@ -2018,21 +2193,44 @@
         :if (display-graphic-p)
         :mode (("\\.typ\\'" . typst-ts-mode))
         :commands (typst-ts-mode)
-        :hook (typst-ts-mode-hook . eglot-ensure)
+        :preface
+        (defun my:typst-eglot-ensure ()
+          "Configure Tinymist for the current Typst buffer and start Eglot."
+          (setq-local eglot-workspace-configuration
+                      '(:tinymist (:exportPdf "onSave")))
+          (eglot-ensure))
+        :hook (typst-ts-mode-hook . my:typst-eglot-ensure)
         :init
         (with-eval-after-load 'eglot
-          (setf (alist-get 'typst-ts-mode eglot-server-programs) '("tinymist")))
-        :config
-        (setq-default eglot-workspace-configuration
-                      '(:tinymist (:exportPdf "onSave"))))
+          (setf (alist-get 'typst-ts-mode eglot-server-programs) '("tinymist"))))
 
       (use-package ox-typst
         :ensure t
         :after org
+        :defer t
         :if (display-graphic-p)
+        :commands (org-typst-export-as-typst
+                   org-typst-export-to-typst
+                   org-typst-export-to-pdf)
+        :init
+        (with-eval-after-load 'ox
+          (add-to-list 'org-export-backends 'typst))
         :config
         (add-to-list 'org-src-lang-modes '("typst" . typst-ts))
-        (setq org-export-with-toc nil)
+        ;; Disable the table of contents by default only for the Typst backend.
+        ;; A document can override this default with #+OPTIONS: toc:t.
+        (defun my:org-export-with-typst-toc-default
+            (original backend &optional subtreep ext-plist)
+          "Use no table of contents by default when exporting with Typst."
+          (let ((org-export-with-toc
+                 (if (org-export-derived-backend-p backend 'typst)
+                     nil
+                   org-export-with-toc)))
+            (funcall original backend subtreep ext-plist)))
+        (unless (advice-member-p #'my:org-export-with-typst-toc-default
+                                 'org-export-get-environment)
+          (advice-add 'org-export-get-environment :around
+                      #'my:org-export-with-typst-toc-default))
         (org-export-define-backend 'typst-slide
           '((export-block . org-typst-export-block)
             (headline . org-typst-headline)
@@ -2072,21 +2270,20 @@
     #+end_src
 *** TOML
     #+begin_src emacs-lisp
-      (use-package toml-mode
-        :ensure t
+      (use-package toml-ts-mode
+        :ensure nil
         :hook (toml-ts-mode-hook . eglot-ensure)
         :mode (("\\.toml\\'" . toml-ts-mode))
-        :commands (toml-ts-mode)
         :init
         (with-eval-after-load 'eglot
-          (setf (alist-get 'toml-mode eglot-server-programs) '("taplo" "lsp" "stdio"))))
+          (add-to-list 'eglot-server-programs
+                       '(toml-ts-mode . ("taplo" "lsp" "stdio")))))
     #+end_src
 *** JSON
     #+begin_src emacs-lisp
-      (use-package json-mode
-        :ensure t
+      (use-package json-ts-mode
+        :ensure nil
         :mode (("\\.json\\'" . json-ts-mode))
-        :commands (json-ts-mode)
         :hook (json-ts-mode-hook . eglot-ensure))
       (use-package json-reformat
         :ensure t
@@ -2106,15 +2303,16 @@
     #+begin_src emacs-lisp
       (use-package kdl-mode :ensure t)
     #+end_src
-* Tramp
+* TRAMP
   #+begin_src emacs-lisp
     (use-package tramp
+      :defer t
       :custom
       (tramp-default-method "ssh")
       (tramp-auto-save-directory
-       (expand-file-name "tramp-auto-save" user-emacs-directory))
+       (expand-file-name "tramp-auto-save/" my:d:emacs-cache))
       (tramp-persistency-file-name
-       (expand-file-name "tramp-connection-history" user-emacs-directory))
+       (expand-file-name "tramp-connection-history" my:d:emacs-state))
       (password-cache-expiry nil)
       (tramp-verbose 0)
       (tramp-chunksize 2000)
@@ -2154,7 +2352,7 @@
       :custom
       (consult-tramp-ssh-config "~/.ssh/extra_config"))
   #+end_src
-* Filer
+* File management
   #+begin_src emacs-lisp
     (use-package dired
       :init
@@ -2255,7 +2453,7 @@
       (defun shr-put-image-alt (spec alt &optional flags)
         (insert alt)))
   #+end_src
-* Rss
+* RSS
   #+begin_src emacs-lisp
     ;; (use-package elfeed
     ;;   :after eww
@@ -2315,12 +2513,14 @@
     ;;          ("i" . elfeed-webkit-toggle)))
   #+end_src
 * Mail
-  This uses natively-compiled code, I install this alongside emacs via nix.
-** mu4e
+  Mu4e contains native code, so Nix installs it with Emacs instead of =package.el=.
+** Mu4e
    #+begin_src emacs-lisp
      (use-package mu4e
-       :if (and (executable-find "mu") (file-directory-p "~/.config/mu4e") (display-graphic-p))
-       :demand t  ; load-path has already been set by nix
+       :if (and (display-graphic-p)
+                (executable-find "mu")
+                (file-readable-p "~/.config/mu4e/mu4e_config.el"))
+       :commands (mu4e)
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
               ("C-j" . skk-kakutei)
@@ -2339,22 +2539,23 @@
                (shr-browse-url)
              (when (thing-at-point 'url)
                (browse-url (thing-at-point 'url))))))
-       (setq mu4e-headers-auto-update t)
-       (setq mu4e-search-skip-duplicates t)
-       (setq mu4e-search-sort-field :date)
-       (setq mu4e-index-cleanup t)
-       (setq mu4e-update-interval 300)
-       (setq mu4e-attachment-dir "~/Downloads")
-       (setq mu4e-change-filenames-when-moving t)
-       (setq mu4e-confirm-quit nil)
-       (setq mu4e-headers-visible-lines 20)
-       (setq mu4e-hide-index-messages t)
-       (setq message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n")
+       (setopt mu4e-headers-auto-update t
+               mu4e-search-skip-duplicates t
+               mu4e-search-sort-field :date
+               mu4e-index-cleanup t
+               mu4e-update-interval 300
+               mu4e-attachment-dir "~/Downloads"
+               mu4e-change-filenames-when-moving t
+               mu4e-confirm-quit nil
+               mu4e-headers-visible-lines 20
+               mu4e-hide-index-messages t
+               mu4e-search-include-related nil
+               mu4e-context-policy 'pick-first
+               mu4e-compose-context-policy 'ask-if-none
+               message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n"
+               message-citation-line-function
+               'message-insert-formatted-citation-line)
        ;; M-x find-function RET message-citation-line-format for docs:
-       (setq message-citation-line-function 'message-insert-formatted-citation-line)
-       (setq mu4e-search-include-related nil)
-       (setq mu4e-context-policy 'pick-first)
-       (setq mu4e-compose-context-policy 'ask-if-none)
        ;; https://github.com/djcb/mu/issues/1136#issuecomment-1229005006
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
              (lambda (docid _msg target)
@@ -2362,16 +2563,14 @@
        ;; for sending mails
        (require 'smtpmail)
        ;; don't keep message compose buffers around after sending:
-       (setq message-kill-buffer-on-exit t)
-       (setq sendmail-program "msmtp"
-             send-mail-function 'smtpmail-send-it
-             message-sendmail-f-is-evil t
-             message-sendmail-extra-arguments '("--read-envelope-from")
-             message-send-mail-function 'message-send-mail-with-sendmail)
+       (setopt message-kill-buffer-on-exit t
+               sendmail-program "msmtp"
+               send-mail-function 'smtpmail-send-it
+               message-sendmail-f-is-evil t
+               message-sendmail-extra-arguments '("--read-envelope-from")
+               message-send-mail-function 'message-send-mail-with-sendmail)
        (load "~/.config/mu4e/mu4e_config.el")
-       (add-hook 'emacs-startup-hook  (lambda ()
-                                        (my:imapnotify-start-prodigy-services)))
-       (setq message-cite-reply-position 'below)
+       (setopt message-cite-reply-position 'below)
        ;; (defun message-insert-signature-at-point ()
        ;;   "Function to insert signature at point."
        ;;   (interactive)
@@ -2442,9 +2641,9 @@
       :ensure t
       :hook (eshell-load-hook . eat-eshell-mode))
   #+end_src
-* External Collaboration
-** Pdf
-   This uses natively-compiled code, I install this alongside emacs via nix.
+* External integrations
+** PDF
+   PDF Tools contains native code, so Nix installs it with Emacs instead of =package.el=.
    #+begin_src emacs-lisp
      (use-package pdf-tools
        :if (display-graphic-p)
@@ -2460,8 +2659,15 @@
        ;; (unless (featurep 'pdf-tools)
        ;;   (pdf-loader-install))
        :config
-       (setq-default pdf-view-display-size 'fit-page)
-       (setq pdf-view-incompatible-modes '(linum-mode linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode))
+       (setopt pdf-view-display-size 'fit-page
+               pdf-view-incompatible-modes
+               '(linum-mode
+                 linum-relative-mode
+                 helm-linum-relative-mode
+                 nlinum-mode
+                 nlinum-hl-mode
+                 nlinum-relative-mode
+                 yalinum-mode))
        (setq pdf-annot-activate-created-annotations t)
        (defun my:open-pdf-in-external-app ()
          "Open the current PDF with the operating system's default application."
@@ -2470,36 +2676,80 @@
            (user-error "The current buffer is not visiting a PDF file"))
          (browse-url-of-file buffer-file-name)))
    #+end_src
-** atomic-chrome
+** Atomic Chrome
+   Start the server manually with =M-x atomic-chrome-start-server= or wait until Emacs has been idle for 60 seconds.
    #+begin_src emacs-lisp
      (use-package atomic-chrome
        :ensure nil
        :vc (:url "https://github.com/KarimAziev/atomic-chrome" :rev :newest)
        :if (display-graphic-p)
-       :config
-       (setq-default atomic-chrome-extension-type-list '(atomic-chrome))
-       (setq-default atomic-chrome-url-major-mode-alist
-                     '(("github.com" . markdown-ts-mode)
-                       ("gitlab.com" . markdown-ts-mode)))
-       (atomic-chrome-start-server))
+       :commands (atomic-chrome-start-server atomic-chrome-stop-server)
+       :preface
+       (defvar my:atomic-chrome-start-timer nil
+         "Idle timer used to start the Atomic Chrome server.")
+
+       (defun my:schedule-atomic-chrome-server-start ()
+         "Start the Atomic Chrome server after 60 seconds of idle time."
+         (my:replace-timer
+          'my:atomic-chrome-start-timer
+          (run-with-idle-timer
+           60 nil
+           (lambda ()
+             (setq my:atomic-chrome-start-timer nil)
+             (atomic-chrome-start-server)))))
+       :custom
+       (atomic-chrome-extension-type-list '(atomic-chrome))
+       (atomic-chrome-url-major-mode-alist
+        '(("github.com" . markdown-ts-mode)
+          ("gitlab.com" . markdown-ts-mode)))
+       :hook (emacs-startup-hook . my:schedule-atomic-chrome-server-start))
    #+end_src
-** dictionary
+** Dictionary
    #+begin_src emacs-lisp
      (use-package  mw-thesaurus
        :ensure t
        :bind ("C-c w" . mw-thesaurus-lookup-dwim))
    #+end_src
-** prodigy
+** Prodigy
    #+begin_src emacs-lisp
      (use-package prodigy
        :ensure t
-       :if (and (executable-find "goimapnotify") (file-directory-p my:d:data-dir) (display-graphic-p))
+       :if (and (display-graphic-p)
+                (executable-find "goimapnotify")
+                (file-readable-p
+                 (expand-file-name
+                  "personal_config/emacs/mail/imapnotify.d/prodigy.el"
+                  my:d:data-dir)))
        :after consult
+       :defer t
+       :commands (prodigy)
+       :preface
+       (defvar my:prodigy-mail-start-timer nil
+         "Timer used to start Prodigy mail services after startup.")
+
+       (defun my:start-prodigy-mail-services ()
+         "Load Prodigy and start the configured mail services."
+         (interactive)
+         (require 'prodigy)
+         (my:imapnotify-start-prodigy-services))
+
+       (defun my:schedule-prodigy-mail-services ()
+         "Start the Prodigy mail services 60 seconds after startup."
+         (my:replace-timer
+          'my:prodigy-mail-start-timer
+          (run-at-time
+           60 nil
+           (lambda ()
+             (setq my:prodigy-mail-start-timer nil)
+             (my:start-prodigy-mail-services)))))
        :config
        (add-to-list 'consult-buffer-filter "\\`\\*prodigy-.*\\*\\'")
-       (load (expand-file-name "personal_config/emacs/mail/imapnotify.d/prodigy.el" my:d:data-dir)))
+       (load (expand-file-name
+              "personal_config/emacs/mail/imapnotify.d/prodigy.el"
+              my:d:data-dir))
+       :hook (emacs-startup-hook . my:schedule-prodigy-mail-services))
   #+end_src
-** llm
+** LLM
    #+begin_src emacs-lisp
      (use-package llm
        :ensure t
@@ -2545,7 +2795,7 @@
                 :render  (gt-posframe-pop-render))))
        (setq gts-buffer-follow-p t))
    #+end_src
-** recoll
+** Recoll
    #+begin_src emacs-lisp
      (use-package consult-recoll
        :ensure t
@@ -2559,28 +2809,22 @@
 
        (defun my:update-recoll-index ()
          "Start a Recoll index update unless one is already running."
-         (let ((config-directory (getenv "RECOLL_CONFDIR")))
-           (when (and config-directory
-                      (> (length config-directory) 0)
-                      (not (and (processp my:recoll-index-process)
-                                (process-live-p my:recoll-index-process))))
-             (setq my:recoll-index-process
-                   (start-process "recollindex" nil "recollindex"
-                                  "-c" config-directory)))))
+         (when (and my:d:recoll-config
+                    (not (and (processp my:recoll-index-process)
+                              (process-live-p my:recoll-index-process))))
+           (setq my:recoll-index-process
+                 (start-process "recollindex" nil "recollindex"
+                                "-c" my:d:recoll-config))))
        :bind (("C-c n s" . consult-recoll))
        :config
-       (setq consult-recoll-inline-snippets t)
-       (if (eq system-type 'darwin)
-           (setq exec-path (append '("/Applications/Recoll.app/Contents/MacOS") exec-path)))
-       (when (timerp my:recoll-index-timer)
-         (cancel-timer my:recoll-index-timer))
-       (setq my:recoll-index-timer nil)
-       (let ((config-directory (getenv "RECOLL_CONFDIR")))
-         (when (and (display-graphic-p)
-                    config-directory
-                    (> (length config-directory) 0))
-           (setq my:recoll-index-timer
-                 (run-at-time 0 (* 5 60) #'my:update-recoll-index)))))
+       (setopt consult-recoll-inline-snippets t)
+       (when (eq system-type 'darwin)
+         (add-to-list 'exec-path "/Applications/Recoll.app/Contents/MacOS"))
+       (my:replace-timer 'my:recoll-index-timer nil)
+       (when (and (display-graphic-p) my:d:recoll-config)
+         (my:replace-timer
+          'my:recoll-index-timer
+          (run-at-time 0 (* 5 60) #'my:update-recoll-index))))
    #+end_src
 * Footer
   #+begin_src emacs-lisp

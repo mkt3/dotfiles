@@ -14,7 +14,7 @@
 ;; (setq init-file-debug t)
 ;; (setq messages-buffer-max-lines 100000)
 
-;; Disable `package' in favor of `use-package'.
+;; Defer package activation until README.org configures the archives.
 (setq package-enable-at-startup nil)
 
 ;; Load prefers the newest version of a file
@@ -38,14 +38,14 @@
 
 ;; Faster to disable these here (before they've been initialized)
 ;; (push '(fullscreen . maximized) default-frame-alist)
-(push '(menu-bar-lines . nil) default-frame-alist)
-(push '(tool-bar-lines . nil) default-frame-alist)
-(push '(blink-cursor-mode. nil) default-frame-alist)
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars . nil) default-frame-alist)
 ;; (setq scroll-bar-mode nil)
+(blink-cursor-mode -1)
 (setq use-dialog-box nil)
 (setq use-file-dialog nil)
-(setq fringe-mode 10)
+(fringe-mode 10)
 
 ;; Silence native compiler warnings
 (setq native-comp-async-report-warnings-errors 'silent)
