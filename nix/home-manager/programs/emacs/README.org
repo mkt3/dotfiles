@@ -121,15 +121,17 @@
        (defvar my:auto-package-update-timer nil
          "Idle timer used to check for package updates.")
 
+       (defun my:run-scheduled-auto-package-update ()
+         "Run the scheduled package update check and clear its timer."
+         (setq my:auto-package-update-timer nil)
+         (auto-package-update-maybe))
+
        (defun my:schedule-auto-package-update ()
          "Check for package updates after startup becomes idle."
          (my:replace-timer
           'my:auto-package-update-timer
-          (run-with-idle-timer
-           30 nil
-           (lambda ()
-             (setq my:auto-package-update-timer nil)
-             (auto-package-update-maybe)))))
+          (run-with-idle-timer 30 nil
+                               #'my:run-scheduled-auto-package-update)))
        :custom
        (auto-package-update-delete-old-versions t)
        (auto-package-update-hide-results t)
@@ -347,6 +349,7 @@
 ** Recently visited files
    #+begin_src emacs-lisp
      (use-package recentf
+       :defer 1
        :custom
        (recentf-save-file (expand-file-name "recentf" my:d:emacs-state))
        (recentf-exclude '(".recentf"
@@ -582,6 +585,17 @@
 ** Tab bar
    #+begin_src emacs-lisp
      (use-package tab-bar
+       :preface
+       (defun my:name-with-file-host (name directory &optional local-host-label)
+         "Append DIRECTORY's remote host to NAME.
+Use LOCAL-HOST-LABEL for a local directory when it is non-nil."
+         (let ((host (file-remote-p directory 'host)))
+           (cond
+            ((and host (not (string= host "")))
+             (format "%s@%s" name host))
+            ((and (null host) local-host-label)
+             (format "%s@%s" name local-host-label))
+            (t name))))
        :init (defvar my:tab-bar-map (make-sparse-keymap)
                "My original keymap bound for tab-bar.")
        (defalias 'my:tab-bar-prefix my:tab-bar-map)
@@ -618,14 +632,9 @@ The default tab name uses the buffer name."
                                   (project-name project-current)
                                 nil)))
            (if project-name
-               (let* ((dir (project-root project-current))
-                      (host-name (if (tramp-tramp-file-p dir)
-                                     (tramp-file-name-host (tramp-dissect-file-name dir))
-                                   "local"))
-                      (full-name (if (string= host-name "")
-                                     project-name
-                                   (format "%s@%s" project-name host-name))))
-                 full-name)
+               (my:name-with-file-host project-name
+                                       (project-root project-current)
+                                       "local")
              (tab-bar-tab-name-current))))
        (setopt tab-bar-tab-name-function #'my:name-tab-by-project-or-default
                tab-bar-select-tab-modifiers '(meta)
@@ -639,14 +648,8 @@ The default tab name uses the buffer name."
          (with-temp-buffer
            (let* ((dir (car args))
                   (default-directory dir)
-                  (raw-name (apply orig-fun args))
-                  (host-name (if (tramp-tramp-file-p dir)
-                                 (tramp-file-name-host (tramp-dissect-file-name dir))
-                               ""))
-                  (name (if (string= host-name "")
-                            raw-name
-                          (format "%s@%s" raw-name host-name))))
-             name)))
+                  (raw-name (apply orig-fun args)))
+             (my:name-with-file-host raw-name dir))))
        (advice-add 'project-tab-groups-tab-group-name :around #'my:project-tab-groups-tab-group-name-advice)
        (project-tab-groups-mode 1))
    #+end_src
@@ -697,14 +700,10 @@ The default tab name uses the buffer name."
        ;;                     :weight 'bold)
        ;; (set-face-attribute 'whitespace-empty nil
        ;;                     :background "Black")
-       (unless (advice-member-p #'my:whitespace-cleanup-before-org-src-command
-                                'org-edit-src-save)
-         (advice-add 'org-edit-src-save :before
-                     #'my:whitespace-cleanup-before-org-src-command))
-       (unless (advice-member-p #'my:whitespace-cleanup-before-org-src-command
-                                'org-edit-src-exit)
-         (advice-add 'org-edit-src-exit :before
-                     #'my:whitespace-cleanup-before-org-src-command))
+       (advice-add 'org-edit-src-save :before
+                   #'my:whitespace-cleanup-before-org-src-command)
+       (advice-add 'org-edit-src-exit :before
+                   #'my:whitespace-cleanup-before-org-src-command)
        :hook (org-src-mode-hook . whitespace-turn-on))
    #+end_src
 ** Goggles
@@ -842,7 +841,6 @@ The default tab name uses the buffer name."
    #+begin_src emacs-lisp
      (use-package puni
        :ensure t
-       :defer t
        :bind ("C-h" . puni-backward-delete-char)
        :hook (term-mode-hook . puni-disable-puni-mode)
        :init
@@ -963,12 +961,12 @@ The default tab name uses the buffer name."
         (migemo-regex-dictionary nil)
         (migemo-coding-system 'utf-8-unix)
         :config
-        (defun orderless-migemo (component)
+        (defun my:orderless-migemo (component)
           "Use migemo for COMPONENT if available."
           (let ((pattern (migemo-get-pattern component)))
             (orderless-regexp pattern)))
         (with-eval-after-load 'orderless
-          (add-to-list 'orderless-matching-styles 'orderless-migemo)))
+          (add-to-list 'orderless-matching-styles 'my:orderless-migemo)))
     #+end_src
 *** Fussy
     #+begin_src emacs-lisp
@@ -992,11 +990,12 @@ The default tab name uses the buffer name."
       (use-package tempel
         :ensure t
         :init
-        (defun tempel-setup-capf ()
+        (defun my:tempel-setup-capf ()
+          "Add Tempel completion to the current buffer."
           (setq-local completion-at-point-functions
                       (cons #'tempel-complete
                             completion-at-point-functions)))
-        :hook ((prog-mode-hook text-mode-hook org-mode-hook) . tempel-setup-capf))
+        :hook ((prog-mode-hook text-mode-hook org-mode-hook) . my:tempel-setup-capf))
     #+end_src
 *** Corfu
     #+begin_src emacs-lisp
@@ -1073,8 +1072,13 @@ The default tab name uses the buffer name."
    #+begin_src emacs-lisp
      (use-package breadcrumb
        :ensure t
-       :config
-       (breadcrumb-mode 1))
+       :commands (breadcrumb-mode)
+       :preface
+       (defun my:enable-breadcrumb-mode ()
+         "Enable Breadcrumb globally after entering a programming mode."
+         (breadcrumb-mode 1)
+         (remove-hook 'prog-mode-hook #'my:enable-breadcrumb-mode))
+       :hook (prog-mode-hook . my:enable-breadcrumb-mode))
    #+end_src
 ** Undo
    #+begin_src emacs-lisp
@@ -1219,21 +1223,24 @@ The default tab name uses the buffer name."
    #+end_src
 * Programming
 ** General
+   #+begin_src emacs-lisp
+     (defun my:set-tab-width-to-four ()
+       "Set the current buffer's tab width to four columns."
+       (setq-local tab-width 4))
+   #+end_src
 *** Makefile
     #+begin_src emacs-lisp
       (use-package make-mode
         :ensure nil
         :mode ("Makefile\\'" . makefile-mode)
-        :hook (makefile-mode-hook . (lambda ()
-                                      (setq-local tab-width 4))))
+        :hook (makefile-mode-hook . my:set-tab-width-to-four))
     #+end_src
 *** Justfile
     #+begin_src emacs-lisp
       (use-package just-ts-mode
         :ensure t
         :mode ("\\justfile\\'" . just-ts-mode)
-        :hook (just-ts-mode-hook . (lambda ()
-                                     (setq-local tab-width 4))))
+        :hook (just-ts-mode-hook . my:set-tab-width-to-four))
     #+end_src
 
 *** Tree-sitter
@@ -1254,7 +1261,12 @@ The default tab name uses the buffer name."
     #+begin_src emacs-lisp
       (use-package git-modes
         :ensure t
-        :defer t)
+        :mode (("/\\.gitconfig\\'" . gitconfig-mode)
+               ("/\\.gitmodules\\'" . gitconfig-mode)
+               ("/\\.gitignore\\'" . gitignore-mode)
+               ("/\\.gitattributes\\'" . gitattributes-mode)
+               ("/\\.git/info/exclude\\'" . gitignore-mode)
+               ("/\\.git/info/attributes\\'" . gitattributes-mode)))
 
       (use-package magit
         :ensure t
@@ -1347,7 +1359,7 @@ The default tab name uses the buffer name."
         :custom
         (c-default-style "linux")
         (c-basic-offset 4)
-        :hook (c-mode-hook . (lambda () (setq-local tab-width 4))))
+        :hook (c-mode-hook . my:set-tab-width-to-four))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
@@ -1551,10 +1563,8 @@ The default tab name uses the buffer name."
            (interactive)
            (let ((browse-url-browser-function 'browse-url-default-browser))
              (org-open-at-point)))
-         (unless (advice-member-p #'my:org-edit-special-with-policy-read-only
-                                  'org-edit-special)
-           (advice-add 'org-edit-special :around
-                       #'my:org-edit-special-with-policy-read-only))
+         (advice-add 'org-edit-special :around
+                     #'my:org-edit-special-with-policy-read-only)
          (defun my:enable-read-only ()
            "Enable policy-based read-only mode."
            (when (my:org-buffer-read-only-by-policy-p)
@@ -1620,7 +1630,6 @@ The default tab name uses the buffer name."
          :ensure t
          :after org
          :commands (org-pomodoro)
-         :defer t
          :custom
          (org-pomodoro-length 52)
          (org-pomodoro-short-break-length 17)
@@ -1744,7 +1753,6 @@ The default tab name uses the buffer name."
        (use-package org-super-agenda
          :ensure t
          :after (org-agenda)
-         :defer t
          :if (file-directory-p my:d:org-gtd)
          :custom
          (org-super-agenda-groups
@@ -1771,7 +1779,6 @@ The default tab name uses the buffer name."
        (use-package org-roam
          :ensure t
          :after org
-         :defer t
          :if (file-directory-p my:d:org-roam)
          :bind (("C-c n a" . org-roam-alias-add)
                 ("C-c n f" . my:org-roam-node-find-excluding-dir)
@@ -1805,8 +1812,7 @@ The default tab name uses the buffer name."
 
          (add-hook 'org-mode-hook #'my:load-org-roam-for-current-buffer)
          (dolist (function '(org-agenda org-todo-list org-refile))
-           (unless (advice-member-p #'my:org-agenda-prepare-org-roam function)
-             (advice-add function :before #'my:org-agenda-prepare-org-roam)))
+           (advice-add function :before #'my:org-agenda-prepare-org-roam))
          :custom
          (org-roam-directory my:d:org-roam)
          (org-roam-dailies-directory "daily_notes/")
@@ -2188,9 +2194,12 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                ("\\.markdown\\'" . markdown-ts-mode))
         :custom
         (markdown-ts-fontify-code-blocks-natively t)
-        :hook (markdown-ts-mode-hook . (lambda ()
-                                         (setq-local tab-width 4)
-                                         (eglot-ensure)))
+        :preface
+        (defun my:markdown-mode-setup ()
+          "Configure indentation and Eglot for Markdown buffers."
+          (setq-local tab-width 4)
+          (eglot-ensure))
+        :hook (markdown-ts-mode-hook . my:markdown-mode-setup)
         :config
         (require 'markdown-ts-mode-x))
     #+end_src
@@ -2224,7 +2233,6 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       (use-package ox-typst
         :ensure t
         :after org
-        :defer t
         :if (display-graphic-p)
         :commands (org-typst-export-as-typst
                    org-typst-export-to-typst
@@ -2244,10 +2252,8 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                      nil
                    org-export-with-toc)))
             (funcall original backend subtreep ext-plist)))
-        (unless (advice-member-p #'my:org-export-with-typst-toc-default
-                                 'org-export-get-environment)
-          (advice-add 'org-export-get-environment :around
-                      #'my:org-export-with-typst-toc-default))
+        (advice-add 'org-export-get-environment :around
+                    #'my:org-export-with-typst-toc-default)
         (org-export-define-backend 'typst-slide
           '((export-block . org-typst-export-block)
             (headline . org-typst-headline)
@@ -2337,13 +2343,12 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       (remote-file-name-inhibit-locks t)
       (tramp-use-scp-direct-remote-copying t)
       (remote-file-name-inhibit-auto-save-visited t)
+      (tramp-remote-path
+       '(tramp-default-remote-path
+         "~/.local/bin"
+         "~/.local/state/nix/profiles/profile/bin"
+         tramp-own-remote-path))
       :config
-      (with-eval-after-load 'tramp
-        (setopt tramp-remote-path
-                '(tramp-default-remote-path
-                  "~/.local/bin"
-                  "~/.local/state/nix/profiles/profile/bin"
-                  tramp-own-remote-path)))
       (connection-local-set-profile-variables
        'remote-direct-async-process
        '((tramp-direct-async-process . t)))
@@ -2373,12 +2378,12 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
   #+begin_src emacs-lisp
     (use-package dired
       :init
-      (defun my-dired-disable-symlink-check-on-remote ()
+      (defun my:dired-disable-symlink-check-on-remote ()
         "Disable symlink validity checks in remote Dired buffers."
         (when (file-remote-p default-directory)
           (setq-local dired-check-symlinks nil)))
       :hook ((dired-mode-hook . dired-omit-mode)
-             (dired-mode-hook . my-dired-disable-symlink-check-on-remote))
+             (dired-mode-hook . my:dired-disable-symlink-check-on-remote))
       :bind (nil
              :map dired-mode-map
              ("["  . dired-prev-subdir)
@@ -2399,29 +2404,28 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
 
     (use-package dired-preview
       :ensure t
-      :custom
-      (dired-preview-delay 0.3)
-      :config
-      (setopt dired-preview-max-size (expt 2 20)
-              dired-preview-ignored-extensions-regexp
-              (concat "\\."
-                      "\\(gz\\|"
-                      "zst\\|"
-                      "tar\\|"
-                      "xz\\|"
-                      "rar\\|"
-                      "zip\\|"
-                      "iso\\|"
-                      "epub"
-                      "\\)"))
-      (defun my-dired-preview-to-the-right ()
-        "My preferred `dired-preview-display-action-alist-function'."
+      :preface
+      (defun my:dired-preview-to-the-right ()
+        "Return the display action used for Dired previews."
         '((display-buffer-in-side-window)
           (side . left)
           (window-width . 80)))
-
-      (setopt dired-preview-display-action-alist
-              #'my-dired-preview-to-the-right)
+      :custom
+      (dired-preview-delay 0.3)
+      (dired-preview-max-size (expt 2 20))
+      (dired-preview-ignored-extensions-regexp
+       (concat "\\."
+               "\\(gz\\|"
+               "zst\\|"
+               "tar\\|"
+               "xz\\|"
+               "rar\\|"
+               "zip\\|"
+               "iso\\|"
+               "epub"
+               "\\)"))
+      (dired-preview-display-action-alist
+       #'my:dired-preview-to-the-right)
       :bind (nil
              :map dired-mode-map
              ("P"  . dired-preview-mode)))
@@ -2460,15 +2464,18 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       (eww-search-prefix "https://www.google.com/search?q=")
       ;; (browse-url-browser-function 'eww)
       :config
-      (defun eww-disable-images ()
+      (defun my:eww-disable-images ()
+        "Disable image rendering in the current EWW buffer."
         (interactive)
-        (setq-local shr-put-image-function 'shr-put-image-alt)
+        (setq-local shr-put-image-function #'my:shr-put-image-alt)
         (eww-reload))
-      (defun eww-enable-images ()
+      (defun my:eww-enable-images ()
+        "Enable image rendering in the current EWW buffer."
         (interactive)
-        (setq-local shr-put-image-function 'shr-put-image)
+        (setq-local shr-put-image-function #'shr-put-image)
         (eww-reload))
-      (defun shr-put-image-alt (spec alt &optional flags)
+      (defun my:shr-put-image-alt (_spec alt &optional _flags)
+        "Insert ALT instead of rendering an image."
         (insert alt)))
   #+end_src
 * RSS
@@ -2539,6 +2546,18 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                 (executable-find "mu")
                 (file-readable-p "~/.config/mu4e/mu4e_config.el"))
        :commands (mu4e)
+       :preface
+       (defun my:mu4e-compose-setup ()
+         "Configure a Mu4e composition buffer for the current context."
+         (let* ((context (mu4e-context-current))
+                (mail-address
+                 (cdr (assoc 'user-mail-address
+                             (mu4e-context-vars context)))))
+           (when mail-address
+             (save-excursion
+               (message-add-header (concat "Bcc: " mail-address "\n")))))
+         (use-hard-newlines -1)
+         (turn-off-auto-fill))
        :bind (("C-c m" . mu4e)
               :map mu4e-minibuffer-search-query-map
               ("C-j" . skk-kakutei)
@@ -2548,6 +2567,31 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
               :map mu4e-view-mode-map
               ("C-m" . browse-url-at-point)
               ("C-c C-o" . my:browse-url-at-point-with-default-browser))
+       :hook (mu4e-compose-mode-hook . my:mu4e-compose-setup)
+       :custom
+       (mu4e-headers-auto-update t)
+       (mu4e-search-skip-duplicates t)
+       (mu4e-search-sort-field :date)
+       (mu4e-index-cleanup t)
+       (mu4e-update-interval 300)
+       (mu4e-attachment-dir "~/Downloads")
+       (mu4e-change-filenames-when-moving t)
+       (mu4e-confirm-quit nil)
+       (mu4e-headers-visible-lines 20)
+       (mu4e-hide-index-messages t)
+       (mu4e-search-include-related nil)
+       (mu4e-context-policy 'pick-first)
+       (mu4e-compose-context-policy 'ask-if-none)
+       (message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n")
+       (message-citation-line-function
+        'message-insert-formatted-citation-line)
+       (message-kill-buffer-on-exit t)
+       (sendmail-program "msmtp")
+       (send-mail-function 'smtpmail-send-it)
+       (message-sendmail-f-is-evil t)
+       (message-sendmail-extra-arguments '("--read-envelope-from"))
+       (message-send-mail-function 'message-send-mail-with-sendmail)
+       (message-cite-reply-position 'below)
        :config
        (defun my:browse-url-at-point-with-default-browser ()
          (interactive)
@@ -2557,22 +2601,6 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                (shr-browse-url)
              (when (thing-at-point 'url)
                (browse-url (thing-at-point 'url))))))
-       (setopt mu4e-headers-auto-update t
-               mu4e-search-skip-duplicates t
-               mu4e-search-sort-field :date
-               mu4e-index-cleanup t
-               mu4e-update-interval 300
-               mu4e-attachment-dir "~/Downloads"
-               mu4e-change-filenames-when-moving t
-               mu4e-confirm-quit nil
-               mu4e-headers-visible-lines 20
-               mu4e-hide-index-messages t
-               mu4e-search-include-related nil
-               mu4e-context-policy 'pick-first
-               mu4e-compose-context-policy 'ask-if-none
-               message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n"
-               message-citation-line-function
-               'message-insert-formatted-citation-line)
        ;; M-x find-function RET message-citation-line-format for docs:
        ;; https://github.com/djcb/mu/issues/1136#issuecomment-1229005006
        (setf (plist-get (alist-get 'trash mu4e-marks) :action)
@@ -2580,15 +2608,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                (mu4e--server-move docid (mu4e--mark-check-target target) "-N"))) ; Instead of "+T-N"
        ;; for sending mails
        (require 'smtpmail)
-       ;; don't keep message compose buffers around after sending:
-       (setopt message-kill-buffer-on-exit t
-               sendmail-program "msmtp"
-               send-mail-function 'smtpmail-send-it
-               message-sendmail-f-is-evil t
-               message-sendmail-extra-arguments '("--read-envelope-from")
-               message-send-mail-function 'message-send-mail-with-sendmail)
        (load "~/.config/mu4e/mu4e_config.el")
-       (setopt message-cite-reply-position 'below)
        ;; (defun message-insert-signature-at-point ()
        ;;   "Function to insert signature at point."
        ;;   (interactive)
@@ -2599,18 +2619,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
        ;;   (message-goto-body))
        ;; (add-hook 'mu4e-compose-mode-hook (lambda () (message-insert-signature-at-point)) t)
        ;; (add-hook 'mu4e-compose-pre-hook (lambda () (message-insert-signature-at-point t)) t)
-
-       (add-hook 'mu4e-compose-mode-hook
-                 (lambda()
-                   (let* ((ctx (mu4e-context-current))
-                          (mail (cdr (assoc 'user-mail-address (mu4e-context-vars ctx)))))
-                     (when mail
-                       (save-excursion
-                         (message-add-header (concat "Bcc: " mail "\n")))))))
-
-       (add-hook 'mu4e-compose-mode-hook (lambda ()
-                                           (use-hard-newlines -1)
-                                           (turn-off-auto-fill))))
+       )
 
      ;; (use-package mu4e-alert
      ;;   :ensure t
@@ -2625,6 +2634,11 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
 * Shell
   #+begin_src emacs-lisp
     (use-package eshell
+      :preface
+      (defun my:eshell-set-term-environment ()
+        "Set TERM for processes started from the current Eshell buffer."
+        (setq-local process-environment (copy-sequence process-environment))
+        (setenv "TERM" "xterm-256color"))
       :custom
       (eshell-cmpl-ignore-case t)
       (eshell-cmpl-cycle-completions t)
@@ -2635,16 +2649,16 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       :bind (nil
              :map eshell-mode-map
              ("C-r" . consult-history))
+      :hook (eshell-mode-hook . my:eshell-set-term-environment)
       :config
-      (add-hook 'eshell-mode-hook (lambda () (setenv "TERM" "xterm-256color")))
-      (defun corfu-send-shell (&rest _)
+      (defun my:corfu-send-shell (&rest _)
         "Send completion candidate when inside comint/eshell."
         (cond
          ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
           (eshell-send-input))
          ((and (derived-mode-p 'comint-mode)  (fboundp 'comint-send-input))
           (comint-send-input))))
-      (advice-add #'corfu-insert :after #'corfu-send-shell))
+      (advice-add #'corfu-insert :after #'my:corfu-send-shell))
 
     (use-package eshell-prompt-extras
       :ensure t
@@ -2669,7 +2683,22 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
        ;; :demand t ;  load-path has already been set by nix
        :mode ("\\.pdf\\'" . pdf-view-mode)
        :commands (my:open-pdf-in-external-app)
-       :hook (pdf-view-mode-hook . (lambda() (display-line-numbers-mode -1)))
+       :preface
+       (defun my:pdf-view-setup ()
+         "Disable line numbers in PDF buffers."
+         (display-line-numbers-mode -1))
+       :hook (pdf-view-mode-hook . my:pdf-view-setup)
+       :custom
+       (pdf-view-display-size 'fit-page)
+       (pdf-view-incompatible-modes
+        '(linum-mode
+          linum-relative-mode
+          helm-linum-relative-mode
+          nlinum-mode
+          nlinum-hl-mode
+          nlinum-relative-mode
+          yalinum-mode))
+       (pdf-annot-activate-created-annotations t)
        :bind (nil
               :map pdf-view-mode-map
               ("C-s" . isearch-forward)
@@ -2678,16 +2707,6 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
        ;; (unless (featurep 'pdf-tools)
        ;;   (pdf-loader-install))
        :config
-       (setopt pdf-view-display-size 'fit-page
-               pdf-view-incompatible-modes
-               '(linum-mode
-                 linum-relative-mode
-                 helm-linum-relative-mode
-                 nlinum-mode
-                 nlinum-hl-mode
-                 nlinum-relative-mode
-                 yalinum-mode))
-       (setq pdf-annot-activate-created-annotations t)
        (defun my:open-pdf-in-external-app ()
          "Open the current PDF with the operating system's default application."
          (interactive)
@@ -2707,15 +2726,17 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
        (defvar my:atomic-chrome-start-timer nil
          "Idle timer used to start the Atomic Chrome server.")
 
+       (defun my:start-scheduled-atomic-chrome-server ()
+         "Start Atomic Chrome from its idle timer and clear the timer."
+         (setq my:atomic-chrome-start-timer nil)
+         (atomic-chrome-start-server))
+
        (defun my:schedule-atomic-chrome-server-start ()
          "Start the Atomic Chrome server after 60 seconds of idle time."
          (my:replace-timer
           'my:atomic-chrome-start-timer
-          (run-with-idle-timer
-           60 nil
-           (lambda ()
-             (setq my:atomic-chrome-start-timer nil)
-             (atomic-chrome-start-server)))))
+          (run-with-idle-timer 60 nil
+                               #'my:start-scheduled-atomic-chrome-server)))
        :custom
        (atomic-chrome-extension-type-list '(atomic-chrome))
        (atomic-chrome-url-major-mode-alist
@@ -2740,7 +2761,6 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                   "personal_config/emacs/mail/imapnotify.d/prodigy.el"
                   my:d:data-dir)))
        :after consult
-       :defer t
        :commands (prodigy)
        :preface
        (defvar my:prodigy-mail-start-timer nil
@@ -2752,15 +2772,17 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
          (require 'prodigy)
          (my:imapnotify-start-prodigy-services))
 
+       (defun my:start-scheduled-prodigy-mail-services ()
+         "Start scheduled Prodigy mail services and clear the timer."
+         (setq my:prodigy-mail-start-timer nil)
+         (my:start-prodigy-mail-services))
+
        (defun my:schedule-prodigy-mail-services ()
          "Start the Prodigy mail services 60 seconds after startup."
          (my:replace-timer
           'my:prodigy-mail-start-timer
-          (run-at-time
-           60 nil
-           (lambda ()
-             (setq my:prodigy-mail-start-timer nil)
-             (my:start-prodigy-mail-services)))))
+          (run-at-time 60 nil
+                       #'my:start-scheduled-prodigy-mail-services)))
        :config
        (add-to-list 'consult-buffer-filter "\\`\\*prodigy-.*\\*\\'")
        (load (expand-file-name
@@ -2781,9 +2803,10 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
        :bind ("C-c e" . ellama)
        :if (and my:d:password-store
                 (file-directory-p my:d:password-store))
+       :custom
+       (ellama-language "English")
+       (ellama-auto-scroll t)
        :config
-       (setopt ellama-language "English"
-               ellama-auto-scroll t)
        (require 'llm-gemini)
        (let ((api-key (my:auth-source-api-key "gemini")))
          (when (and (not ellama-provider) api-key)
@@ -2797,9 +2820,10 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
      (use-package gt
        :ensure t
        :bind (("C-c t" . gt-translate))
+       :custom
+       (gt-langs '(ja en))
        :config
        (set-face-attribute 'gt-buffer-render-block-prefix-face nil :background "black")
-       (setopt gt-langs '(ja en))
        (let ((engines (list (gt-google-engine)
                             (gt-bing-engine))))
          (when (and my:d:password-store
@@ -2845,7 +2869,6 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
 
      (use-package consult-recoll
        :ensure t
-       :defer t
        :if (executable-find "recoll")
        :commands (consult-recoll)
        :bind (("C-c n s" . consult-recoll))
