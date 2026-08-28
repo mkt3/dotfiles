@@ -157,6 +157,19 @@ sync_flake_lock_to_repo() {
     cp -f "$source_lock" "${REPO_DIR}/nix/flake.lock"
 }
 
+write_synthetic_nixos_hardware_config() {
+    local destination="$1"
+
+    printf '%s\n' \
+        '{ ... }:' \
+        '{' \
+        '  fileSystems."/" = {' \
+        '    device = "/dev/disk/by-label/nixos";' \
+        '    fsType = "ext4";' \
+        '  };' \
+        '}' > "$destination"
+}
+
 copy_nixos_hardware_config() {
     local nix_main_flake_dir="$1"
     local nixos_systems_dir="${nix_main_flake_dir}/systems/nixos"

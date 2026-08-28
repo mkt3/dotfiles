@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+common_script_dir="$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=/dev/null
+. "${common_script_dir}/repository.sh"
+
 COLOR_GRAY="\033[1;38;5;243m"
 COLOR_BLUE="\033[1;34m"
 COLOR_GREEN="\033[1;32m"
@@ -36,7 +40,6 @@ info() {
 success() {
     echo -e "${COLOR_GREEN}$1${COLOR_NONE}"
 }
-
 
 # XDG Base Directory Specification
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}

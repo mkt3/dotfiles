@@ -3,7 +3,9 @@
 set -euo pipefail
 
 script_dir="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
-REPO_DIR="${REPO_DIR:-$(CDPATH='' cd -- "${script_dir}/.." && pwd)}"
+# shellcheck source=/dev/null
+. "${script_dir}/repository.sh"
+
 tmp_dir="$(CDPATH='' cd -- "$(mktemp -d)" && pwd -P)"
 output_file="${CACHE_TARGETS_OUTPUT:-${tmp_dir}/store-paths}"
 trap 'rm -rf "$tmp_dir"' EXIT

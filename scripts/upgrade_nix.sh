@@ -3,10 +3,9 @@
 set -euo pipefail
 
 script_dir="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
-REPO_DIR="${REPO_DIR:-$(CDPATH='' cd -- "${script_dir}/.." && pwd)}"
 
 # shellcheck source=/dev/null
-. "${REPO_DIR}/scripts/common.sh"
+. "${script_dir}/common.sh"
 
 title "Upgrade Nix"
 

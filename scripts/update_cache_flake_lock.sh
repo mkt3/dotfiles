@@ -3,7 +3,9 @@
 set -euo pipefail
 
 script_dir="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
-REPO_DIR="${REPO_DIR:-$(CDPATH='' cd -- "${script_dir}/.." && pwd)}"
+# shellcheck source=/dev/null
+. "${script_dir}/repository.sh"
+
 tmp_dir="$(CDPATH='' cd -- "$(mktemp -d)" && pwd -P)"
 trap 'rm -rf "$tmp_dir"' EXIT
 
@@ -35,14 +37,7 @@ fi
     -o "${REPO_DIR}/nix/_sources"
 
 hardware_config="${tmp_dir}/hardware-configuration.nix"
-printf '%s\n' \
-    '{ ... }:' \
-    '{' \
-    '  fileSystems."/" = {' \
-    '    device = "/dev/disk/by-label/nixos";' \
-    '    fsType = "ext4";' \
-    '  };' \
-    '}' > "$hardware_config"
+write_synthetic_nixos_hardware_config "$hardware_config"
 export NIXOS_HARDWARE_CONFIG_OVERRIDE="$hardware_config"
 
 pre_setup_nix

@@ -2,9 +2,10 @@
 
 set -euo pipefail
 
-# variable
+script_dir="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
+
 # shellcheck source=/dev/null
-. "${REPO_DIR}/scripts/common.sh"
+. "${script_dir}/common.sh"
 
 install_essential_packages() {
     title "Install/Update essential packages"
