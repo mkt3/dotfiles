@@ -6,8 +6,9 @@
 
 * Overview
   This file is the literate source of the Emacs configuration.
-  On startup, =init.el= passes it to =org-babel-load-file=, which generates and evaluates =README.el=.
-  Changes therefore belong in =README.org=; =README.el= is a disposable build artifact.
+  Home Manager tangles it into =config.el= while building the configuration generation.
+  On startup, =init.el= loads that generated file directly without loading Org first.
+  Changes therefore belong in =README.org=; =config.el= is a build artifact owned by Home Manager.
 
   Home Manager owns the Emacs build, tree-sitter grammars, platform-specific packages, and files needed before Emacs starts.
   =early-init.el= contains settings that must run before package and frame initialization.
@@ -18,9 +19,9 @@
 
 ** Applying changes
    Run =make apply= at the repository root after changing Home Manager files.
-   A change to this file removes the generated =~/.config/emacs/README.el= during activation, so the next Emacs startup tangles it again.
+   Home Manager regenerates =~/.config/emacs/config.el= when this file changes.
 
-   To apply only a literate configuration change in a running Emacs session, evaluate =(org-babel-load-file (locate-user-emacs-file "README.org"))= or restart Emacs.
+   To apply the new configuration in a running Emacs session, run =make apply= and evaluate =(load (locate-user-emacs-file "config.el") nil 'nomessage)=, or restart Emacs.
    Start Emacs with =EMACS_PROFILE_STARTUP=1= and run =M-x use-package-report= to inspect package startup times.
 
 ** Configuration boundaries
@@ -35,7 +36,7 @@
 * Bootstrap
 ** Generated file header
  #+begin_src emacs-lisp
-   ;;; README.el --- init file for Emacs -*- coding: utf-8; lexical-binding: t -*-
+   ;;; config.el --- generated Emacs configuration -*- coding: utf-8; lexical-binding: t -*-
 
    ;; Copyright (C) 2023 Makoto Morinaga
 
@@ -483,9 +484,10 @@
         :ensure t
         :init
         (ef-themes-take-over-modus-themes-mode)
+        :custom
+        (ef-themes-mixed-fonts t)
+        (ef-themes-italic-constructs t)
         :config
-        (setq ef-themes-mixed-fonts t
-              ef-themes-italic-constructs t)
         (modus-themes-load-theme 'ef-maris-dark))
     #+end_src
 ** Font
@@ -514,11 +516,13 @@
 
      (use-package nerd-icons-dired
        :ensure t
-       :hook (dired-mode-hook . (lambda ()
-                                  ;; Avoid enabling nerd-icons-dired for TRAMP buffers,
-                                  ;; as it seems to slow down display.
-                                  (unless (file-remote-p default-directory)
-                                    (nerd-icons-dired-mode 1)))))
+       :commands (nerd-icons-dired-mode)
+       :preface
+       (defun my:nerd-icons-dired-maybe-enable ()
+         "Enable Nerd Icons in local Dired buffers."
+         (unless (file-remote-p default-directory)
+           (nerd-icons-dired-mode 1)))
+       :hook (dired-mode-hook . my:nerd-icons-dired-maybe-enable))
 
      (use-package nerd-icons-completion
        :ensure t
@@ -709,10 +713,9 @@ The default tab name uses the buffer name."
        :ensure t
        :hook ((prog-mode-hook text-mode-hook) . goggles-mode)
        :custom
+       (goggles-pulse t)
        (goggles-pulse-iterations 10)
-       (goggles-pulse-delay 0.2)
-       :config
-       (setq-default goggles-pulse t))
+       (goggles-pulse-delay 0.2))
    #+end_src
 * User interface
 ** Wayland and X11
@@ -769,11 +772,19 @@ The default tab name uses the buffer name."
        :custom
        (default-input-method "japanese-skk")
        (skk-byte-compile-init-file t)
+       (skk-user-directory
+        (expand-file-name "ddskk.d" user-emacs-directory))
+       (skk-init-file
+        (expand-file-name "init.el"
+                          (expand-file-name "ddskk.d" user-emacs-directory)))
+       (skk-jisyo
+        (when (file-directory-p my:d:data-dir)
+          (cons
+           (expand-file-name
+            "personal_config/skk/ddskk/skk-jisyo.utf8"
+            my:d:data-dir)
+           'utf-8)))
        :init
-       (setq skk-user-directory (expand-file-name "ddskk.d" user-emacs-directory))
-       (setq skk-init-file (expand-file-name "init.el" skk-user-directory ))
-       (when (file-directory-p my:d:data-dir)
-         (setq skk-jisyo (cons (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8" my:d:data-dir) 'utf-8)))
        (setq viper-mode nil)
        :config
        (defconst my:skk-shared-jisyo
@@ -914,9 +925,9 @@ The default tab name uses the buffer name."
         :bind* (("C-c C-a" . consult-buffer)
                 ("C-z" . consult-imenu))
         :hook (completion-list-mode-hook . consult-preview-at-point-mode)
-        :init
-        (setq xref-show-xrefs-function #'consult-xref
-              xref-show-definitions-function #'consult-xref)
+        :custom
+        (xref-show-xrefs-function #'consult-xref)
+        (xref-show-definitions-function #'consult-xref)
         :config
         (require 'keymap)
         (require 'cl-seq)
@@ -1190,10 +1201,13 @@ The default tab name uses the buffer name."
 
      (use-package flymake-ruff
        :ensure t
-       :hook (eglot-managed-mode-hook
-              . (lambda ()
-                  (when (derived-mode-p 'python-mode 'python-ts-mode)
-                    (flymake-ruff-load))))
+       :commands (flymake-ruff-load)
+       :preface
+       (defun my:flymake-ruff-maybe-load ()
+         "Load Flymake Ruff in Eglot-managed Python buffers."
+         (when (derived-mode-p 'python-mode 'python-ts-mode)
+           (flymake-ruff-load)))
+       :hook (eglot-managed-mode-hook . my:flymake-ruff-maybe-load)
        :config
        (setq flymake-ruff--default-configs
              (list "ruff.toml"
@@ -1211,7 +1225,7 @@ The default tab name uses the buffer name."
         :ensure nil
         :mode ("Makefile\\'" . makefile-mode)
         :hook (makefile-mode-hook . (lambda ()
-                                      (setq tab-width 4))))
+                                      (setq-local tab-width 4))))
     #+end_src
 *** Justfile
     #+begin_src emacs-lisp
@@ -1219,7 +1233,7 @@ The default tab name uses the buffer name."
         :ensure t
         :mode ("\\justfile\\'" . just-ts-mode)
         :hook (just-ts-mode-hook . (lambda ()
-                                     (setq tab-width 4))))
+                                     (setq-local tab-width 4))))
     #+end_src
 
 *** Tree-sitter
@@ -1238,7 +1252,9 @@ The default tab name uses the buffer name."
     #+end_src
 *** Git
     #+begin_src emacs-lisp
-      (use-package git-modes :ensure t)
+      (use-package git-modes
+        :ensure t
+        :defer t)
 
       (use-package magit
         :ensure t
@@ -1316,7 +1332,7 @@ The default tab name uses the buffer name."
         (defun my:nix-mode-setup ()
           "Custom setup for nix-mode."
           (add-hook 'before-save-hook #'nix-format-before-save nil t)
-          (setq fill-column 100)
+          (setq-local fill-column 100)
           (eglot-ensure))
         :hook (nix-mode-hook . my:nix-mode-setup)
         :init
@@ -1331,7 +1347,7 @@ The default tab name uses the buffer name."
         :custom
         (c-default-style "linux")
         (c-basic-offset 4)
-        :hook (c-mode-hook . (lambda () (setq tab-width 4))))
+        :hook (c-mode-hook . (lambda () (setq-local tab-width 4))))
     #+end_src
 *** Python
     #+begin_src emacs-lisp
@@ -1382,6 +1398,7 @@ The default tab name uses the buffer name."
     #+begin_src emacs-lisp
       (use-package lua-mode
         :ensure t
+        :mode ("\\.lua\\'" . lua-mode)
         :custom
         (lua-indent-level 2)
         (lua-ts-indent-offset 2))
@@ -1770,8 +1787,6 @@ The default tab name uses the buffer name."
                 ("C-c n e" . org-roam-extract-subtree)
                 ("C-c n p" . citar-open))
          :init
-         (setq org-roam-directory my:d:org-roam)
-
          (defun my:load-org-roam-for-current-buffer ()
            "Load Org-roam when the current file participates in its database."
            (when (and buffer-file-name
@@ -1793,6 +1808,7 @@ The default tab name uses the buffer name."
            (unless (advice-member-p #'my:org-agenda-prepare-org-roam function)
              (advice-add function :before #'my:org-agenda-prepare-org-roam)))
          :custom
+         (org-roam-directory my:d:org-roam)
          (org-roam-dailies-directory "daily_notes/")
          ;; (org-format-latex-options (plist-put org-format-latex-options :foreground 'auto))
          (org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
@@ -1917,8 +1933,9 @@ The default tab name uses the buffer name."
                  (file-name-directory
                   (file-relative-name (org-roam-node-file node) org-roam-directory))))
              (error "")))
-         (setq org-roam-node-display-template
-               (concat "${type:22} ${title:60} " (propertize "${tags:30}" 'face 'org-tag)))
+         (setopt org-roam-node-display-template
+                 (concat "${type:22} ${title:60} "
+                         (propertize "${tags:30}" 'face 'org-tag)))
          (org-roam-db-autosync-mode 1)
 
          (defun my:org-roam-todo-entry-p ()
@@ -2071,7 +2088,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                       (cdr field) content t t)))
              (insert content)
              (goto-char (point-min))))
-         (setq citar-note-format-function #'my:citar-paper-note-format))
+         (setopt citar-note-format-function #'my:citar-paper-note-format))
 
        (use-package citar-embark
          :ensure t
@@ -2145,9 +2162,9 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
                      (with-current-buffer buffer
                        (save-excursion
                          (goto-char (point-min))
-                         (when-let ((draft-position
-                                     (re-search-forward
-                                      "^#\\+hugo_draft: false$" nil t)))
+                         (when-let* ((draft-position
+                                      (re-search-forward
+                                       "^#\\+hugo_draft: false$" nil t)))
                            (let ((change-group (prepare-change-group))
                                  (modified (buffer-modified-p)))
                              (unwind-protect
@@ -2322,11 +2339,11 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       (remote-file-name-inhibit-auto-save-visited t)
       :config
       (with-eval-after-load 'tramp
-        (setq tramp-remote-path
-              '(tramp-default-remote-path
-                "~/.local/bin"
-                "~/.local/state/nix/profiles/profile/bin"
-                tramp-own-remote-path)))
+        (setopt tramp-remote-path
+                '(tramp-default-remote-path
+                  "~/.local/bin"
+                  "~/.local/state/nix/profiles/profile/bin"
+                  tramp-own-remote-path)))
       (connection-local-set-profile-variables
        'remote-direct-async-process
        '((tramp-direct-async-process . t)))
@@ -2385,25 +2402,26 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       :custom
       (dired-preview-delay 0.3)
       :config
-      (setq dired-preview-max-size (expt 2 20))
-      (setq dired-preview-ignored-extensions-regexp
-            (concat "\\."
-                    "\\(gz\\|"
-                    "zst\\|"
-                    "tar\\|"
-                    "xz\\|"
-                    "rar\\|"
-                    "zip\\|"
-                    "iso\\|"
-                    "epub"
-                    "\\)"))
+      (setopt dired-preview-max-size (expt 2 20)
+              dired-preview-ignored-extensions-regexp
+              (concat "\\."
+                      "\\(gz\\|"
+                      "zst\\|"
+                      "tar\\|"
+                      "xz\\|"
+                      "rar\\|"
+                      "zip\\|"
+                      "iso\\|"
+                      "epub"
+                      "\\)"))
       (defun my-dired-preview-to-the-right ()
         "My preferred `dired-preview-display-action-alist-function'."
         '((display-buffer-in-side-window)
           (side . left)
           (window-width . 80)))
 
-      (setq dired-preview-display-action-alist #'my-dired-preview-to-the-right)
+      (setopt dired-preview-display-action-alist
+              #'my-dired-preview-to-the-right)
       :bind (nil
              :map dired-mode-map
              ("P"  . dired-preview-mode)))
@@ -2633,8 +2651,9 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       :after esh-opt
       :defines eshell-highlight-prompt
       :commands (epe-theme-lambda epe-theme-dakrone epe-theme-multiline-with-status)
+      :custom
+      (epe-path-style 'full)
       :init (setq eshell-highlight-prompt nil
-                  epe-path-style 'full
                   eshell-prompt-function 'epe-theme-multiline-with-status))
 
     (use-package eat
@@ -2780,7 +2799,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
        :bind (("C-c t" . gt-translate))
        :config
        (set-face-attribute 'gt-buffer-render-block-prefix-face nil :background "black")
-       (setq gt-langs '(ja en))
+       (setopt gt-langs '(ja en))
        (let ((engines (list (gt-google-engine)
                             (gt-bing-engine))))
          (when (and my:d:password-store
@@ -2797,36 +2816,43 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
    #+end_src
 ** Recoll
    #+begin_src emacs-lisp
+     (when (eq system-type 'darwin)
+       (let ((program-directory "/Applications/Recoll.app/Contents/MacOS"))
+         (when (file-directory-p program-directory)
+           (add-to-list 'exec-path program-directory))))
+
+     (defvar my:recoll-index-timer nil
+       "Timer used to update the Recoll index periodically.")
+     (defvar my:recoll-index-process nil
+       "Process used to update the Recoll index.")
+
+     (defun my:update-recoll-index ()
+       "Start a Recoll index update unless one is already running."
+       (when (and my:d:recoll-config
+                  (not (and (processp my:recoll-index-process)
+                            (process-live-p my:recoll-index-process))))
+         (setq my:recoll-index-process
+               (start-process "recollindex" nil "recollindex"
+                              "-c" my:d:recoll-config))))
+
+     (my:replace-timer 'my:recoll-index-timer nil)
+     (when (and (display-graphic-p)
+                my:d:recoll-config
+                (executable-find "recollindex"))
+       (my:replace-timer
+        'my:recoll-index-timer
+        (run-at-time 0 (* 5 60) #'my:update-recoll-index)))
+
      (use-package consult-recoll
        :ensure t
-       :demand t
+       :defer t
        :if (executable-find "recoll")
-       :preface
-       (defvar my:recoll-index-timer nil
-         "Timer used to update the Recoll index periodically.")
-       (defvar my:recoll-index-process nil
-         "Process used to update the Recoll index.")
-
-       (defun my:update-recoll-index ()
-         "Start a Recoll index update unless one is already running."
-         (when (and my:d:recoll-config
-                    (not (and (processp my:recoll-index-process)
-                              (process-live-p my:recoll-index-process))))
-           (setq my:recoll-index-process
-                 (start-process "recollindex" nil "recollindex"
-                                "-c" my:d:recoll-config))))
+       :commands (consult-recoll)
        :bind (("C-c n s" . consult-recoll))
-       :config
-       (setopt consult-recoll-inline-snippets t)
-       (when (eq system-type 'darwin)
-         (add-to-list 'exec-path "/Applications/Recoll.app/Contents/MacOS"))
-       (my:replace-timer 'my:recoll-index-timer nil)
-       (when (and (display-graphic-p) my:d:recoll-config)
-         (my:replace-timer
-          'my:recoll-index-timer
-          (run-at-time 0 (* 5 60) #'my:update-recoll-index))))
+       :custom
+       (consult-recoll-inline-snippets t))
    #+end_src
 * Footer
   #+begin_src emacs-lisp
-    ;;; README.el ends here
+    ;;; config.el ends here
   #+end_src

@@ -8,12 +8,24 @@
   ...
 }:
 let
+  emacsPackage = import ./package.nix { inherit pkgs isDarwin isGUI; };
+  tangledEmacsConfig = pkgs.runCommand "emacs-config.el" { } ''
+    ${emacsPackage}/bin/emacs --batch -Q \
+      --eval '(progn
+        (require (quote org))
+        (require (quote ob-tangle))
+        (org-babel-tangle-file
+          "${./README.org}"
+          (getenv "out")
+          "emacs-lisp"))'
+    test -s "$out"
+  '';
   sharedSKKDictionary = "${config.home.homeDirectory}/workspace/ghq/github.com/mkt3/skk-dict/SKK-JISYO.shared";
 in
 {
   programs.emacs = {
     enable = true;
-    package = import ./package.nix { inherit pkgs isDarwin isGUI; };
+    package = emacsPackage;
     extraPackages =
       epkgs:
       [
@@ -97,10 +109,8 @@ in
   };
 
   xdg.configFile = {
-    "emacs/README.org" = {
-      source = ./README.org;
-      onChange = "rm -f ${config.xdg.configHome}/emacs/README.el";
-    };
+    "emacs/README.org".source = ./README.org;
+    "emacs/config.el".source = tangledEmacsConfig;
     "emacs/early-init.el".source = ./early-init.el;
     "emacs/init.el".source = ./init.el;
     "emacs/templates".source = ./templates;
@@ -138,8 +148,7 @@ in
     };
   }
   // {
-    "emacs/SKK-JISYO.shared".source =
-      config.lib.file.mkOutOfStoreSymlink sharedSKKDictionary;
+    "emacs/SKK-JISYO.shared".source = config.lib.file.mkOutOfStoreSymlink sharedSKKDictionary;
   }
   // lib.optionalAttrs isGUI {
     "enchant/en_US.dic" = {

@@ -14,7 +14,6 @@
   (unwind-protect
       (progn
         (setq file-name-handler-alist nil)
-        (require 'org)
-        (org-babel-load-file
-         (expand-file-name "README.org" user-emacs-directory)))
+        (load (expand-file-name "config.el" user-emacs-directory)
+              nil 'nomessage))
     (setq file-name-handler-alist saved-file-name-handler-alist)))

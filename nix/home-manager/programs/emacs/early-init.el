@@ -14,7 +14,7 @@
 ;; (setq init-file-debug t)
 ;; (setq messages-buffer-max-lines 100000)
 
-;; Defer package activation until README.org configures the archives.
+;; Defer package activation until the generated literate config sets archives.
 (setq package-enable-at-startup nil)
 
 ;; Load prefers the newest version of a file
