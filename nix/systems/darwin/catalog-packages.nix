@@ -7,21 +7,20 @@
   ...
 }:
 let
-  catalog = import ../../package-catalog.nix {
+  selection = import ../../catalog-selection.nix {
     inherit
+      pkgs
+      lib
       os
       isDev
       isGUI
       ;
-    method = "nix";
     catalogFile = ../../packages.toml;
     programsDir = ./programs;
+    methods = [ "nix" ];
   };
-  resolvePackage =
-    name:
-    lib.attrByPath (lib.splitString "." name) (throw "package not found in nixpkgs: ${name}") pkgs;
 in
 {
-  imports = map (name: ./programs + "/${name}") catalog.moduleNames;
-  environment.systemPackages = map resolvePackage catalog.packageNames;
+  imports = selection.modules;
+  environment.systemPackages = selection.packages;
 }
