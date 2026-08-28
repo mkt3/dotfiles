@@ -1660,7 +1660,7 @@ The default tab name uses the buffer name."
 **** Org GTD
      #+begin_src emacs-lisp
        (use-package org-agenda
-         :after org
+         :defer 5
          :if (file-directory-p my:d:org-gtd)
          :bind (("C-c d" . org-agenda)
                 ("C-c g" . my:gtd)
