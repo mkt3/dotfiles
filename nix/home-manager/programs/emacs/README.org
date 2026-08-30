@@ -839,7 +839,8 @@ The default tab name uses the buffer name."
      (use-package puni
        :ensure t
        :bind ("C-h" . puni-backward-delete-char)
-       :hook (term-mode-hook . puni-disable-puni-mode)
+       :hook ((term-mode-hook . puni-disable-puni-mode)
+              (ghostel-mode-hook . puni-disable-puni-mode))
        :init
        (puni-global-mode)
        :custom
@@ -2670,6 +2671,42 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
     (use-package eat
       :ensure t
       :hook (eshell-load-hook . eat-eshell-mode))
+
+    ;; Ghostel contains a native module, so Nix installs the package and
+    ;; builds the module together.  Do not let package.el shadow that build.
+    (use-package ghostel
+      :ensure nil
+      :bind (("C-x m" . ghostel)
+             :map ghostel-semi-char-mode-map
+             ("C-s" . consult-line)
+             ("C-k" . my:ghostel-kill-line)
+             ("M-p" . my:ghostel-previous-input)
+             ("M-n" . my:ghostel-next-input)
+             :map project-prefix-map
+             ("m" . ghostel-project)
+             ("M" . ghostel-project-list-buffers))
+      :config
+      (defun my:ghostel-kill-line ()
+        "Send C-k to Ghostel and save the killed text in the kill ring."
+        (interactive)
+        (kill-ring-save (point) (line-end-position))
+        (ghostel-send-key "k" "ctrl"))
+
+      (defun my:ghostel-previous-input ()
+        "Request the previous shell history entry in Ghostel."
+        (interactive)
+        (ghostel-send-key "p" "ctrl"))
+
+      (defun my:ghostel-next-input ()
+        "Request the next shell history entry in Ghostel."
+        (interactive)
+        (ghostel-send-key "n" "ctrl"))
+
+      (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+      (add-to-list 'project-switch-commands
+                   '(ghostel-project-list-buffers "Ghostel buffers") t)
+      (add-to-list 'ghostel-eval-cmds
+                   '("magit-status-setup-buffer" magit-status-setup-buffer)))
   #+end_src
 * External integrations
 ** PDF

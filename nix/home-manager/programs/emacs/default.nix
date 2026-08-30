@@ -65,6 +65,7 @@ in
             tree-sitter-kdl
           ]
         ))
+        epkgs.ghostel
       ]
       ++ lib.optionals isGUI [
         epkgs.pdf-tools
