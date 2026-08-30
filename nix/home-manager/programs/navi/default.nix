@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   ...
 }:
 {
@@ -36,6 +37,10 @@
       };
     };
   };
+
+  programs.zsh.initContent = lib.mkAfter ''
+    bindkey '^G' send-break
+  '';
 
   xdg.configFile = {
     "navi/cheats".source = ./cheats;
