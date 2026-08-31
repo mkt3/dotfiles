@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  sevenZip = lib.getExe' pkgs.p7zip "7z";
+  sevenZip = lib.getExe pkgs._7zz;
   wzip = pkgs.writeShellScriptBin "wzip" ''
     #!/usr/bin/env bash
     set -euo pipefail

@@ -165,9 +165,9 @@ common = [{ name = "dust", method = "nix-hm", kind = "package" }]
 type = "basic"
 common = [{ name = "csview", method = "nix-hm", kind = "package" }]
 
-[libsixel]
+[chafa]
 type = "basic"
-common = [{ name = "libsixel", method = "nix-hm", kind = "package" }]
+common = [{ name = "chafa", method = "nix-hm", kind = "package" }]
 
 [zoxide]
 type = "basic"
@@ -244,10 +244,7 @@ common = [
 
 [macos-security]
 type = "basic"
-darwin = [
-  { name = "pinentry_mac", method = "nix-hm", kind = "package" },
-  { name = "pam-reattach", method = "nix-hm", kind = "package" },
-]
+darwin = [{ name = "pinentry_mac", method = "nix-hm", kind = "package" }]
 
 ## downloader
 [wget]
@@ -267,9 +264,9 @@ common = [{ name = "aria2", method = "nix-hm", kind = "package" }]
 type = "basic"
 common = [{ name = "bottom", method = "nix-hm", kind = "module" }]
 
-[iotop]
+[iotop-c]
 type = "basic"
-linux = [{ name = "iotop", method = "nix-hm", kind = "package" }]
+linux = [{ name = "iotop-c", method = "nix-hm", kind = "package" }]
 
 ## Editor
 [vim]
@@ -280,10 +277,6 @@ common = [{ name = "vim", method = "nix-hm", kind = "module" }]
 type = "basic"
 common = [
   { name = "emacs", method = "nix-hm", kind = "module" },
-  { name = "hunspell", method = "nix", kind = "package" },
-  { name = "hunspellDicts.en_US", method = "nix", kind = "package" },
-  { name = "enchant", method = "nix-hm", kind = "package" },
-  { name = "emacs-lsp-booster", method = "nix-hm", kind = "package" },
   { name = "pandoc", method = "nix-hm", kind = "package" },
   { name = "cmigemo", method = "nix-hm", kind = "module" },
 ]
@@ -365,10 +358,10 @@ common = [{ name = "uv", method = "nix-hm", kind = "package" }]
 type = "dev"
 common = [{ name = "bash-language-server", method = "nix-hm", kind = "package" }]
 
-## for lua
-[lua-lsp]
+## for Lua
+[lua-language-server]
 type = "dev"
-common = [{ name = "lua53Packages.lua-lsp", method = "nix-hm", kind = "package" }]
+common = [{ name = "lua-language-server", method = "nix-hm", kind = "package" }]
 
 ## for typescript
 [typescript-language-server]
@@ -446,16 +439,16 @@ nixos = [
 [aerospace]
 type = "gui"
 darwin = [
-  { name = "aerospace", method = "nix-hm", kind = "module" },
-  { name = "jankyborders", method = "nix-hm", kind = "package" },
-  { name = "sketchybar", method = "nix-hm", kind = "module" },
-  { name = "macskk", method = "cask", kind = "package" },
+  # { name = "aerospace", method = "nix-hm", kind = "module" },
+  # { name = "jankyborders", method = "nix-hm", kind = "package" },
 ]
 
 [omniwm]
 type = "gui"
 darwin = [
-  # { name = "omniwm", method = "nix-hm", kind = "module" },
+  { name = "omniwm", method = "nix-hm", kind = "module" },
+  { name = "sketchybar", method = "nix-hm", kind = "module" },
+  { name = "macskk", method = "cask", kind = "package" },
 ]
 
 
@@ -529,8 +522,8 @@ linux = [{ name = "firefox", method = "nix-hm", kind = "package" }]
 ## media
 [vlc]
 type = "gui"
-common = [{ name = "vlc", method = "nix-hm", kind = "module" }]
 linux = [
+  { name = "vlc", method = "nix-hm", kind = "package" },
   { name = "libdvdread", method = "nix-hm", kind = "package" },
   { name = "libdvdnav", method = "nix-hm", kind = "package" },
   { name = "libdvdcss", method = "nix-hm", kind = "package" },
@@ -539,12 +532,11 @@ linux = [
 ## research
 [zotero]
 type = "gui"
-darwin = [{ name = "zotero", method = "cask", kind = "package" }]
-linux = [{ name = "zotero", method = "nix-hm", kind = "package" }]
+common = [{ name = "zotero", method = "nix-hm", kind = "package" }]
 
 [anki]
 type = "gui"
-common = [{ name = "anki-bin", method = "nix-hm", kind = "package" }]
+linux = [{ name = "anki-bin", method = "nix-hm", kind = "package" }]
 
 ## terminal emulator
 [wezterm]
@@ -588,14 +580,19 @@ common = [{ name = "recoll", method = "nix-hm", kind = "module" }]
 type = "gui"
 common = [{ name = "gh", method = "nix-hm", kind = "module" }]
 
+[codex]
+type = "dev"
+common = [{ name = "codex", method = "nix-hm", kind = "module" }]
+
 ## coding agent
 [ax]
 type = "dev"
 common = [{ name = "ax", method = "nix-hm", kind = "module" }]
 
-[codex]
-type = "dev"
-common = [{ name = "codex", method = "nix-hm", kind = "module" }]
+[chatgpt]
+type = "gui"
+darwin = [{ name = "chatgpt", method = "cask", kind = "package" }]
+nixos = [{ name = "chatgpt", method = "nix-hm", kind = "module" }]
 
 [agent-skills]
 type = "dev"
