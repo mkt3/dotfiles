@@ -82,6 +82,13 @@ if [ ! -r "$old_file" ] || ! jq -e 'type == "array"' "$old_file" >/dev/null 2>&1
   old_file="/dev/null"
 fi
 
+order_changed=1
+if [ "$old_file" != "/dev/null" ] && \
+   jq -e --slurpfile next "$next_file" \
+     '[.[].item] == [$next[0][].item]' "$old_file" >/dev/null 2>&1; then
+  order_changed=0
+fi
+
 if [ "$old_file" != "/dev/null" ]; then
   while IFS= read -r old_item; do
     if ! jq -e --arg item "$old_item" 'any(.[]; .item == $item)' "$next_file" >/dev/null; then
@@ -95,8 +102,10 @@ while IFS=$'\t' read -r item number label focused; do
     continue
   fi
 
+  is_new=0
   if [ "$old_file" = "/dev/null" ] || \
      ! jq -e --arg item "$item" 'any(.[]; .item == $item)' "$old_file" >/dev/null; then
+    is_new=1
     sketchybar --add item "$item" left \
                --set "$item" background.color="$NORD_POLAR_NIGHT_LIGHT" \
                              background.corner_radius=5 \
@@ -104,12 +113,31 @@ while IFS=$'\t' read -r item number label focused; do
                              click_script="$SCRIPT_DIR/click.sh" >>"$LOG_FILE" 2>&1 || continue
   fi
 
-  sketchybar --move "$item" before space_separator \
-             --set "$item" icon="$number" \
-                           label="$label" \
-                           background.drawing="$focused" \
-                           icon.highlight="$focused" \
-                           label.highlight="$focused" >>"$LOG_FILE" 2>&1 || true
+  if [ "$order_changed" -eq 1 ]; then
+    sketchybar --move "$item" before workspace_separator >>"$LOG_FILE" 2>&1 || true
+  fi
+
+  focused_json=false
+  if [ "$focused" = "on" ]; then
+    focused_json=true
+  fi
+  if [ "$is_new" -eq 1 ] || \
+     ! jq -e --arg item "$item" \
+             --argjson number "$number" \
+             --arg label "$label" \
+             --argjson focused "$focused_json" \
+       'any(.[];
+         .item == $item and
+         .number == $number and
+         .displayName == $label and
+         .isFocused == $focused
+       )' "$old_file" >/dev/null 2>&1; then
+    sketchybar --set "$item" icon="$number" \
+                              label="$label" \
+                              background.drawing="$focused" \
+                              icon.highlight="$focused" \
+                              label.highlight="$focused" >>"$LOG_FILE" 2>&1 || true
+  fi
 done < <(jq -r '
   .[]
   | [.item, (.number | tostring), .displayName, (if .isFocused then "on" else "off" end)]

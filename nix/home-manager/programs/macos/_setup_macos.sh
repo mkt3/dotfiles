@@ -23,7 +23,7 @@ if [[ -f "$shared_skk_source" ]]; then
   fi
 fi
 
-# Disable Spotlight's Cmd+Space because AeroSpace uses it for fullscreen.
+# Disable Spotlight's Cmd+Space because the window manager uses it for fullscreen.
 /usr/bin/defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>49</integer><integer>1048576</integer></array><key>type</key><string>standard</string></dict></dict>"
 
 # Disable the macOS input-source shortcuts because macSKK manages input.

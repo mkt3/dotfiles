@@ -66,8 +66,25 @@ in
     executable = true;
   };
 
-  xdg.configFile."sketchybar/plugins/aerospace.sh" = {
-    text = builtins.readFile ./plugins/aerospace.sh;
+  xdg.configFile."sketchybar/items/workspaces.sh" = {
+    text = builtins.readFile ./items/workspaces.sh;
+    executable = true;
+  };
+
+  xdg.configFile."sketchybar/plugins/omniwm/start.sh" = {
+    text = builtins.readFile ./plugins/omniwm/start.sh;
+    executable = true;
+  };
+  xdg.configFile."sketchybar/plugins/omniwm/watch.sh" = {
+    text = builtins.readFile ./plugins/omniwm/watch.sh;
+    executable = true;
+  };
+  xdg.configFile."sketchybar/plugins/omniwm/refresh.sh" = {
+    text = builtins.readFile ./plugins/omniwm/refresh.sh;
+    executable = true;
+  };
+  xdg.configFile."sketchybar/plugins/omniwm/click.sh" = {
+    text = builtins.readFile ./plugins/omniwm/click.sh;
     executable = true;
   };
 }

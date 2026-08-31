@@ -85,8 +85,9 @@
         location = "${homeDirectory}/Downloads";
       };
 
-      # AeroSpace is more stable when "Displays have separate Spaces" is disabled.
-      spaces.spans-displays = true;
+      # OmniWM requires "Displays have separate Spaces" to be enabled.
+      # false corresponds to enabling "Displays have separate Spaces".
+      spaces.spans-displays = false;
 
       CustomUserPreferences = {
         NSGlobalDomain = {
@@ -137,16 +138,8 @@
           TALLogoutSavesState = false;
           LoginwindowLaunchesRelaunchApps = false;
         };
+
       };
     };
   };
-
-  # Add ability to use TouchID for sudo authentication in tmux
-  # environment = {
-  #   etc."pam.d/sudo_local".text = ''
-  #     # Managed by Nix Darwin
-  #     auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so ignore_ssh
-  #     auth       sufficient     pam_tid.so
-  #   '';
-  # };
 }
