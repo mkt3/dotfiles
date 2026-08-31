@@ -45,7 +45,9 @@
 (blink-cursor-mode -1)
 (setq use-dialog-box nil)
 (setq use-file-dialog nil)
-(fringe-mode 10)
+;; `fringe-mode' is only available in graphical Emacs builds.
+(when (display-graphic-p)
+  (fringe-mode 10))
 
 ;; Silence native compiler warnings
 (setq native-comp-async-report-warnings-errors 'silent)

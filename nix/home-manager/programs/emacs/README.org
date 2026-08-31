@@ -746,15 +746,16 @@ The default tab name uses the buffer name."
        (skk-init-file
         (expand-file-name "init.el"
                           (expand-file-name "ddskk.d" user-emacs-directory)))
-       (skk-jisyo
-        (when (file-directory-p my:d:data-dir)
-          (cons
-           (expand-file-name
-            "personal_config/skk/ddskk/skk-jisyo.utf8"
-            my:d:data-dir)
-           'utf-8)))
        :init
        (setq viper-mode nil)
+       ;; Do not replace DDSKK's default dictionary with nil when the
+       ;; cloud-synced personal dictionary is unavailable (such as on CUI
+       ;; servers).
+       (let ((my:skk-private-jisyo
+              (expand-file-name "personal_config/skk/ddskk/skk-jisyo.utf8"
+                                my:d:data-dir)))
+         (when (file-readable-p my:skk-private-jisyo)
+           (setq skk-jisyo (cons my:skk-private-jisyo 'utf-8))))
        :config
        (defconst my:skk-shared-jisyo
          (locate-user-emacs-file "SKK-JISYO.shared"))
