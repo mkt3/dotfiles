@@ -31,6 +31,13 @@ let
       ox-hugo = prev.ox-hugo.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ./patches/ox-hugo-tangle-filepath.patch ];
       });
+      typst-ts-mode = prev.typst-ts-mode.overrideAttrs (old: {
+        postInstall = (old.postInstall or "") + ''
+          patch -p1 \
+            -d "$out/share/emacs/site-lisp/elpa/typst-ts-mode-${old.version}" \
+            < ${./patches/typst-ts-mode-compilation-autoload.patch}
+        '';
+      });
     };
     # These are not ELPA packages declared with :ensure in README.org.
     extraEmacsPackages =

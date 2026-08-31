@@ -1521,6 +1521,12 @@ The default tab name uses the buffer name."
          (org-capture-templates `(("i" " Inbox" entry (file+headline my:f:org-gtd "Inbox")
                                    "** TODO %^{Brief Description}")))
          :config
+         ;; These defaults are defined by Org itself, so update them only
+         ;; after Org has loaded.
+         (setopt org-format-latex-options
+                 (plist-put org-format-latex-options :background "Transparent"))
+         (setopt org-format-latex-options
+                 (plist-put org-format-latex-options :scale 1.5))
          (keymap-unset orgtbl-mode-map "<backspace>")
          (bind-key "C-M-y" #'my:org-insert-clipboard-image)
 
@@ -1781,9 +1787,6 @@ The default tab name uses the buffer name."
          :custom
          (org-roam-directory my:d:org-roam)
          (org-roam-dailies-directory "daily_notes/")
-         ;; (org-format-latex-options (plist-put org-format-latex-options :foreground 'auto))
-         (org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
-         (org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
          (org-roam-capture-templates '(("i" "idea" plain "%?"
                                         :if-new
                                         (file+head "idea/${slug}.org"

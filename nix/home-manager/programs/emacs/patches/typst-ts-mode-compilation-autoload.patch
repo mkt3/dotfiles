@@ -1,0 +1,16 @@
+diff --git a/typst-ts-compile.el b/typst-ts-compile.el
+index 63ec7a2..d0c67a8 100644
+--- a/typst-ts-compile.el
++++ b/typst-ts-compile.el
+@@ -108,2 +108,1 @@ Return nil if the BUFFER has not associated file or the there is
+-;;;###autoload
+ (define-compilation-mode typst-ts-compilation-mode "Typst Compilation"
+diff --git a/typst-ts-mode-autoloads.el b/typst-ts-mode-autoloads.el
+index 754fbd3..f7e5f27 100644
+--- a/typst-ts-mode-autoloads.el
++++ b/typst-ts-mode-autoloads.el
+@@ -20,5 +20,3 @@ If BUFFER is passed, preview its output, otherwise use current buffer.
+ (fn &optional BUFFER)" t)
+-(define-compilation-mode typst-ts-compilation-mode "Typst Compilation"
+-"Customized major mode for typst watch compilation." (setq-local compilation-error-regexp-alist-alist nil) (add-to-list 'compilation-error-regexp-alist-alist (cons 'typst-error typst-ts-compilation-mode-error)) (setq-local compilation-error-regexp-alist nil) (add-to-list 'compilation-error-regexp-alist 'typst-error))
+ (register-definition-prefixes "typst-ts-compile" '("typst-ts-compil"))
