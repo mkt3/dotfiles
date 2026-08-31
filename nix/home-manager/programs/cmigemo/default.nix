@@ -1,9 +1,12 @@
 { pkgs, lib, ... }:
+let
+  cmigemo = pkgs.callPackage ../../packages/cmigemo { };
+in
 {
-  home.packages = [ pkgs.cmigemo ];
+  home.packages = [ cmigemo ];
 
   programs.zsh.envExtra = lib.mkAfter ''
     # migemo
-    export CMIGEMO_DICT="${pkgs.cmigemo}/share/migemo/utf-8/migemo-dict"
+    export CMIGEMO_DICT="${cmigemo}/share/cmigemo/utf-8/migemo-dict"
   '';
 }
