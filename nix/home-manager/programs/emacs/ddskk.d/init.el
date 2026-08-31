@@ -1,4 +1,4 @@
-;;; init --- SKK init file  -*- mode: emacs-lisp; coding: utf-8 -*-
+;;; init --- SKK init file  -*- mode: emacs-lisp; coding: utf-8; lexical-binding: t -*-
 
 ;; skk server dict
 ;; (setq skk-server-host "localhost")
