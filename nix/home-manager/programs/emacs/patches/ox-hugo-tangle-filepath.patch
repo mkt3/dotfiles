@@ -1,0 +1,26 @@
+--- a/ox-hugo.el
++++ b/ox-hugo.el
+@@ -3491,6 +3491,11 @@ their Hugo site's config."
+      ;; Regular src block.
+      (t
+       (let* (;; See `org-element-src-block-parser' for all SRC-BLOCK properties.
++             (tangle-filepath
++              (let ((tangle-value (cdr (assoc :tangle parameters))))
++                (if (or (null tangle-value) (string= tangle-value "no"))
++                    lang
++                  tangle-value)))
+              (line-num-p (org-element-property :number-lines src-block)) ;Non-nil if -n or +n switch is used
+              (linenos-style (or (cdr (assoc :linenos parameters))
+                                ;; If `org-hugo-src-block' is called from
+                                ;; `org-hugo-example-block'.
+@@ -3599,5 +3604,10 @@ their Hugo site's config."
+                (setq code-attr-str (format "%s, style=%s" code-attr-str syntax-style))
+              (setq code-attr-str (format "style=%s" syntax-style))))
++        (when tangle-filepath
++          (if (org-string-nw-p code-attr-str)
++              (setq code-attr-str (format "%s, tangle_filepath=\"%s\"" code-attr-str tangle-filepath))
++            (setq code-attr-str (format "tangle_filepath=\"%s\"" tangle-filepath))))
++
+         (when code-refs
+           (let* ((anchor-prefix (cdr code-refs-and-anchor))
+                  (anchor-str (format "anchorlinenos=true, lineanchors=%s" anchor-prefix)))

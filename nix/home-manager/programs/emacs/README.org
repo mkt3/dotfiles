@@ -10,9 +10,9 @@
   On startup, =init.el= loads that generated file directly without loading Org first.
   Changes therefore belong in =README.org=; =config.el= is a build artifact owned by Home Manager.
 
-  Home Manager owns the Emacs build, tree-sitter grammars, platform-specific packages, and files needed before Emacs starts.
+  Home Manager owns the Emacs build, packages declared with =:ensure t=, tree-sitter grammars, platform-specific packages, and files needed before Emacs starts.
   =early-init.el= contains settings that must run before package and frame initialization.
-  Most remaining packages are installed on demand by =use-package= from the archives configured below.
+  The =:ensure t= declarations remain in this file as the package manifest; Nix resolves them while building the Emacs closure.
 
   The file-local variable on the first line opens this file read-only.
   Use =C-x C-q= before editing it directly in Emacs.
@@ -30,7 +30,7 @@
    - =package.nix= selects the Emacs build and platform variant.
    - =default.nix= installs grammars, native packages, and files managed by Home Manager.
    - =early-init.el= configures package activation and the initial frame before normal initialization.
-   - =README.org= configures built-in features and packages loaded by =use-package=.
+   - =README.org= configures built-in features and declares ELPA packages with =:ensure t=.
 
    Credentials and machine-specific paths must come from environment variables or Home Manager rather than being embedded in generated Lisp.
 * Bootstrap
@@ -111,33 +111,6 @@
              (equal (my:getenv-nonempty "EMACS_PROFILE_STARTUP") "1"))
 
      (use-package gnu-elpa-keyring-update :ensure t)
-   #+end_src
-*** Automatic package updates
-   #+begin_src emacs-lisp
-     (use-package auto-package-update
-       :ensure t
-       :defer t
-       :preface
-       (defvar my:auto-package-update-timer nil
-         "Idle timer used to check for package updates.")
-
-       (defun my:run-scheduled-auto-package-update ()
-         "Run the scheduled package update check and clear its timer."
-         (setq my:auto-package-update-timer nil)
-         (auto-package-update-maybe))
-
-       (defun my:schedule-auto-package-update ()
-         "Check for package updates after startup becomes idle."
-         (my:replace-timer
-          'my:auto-package-update-timer
-          (run-with-idle-timer 30 nil
-                               #'my:run-scheduled-auto-package-update)))
-       :custom
-       (auto-package-update-delete-old-versions t)
-       (auto-package-update-hide-results t)
-       (auto-package-update-interval 1)
-       (auto-package-update-excluded-packages '(pdf-tools mu4e ox-hugo eglot-booster typst-ts-mode consult-tramp dired-details-r atomic-chrome))
-       :hook (emacs-startup-hook . my:schedule-auto-package-update))
    #+end_src
 * Initialization
 ** Shell environment
@@ -1170,12 +1143,6 @@ The default tab name uses the buffer name."
        :ensure nil
        :defer t)
 
-     (use-package eglot-booster
-       :ensure nil
-       :vc (:url "https://github.com/jdtsmith/eglot-booster" :rev :newest)
-       :after eglot
-       :config
-       (eglot-booster-mode 1))
    #+end_src
 ** Flymake
    #+begin_src emacs-lisp
@@ -2115,8 +2082,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
 **** ox-hugo
      #+begin_src emacs-lisp
        (use-package ox-hugo
-         :ensure nil
-         :vc (:url "https://github.com/mkt3/ox-hugo.git" :rev :newest)
+         :ensure t
          :after org
          :if (and my:d:org-roam
                   (file-directory-p my:d:org-roam)
@@ -2212,8 +2178,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
 *** Typst
     #+begin_src emacs-lisp
       (use-package typst-ts-mode
-        :ensure nil
-        :vc (:url "https://git.sr.ht/~meow_king/typst-ts-mode" :rev :newest)
+        :ensure t
         :if (display-graphic-p)
         :mode (("\\.typ\\'" . typst-ts-mode))
         :commands (typst-ts-mode)
@@ -2328,6 +2293,36 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
   #+begin_src emacs-lisp
     (use-package tramp
       :defer t
+      :preface
+      (defun my:ssh-config-hosts (file)
+        "Return concrete host names declared in SSH config FILE."
+        (when (file-readable-p file)
+          (with-temp-buffer
+            (insert-file-contents file)
+            (goto-char (point-min))
+            (let (hosts)
+              (while (re-search-forward
+                      "^[[:space:]]*[Hh][Oo][Ss][Tt][[:space:]]+\\([^#\n]+\\)"
+                      nil t)
+                (dolist (host (split-string (match-string 1) "[[:space:]]+" t))
+                  (unless (string-match-p "[*?!,]" host)
+                    (push host hosts))))
+              hosts))))
+
+      (defun my:tramp-ssh-hosts ()
+        "Return SSH hosts from the configuration files used by this setup."
+        (delete-dups
+         (apply #'append
+                (mapcar #'my:ssh-config-hosts
+                        '("~/.ssh/config" "~/.ssh/extra_config")))))
+
+      (defun my:find-ssh-file ()
+        "Select an SSH host, then visit a file below its home directory."
+        (interactive)
+        (let* ((host (completing-read "SSH host: " (my:tramp-ssh-hosts) nil t))
+               (default-directory (format "/ssh:%s:~/" host)))
+          (call-interactively #'find-file)))
+      :bind ("C-c s" . my:find-ssh-file)
       :custom
       (tramp-default-method "ssh")
       (tramp-auto-save-directory
@@ -2365,12 +2360,6 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       ;;                          "-o ControlPath=/tmp/ssh-tramp-%%r@%%h:%%p "
       ;;                          "-o ControlMaster=auto -o ControlPersist=yes")))
 
-    (use-package consult-tramp
-      :ensure nil
-      :bind ("C-c s" . consult-tramp)
-      :vc (:url "https://github.com/Ladicle/consult-tramp" :rev :newest)
-      :custom
-      (consult-tramp-ssh-config "~/.ssh/extra_config"))
   #+end_src
 * File management
   #+begin_src emacs-lisp
@@ -2427,20 +2416,6 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
       :bind (nil
              :map dired-mode-map
              ("P"  . dired-preview-mode)))
-
-    ;; (use-package dired-details-r
-    ;;   :ensure nil
-    ;;   :vc (:url "https://github.com/misohena/dired-details-r" :rev :newest)
-    ;;   :config
-    ;;   (global-dired-details-r-mode)
-    ;;   (setq dired-details-r-combinations
-    ;;         '((size-time  . (size time))
-    ;;           ;;(time-size  . (time size)) ;; Which do you prefer?
-    ;;           (no-details . ())
-    ;;           (disabled   . disabled)
-    ;;           (all        . (size time perms links user group))
-    ;;           (left-right . (time size filename perms links user group))
-    ;;           (left       . (time size filename)))))
   #+end_src
 * Browser
   #+begin_src emacs-lisp
@@ -2540,6 +2515,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
 ** Mu4e
    #+begin_src emacs-lisp
      (use-package mu4e
+       :ensure nil
        :if (and (display-graphic-p)
                 (executable-find "mu")
                 (file-readable-p "~/.config/mu4e/mu4e_config.el"))
@@ -2713,6 +2689,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
    PDF Tools contains native code, so Nix installs it with Emacs instead of =package.el=.
    #+begin_src emacs-lisp
      (use-package pdf-tools
+       :ensure nil
        :if (display-graphic-p)
        ;; :demand t ;  load-path has already been set by nix
        :mode ("\\.pdf\\'" . pdf-view-mode)
@@ -2752,8 +2729,7 @@ If EXCLUDE is non-nil, omit nodes in DIR; otherwise include only those nodes."
    Start the server manually with =M-x atomic-chrome-start-server= or wait until Emacs has been idle for 60 seconds.
    #+begin_src emacs-lisp
      (use-package atomic-chrome
-       :ensure nil
-       :vc (:url "https://github.com/KarimAziev/atomic-chrome" :rev :newest)
+       :ensure t
        :if (display-graphic-p)
        :commands (atomic-chrome-start-server atomic-chrome-stop-server)
        :preface

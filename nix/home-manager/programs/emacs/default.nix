@@ -9,24 +9,31 @@
 }:
 let
   emacsPackage = import ./package.nix { inherit pkgs isDarwin isGUI; };
-  tangledEmacsConfig = pkgs.runCommand "emacs-config.el" { } ''
-    ${emacsPackage}/bin/emacs --batch -Q \
-      --eval '(progn
-        (require (quote org))
-        (require (quote ob-tangle))
-        (org-babel-tangle-file
-          "${./README.org}"
-          (getenv "out")
-          "emacs-lisp"))'
-    test -s "$out"
-  '';
-  sharedSKKDictionary = "${config.home.homeDirectory}/workspace/ghq/github.com/mkt3/skk-dict/SKK-JISYO.shared";
-in
-{
-  programs.emacs = {
-    enable = true;
+  sources = pkgs.callPackage ../../../_sources/generated.nix { };
+  elpaVersion = source: "${builtins.replaceStrings [ "-" ] [ "" ] source.date}.0";
+  configuredEmacs = pkgs.emacsWithPackagesFromUsePackage {
     package = emacsPackage;
-    extraPackages =
+    config = ./README.org;
+    # README.org has ordinary Org Babel source blocks without :tangle headers.
+    alwaysTangle = true;
+    # Home Manager installs the generated configuration below.
+    defaultInitFile = false;
+    override = _final: prev: {
+      nerd-icons-dired = prev.nerd-icons-dired.overrideAttrs (_old: {
+        inherit (sources.nerd-icons-dired) src;
+        version = elpaVersion sources.nerd-icons-dired;
+      });
+      just-ts-mode = prev.just-ts-mode.overrideAttrs (_old: {
+        inherit (sources.just-ts-mode) src;
+        # melpa2nix requires an ELPA-compatible version, not a Git SHA.
+        version = elpaVersion sources.just-ts-mode;
+      });
+      ox-hugo = prev.ox-hugo.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./patches/ox-hugo-tangle-filepath.patch ];
+      });
+    };
+    # These are not ELPA packages declared with :ensure in README.org.
+    extraEmacsPackages =
       epkgs:
       [
         (epkgs.treesit-grammars.with-grammars (
@@ -72,6 +79,21 @@ in
         epkgs.mu4e
       ];
   };
+  tangledEmacsConfig = pkgs.runCommand "emacs-config.el" { } ''
+    ${emacsPackage}/bin/emacs --batch -Q \
+      --eval '(progn
+        (require (quote org))
+        (require (quote ob-tangle))
+        (org-babel-tangle-file
+          "${./README.org}"
+          (getenv "out")
+          "emacs-lisp"))'
+    test -s "$out"
+  '';
+  sharedSKKDictionary = "${config.home.homeDirectory}/workspace/ghq/github.com/mkt3/skk-dict/SKK-JISYO.shared";
+in
+{
+  home.packages = [ configuredEmacs ];
 
   xdg.desktopEntries = lib.optionalAttrs (isGUI && isLinux) {
     emacs = {
@@ -150,11 +172,6 @@ in
   }
   // {
     "emacs/SKK-JISYO.shared".source = config.lib.file.mkOutOfStoreSymlink sharedSKKDictionary;
-  }
-  // lib.optionalAttrs isGUI {
-    "enchant/en_US.dic" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Nextcloud/personal_config/enchant/dict/en_US.dic";
-    };
   };
 
   programs.zsh.envExtra = lib.mkAfter (
