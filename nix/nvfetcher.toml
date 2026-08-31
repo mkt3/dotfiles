@@ -1,3 +1,18 @@
+[cmigemo]
+src.github = "koron/cmigemo"
+fetch.github = "koron/cmigemo"
+
+[nerd-icons-dired]
+# fetchFromGitHub's archive endpoint currently returns HTTP 400 for this repo.
+# Fetch through Git instead, and let nvfetcher lock the resolved revision.
+src.git = "https://github.com/rainstormstudio/nerd-icons-dired.git"
+fetch.git = "https://github.com/rainstormstudio/nerd-icons-dired.git"
+
+[just-ts-mode]
+# See nerd-icons-dired above: GitHub's archive endpoint returns HTTP 400.
+src.git = "https://github.com/leon-barrett/just-ts-mode.el.git"
+fetch.git = "https://github.com/leon-barrett/just-ts-mode.el.git"
+
 [omniwm]
 src.github = "BarutSRB/OmniWM"
 fetch.url = "https://github.com/BarutSRB/OmniWM/releases/download/$ver/OmniWM-$ver.zip"

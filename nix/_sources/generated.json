@@ -1,4 +1,65 @@
 {
+    "cmigemo": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "cmigemo",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "koron",
+            "repo": "cmigemo",
+            "rev": "v1.8.0",
+            "sha256": "sha256-mRSA8dX4Sr2ayljPGeI/9+NxZfTCNrGHEid3FCkZkXI=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "v1.8.0"
+    },
+    "just-ts-mode": {
+        "cargoLock": null,
+        "date": "2026-07-16",
+        "extract": null,
+        "name": "just-ts-mode",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "6b4b23fcc6f0f0d0903e84c51771d43c06a00771",
+            "sha256": "sha256-Fzzcd4lHNX4HXpFN7ezO8ISMY2LgMaTpRaVXYBD9j2o=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/leon-barrett/just-ts-mode.el.git"
+        },
+        "version": "6b4b23fcc6f0f0d0903e84c51771d43c06a00771"
+    },
+    "nerd-icons-dired": {
+        "cargoLock": null,
+        "date": "2026-04-15",
+        "extract": null,
+        "name": "nerd-icons-dired",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "104acd8879528b8115589f35f1bbcbe231ad732f",
+            "sha256": "sha256-m2eiGXlf4ikjY4Isk9feUDsgYIJ7EiQRziD65usARmI=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/rainstormstudio/nerd-icons-dired.git"
+        },
+        "version": "104acd8879528b8115589f35f1bbcbe231ad732f"
+    },
     "omniwm": {
         "cargoLock": null,
         "date": null,

@@ -6,6 +6,45 @@
   dockerTools,
 }:
 {
+  cmigemo = {
+    pname = "cmigemo";
+    version = "v1.8.0";
+    src = fetchFromGitHub {
+      owner = "koron";
+      repo = "cmigemo";
+      rev = "v1.8.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-mRSA8dX4Sr2ayljPGeI/9+NxZfTCNrGHEid3FCkZkXI=";
+    };
+  };
+  just-ts-mode = {
+    pname = "just-ts-mode";
+    version = "6b4b23fcc6f0f0d0903e84c51771d43c06a00771";
+    src = fetchgit {
+      url = "https://github.com/leon-barrett/just-ts-mode.el.git";
+      rev = "6b4b23fcc6f0f0d0903e84c51771d43c06a00771";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-Fzzcd4lHNX4HXpFN7ezO8ISMY2LgMaTpRaVXYBD9j2o=";
+    };
+    date = "2026-07-16";
+  };
+  nerd-icons-dired = {
+    pname = "nerd-icons-dired";
+    version = "104acd8879528b8115589f35f1bbcbe231ad732f";
+    src = fetchgit {
+      url = "https://github.com/rainstormstudio/nerd-icons-dired.git";
+      rev = "104acd8879528b8115589f35f1bbcbe231ad732f";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-m2eiGXlf4ikjY4Isk9feUDsgYIJ7EiQRziD65usARmI=";
+    };
+    date = "2026-04-15";
+  };
   omniwm = {
     pname = "omniwm";
     version = "v0.6.4";

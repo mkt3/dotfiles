@@ -8,6 +8,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -82,6 +86,7 @@
       pkgs = import nixpkgs {
         config.allowUnfree = true;
         overlays = [
+          inputs.emacs-overlay.overlays.default
           (import ./home-manager/overlays/recoll)
         ];
         system = platform;
