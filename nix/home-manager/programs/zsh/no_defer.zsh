@@ -9,7 +9,7 @@ if [[ ! -n $TMUX ]]; then
     bindkey '^Qo' _tmux_session_widget
 fi
 
-if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" ]]; then
+if [[ ! -n $TMUX && $- == *l* && "$TERM" != "dumb" && "$TERM" != "xterm-ghostty" ]]; then
     main_session="main_session"
     tmux attach-session -t "$main_session" || tmux new-session -s "$main_session"
 fi

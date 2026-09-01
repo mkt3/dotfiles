@@ -812,7 +812,8 @@ The default tab name uses the buffer name."
    #+begin_src emacs-lisp
      (use-package puni
        :ensure t
-       :bind ("C-h" . puni-backward-delete-char)
+       :bind (:map puni-mode-map
+                   ("C-h" . puni-backward-delete-char))
        :hook ((term-mode-hook . puni-disable-puni-mode)
               (ghostel-mode-hook . puni-disable-puni-mode))
        :init
@@ -2639,6 +2640,7 @@ The default tab name uses the buffer name."
       :bind (("C-x m" . ghostel)
              :map ghostel-semi-char-mode-map
              ("C-s" . consult-line)
+             ("C-h" . my:ghostel-backward-delete-char)
              ("C-k" . my:ghostel-kill-line)
              ("M-p" . my:ghostel-previous-input)
              ("M-n" . my:ghostel-next-input)
@@ -2651,6 +2653,11 @@ The default tab name uses the buffer name."
         (interactive)
         (kill-ring-save (point) (line-end-position))
         (ghostel-send-key "k" "ctrl"))
+
+      (defun my:ghostel-backward-delete-char ()
+        "Send C-h to Ghostel for terminal-style backward deletion."
+        (interactive)
+        (ghostel-send-key "h" "ctrl"))
 
       (defun my:ghostel-previous-input ()
         "Request the previous shell history entry in Ghostel."
