@@ -1720,7 +1720,9 @@ The default tab name uses the buffer name."
                                        ("A" todo)))
          :config
          (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
-         (add-to-list 'org-modules 'org-habit t))
+         (add-to-list 'org-modules 'org-habit t)
+         (when (display-graphic-p)
+           (run-at-time 0 nil #'org-agenda nil "a")))
 
        (use-package org-super-agenda
          :ensure t
