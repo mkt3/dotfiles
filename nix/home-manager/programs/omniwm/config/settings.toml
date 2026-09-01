@@ -207,13 +207,13 @@ minWidth = 800.0
 assignToWorkspace = "1"
 bundleId = "com.vivaldi.Vivaldi"
 id = "6CC0F8FC-7340-476C-8B5A-A49F4691652A"
-layout = "tile"
+layout = "auto"
 
 [[appRules]]
 assignToWorkspace = "2"
 bundleId = "com.tinyspeck.slackmacgap"
 id = "272447F1-D824-4015-A5E8-7E3EAC59CC36"
-layout = "tile"
+layout = "auto"
 
 [[appRules]]
 assignToWorkspace = "2"
