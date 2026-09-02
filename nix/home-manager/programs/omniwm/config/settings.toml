@@ -207,37 +207,26 @@ minWidth = 800.0
 assignToWorkspace = "1"
 bundleId = "com.vivaldi.Vivaldi"
 id = "6CC0F8FC-7340-476C-8B5A-A49F4691652A"
-layout = "auto"
 
 [[appRules]]
 assignToWorkspace = "2"
 bundleId = "com.tinyspeck.slackmacgap"
 id = "272447F1-D824-4015-A5E8-7E3EAC59CC36"
-layout = "auto"
 
 [[appRules]]
 assignToWorkspace = "2"
 bundleId = "com.microsoft.teams2"
 id = "DA71D0EF-92FA-4702-90A2-DC0E081DA8E6"
-layout = "tile"
 
 [[appRules]]
 assignToWorkspace = "3"
 bundleId = "org.zotero.zotero"
 id = "C74382E6-9D49-4CCB-BD39-0742E5971D19"
-layout = "tile"
-
-[[appRules]]
-bundleId = "org.gnu.Emacs"
-id = "94013990-BC3E-4383-83E0-0C2F1A78E839"
-layout = "float"
-titleSubstring = "posframe"
 
 [[appRules]]
 assignToWorkspace = "6"
 bundleId = "org.gnu.Emacs"
 id = "2F07CD91-98FE-4872-9127-9B89765DCF7F"
-layout = "tile"
 
 [[appRules]]
 bundleId = "com.raycast.macos"
