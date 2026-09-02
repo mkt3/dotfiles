@@ -28,7 +28,7 @@ trap terminate INT TERM
 failure_logged=0
 while true; do
   if omniwmctl ping >/dev/null 2>&1; then
-    omniwmctl watch workspace-bar \
+    omniwmctl watch workspace-bar --reconnect \
       --exec sketchybar --trigger omniwm_refresh OMNIWM_EVENT_CHANNEL=workspace-bar &
     child_pid=$!
     wait "$child_pid"
