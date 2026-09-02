@@ -40,6 +40,7 @@
         _FXShowPosixPathInTitle = true;
         ShowStatusBar = true;
         ShowPathbar = true;
+        FXEnableExtensionChangeWarning = false;
         FXDefaultSearchScope = "Sccf";
         FXPreferredViewStyle = "clmv";
         NewWindowTarget = "Other";
