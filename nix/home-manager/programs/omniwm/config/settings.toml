@@ -229,6 +229,11 @@ bundleId = "org.gnu.Emacs"
 id = "2F07CD91-98FE-4872-9127-9B89765DCF7F"
 
 [[appRules]]
+bundleId = "com.apple.finder"
+id = "25F22E59-0ADB-4AA6-B132-F45B68448F37"
+layout = "float"
+
+[[appRules]]
 bundleId = "com.raycast.macos"
 id = "03BC0FF6-9E17-4BED-A07E-C809CD14A2B1"
 layout = "float"
