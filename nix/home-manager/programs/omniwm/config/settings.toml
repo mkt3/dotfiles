@@ -372,11 +372,11 @@ binding = "Shift+Command+Slash"
 id = "moveToWorkspace.5"
 
 [[hotkeys]]
-binding = "Unassigned"
+binding = "Command+Backslash"
 id = "switchWorkspace.6"
 
 [[hotkeys]]
-binding = "Unassigned"
+binding = "Shift+Command+Backslash"
 id = "moveToWorkspace.6"
 
 [[hotkeys]]
@@ -1044,6 +1044,15 @@ displayName = "emacs"
 id = "5953F2BF-A378-4266-91B2-287174C4FA4D"
 layoutType = "niri"
 name = "6"
+
+[workspaces.monitorAssignment]
+type = "secondary"
+
+[[workspaces]]
+displayName = "tmp"
+id = "BA17297A-A4FA-41E8-AB84-D6927C6DC512"
+layoutType = "niri"
+name = "7"
 
 [workspaces.monitorAssignment]
 type = "secondary"
