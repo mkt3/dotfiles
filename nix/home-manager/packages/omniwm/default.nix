@@ -19,7 +19,7 @@ stdenvNoCC.mkDerivation {
     mkdir -p "$out/Applications" "$out/bin"
     bsdtar -xf "$src" -C "$out/Applications"
     ln -s "$out/Applications/OmniWM.app/Contents/MacOS/OmniWM" "$out/bin/OmniWM"
-    ln -s "$out/Applications/OmniWM.app/Contents/MacOS/omniwmctl" "$out/bin/omniwmctl"
+    cp "$out/Applications/OmniWM.app/Contents/MacOS/omniwmctl" "$out/bin/omniwmctl"
 
     runHook postInstall
   '';
@@ -37,7 +37,7 @@ stdenvNoCC.mkDerivation {
     license = licenses.gpl2Only;
     mainProgram = "OmniWM";
     maintainers = [ ];
-    platforms = lib.platforms.darwin;
+    platforms = [ "aarch64-darwin" ];
     sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 }
