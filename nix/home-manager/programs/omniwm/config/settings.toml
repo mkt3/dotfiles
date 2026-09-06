@@ -2,7 +2,7 @@ monitorDwindleOverrides = []
 monitorGapOverrides = []
 monitorNiriOverrides = []
 monitorOrientationOverrides = []
-schemaVersion = 2
+schemaVersion = 3
 
 [appearance]
 mode = "dark"
@@ -134,6 +134,21 @@ widthPercent = 50.0
 
 [routing]
 mode = "custom"
+
+[[routing.arrangements]]
+id = "915A44CE-1F6C-4BCB-BFAB-4833AFB57AB2"
+
+[[routing.arrangements.monitors]]
+gridColumn = 0
+gridRow = 0
+monitorDisplayUUID = "DE16F3A6-0699-45DE-9617-701DF42575DC"
+monitorName = "LG HDR 4K"
+
+[[routing.arrangements.monitors]]
+gridColumn = 0
+gridRow = 1
+monitorDisplayUUID = "9318771D-0EF2-4354-834D-0ECD24410D31"
+monitorName = "CX133"
 
 [scratchpads]
 
@@ -999,18 +1014,6 @@ id = "toggleSystemStats"
 id = "C4042955-EE55-450D-B817-10E90B6F2706"
 monitorDisplayId = 2
 monitorName = "LG HDR 4K"
-
-[[monitorRoutingOverrides]]
-gridColumn = 0
-gridRow = 0
-monitorDisplayUUID = "DE16F3A6-0699-45DE-9617-701DF42575DC"
-monitorName = "LG HDR 4K"
-
-[[monitorRoutingOverrides]]
-gridColumn = 0
-gridRow = 1
-monitorDisplayUUID = "9318771D-0EF2-4354-834D-0ECD24410D31"
-monitorName = "CX133"
 
 [[workspaces]]
 displayName = "main"
