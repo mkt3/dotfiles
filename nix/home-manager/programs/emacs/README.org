@@ -788,6 +788,11 @@ The default tab name uses the buffer name."
                      (skk-save-jisyo-instantly nil))
                  (funcall original word purge)
                  (skk-save-jisyo 'quiet)
+                 ;; `skk-update-jisyo' normally clears this after an
+                 ;; instantaneous save.  The binding above disables that
+                 ;; path while writing the shared dictionary, so clear it
+                 ;; here to avoid treating later conversions as registrations.
+                 (setq skk-jisyo-updated nil)
                  (my:skk-copy-shared-jisyo-to-macskk))
              (funcall original word purge)))
          (advice-add #'skk-update-jisyo :around
