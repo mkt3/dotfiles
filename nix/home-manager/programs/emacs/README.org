@@ -1262,7 +1262,7 @@ The default tab name uses the buffer name."
         :config
         (diff-hl-margin-mode 1)
         :hook ((prog-mode-hook . diff-hl-mode)
-               (dired-mode-hook . diff-hl-dired-mode)
+               (dired-mode-hook . diff-hl-dired-mode-unless-remote)
                (magit-post-refresh-hook . diff-hl-magit-post-refresh)))
     #+end_src
 *** Visual-regexp
