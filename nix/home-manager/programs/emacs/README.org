@@ -740,9 +740,9 @@ The default tab name uses the buffer name."
                ("C-x @ j" . skk-kakutei)) ;; for ctrl-j from wezterm
        :custom
        (default-input-method "japanese-skk")
-       ;; Preload dictionaries at GUI startup in DDSKK's temporary buffer.
-       ;; Keep SKK disabled in visited buffers, including read-only files.
-       (skk-preload (display-graphic-p))
+       ;; Use a named startup hook below instead of DDSKK's anonymous preload
+       ;; hook so reloading this configuration cannot schedule it twice.
+       (skk-preload nil)
        (skk-byte-compile-init-file t)
        (skk-user-directory
         (expand-file-name "ddskk.d" user-emacs-directory))
@@ -760,12 +760,21 @@ The default tab name uses the buffer name."
          (when (file-readable-p my:skk-private-jisyo)
            (setq skk-jisyo (cons my:skk-private-jisyo 'utf-8))))
        :config
-       (defun my:skk-preload-study (&rest _)
-         "Silently preload SKK study data once after DDSKK dictionaries."
-         (when (and (featurep 'skk-study)
-                    (not skk-study-last-read))
-           (skk-study-read 'nomsg)))
-       (advice-add #'skk-preload :after #'my:skk-preload-study)
+       (add-hook 'isearch-mode-hook #'skk-isearch-mode-setup)
+       (add-hook 'isearch-mode-end-hook #'skk-isearch-mode-cleanup)
+       (defvar my:skk-preloaded nil
+         "Non-nil after SKK dictionaries and study data are preloaded.")
+       (defun my:skk-preload-at-startup ()
+         "Preload SKK once after graphical Emacs finishes initializing."
+         (when (and (display-graphic-p)
+                    (not my:skk-preloaded))
+           (skk-preload)
+           (when (and (featurep 'skk-study)
+                      (not skk-study-last-read))
+             (skk-study-read 'nomsg))
+           (setq my:skk-preloaded t)
+           (message "SKK preload...done")))
+       (add-hook 'after-init-hook #'my:skk-preload-at-startup t)
        (defun my:skk-disable-in-read-only-buffer ()
          "Disable SKK in read-only buffers so navigation keeps its usual keys."
          (when (and buffer-read-only (bound-and-true-p skk-mode))
@@ -1673,6 +1682,8 @@ The default tab name uses the buffer name."
             "org-clock-current-task.txt" my:d:emacs-state))
          (defvar my:copy-calendar-timer nil
            "Timer used to copy calendar data periodically.")
+         (defvar my:org-agenda-startup-timer nil
+           "Timer used to open Org Agenda after startup becomes idle.")
          (defvar my:copy-calendar-process nil
            "Process used to copy calendar data.")
          (defvar my:copy-calendar-script
@@ -1750,8 +1761,18 @@ The default tab name uses the buffer name."
          :config
          (setq org-overriding-columns-format "%ITEM %Effort{:} %CLOCKSUM %PRIORITY")
          (add-to-list 'org-modules 'org-habit t)
+         (defun my:org-agenda-at-startup ()
+           "Open Org Agenda after ensuring visited agenda files use Org mode."
+           (dolist (file (org-agenda-files t))
+             (when-let* ((buffer (find-buffer-visiting file)))
+               (with-current-buffer buffer
+                 (unless (derived-mode-p 'org-mode)
+                   (org-mode)))))
+           (org-agenda nil "a"))
          (when (display-graphic-p)
-           (run-at-time 0 nil #'org-agenda nil "a")))
+           (my:replace-timer
+            'my:org-agenda-startup-timer
+            (run-with-idle-timer 1 nil #'my:org-agenda-at-startup))))
 
        (use-package org-super-agenda
          :ensure t
