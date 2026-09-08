@@ -740,6 +740,9 @@ The default tab name uses the buffer name."
                ("C-x @ j" . skk-kakutei)) ;; for ctrl-j from wezterm
        :custom
        (default-input-method "japanese-skk")
+       ;; Preload dictionaries at GUI startup in DDSKK's temporary buffer.
+       ;; Keep SKK disabled in visited buffers, including read-only files.
+       (skk-preload (display-graphic-p))
        (skk-byte-compile-init-file t)
        (skk-user-directory
         (expand-file-name "ddskk.d" user-emacs-directory))
@@ -757,6 +760,26 @@ The default tab name uses the buffer name."
          (when (file-readable-p my:skk-private-jisyo)
            (setq skk-jisyo (cons my:skk-private-jisyo 'utf-8))))
        :config
+       (defun my:skk-preload-study (&rest _)
+         "Silently preload SKK study data once after DDSKK dictionaries."
+         (when (and (featurep 'skk-study)
+                    (not skk-study-last-read))
+           (skk-study-read 'nomsg)))
+       (advice-add #'skk-preload :after #'my:skk-preload-study)
+       (defun my:skk-disable-in-read-only-buffer ()
+         "Disable SKK in read-only buffers so navigation keeps its usual keys."
+         (when (and buffer-read-only (bound-and-true-p skk-mode))
+           ;; Allow SKK to finish pending input while removing its mode maps.
+           (let ((inhibit-read-only t))
+             (skk-mode -1))))
+       (add-hook 'read-only-mode-hook #'my:skk-disable-in-read-only-buffer)
+       ;; File-local `buffer-read-only' does not run `read-only-mode-hook'.
+       (add-hook 'hack-local-variables-hook #'my:skk-disable-in-read-only-buffer)
+       (add-hook 'skk-mode-hook #'my:skk-disable-in-read-only-buffer)
+       ;; Also fix already-open buffers when this configuration is reloaded.
+       (dolist (buffer (buffer-list))
+         (with-current-buffer buffer
+           (my:skk-disable-in-read-only-buffer)))
        (defconst my:skk-shared-jisyo
          (locate-user-emacs-file "SKK-JISYO.shared"))
        (when (file-exists-p my:skk-shared-jisyo)
