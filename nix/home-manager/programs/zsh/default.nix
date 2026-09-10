@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  os,
   isGUI,
   isLinux,
   lib,
@@ -56,6 +57,14 @@ in
           if [[ -z "$ZSH_PATH_LOADED" ]]; then
             source "${config.xdg.configHome}/zsh/env.sh"
             export ZSH_PATH_LOADED=1
+          fi
+        ''
+      ]
+      ++ lib.optionals (os == "ubuntu" && !isGUI) [
+        ''
+          # Slurm office locality settings are provided by the Ubuntu host.
+          if [ -r /etc/profile.d/slurm-office-locality.sh ]; then
+            source /etc/profile.d/slurm-office-locality.sh
           fi
         ''
       ]
