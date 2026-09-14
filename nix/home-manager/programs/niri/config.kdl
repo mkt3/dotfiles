@@ -333,6 +333,13 @@ window-rule {
   open-floating true
 }
 
+// Elminage ORIGINALjp declares a fixed-size Wine window. Keep it in the
+// normal niri tile layout instead of auto-floating it.
+window-rule {
+  match app-id=r#"^steam_app_2392310$"#
+  open-floating false
+}
+
 window-rule {
   // Rounded corners for a modern look.
   geometry-corner-radius 20
