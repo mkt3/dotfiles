@@ -934,6 +934,9 @@ The default tab name uses the buffer name."
                 ("C-z" . consult-imenu))
         :hook (completion-list-mode-hook . consult-preview-at-point-mode)
         :custom
+        (consult-async-input-debounce 0.05)
+        (consult-async-input-throttle 0.1)
+        (consult-async-refresh-delay 0.05)
         (xref-show-xrefs-function #'consult-xref)
         (xref-show-definitions-function #'consult-xref)
         :config
