@@ -557,7 +557,7 @@ linux = [{ name = "gdrive3", method = "nix-hm", kind = "package" }]
 [libreoffice]
 type = "gui"
 linux = [{ name = "libreoffice-stable", method = "nix-hm", kind = "package" }]
-darwin = [{ name = "libreoffice-bin", method = "nix-hm", kind = "package" }]
+darwin = [{ name = "libreoffice", method = "cask", kind = "package" }]
 
 ## launcher
 [launcher]
