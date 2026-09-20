@@ -67,11 +67,10 @@ These values are stored in `results/env_settings`.
 
 The package source can differ by OS. Some packages are installed via Nix, some via Home Manager modules, and some platform-specific packages may use native package managers or nix-darwin's Homebrew integration.
 
-On macOS, the Nix-built Emacs, WezTerm, and MeetingBar application bundles are
-signed with a persistent local identity after Home Manager copies them. This
-keeps their macOS privacy-permission identities stable across package upgrades. See
-[Local code signing for macOS privacy permissions](./docs/macos-local-code-signing.md)
-for certificate creation, secure backup, permission setup, and recovery.
+On macOS, the Nix-built Emacs, WezTerm, and MeetingBar application bundles use
+stable ad-hoc designated requirements produced by `nix-mac-app-identity`. This
+keeps their macOS privacy-permission identities stable across package upgrades
+without a local certificate or a post-copy signing hook.
 
 ## Update
 Run the installer again:

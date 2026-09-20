@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   isDarwin,
@@ -37,7 +38,7 @@ in
 
   programs.wezterm = {
     enable = true;
-    package = pkgs.wezterm;
+    package = if isDarwin then config.lib.appIdentity.stabilizeApp pkgs.wezterm else pkgs.wezterm;
     inherit settings;
     extraConfig = builtins.readFile ./extra.lua;
   };

@@ -501,7 +501,7 @@ darwin = [{ name = "zoom", method = "cask", kind = "package" }]
 ### macos only
 [MeetingBar]
 type = "gui"
-darwin = [{ name = "meetingbar", method = "nix-hm", kind = "package" }]
+darwin = [{ name = "meetingbar", method = "nix-hm", kind = "module" }]
 
 ## browser
 [vivaldi]

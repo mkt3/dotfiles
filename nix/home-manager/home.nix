@@ -6,6 +6,7 @@
   username,
   homeDirectory,
   nix-index-database,
+  nix-mac-app-identity,
   ...
 }:
 {
@@ -58,6 +59,7 @@
   imports = [
     ./catalog-packages.nix
     nix-index-database.homeModules.default
+    nix-mac-app-identity.homeManagerModules.default
   ];
 
   programs = {
