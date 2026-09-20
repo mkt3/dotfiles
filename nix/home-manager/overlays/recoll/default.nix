@@ -24,6 +24,9 @@ in
         NIX_LDFLAGS = (old.NIX_LDFLAGS or "") + " -framework IOKit";
         postInstall = removeRequiredFragment "postInstall" darwinAppInstall (old.postInstall or "");
         postFixup = removeRequiredFragment "postFixup" darwinAppSymlink (old.postFixup or "");
+        meta = (old.meta or { }) // {
+          broken = false;
+        };
       })
     else
       prev.recoll;
