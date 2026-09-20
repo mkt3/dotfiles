@@ -19,6 +19,18 @@ let
     # Home Manager installs the generated configuration below.
     defaultInitFile = false;
     override = _final: prev: {
+      # Removed from MELPA in nixpkgs, but still used by the configuration.
+      flymake-diagnostic-at-point = prev.melpaBuild {
+        pname = "flymake-diagnostic-at-point";
+        version = "20180815.1004";
+        src = pkgs.fetchFromGitHub {
+          owner = "meqif";
+          repo = "flymake-diagnostic-at-point";
+          rev = "379616b1c6f5ebeaf08fbe54ae765008a78b3be7";
+          hash = "sha256-D476VQHVL91ikr5VQ9+oPbje46bv4cqpeD388nvPf/E=";
+        };
+        packageRequires = [ prev.popup ];
+      };
       nerd-icons-dired = prev.nerd-icons-dired.overrideAttrs (_old: {
         inherit (sources.nerd-icons-dired) src;
         version = elpaVersion sources.nerd-icons-dired;
@@ -86,6 +98,53 @@ let
         epkgs.mu4e
       ];
   };
+  emacsPackageSiteLisp = "${configuredEmacs.deps}/share/emacs/site-lisp";
+  emacsPackageNativeLisp = "${configuredEmacs.deps}/share/emacs/native-lisp";
+  # TODO(macos): Remove darwinConfiguredEmacs, darwinEmacsCli, and the Darwin
+  # package bootstrap in configuredEarlyInit once an exec-based Nix GUI
+  # wrapper preserves the Emacs bundle/process identity on macOS, or OmniWM
+  # can manage its windows without that identity. Then install configuredEmacs
+  # directly again on Darwin.
+  darwinConfiguredEmacs = configuredEmacs.overrideAttrs (old: {
+    # LaunchServices must start the actual Emacs Mach-O executable. A launcher
+    # that execs Emacs loses its bundle path on macOS 27, so keep the nixpkgs
+    # wrapper for $out/bin/emacs but remove it from the GUI application only.
+    buildCommand =
+      old.buildCommand
+      + ''
+        appDirectory="$out/Applications/Emacs.app/Contents/MacOS"
+        rm -f "$appDirectory/Emacs" "$appDirectory/.Emacs-wrapped"
+        cp ${emacsPackage}/Applications/Emacs.app/Contents/MacOS/Emacs \
+          "$appDirectory/Emacs"
+        chmod u+w "$appDirectory/Emacs"
+        rm -rf "$out/bin"
+      '';
+  });
+  darwinEmacsCli = pkgs.runCommand "emacs-with-packages-cli-${lib.getVersion emacsPackage}" { } ''
+    mkdir -p "$out/bin"
+    for executable in ${configuredEmacs}/bin/*; do
+      ln -s "$executable" "$out/bin/$(basename "$executable")"
+    done
+  '';
+  configuredEarlyInit = pkgs.writeText "early-init.el" (
+    lib.optionalString isDarwin ''
+      ;;; early-init.el --- Early initialization -*- lexical-binding: t; -*-
+
+      ;; The GUI app runs the real Emacs executable instead of the nixpkgs
+      ;; wrapper. Reproduce the wrapper's package setup without another exec.
+      (let ((site-lisp "${emacsPackageSiteLisp}"))
+        (add-to-list 'load-path site-lisp)
+        (let ((default-directory site-lisp))
+          (load (expand-file-name "subdirs.el" site-lisp) nil t))
+        (load (expand-file-name "site-start.el" site-lisp) nil t))
+      (with-eval-after-load 'package
+        (add-to-list 'package-directory-list
+                     "${emacsPackageSiteLisp}/elpa"))
+      (add-to-list 'native-comp-eln-load-path "${emacsPackageNativeLisp}")
+
+    ''
+    + builtins.readFile ./early-init.el
+  );
   tangledEmacsConfig = pkgs.runCommand "emacs-config.el" { } ''
     ${emacsPackage}/bin/emacs --batch -Q \
       --eval '(progn
@@ -100,7 +159,9 @@ let
   sharedSKKDictionary = "${config.home.homeDirectory}/workspace/ghq/github.com/mkt3/skk-dict/SKK-JISYO.shared";
 in
 {
-  home.packages = [ configuredEmacs ];
+  home.packages = if isDarwin then [ darwinEmacsCli ] else [ configuredEmacs ];
+
+  targets.darwin.appIdentity.apps = lib.optionals isDarwin [ darwinConfiguredEmacs ];
 
   xdg.desktopEntries = lib.optionalAttrs (isGUI && isLinux) {
     emacs = {
@@ -141,7 +202,7 @@ in
   xdg.configFile = {
     "emacs/README.org".source = ./README.org;
     "emacs/config.el".source = tangledEmacsConfig;
-    "emacs/early-init.el".source = ./early-init.el;
+    "emacs/early-init.el".source = configuredEarlyInit;
     "emacs/init.el".source = ./init.el;
     "emacs/templates".source = ./templates;
     "emacs/ddskk.d/init.el".source = ./ddskk.d/init.el;
