@@ -1015,7 +1015,7 @@ binding = "Unassigned"
 id = "toggleWorkspaceLayout"
 
 [[hotkeys]]
-binding = "Unassigned"
+binding = "Command+O"
 id = "toggleOverview"
 
 [[hotkeys]]

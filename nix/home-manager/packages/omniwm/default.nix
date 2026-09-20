@@ -32,8 +32,8 @@ stdenvNoCC.mkDerivation {
       dwindle layouts, with a built-in quake terminal, command palette,
       overview mode, and more.
     '';
-    homepage = "https://github.com/BarutSRB/OmniWM";
-    changelog = "https://github.com/BarutSRB/OmniWM/releases/tag/${version}";
+    homepage = "https://github.com/OmniNull/OmniWM";
+    changelog = "https://github.com/OmniNull/OmniWM/releases/tag/${version}";
     license = licenses.gpl2Only;
     mainProgram = "OmniWM";
     maintainers = [ ];
