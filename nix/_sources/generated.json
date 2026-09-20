@@ -69,10 +69,10 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-+54G9cf1Q/3kuoOP7YNQaorHKylwce29SPT54MA2yrY=",
+            "sha256": "sha256-cTXVIMBf1wEt6Mm3WgvZbT+/rYERvie7XDACtgz3YWI=",
             "type": "url",
-            "url": "https://github.com/BarutSRB/OmniWM/releases/download/v0.7.0/OmniWM-v0.7.0.zip"
+            "url": "https://github.com/BarutSRB/OmniWM/releases/download/v0.7.1/OmniWM-v0.7.1.zip"
         },
-        "version": "v0.7.0"
+        "version": "v0.7.1"
     }
 }
