@@ -11,7 +11,7 @@ let
   emacsPackage = import ./package.nix { inherit pkgs isDarwin isGUI; };
   sources = pkgs.callPackage ../../../_sources/generated.nix { };
   elpaVersion = source: "${builtins.replaceStrings [ "-" ] [ "" ] source.date}.0";
-  configuredEmacsBase = pkgs.emacsWithPackagesFromUsePackage {
+  configuredEmacs = pkgs.emacsWithPackagesFromUsePackage {
     package = emacsPackage;
     config = ./README.org;
     # README.org has ordinary Org Babel source blocks without :tangle headers.
@@ -86,36 +86,6 @@ let
         epkgs.mu4e
       ];
   };
-  configuredEmacs = configuredEmacsBase.overrideAttrs (old: {
-    # emacsWithPackages uses a Mach-O wrapper around a shell wrapper. Replace
-    # that pair for the app only with a Mach-O launcher that implements the
-    # same environment transformation and execs a Mach-O inside the bundle.
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.stdenv.cc ];
-    buildCommand =
-      old.buildCommand
-      + lib.optionalString isDarwin ''
-        appDirectory="$out/Applications/Emacs.app/Contents/MacOS"
-        rm -f "$appDirectory/Emacs" "$appDirectory/.Emacs-wrapped"
-        cp ${emacsPackage}/Applications/Emacs.app/Contents/MacOS/Emacs \
-          "$appDirectory/.Emacs-wrapped"
-        cp -RL ${emacsPackage}/Applications/Emacs.app/Contents/native-lisp \
-          "$out/Applications/Emacs.app/Contents/native-lisp"
-        chmod u+w "$appDirectory/.Emacs-wrapped"
-
-        substitute ${./macos-app-wrapper.c} emacs-app-wrapper.c \
-          --subst-var-by siteLisp "${old.deps}/share/emacs/site-lisp" \
-          --subst-var-by nativeLisp "${old.deps}/share/emacs/native-lisp"
-        cc -Os -Wall -Wextra -Werror emacs-app-wrapper.c -o "$appDirectory/Emacs"
-
-        rm -rf "$out/bin"
-        mkdir "$out/bin"
-        ln -s ../Applications/Emacs.app/Contents/MacOS/Emacs "$out/bin/emacs"
-        ln -s emacs "$out/bin/emacs-${lib.getVersion emacsPackage}"
-        for tool in ebrowse emacsclient etags; do
-          ln -s "${emacsPackage}/bin/$tool" "$out/bin/$tool"
-        done
-      '';
-  });
   tangledEmacsConfig = pkgs.runCommand "emacs-config.el" { } ''
     ${emacsPackage}/bin/emacs --batch -Q \
       --eval '(progn
@@ -130,9 +100,7 @@ let
   sharedSKKDictionary = "${config.home.homeDirectory}/workspace/ghq/github.com/mkt3/skk-dict/SKK-JISYO.shared";
 in
 {
-  home.packages = lib.optionals (!isDarwin) [ configuredEmacs ];
-
-  targets.darwin.appIdentity.apps = lib.optionals isDarwin [ configuredEmacs ];
+  home.packages = [ configuredEmacs ];
 
   xdg.desktopEntries = lib.optionalAttrs (isGUI && isLinux) {
     emacs = {
