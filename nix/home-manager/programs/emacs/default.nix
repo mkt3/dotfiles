@@ -98,25 +98,27 @@ let
         epkgs.mu4e
       ];
   };
-  emacsPackageSiteLisp = "${configuredEmacs.deps}/share/emacs/site-lisp";
-  emacsPackageNativeLisp = "${configuredEmacs.deps}/share/emacs/native-lisp";
-  # TODO(macos): Remove darwinConfiguredEmacs, darwinEmacsCli, and the Darwin
-  # package bootstrap in configuredEarlyInit once an exec-based Nix GUI
-  # wrapper preserves the Emacs bundle/process identity on macOS, or OmniWM
-  # can manage its windows without that identity. Then install configuredEmacs
-  # directly again on Darwin.
   darwinConfiguredEmacs = configuredEmacs.overrideAttrs (old: {
-    # LaunchServices must start the actual Emacs Mach-O executable. A launcher
-    # that execs Emacs loses its bundle path on macOS 27, so keep the nixpkgs
-    # wrapper for $out/bin/emacs but remove it from the GUI application only.
+    # nix-mac-app-identity requires every file in Contents/MacOS to be Mach-O,
+    # while emacsWithPackages puts a shell wrapper there. Use a native launcher
+    # and keep the CLI wrappers in the separate darwinEmacsCli output.
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.stdenv.cc ];
     buildCommand =
       old.buildCommand
       + ''
         appDirectory="$out/Applications/Emacs.app/Contents/MacOS"
         rm -f "$appDirectory/Emacs" "$appDirectory/.Emacs-wrapped"
         cp ${emacsPackage}/Applications/Emacs.app/Contents/MacOS/Emacs \
-          "$appDirectory/Emacs"
-        chmod u+w "$appDirectory/Emacs"
+          "$appDirectory/.Emacs-wrapped"
+        cp -RL ${emacsPackage}/Applications/Emacs.app/Contents/native-lisp \
+          "$out/Applications/Emacs.app/Contents/native-lisp"
+        chmod u+w "$appDirectory/.Emacs-wrapped"
+
+        substitute ${./macos-app-wrapper.c} emacs-app-wrapper.c \
+          --subst-var-by siteLisp "${old.deps}/share/emacs/site-lisp" \
+          --subst-var-by nativeLisp "${old.deps}/share/emacs/native-lisp"
+        cc -Os -Wall -Wextra -Werror emacs-app-wrapper.c -o "$appDirectory/Emacs"
+
         rm -rf "$out/bin"
       '';
   });
@@ -126,25 +128,6 @@ let
       ln -s "$executable" "$out/bin/$(basename "$executable")"
     done
   '';
-  configuredEarlyInit = pkgs.writeText "early-init.el" (
-    lib.optionalString isDarwin ''
-      ;;; early-init.el --- Early initialization -*- lexical-binding: t; -*-
-
-      ;; The GUI app runs the real Emacs executable instead of the nixpkgs
-      ;; wrapper. Reproduce the wrapper's package setup without another exec.
-      (let ((site-lisp "${emacsPackageSiteLisp}"))
-        (add-to-list 'load-path site-lisp)
-        (let ((default-directory site-lisp))
-          (load (expand-file-name "subdirs.el" site-lisp) nil t))
-        (load (expand-file-name "site-start.el" site-lisp) nil t))
-      (with-eval-after-load 'package
-        (add-to-list 'package-directory-list
-                     "${emacsPackageSiteLisp}/elpa"))
-      (add-to-list 'native-comp-eln-load-path "${emacsPackageNativeLisp}")
-
-    ''
-    + builtins.readFile ./early-init.el
-  );
   tangledEmacsConfig = pkgs.runCommand "emacs-config.el" { } ''
     ${emacsPackage}/bin/emacs --batch -Q \
       --eval '(progn
@@ -202,7 +185,7 @@ in
   xdg.configFile = {
     "emacs/README.org".source = ./README.org;
     "emacs/config.el".source = tangledEmacsConfig;
-    "emacs/early-init.el".source = configuredEarlyInit;
+    "emacs/early-init.el".source = ./early-init.el;
     "emacs/init.el".source = ./init.el;
     "emacs/templates".source = ./templates;
     "emacs/ddskk.d/init.el".source = ./ddskk.d/init.el;
