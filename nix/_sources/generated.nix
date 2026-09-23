@@ -47,10 +47,10 @@
   };
   omniwm = {
     pname = "omniwm";
-    version = "v0.7.1";
+    version = "v0.7.2";
     src = fetchurl {
-      url = "https://github.com/OmniNull/OmniWM/releases/download/v0.7.1/OmniWM-v0.7.1.zip";
-      sha256 = "sha256-cTXVIMBf1wEt6Mm3WgvZbT+/rYERvie7XDACtgz3YWI=";
+      url = "https://github.com/OmniNull/OmniWM/releases/download/v0.7.2/OmniWM-v0.7.2.zip";
+      sha256 = "sha256-wVPdL16U4JC4WG2E1AR5qv2AA44JOSNfMMS4Zyk3+8E=";
     };
   };
 }

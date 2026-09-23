@@ -69,10 +69,10 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-cTXVIMBf1wEt6Mm3WgvZbT+/rYERvie7XDACtgz3YWI=",
+            "sha256": "sha256-wVPdL16U4JC4WG2E1AR5qv2AA44JOSNfMMS4Zyk3+8E=",
             "type": "url",
-            "url": "https://github.com/OmniNull/OmniWM/releases/download/v0.7.1/OmniWM-v0.7.1.zip"
+            "url": "https://github.com/OmniNull/OmniWM/releases/download/v0.7.2/OmniWM-v0.7.2.zip"
         },
-        "version": "v0.7.1"
+        "version": "v0.7.2"
     }
 }
