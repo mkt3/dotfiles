@@ -562,8 +562,8 @@ darwin = [{ name = "libreoffice", method = "cask", kind = "package" }]
 ## launcher
 [launcher]
 type = "gui"
-darwin = [{ name = "raycast", method = "cask", kind = "package" }]
-linux = [{ name = "vicinae", method = "nix-hm", kind = "module" }]
+darwin = [{ name = "vicinae", method = "cask", kind = "package" }]
+common = [{ name = "vicinae", method = "nix-hm", kind = "module" }]
 
 ## gui archiver
 [xarchiver]
