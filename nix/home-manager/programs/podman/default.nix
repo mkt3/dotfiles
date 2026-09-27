@@ -9,6 +9,7 @@
         default = [ { type = "reject"; } ];
         transports = {
           docker."localhost:5000" = [ { type = "insecureAcceptAnything"; } ];
+          "docker-archive"."" = [ { type = "insecureAcceptAnything"; } ];
           "containers-storage"."" = [ { type = "insecureAcceptAnything"; } ];
         };
       };
