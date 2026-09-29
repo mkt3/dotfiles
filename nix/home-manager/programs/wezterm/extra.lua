@@ -145,6 +145,10 @@ wezterm.on('user-var-changed', function(window, pane, name, value)
 end)
 
 local keys = {
+  -- Preserve a distinct multiline key for programs such as Codex CLI.
+  -- Plain Enter retains WezTerm's default CR (\r); Shift+Enter sends LF (Ctrl+J).
+  { key = 'Enter', mods = 'SHIFT', action = act.SendString '\x0a' },
+
   -- keyball
   { key = 'Delete', mods = '', action = act.SendKey { key = 'd', mods = 'CTRL' } },
   { key = 'RightArrow', mods = '', action = act.SendKey { key = 'f', mods = 'CTRL' } },
