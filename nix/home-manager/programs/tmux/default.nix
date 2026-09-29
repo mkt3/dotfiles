@@ -43,6 +43,7 @@ in
       # tmuxPlugins.nord
     ];
     extraConfig = ''
+      set -s extended-keys on
       set -g set-clipboard on
       set -g allow-passthrough on
       set -as terminal-features ',xterm*:clipboard'
