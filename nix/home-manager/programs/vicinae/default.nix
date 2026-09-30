@@ -52,6 +52,7 @@ let
       power.entrypoints = {
         logout.preferences.confirm = false;
         power-off.preferences.confirm = false;
+        reboot.alias = "restart";
         reboot.preferences.confirm = false;
         suspend.preferences.confirm = false;
       };
