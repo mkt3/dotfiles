@@ -8,8 +8,16 @@ message=${*:-Hook completed}
 host=$(hostname -s 2>/dev/null || hostname 2>/dev/null || printf 'unknown-host')
 context="host=${host}"
 
+tmux_display() {
+  if [ -n "${TMUX_PANE:-}" ]; then
+    tmux display-message -p -t "$TMUX_PANE" "$1"
+  else
+    tmux display-message -p "$1"
+  fi
+}
+
 if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
-  tmux_context=$(tmux display-message -p '#S:#I.#P #W' 2>/dev/null || true)
+  tmux_context=$(tmux_display '#S:#I.#P #W' 2>/dev/null || true)
   if [ -n "$tmux_context" ]; then
     context="${context} tmux=${tmux_context}"
   fi
@@ -44,15 +52,19 @@ emit() {
   fi
 }
 
-if [ -w /dev/tty ]; then
-  emit > /dev/tty
-elif [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
-  pane_tty=$(tmux display-message -p '#{pane_tty}' 2>/dev/null || true)
+# Hooks may run with a private PTY or without a controlling terminal.
+# Prefer the originating tmux pane over the hook process's /dev/tty.
+if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
+  pane_tty=$(tmux_display '#{pane_tty}' 2>/dev/null || true)
   if [ -n "$pane_tty" ] && [ -w "$pane_tty" ]; then
     emit > "$pane_tty"
-  else
-    emit
+    exit 0
   fi
-else
-  emit
 fi
+
+# A writable /dev/tty node doesn't guarantee that it can be opened.
+if (emit > /dev/tty) 2>/dev/null; then
+  exit 0
+fi
+
+emit
