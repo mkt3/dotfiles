@@ -8,6 +8,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # Zotero 10 requires Firefox ESR 140, removed from unstable in #567873.
+    # Remove this pin once nixpkgs fixes Zotero (NixOS/nixpkgs#569006).
+    nixpkgs-zotero = {
+      url = "github:NixOS/nixpkgs/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f";
+      flake = false;
+    };
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -85,6 +91,13 @@
         overlays = [
           inputs.emacs-overlay.overlays.default
           (import ./home-manager/overlays/recoll)
+          (_: prev: {
+            zotero =
+              (import inputs.nixpkgs-zotero {
+                system = prev.stdenv.hostPlatform.system;
+                config = prev.config;
+              }).zotero;
+          })
         ];
         system = platform;
       };
