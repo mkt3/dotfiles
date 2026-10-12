@@ -235,13 +235,6 @@ type = "basic"
 ubuntu = [{ name = "gnupg", method = "apt", kind = "package" }]
 common = [{ name = "gnupg", method = "nix-hm", kind = "module" }]
 
-[sops]
-type = "basic"
-common = [
-  { name = "sops", method = "nix-hm", kind = "package" },
-  { name = "age", method = "nix-hm", kind = "package" },
-]
-
 [macos-security]
 type = "basic"
 darwin = [{ name = "pinentry_mac", method = "nix-hm", kind = "package" }]
@@ -368,10 +361,6 @@ common = [{ name = "lua-language-server", method = "nix-hm", kind = "package" }]
 type = "dev"
 common = [{ name = "typescript-language-server", method = "nix-hm", kind = "package" }]
 
-[typescript]
-type = "dev"
-common = [{ name = "typescript", method = "nix-hm", kind = "package" }]
-
 ## google cloud sdk
 [google-cloud-sdk]
 type = "dev"
@@ -405,10 +394,6 @@ linux = [{ name = "kubectl", method = "nix-hm", kind = "module" }]
 [k9s]
 type = "dev"
 linux = [{ name = "k9s", method = "nix-hm", kind = "module" }]
-
-[flux]
-type = "dev"
-linux = [{ name = "fluxcd", method = "nix-hm", kind = "package" }]
 
 
 # gui environment
