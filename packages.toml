@@ -382,6 +382,11 @@ common = [{ name = "google-cloud-sdk", method = "nix-hm", kind = "package" }]
 type = "dev"
 common = [{ name = "awscli2", method = "nix-hm", kind = "module" }]
 
+## azure cli
+[azure-cli]
+type = "dev"
+common = [{ name = "azure-cli", method = "nix-hm", kind = "module" }]
+
 ## config for docker
 [docker-cli]
 type = "dev"
@@ -589,10 +594,10 @@ common = [{ name = "codex", method = "nix-hm", kind = "module" }]
 type = "dev"
 common = [{ name = "ax", method = "nix-hm", kind = "module" }]
 
-[chatgpt]
-type = "gui"
-darwin = [{ name = "chatgpt", method = "cask", kind = "package" }]
-nixos = [{ name = "chatgpt", method = "nix-hm", kind = "module" }]
+# [chatgpt]
+# type = "gui"
+# darwin = [{ name = "chatgpt", method = "cask", kind = "package" }]
+# nixos = [{ name = "chatgpt", method = "nix-hm", kind = "module" }]
 
 [agent-skills]
 type = "dev"
