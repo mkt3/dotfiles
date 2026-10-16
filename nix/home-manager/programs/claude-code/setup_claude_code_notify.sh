@@ -35,12 +35,22 @@ jq \
       "hooks": [command_hook($command)]
     };
 
+    def remove_legacy_hook($command):
+      map(
+        if any(.hooks[]?; .command == $command) then
+          .hooks |= map(select(.command != $command))
+          | select(.hooks | length > 0)
+        else
+          .
+        end
+      );
+
     .hooks.Stop = (
-      (.hooks.Stop // [] | map(select((.hooks // [] | any(.command == $legacy_stop_command)) | not)))
+      (.hooks.Stop // [] | remove_legacy_hook($legacy_stop_command))
       + [hook_group($stop_command)] | unique
     )
     | .hooks.PermissionRequest = (
-      (.hooks.PermissionRequest // [] | map(select((.hooks // [] | any(.command == $legacy_permission_command)) | not)))
+      (.hooks.PermissionRequest // [] | remove_legacy_hook($legacy_permission_command))
       + [hook_group($permission_command)] | unique
     )
     | .env.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"

@@ -11,7 +11,7 @@ fi
 . "${repo_dir}/scripts/common.sh"
 
 config_file="${repo_dir}/.pre-commit-config.yaml"
-hook_file="$(git -C "$repo_dir" rev-parse --git-path hooks/pre-commit 2>/dev/null || true)"
+hook_file="$(git -C "$repo_dir" rev-parse --path-format=absolute --git-path hooks/pre-commit 2>/dev/null || true)"
 
 title "Install/Update git hooks"
 

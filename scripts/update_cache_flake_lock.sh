@@ -18,13 +18,15 @@ export GUI_ENV="y"
 export NIX_PLATFORM_OVERRIDE="x86_64-linux"
 export USER="${USER:-attic-cache-builder}"
 
-export DISTRO="NixOS"
 NIX_CMD=(nix)
 
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/common.sh"
 # shellcheck source=/dev/null
 . "${REPO_DIR}/scripts/nix/setup.sh"
+
+# Target NixOS after common.sh detects the OS of the current machine.
+export DISTRO="NixOS"
 
 info "Updating nvfetcher sources for the cache builder"
 if command -v nvfetcher > /dev/null 2>&1; then

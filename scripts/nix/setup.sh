@@ -122,7 +122,7 @@ detect_nix_platform() {
     echo "${nix_platform/arm64-darwin/aarch64-darwin}"
 }
 
-sync_flake_sources() {
+sync_flake_sources() (
     local nix_config_dir="$1"
     local nix_main_flake_dir="$2"
     local source_path=""
@@ -140,11 +140,9 @@ sync_flake_sources() {
         rm -rf "${nix_main_flake_dir:?}/${source_name}"
         cp -Rf "$source_path" "$nix_main_flake_dir/"
     done
-    shopt -u dotglob nullglob
-
     rm -f "${nix_main_flake_dir}/flake_template.nix"
     cp -f "${REPO_DIR}/packages.toml" "$nix_main_flake_dir/packages.toml"
-}
+)
 
 sync_flake_lock_to_repo() {
     local source_lock="$1"
