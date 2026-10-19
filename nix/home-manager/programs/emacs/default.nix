@@ -189,6 +189,7 @@ in
     "emacs/init.el".source = ./init.el;
     "emacs/templates".source = ./templates;
     "emacs/ddskk.d/init.el".source = ./ddskk.d/init.el;
+    "emacs/ddskk.d/SKK-JISYO.lisp".source = ./ddskk.d/SKK-JISYO.lisp;
 
     "zsh/defer.zsh" = {
       text = lib.mkMerge (
