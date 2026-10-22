@@ -6,19 +6,33 @@
   ...
 }:
 {
-  home.packages = [
-    llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex
-  ];
-
-  home.activation.codexNotifyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    PATH=${lib.makeBinPath [ pkgs.gawk pkgs.coreutils ]}:"$PATH" \
-    CODEX_HOME=${lib.escapeShellArg "${config.xdg.configHome}/codex"} \
-      ${lib.getExe pkgs.bash} ${lib.escapeShellArg "${config.home.homeDirectory}/.local/bin/setup_codex_notify.sh"}
-  '';
-
-  home.file.".local/bin/setup_codex_notify.sh" = {
-    source = ./setup_codex_notify.sh;
-    executable = true;
+  programs.codex = {
+    enable = true;
+    package = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
+    # Keep Codex-managed settings while applying the values declared here.
+    mutableSettings = true;
+    settings = {
+      features.hooks = true;
+      tui.notifications = false;
+      tui.theme = "nord";
+      hooks =
+        lib.mapAttrs
+          (_: message: [
+            {
+              hooks = [
+                {
+                  type = "command";
+                  command = "${config.home.homeDirectory}/.local/bin/notify.sh Codex '${message}' >/dev/null 2>&1 || true";
+                  timeout = 5;
+                }
+              ];
+            }
+          ])
+          {
+            Stop = "turn complete";
+            PermissionRequest = "approval required";
+          };
+    };
   };
 
   programs.zsh.envExtra = lib.mkAfter ''
