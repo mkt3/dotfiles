@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   os,
   homeDirectory,
   ...
@@ -71,6 +72,8 @@ let
   };
 in
 {
+  home.packages = lib.mkIf (os == "darwin") [ pkgs.vicinae ];
+
   # Home Manager's Vicinae module provides the Linux-only systemd integration.
   programs.vicinae = lib.mkIf (os != "darwin") {
     enable = true;
@@ -81,7 +84,7 @@ in
     inherit settings;
   };
 
-  # Vicinae is installed as a Homebrew cask on macOS, where the Home Manager
+  # Vicinae is installed as a Nix package on macOS, where the Home Manager
   # module is unavailable. Render the same settings definition directly.
   xdg.configFile."vicinae/settings.json" = lib.mkIf (os == "darwin") {
     text = builtins.toJSON settings;
