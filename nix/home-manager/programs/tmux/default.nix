@@ -50,6 +50,8 @@ in
 
       bind r source-file ${config.xdg.configHome}/tmux/tmux.conf \; display "tmux.conf has been reloaded"
 
+      bind 0 select-window -t 10
+
       bind | split-window -h
 
       bind - split-window -v
