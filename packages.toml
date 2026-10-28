@@ -378,7 +378,6 @@ ubuntu = [{ name = "awscli2", method = "nix-hm", kind = "module" }]
 [azure-cli]
 type = "dev"
 darwin = [{ name = "azure-cli", method = "nix-hm", kind = "module" }]
-ubuntu = [{ name = "azure-cli", method = "nix-hm", kind = "module" }]
 
 ## config for docker
 [docker-cli]
