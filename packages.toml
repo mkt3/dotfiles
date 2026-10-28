@@ -374,7 +374,7 @@ common = [{ name = "awscli2", method = "nix-hm", kind = "module" }]
 ## azure cli
 [azure-cli]
 type = "dev"
-common = [{ name = "azure-cli", method = "nix-hm", kind = "module" }]
+darwin = [{ name = "azure-cli", method = "nix-hm", kind = "module" }]
 
 ## config for docker
 [docker-cli]
