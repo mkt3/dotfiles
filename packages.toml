@@ -295,7 +295,8 @@ common = [{ name = "ghq", method = "nix-hm", kind = "module" }]
 ## SSO
 [saml2aws]
 type = "dev"
-common = [{ name = "saml2aws", method = "nix-hm", kind = "package" }]
+darwin = [{ name = "saml2aws", method = "nix-hm", kind = "package" }]
+ubuntu = [{ name = "saml2aws", method = "nix-hm", kind = "package" }]
 
 ## shell script
 [shellcheck]
@@ -364,17 +365,20 @@ common = [{ name = "typescript-language-server", method = "nix-hm", kind = "pack
 ## google cloud sdk
 [google-cloud-sdk]
 type = "dev"
-common = [{ name = "google-cloud-sdk", method = "nix-hm", kind = "package" }]
+darwin = [{ name = "google-cloud-sdk", method = "nix-hm", kind = "package" }]
+ubuntu = [{ name = "google-cloud-sdk", method = "nix-hm", kind = "package" }]
 
 ## aws cli
 [awscli2]
 type = "dev"
-common = [{ name = "awscli2", method = "nix-hm", kind = "module" }]
+darwin = [{ name = "awscli2", method = "nix-hm", kind = "module" }]
+ubuntu = [{ name = "awscli2", method = "nix-hm", kind = "module" }]
 
 ## azure cli
 [azure-cli]
 type = "dev"
 darwin = [{ name = "azure-cli", method = "nix-hm", kind = "module" }]
+ubuntu = [{ name = "azure-cli", method = "nix-hm", kind = "module" }]
 
 ## config for docker
 [docker-cli]
