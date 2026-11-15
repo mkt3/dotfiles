@@ -1173,11 +1173,18 @@ The default tab name uses the buffer name."
    #+begin_src emacs-lisp
      (use-package flymake
        :ensure nil
+       :hook (flymake-mode-hook . my:flymake-setup-eldoc)
        :bind (nil
               :map flymake-mode-map
               ("C-c C-p" . flymake-goto-prev-error)
               ("C-c C-n" . flymake-goto-next-error))
        :config
+       (defun my:flymake-setup-eldoc ()
+         "Show diagnostics alongside other ElDoc documentation."
+         (when flymake-mode
+           (setq-local eldoc-documentation-strategy
+                       #'eldoc-documentation-compose-eagerly)
+           (eldoc-mode 1)))
        (set-face-attribute 'flymake-error nil
                            :background "#551327"
                            :underline '(:style wave :color "#ff7a5f"))
@@ -1187,11 +1194,6 @@ The default tab name uses the buffer name."
        (set-face-attribute 'flymake-note nil
                            :background "#104324"
                            :underline '(:style wave :color "#30c489")))
-
-     (use-package flymake-diagnostic-at-point
-       :ensure t
-       :after flymake
-       :hook (flymake-mode-hook . flymake-diagnostic-at-point-mode))
 
      (use-package flymake-ruff
        :ensure t

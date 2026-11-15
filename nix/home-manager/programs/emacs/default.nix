@@ -9,8 +9,6 @@
 }:
 let
   emacsPackage = import ./package.nix { inherit pkgs isDarwin isGUI; };
-  sources = pkgs.callPackage ../../../_sources/generated.nix { };
-  elpaVersion = source: "${builtins.replaceStrings [ "-" ] [ "" ] source.date}.0";
   configuredEmacs = pkgs.emacsWithPackagesFromUsePackage {
     package = emacsPackage;
     config = ./README.org;
@@ -19,27 +17,6 @@ let
     # Home Manager installs the generated configuration below.
     defaultInitFile = false;
     override = _final: prev: {
-      # Removed from MELPA in nixpkgs, but still used by the configuration.
-      flymake-diagnostic-at-point = prev.melpaBuild {
-        pname = "flymake-diagnostic-at-point";
-        version = "20180815.1004";
-        src = pkgs.fetchFromGitHub {
-          owner = "meqif";
-          repo = "flymake-diagnostic-at-point";
-          rev = "379616b1c6f5ebeaf08fbe54ae765008a78b3be7";
-          hash = "sha256-D476VQHVL91ikr5VQ9+oPbje46bv4cqpeD388nvPf/E=";
-        };
-        packageRequires = [ prev.popup ];
-      };
-      nerd-icons-dired = prev.nerd-icons-dired.overrideAttrs (_old: {
-        inherit (sources.nerd-icons-dired) src;
-        version = elpaVersion sources.nerd-icons-dired;
-      });
-      just-ts-mode = prev.just-ts-mode.overrideAttrs (_old: {
-        inherit (sources.just-ts-mode) src;
-        # melpa2nix requires an ELPA-compatible version, not a Git SHA.
-        version = elpaVersion sources.just-ts-mode;
-      });
       ox-hugo = prev.ox-hugo.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ./patches/ox-hugo-tangle-filepath.patch ];
       });
