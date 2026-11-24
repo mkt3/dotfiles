@@ -25,6 +25,9 @@ rustPlatform.buildRustPackage {
   version = lib.removePrefix "v" source.version;
   cargoLock = source.cargoLock."Cargo.lock";
 
+  # PID 1 in the Nix build sandbox belongs to the build user.
+  checkFlags = [ "--skip=tty::tests::pid_1_is_not_mine" ];
+
   strictDeps = true;
   nativeBuildInputs = [
     pkg-config
