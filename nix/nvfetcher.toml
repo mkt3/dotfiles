@@ -6,6 +6,11 @@ fetch.github = "koron/cmigemo"
 src.github = "OmniNull/OmniWM"
 fetch.url = "https://github.com/OmniNull/OmniWM/releases/download/$ver/OmniWM-$ver.zip"
 
+[immurok]
+src.github = "immurok/app-linux-rs"
+fetch.github = "immurok/app-linux-rs"
+cargo_lock = ["Cargo.lock"]
+
 # [scroll-reverser]
 # src.github_tag = "pilotmoon/Scroll-Reverser"
 # src.prefix = "v"

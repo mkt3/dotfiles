@@ -446,6 +446,12 @@ darwin = [
 
 
 # gui packages
+## immurok
+[immurok]
+type = "gui"
+darwin = [{ name = "immurok/tap/immurok", method = "cask", kind = "package" }]
+nixos = [{ name = "immurok", method = "nix", kind = "module" }]
+
 ## priner & scanner
 [printer]
 type = "gui"

@@ -17,6 +17,21 @@
       sha256 = "sha256-mRSA8dX4Sr2ayljPGeI/9+NxZfTCNrGHEid3FCkZkXI=";
     };
   };
+  immurok = {
+    pname = "immurok";
+    version = "v0.9.4";
+    src = fetchFromGitHub {
+      owner = "immurok";
+      repo = "app-linux-rs";
+      rev = "v0.9.4";
+      fetchSubmodules = false;
+      sha256 = "sha256-DyPXYTilZvw3XYPZTerdHP2q3uWNXGm2MAXv5BkotNg=";
+    };
+    cargoLock."Cargo.lock" = {
+      lockFile = ./. + "/sha256-DyPXYTilZvw3XYPZTerdHP2q3uWNXGm2MAXv5BkotNg=/Cargo.lock";
+      outputHashes = { };
+    };
+  };
   omniwm = {
     pname = "omniwm";
     version = "v0.8.0";

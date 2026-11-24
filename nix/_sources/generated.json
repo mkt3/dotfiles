@@ -20,6 +20,32 @@
         },
         "version": "v1.8.0"
     },
+    "immurok": {
+        "cargoLock": {
+            "Cargo.lock": [
+                "sha256-DyPXYTilZvw3XYPZTerdHP2q3uWNXGm2MAXv5BkotNg=/Cargo.lock",
+                {}
+            ]
+        },
+        "date": null,
+        "extract": null,
+        "name": "immurok",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "immurok",
+            "repo": "app-linux-rs",
+            "rev": "v0.9.4",
+            "sha256": "sha256-DyPXYTilZvw3XYPZTerdHP2q3uWNXGm2MAXv5BkotNg=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "v0.9.4"
+    },
     "omniwm": {
         "cargoLock": null,
         "date": null,
