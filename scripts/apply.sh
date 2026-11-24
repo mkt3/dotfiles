@@ -81,9 +81,9 @@ apply_configuration() {
                 sudo mv /etc/shells{,.before-nix-darwin} 2>/dev/null || true
                 sudo mv /etc/nix/nix.conf{,.before-nix-darwin} 2>/dev/null || true
                 NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt \
-                    run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
+                    run_nixpkgs_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
             else
-                run_available_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV" --show-activation-logs
+                run_available_nh darwin switch "$NIX_DIR" -H "$HOSTNAME_ENV"
             fi
             ;;
         NixOS)
@@ -92,7 +92,7 @@ apply_configuration() {
             ;;
         *)
             title "Install/Update packages from Home Manager"
-            run_available_nh home switch "$NIX_DIR" -c "$USER" --show-activation-logs
+            run_available_nh home switch "$NIX_DIR" -c "$USER"
             export __ETC_PROFILE_NIX_SOURCED=""
             ;;
     esac
