@@ -29,7 +29,9 @@
     };
     cargoLock."Cargo.lock" = {
       lockFile = ./. + "/sha256-DyPXYTilZvw3XYPZTerdHP2q3uWNXGm2MAXv5BkotNg=/Cargo.lock";
-      outputHashes = { };
+      outputHashes = {
+
+      };
     };
   };
   omniwm = {
