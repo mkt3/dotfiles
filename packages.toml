@@ -450,6 +450,7 @@ darwin = [
 [immurok]
 type = "gui"
 darwin = [{ name = "immurok/tap/immurok", method = "cask", kind = "package" }]
+# The NixOS module enables immurok only on personal-dt.
 nixos = [{ name = "immurok", method = "nix", kind = "module" }]
 
 ## priner & scanner
